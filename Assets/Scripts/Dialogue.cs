@@ -19,7 +19,6 @@ public class Dialogue : MonoBehaviour
     public CinemachineCamera dialogueCamera; // Hubungkan ke CinemachineCameraDialogue
     [SerializeField] private float npcLensSize = 4.5f; // Jarak zoom khusus NPC ini
 
-
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
@@ -167,17 +166,6 @@ public class Dialogue : MonoBehaviour
         if (dialogueCamera != null)
         {
             dialogueCamera.Priority.Value = 0; // Kembalikan kontrol ke kamera utama
-        }
-
-        if (canInteract && InteractPrompt != null)
-            InteractPrompt.SetActive(true);
-
-        // --- INTEGRASI OPSIONAL DENGAN QUEST GIVER ---
-        // Mengecek apakah NPC ini memiliki komponen QuestGiver
-        QuestGiver questGiver = GetComponent<QuestGiver>();
-        if (questGiver != null)
-        {
-            questGiver.GiveQuest(); // Otomatis berikan quest jika NPC ini adalah Quest Giver
         }
 
         if (canInteract && InteractPrompt != null)
