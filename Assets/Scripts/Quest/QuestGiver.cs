@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class QuestGiver : MonoBehaviour
 {
+    [Header("Quest")]
     [SerializeField] private Quest questToGive;
 
     public void GiveQuest()
@@ -9,7 +10,7 @@ public class QuestGiver : MonoBehaviour
         if (questToGive == null)
         {
             Debug.LogWarning(
-                "Quest Giver tidak memiliki quest."
+                "QuestGiver: Quest To Give belum diisi."
             );
             return;
         }
@@ -17,7 +18,7 @@ public class QuestGiver : MonoBehaviour
         if (QuestController.Instance == null)
         {
             Debug.LogError(
-                "QuestController tidak ditemukan."
+                "QuestGiver: QuestController tidak ditemukan."
             );
             return;
         }
@@ -25,7 +26,10 @@ public class QuestGiver : MonoBehaviour
         if (QuestController.Instance.IsQuestActive(
             questToGive.QuestID))
         {
-            Debug.Log("Quest already active.");
+            Debug.Log(
+                "Quest sudah aktif: " +
+                questToGive.QuestID
+            );
             return;
         }
 
@@ -34,7 +38,8 @@ public class QuestGiver : MonoBehaviour
         );
 
         Debug.Log(
-        "QUEST DIBERIKAN: " + questToGive.QuestTitle
+            "NPC memberikan quest: " +
+            questToGive.QuestTitle
         );
     }
 }

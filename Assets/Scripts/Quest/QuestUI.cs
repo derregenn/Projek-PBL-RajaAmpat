@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System;
 
 public class QuestUI : MonoBehaviour
 {
@@ -27,60 +26,40 @@ public class QuestUI : MonoBehaviour
 
     private void Start()
     {
+        // Ambil quest aktif jika pemain berpindah scene atau me-reload level
+        if (QuestController.Instance != null && QuestController.Instance.ActiveQuests.Count > 0)
+        {
+            activeQuest = QuestController.Instance.ActiveQuests[0];
+        }
+
         UpdateQuestUI();
     }
-
-    // ========================================
-    // SET QUEST
-    // ========================================
 
     public void SetQuest(Quest quest)
     {
         activeQuest = quest;
-
         UpdateQuestUI();
     }
 
-    // ========================================
-    // UPDATE UI
-    // ========================================
-
     public void UpdateQuestUI()
     {
-        // Tidak ada quest aktif
         if (activeQuest == null)
         {
             if (questHUDPanel != null)
+            {
                 questHUDPanel.SetActive(false);
-
+            }
             return;
         }
 
-        // Tampilkan Quest HUD
         if (questHUDPanel != null)
             questHUDPanel.SetActive(true);
 
-        // ====================================
-        // QUEST TITLE
-        // ====================================
-
         if (questTitleText != null)
-        {
             questTitleText.text = activeQuest.QuestTitle;
-        }
-
-        // ====================================
-        // QUEST DESCRIPTION
-        // ====================================
 
         if (questDescriptionText != null)
-        {
             questDescriptionText.text = activeQuest.Description;
-        }
-
-        // ====================================
-        // OBJECTIVES
-        // ====================================
 
         if (objectiveListText != null)
         {
@@ -88,32 +67,31 @@ public class QuestUI : MonoBehaviour
 
             for (int i = 0; i < activeQuest.Objectives.Count; i++)
             {
-                QuestObjective objective =
-                    activeQuest.Objectives[i];
-
+                QuestObjective objective = activeQuest.Objectives[i];
                 char prefix = (char)('A' + i);
-
-                string progress =
-                    $"({objective.CurrentAmount}/{objective.RequiredAmount})";
+                string progress = $"({objective.CurrentAmount}/{objective.RequiredAmount})";
 
                 if (objective.IsComplete)
                 {
                     objectiveListText.text +=
-                        $"<color=#55FF55><s>[{prefix}] " +
-                        $"{objective.Description} {progress}</s></color>\n";
+                        $"<color=#55FF55><s>[{prefix}] {objective.Description} {progress}</s></color>\n";
                 }
                 else
                 {
                     objectiveListText.text +=
-                        $"[{prefix}] " +
-                        $"{objective.Description} {progress}\n";
+                        $"[{prefix}] {objective.Description} {progress}\n";
                 }
             }
         }
     }
 
-    internal void ClearQuest()
+    public void ClearQuest()
     {
-        throw new NotImplementedException();
+        activeQuest = null;
+
+        if (questHUDPanel != null)
+        {
+            questHUDPanel.SetActive(false);
+        }
     }
 }

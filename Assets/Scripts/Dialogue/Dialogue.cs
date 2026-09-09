@@ -16,8 +16,8 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private float TypeSpeed = 0.02f;
 
     [Header("Camera Zoom Settings")]
-    public CinemachineCamera dialogueCamera;
-    [SerializeField] private float npcLensSize = 4.5f;
+    public CinemachineCamera dialogueCamera; // Hubungkan ke CinemachineCameraDialogue
+    [SerializeField] private float npcLensSize = 4.5f; // Jarak zoom khusus NPC ini
 
     private int lineIndex = 0;
     private bool isInteracting = false;
@@ -25,24 +25,17 @@ public class Dialogue : MonoBehaviour
     private bool isTyping = false;
     private bool hasBeenTriggered = false;
 
+    private QuestGiver questGiver; // Referensi ke QuestGiver jika NPC ini memiliki quest
     private Coroutine typingCoroutine;
 
-    // Reference QuestGiver
-    private QuestGiver questGiver;
-
-    // ========================================
-    // UNITY
-    // ========================================
-
-    private void Awake()
+    private void Awake() // Inisialisasi referensi QuestGiver jika ada
     {
-        // Cari QuestGiver di GameObject yang sama
         questGiver = GetComponent<QuestGiver>();
     }
 
     private void Start()
     {
-        // Pastikan kamera dialog mati saat awal
+        // Pastikan prioritas kamera dialog mati saat awal level
         if (dialogueCamera != null)
         {
             dialogueCamera.Priority.Value = 0;
@@ -60,22 +53,10 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        // ====================================
-        // MULAI DIALOGUE
-        // ====================================
-
-        if (canInteract &&
-            !isInteracting &&
-            hasBeenTriggered &&
-            Input.GetKeyDown(KeyCode.E))
+        if (canInteract && !isInteracting && hasBeenTriggered && Input.GetKeyDown(KeyCode.E))
         {
             StartDialogue();
         }
-
-        // ====================================
-        // NEXT DIALOGUE
-        // ====================================
-
         else if (isInteracting &&
                  NextPrompt != null &&
                  NextPrompt.activeInHierarchy &&
@@ -85,21 +66,17 @@ public class Dialogue : MonoBehaviour
         }
     }
 
-    // ========================================
-    // START DIALOGUE
-    // ========================================
-
     private void StartDialogue()
     {
         canInteract = false;
         isInteracting = true;
 
-        // Kamera dialog
+        // --- PINDAHKAN KAMERA KE NPC INI & ZOOM ---
         if (dialogueCamera != null)
         {
-            dialogueCamera.Target.TrackingTarget = this.transform;
-            dialogueCamera.Lens.OrthographicSize = npcLensSize;
-            dialogueCamera.Priority.Value = 20;
+            dialogueCamera.Target.TrackingTarget = this.transform; // Set target ke NPC ini
+            dialogueCamera.Lens.OrthographicSize = npcLensSize;    // Set ukuran zoom
+            dialogueCamera.Priority.Value = 20;                   // Naikkan priority agar aktif
         }
 
         if (InteractPrompt != null)
@@ -112,19 +89,11 @@ public class Dialogue : MonoBehaviour
             DialogueBox.SetActive(true);
 
         if (DialogueText != null)
-        {
             DialogueText.text = "";
-            DialogueText.maxVisibleCharacters = 0;
-        }
 
         lineIndex = 0;
-
         StartTyping();
     }
-
-    // ========================================
-    // START TYPING
-    // ========================================
 
     private void StartTyping()
     {
@@ -134,31 +103,25 @@ public class Dialogue : MonoBehaviour
         typingCoroutine = StartCoroutine(WriteLine());
     }
 
-    // ========================================
-    // WRITE LINE
-    // ========================================
-
     private IEnumerator WriteLine()
     {
         isTyping = true;
 
-        if (DialogueLines == null ||
-            DialogueLines.Length == 0)
+        if (DialogueLines == null || DialogueLines.Length == 0)
         {
             EndDialogue();
             yield break;
         }
 
+        // Masukkan seluruh teks kalimat sekaligus agar kotak dialog langsung mengembang ke ukuran pasnya
         DialogueText.text = DialogueLines[lineIndex];
-        DialogueText.maxVisibleCharacters = 0;
+        DialogueText.maxVisibleCharacters = 0; // Sembunyikan karakter dulu
 
-        int totalCharacters =
-            DialogueLines[lineIndex].Length;
+        int totalCharacters = DialogueLines[lineIndex].Length;
 
         for (int i = 0; i <= totalCharacters; i++)
         {
-            DialogueText.maxVisibleCharacters = i;
-
+            DialogueText.maxVisibleCharacters = i; // Tampilkan satu per satu
             yield return new WaitForSeconds(TypeSpeed);
         }
 
@@ -168,17 +131,11 @@ public class Dialogue : MonoBehaviour
             NextPrompt.SetActive(true);
     }
 
-    // ========================================
-    // NEXT LINE
-    // ========================================
-
     private void NextLine()
     {
-        // Jangan lanjut kalau teks masih mengetik
         if (isTyping)
             return;
 
-        // Masih ada dialogue berikutnya
         if (lineIndex < DialogueLines.Length - 1)
         {
             lineIndex++;
@@ -190,12 +147,7 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            // =================================
-            // DIALOGUE BENAR-BENAR SELESAI
-            // =================================
-
-            // Kalau NPC memiliki QuestGiver,
-            // berikan quest setelah dialogue selesai.
+            // Dialog sudah mencapai baris terakhir
             if (questGiver != null)
             {
                 questGiver.GiveQuest();
@@ -204,10 +156,6 @@ public class Dialogue : MonoBehaviour
             EndDialogue();
         }
     }
-
-    // ========================================
-    // END DIALOGUE
-    // ========================================
 
     private void EndDialogue()
     {
@@ -226,65 +174,50 @@ public class Dialogue : MonoBehaviour
         if (NextPrompt != null)
             NextPrompt.SetActive(false);
 
-        // Kembalikan kamera
+        // --- KEMBALIKAN KAMERA KE GAMEPLAY ---
         if (dialogueCamera != null)
         {
-            dialogueCamera.Priority.Value = 0;
+            dialogueCamera.Priority.Value = 0; // Kembalikan kontrol ke kamera utama
         }
 
-        if (canInteract &&
-            InteractPrompt != null)
-        {
+        if (canInteract && InteractPrompt != null)
             InteractPrompt.SetActive(true);
-        }
     }
-
-    // ========================================
-    // PLAYER ENTER
-    // ========================================
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
-            return;
-
-        canInteract = true;
-
-        if (!isInteracting)
+        if (collision.CompareTag("Player"))
         {
-            if (!hasBeenTriggered)
-            {
-                hasBeenTriggered = true;
+            canInteract = true;
 
-                // Dialogue pertama otomatis dimulai
-                StartDialogue();
-            }
-            else if (InteractPrompt != null)
+            if (!isInteracting)
             {
-                InteractPrompt.SetActive(true);
+                if (!hasBeenTriggered)
+                {
+                    hasBeenTriggered = true;
+                    StartDialogue();
+                }
+                else if (InteractPrompt != null)
+                {
+                    InteractPrompt.SetActive(true);
+                }
             }
         }
     }
 
-    // ========================================
-    // PLAYER EXIT
-    // ========================================
-
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
-            return;
-
-        canInteract = false;
-
-        if (InteractPrompt != null)
-            InteractPrompt.SetActive(false);
-
-        if (isInteracting)
+        if (collision.CompareTag("Player"))
         {
-            // Keluar dari trigger hanya menutup dialogue.
-            // TIDAK memberikan quest.
-            EndDialogue();
+            canInteract = false;
+
+            if (InteractPrompt != null)
+                InteractPrompt.SetActive(false);
+
+            if (isInteracting)
+            {
+                EndDialogue();
+            }
         }
     }
 }

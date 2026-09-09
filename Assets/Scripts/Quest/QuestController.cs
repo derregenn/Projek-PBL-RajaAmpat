@@ -26,10 +26,8 @@ public class QuestController : MonoBehaviour
 
         Instance = this;
 
-        // QuestController tetap ada saat pindah scene
         DontDestroyOnLoad(gameObject);
 
-        // Cek QuestUI
         if (questUI == null)
         {
             Debug.LogWarning(
@@ -52,6 +50,14 @@ public class QuestController : MonoBehaviour
             return;
         }
 
+        if (string.IsNullOrEmpty(quest.QuestID))
+        {
+            Debug.LogWarning(
+                "QuestController: QuestID kosong."
+            );
+            return;
+        }
+
         if (IsQuestActive(quest.QuestID))
         {
             Debug.Log(
@@ -61,17 +67,24 @@ public class QuestController : MonoBehaviour
             return;
         }
 
+        // ====================================
+        // PENTING
+        // Quest baru diterima di sini.
+        // BELUM mengecek quest.IsComplete.
+        // ====================================
+
         ActiveQuests.Add(quest);
 
         Debug.Log(
-            "Quest Accepted: "
+            "QUEST ACCEPTED: "
             + quest.QuestTitle
         );
 
-        // Beritahu QuestUI
+        // Tampilkan quest ke UI
         if (questUI != null)
         {
             questUI.SetQuest(quest);
+            questUI.UpdateQuestUI();
         }
         else
         {
@@ -106,7 +119,7 @@ public class QuestController : MonoBehaviour
         if (string.IsNullOrEmpty(objectiveID))
         {
             Debug.LogWarning(
-                "QuestController: Objective ID is empty."
+                "QuestController: Objective ID kosong."
             );
             return;
         }
@@ -119,7 +132,7 @@ public class QuestController : MonoBehaviour
             return;
         }
 
-        // Cari objective di semua quest aktif
+        // Cari objective di quest aktif
         foreach (Quest quest in ActiveQuests)
         {
             if (quest == null)
@@ -128,52 +141,96 @@ public class QuestController : MonoBehaviour
             QuestObjective objective =
                 quest.GetObjective(objectiveID);
 
-            // Objective ditemukan
-            if (objective != null)
+            // ====================================
+            // OBJECTIVE DITEMUKAN
+            // ====================================
+
+            if (objective == null)
+                continue;
+
+            // Jangan tambah progress jika sudah selesai
+            if (objective.IsComplete)
             {
-                // Sudah selesai
-                if (objective.IsComplete)
-                {
-                    Debug.Log(
-                        "Objective already complete: "
-                        + objectiveID
-                    );
-
-                    return;
-                }
-
-                // Tambahkan progress
-                objective.AddProgress(amount);
-
                 Debug.Log(
-                    "Objective Progress: "
+                    "Objective already complete: "
                     + objectiveID
-                    + " "
-                    + objective.CurrentAmount
-                    + "/"
-                    + objective.RequiredAmount
                 );
-
-                // Update UI
-                if (questUI != null)
-                {
-                    questUI.UpdateQuestUI();
-                }
-
-                // Cek apakah seluruh objective selesai
-                if (quest.IsComplete)
-                {
-                    CompleteQuest(quest);
-                }
 
                 return;
             }
+
+            // ====================================
+            // TAMBAHKAN PROGRESS
+            // ====================================
+
+            objective.AddProgress(amount);
+
+            Debug.Log(
+                "Objective Progress: "
+                + objectiveID
+                + " "
+                + objective.CurrentAmount
+                + "/"
+                + objective.RequiredAmount
+            );
+
+            // Update UI
+            if (questUI != null)
+            {
+                questUI.UpdateQuestUI();
+            }
+
+            // ====================================
+            // CEK QUEST SELESAI
+            // ====================================
+
+            if (IsQuestFinished(quest))
+            {
+                CompleteQuest(quest);
+            }
+
+            return;
         }
 
         Debug.LogWarning(
             "Objective not found in active quests: "
             + objectiveID
         );
+    }
+
+    // ========================================
+    // CHECK QUEST FINISHED
+    // ========================================
+
+    private bool IsQuestFinished(Quest quest)
+    {
+        if (quest == null)
+            return false;
+
+        if (quest.Objectives == null ||
+            quest.Objectives.Count == 0)
+        {
+            Debug.LogWarning(
+                "Quest tidak memiliki objective: "
+                + quest.QuestTitle
+            );
+
+            return false;
+        }
+
+        // Semua objective harus selesai
+        foreach (QuestObjective objective in quest.Objectives)
+        {
+            if (objective == null)
+                continue;
+
+            if (!objective.IsComplete)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // ========================================
@@ -185,22 +242,35 @@ public class QuestController : MonoBehaviour
         if (quest == null)
             return;
 
+        // Pastikan quest memang aktif
+        if (!ActiveQuests.Contains(quest))
+            return;
+
         Debug.Log(
-            "QUEST COMPLETE: " + quest.QuestTitle
+            "================================"
         );
 
-        // Hapus quest dari daftar quest aktif
+        Debug.Log(
+            "QUEST COMPLETE: "
+            + quest.QuestTitle
+        );
+
+        Debug.Log(
+            "================================"
+        );
+
+        // Hapus quest dari ActiveQuests
         ActiveQuests.Remove(quest);
 
-        // Bersihkan Quest UI
+        // Bersihkan UI
         if (questUI != null)
         {
             questUI.ClearQuest();
         }
 
-        // ========================================
-        // NANTI BISA DITAMBAHKAN
-        // ========================================
+        // ====================================
+        // FITUR NANTI
+        // ====================================
 
         // UnlockNextQuest();
         // GiveReward();

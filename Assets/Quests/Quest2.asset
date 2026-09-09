@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2192e413909301f44b7dcad3df94beca, type: 3}
-  m_Name: Quest
+  m_Name: Quest2
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  QuestID: 01
-  QuestTitle: Collect coins
-  Description: 2 coins
+  QuestID: 02
+  QuestTitle: Save the turtle
+  Description: Hold E to interact
   Objectives:
-  - ObjectiveID: collect_coins
-    Type: 0
+  - ObjectiveID: hold_interact
+    Type: 3
     Description: 
-    RequiredAmount: 2
-    CurrentAmount: 7
+    RequiredAmount: 1
+    CurrentAmount: 0

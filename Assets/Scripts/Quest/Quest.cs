@@ -17,13 +17,54 @@ public class Quest : ScriptableObject
     [Header("Objectives")]
     public List<QuestObjective> Objectives = new List<QuestObjective>();
 
+    // Menghitung total progres terkumpul dari semua objective quest ini
+    public int CurrentAmount
+    {
+        get
+        {
+            if (Objectives == null || Objectives.Count == 0) return 0;
+
+            int total = 0;
+            foreach (var objective in Objectives)
+            {
+                if (objective != null)
+                {
+                    total += objective.CurrentAmount;
+                }
+            }
+            return total;
+        }
+    }
+
+    // Menghitung total target yang dibutuhkan dari semua objective quest ini
+    public int RequiredAmount
+    {
+        get
+        {
+            if (Objectives == null || Objectives.Count == 0) return 0;
+
+            int total = 0;
+            foreach (var objective in Objectives)
+            {
+                if (objective != null)
+                {
+                    total += objective.RequiredAmount;
+                }
+            }
+            return total;
+        }
+    }
+
     public bool IsComplete
     {
         get
         {
+            if (Objectives == null || Objectives.Count == 0)
+                return false;
+
             foreach (QuestObjective objective in Objectives)
             {
-                if (!objective.IsComplete)
+                if (objective == null || !objective.IsComplete)
                     return false;
             }
 
@@ -34,5 +75,19 @@ public class Quest : ScriptableObject
     public QuestObjective GetObjective(string objectiveID)
     {
         return Objectives.Find(o => o.ObjectiveID == objectiveID);
+    }
+
+    // Fungsi reset otomatis untuk mengembalikan progres semua objective ke 0
+    public void ResetProgress()
+    {
+        if (Objectives == null) return;
+
+        foreach (var objective in Objectives)
+        {
+            if (objective != null)
+            {
+                objective.CurrentAmount = 0;
+            }
+        }
     }
 }
