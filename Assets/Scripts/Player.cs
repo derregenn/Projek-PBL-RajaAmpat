@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public int health = 100;
     public int coins = 0;
+    public bool hasMap = false; 
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     public Transform groundCheck;
@@ -28,9 +29,11 @@ public class Player : MonoBehaviour
     private AudioSource audioSource;
     public int extraJumpsValue = 1;
     private int extraJumps;
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+// ... (biarkan sisa kode ke bawah sama seperti sebelumnya)
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();

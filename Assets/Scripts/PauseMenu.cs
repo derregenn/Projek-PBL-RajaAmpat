@@ -3,14 +3,15 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject container;
-    void Update()
+void Update()
+{
+    // Ubah dari KeyCode.F menjadi KeyCode.Escape
+    if (Input.GetKeyDown(KeyCode.Escape))
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            container.SetActive(true);
-            Time.timeScale = 0;
-        }
+        container.SetActive(true);
+        Time.timeScale = 0; // Menghentikan waktu saat pause[cite: 2]
     }
+}
 
     public void ResumeButton()
     {
