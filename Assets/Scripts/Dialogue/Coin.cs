@@ -22,12 +22,13 @@ public class Coin : MonoBehaviour
             }
 
             // Tambahkan progres quest
-            if (QuestUI.Instance != null)
+            if (QuestController.Instance != null)
             {
-                QuestUI.Instance.AddObjectiveProgress(objectiveID, amountToAdd);
+                QuestController.Instance.ProgressObjective(
+                    objectiveID,
+                    amountToAdd
+                );
             }
-
-            Destroy(gameObject);
         }
     }
 
