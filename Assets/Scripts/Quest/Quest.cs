@@ -7,6 +7,12 @@ using UnityEngine;
 )]
 public class Quest : ScriptableObject
 {
+    // Reset progress whenever the quest asset is loaded, so a new game starts from zero.
+    private void OnEnable()
+    {
+        ResetProgress();
+    }
+
     [Header("Quest Information")]
     public string QuestID;
     public string QuestTitle;

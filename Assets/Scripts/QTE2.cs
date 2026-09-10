@@ -11,14 +11,14 @@ public class QTE2 : MonoBehaviour
 
     [Header("Hold Settings")]
     public KeyCode targetKey = KeyCode.E;
-    public float holdDuration = 2.0f; // Durasi tahan sampai penuh (detik)
-    public bool decayWhenReleased = true; // Apakah progress berkurang jika tombol dilepas?
-    public float decaySpeed = 1.5f; // Kecepatan berkurang saat tombol dilepas
+    public float holdDuration = 2.0f;
+    public bool decayWhenReleased = true;
+    public float decaySpeed = 1.5f;
 
     [Header("Random Position Settings")]
     [SerializeField] private bool randomizePosition = true;
-    [SerializeField] private Vector2 minPositionOffset = new Vector2(-400f, -200f); // Batas minimal X dan Y dari tengah layar
-    [SerializeField] private Vector2 maxPositionOffset = new Vector2(400f, 200f);  // Batas maksimal X dan Y dari tengah layar
+    [SerializeField] private Vector2 minPositionOffset = new Vector2(-400f, -200f);
+    [SerializeField] private Vector2 maxPositionOffset = new Vector2(400f, 200f);
 
     [Header("Quest Objective")]
     [SerializeField] private string objectiveID = "hold_interact";
@@ -50,7 +50,6 @@ public class QTE2 : MonoBehaviour
             timerFillImage.fillAmount = 0f;
         }
 
-        // Acak posisi saat pertama kali aktif
         if (randomizePosition)
         {
             RandomizeUIPosition();
@@ -93,11 +92,11 @@ public class QTE2 : MonoBehaviour
         }
     }
 
-    private void RandomizeUIPosition()
+    public void RandomizeUIPosition()
     {
         if (rectTransform == null) return;
 
-        // Mengacak posisi lokal di dalam batas aman canvas/kamera
+        // Menghitung posisi acak baru di dalam area batas offset
         float randomX = Random.Range(minPositionOffset.x, maxPositionOffset.x);
         float randomY = Random.Range(minPositionOffset.y, maxPositionOffset.y);
 
@@ -106,16 +105,45 @@ public class QTE2 : MonoBehaviour
 
     private void Success()
     {
-        isCompleted = true;
-        Debug.Log("Hold Selesai! Sukses!");
+        Debug.Log("Hold 1x Selesai!");
 
+        // Tambah progres quest (biasanya bernilai 1)
         if (QuestController.Instance != null)
         {
             QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
         }
 
         onSuccess?.Invoke();
-        gameObject.SetActive(false);
+
+        // Cek apakah objective quest masih butuh diselesaikan lagi
+        bool needMoreProgress = false;
+
+        if (QuestController.Instance != null)
+        {
+            foreach (var quest in QuestController.Instance.ActiveQuests)
+            {
+                if (quest == null) continue;
+
+                var obj = quest.GetObjective(objectiveID);
+                if (obj != null && !obj.IsComplete)
+                {
+                    needMoreProgress = true;
+                    break;
+                }
+            }
+        }
+
+        if (needMoreProgress)
+        {
+            // Reset timer dan acak ulang koordinat posisi untuk giliran berikutnya
+            ResetQTE();
+        }
+        else
+        {
+            // Jika seluruh target jumlah sudah terpenuhi (misal 3/3), matikan total UI QTE
+            isCompleted = true;
+            gameObject.SetActive(false);
+        }
     }
 
     public void ResetQTE()
@@ -129,12 +157,15 @@ public class QTE2 : MonoBehaviour
             timerFillImage.fillAmount = 0f;
         }
 
-        // Acak ulang posisi setiap kali QTE di-reset/dipanggil kembali
+        // Pindah posisi ke titik acak baru tiap kali di-reset/berhasil 1x
         if (randomizePosition)
         {
             RandomizeUIPosition();
         }
 
-        gameObject.SetActive(true);
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
     }
 }
