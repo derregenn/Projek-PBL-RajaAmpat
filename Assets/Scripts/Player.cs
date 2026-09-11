@@ -7,14 +7,12 @@ public class Player : MonoBehaviour
 {
     public int health = 100;
     public int coins = 0;
-    public bool hasMap = false; 
+    public bool hasMap = false;
     public float moveSpeed = 5f;
-    public float jumpForce = 10f;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
     public Image healthImage;
-    public AudioClip jumpClip;
     public AudioClip hurtClip;
 
     [Header("Fall & Respawn Settings")]
@@ -27,18 +25,13 @@ public class Player : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
-    public int extraJumpsValue = 1;
-    private int extraJumps;
-    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-// ... (biarkan sisa kode ke bawah sama seperti sebelumnya)
+        // ... (biarkan sisa kode ke bawah sama seperti sebelumnya)
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-
-        extraJumps = extraJumpsValue;
 
         startPosition = transform.position;
     }
@@ -48,26 +41,6 @@ public class Player : MonoBehaviour
     {
         float moveInput = Input.GetAxis("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-
-        if (isGrounded)
-        {
-            extraJumps = extraJumpsValue;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                PlaySFX(jumpClip);
-            }
-            else if (extraJumps > 0)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                extraJumps--;
-                PlaySFX(jumpClip);
-            }
-        }
 
         if (transform.position.y < fallThresholdY)
         {
@@ -105,14 +78,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (rb.linearVelocityY > 0)
-            {
-                animator.Play("Player_Jump");
-            }
-            else
-            {
-                animator.Play("Player_Fall");
-            }
+            animator.Play("Player_Fall");
         }
     }
 
@@ -122,7 +88,6 @@ public class Player : MonoBehaviour
         {
             PlaySFX(hurtClip);
             health -= 25;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             StartCoroutine(BlinkRed());
 
             if (health <= 0)
