@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6336071551306012181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5051786363657526056}
+  - component: {fileID: 21438560835643747}
+  m_Layer: 0
+  m_Name: CameraSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5051786363657526056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336071551306012181}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &21438560835643747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336071551306012181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbebe63c4dee958478698ac59bf2b3c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestJournalManager
+  cameraFlash: {fileID: 0}
+  polaroidPopup: {fileID: 0}
+  popupPhotoDisplay: {fileID: 0}
+  questTabPanel: {fileID: 0}
+  ongoingQuestText: {fileID: 0}
+  journalTitleText: {fileID: 0}
+  journalTriviaText: {fileID: 0}
+  journalPhotoImage: {fileID: 0}
+  noPhotoWarning: {fileID: 0}
+  allJournalDatabase:
+  - photoID: 1
+    title: LAUT ARBOREK
+    triviaDescription: Borr bor
+    photoIllustration: {fileID: -3829476234814501412, guid: db79fa90f42dd264aac1e813ffa7a378, type: 3}
+  unlockedPhotoIDs: 
