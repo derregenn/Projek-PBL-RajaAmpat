@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class QuestController : MonoBehaviour
 {
@@ -276,5 +277,10 @@ public class QuestController : MonoBehaviour
         // GiveReward();
         // SaveGame();
         // LoadNextScene();
+    }
+
+    internal void AcceptQuest(string objectiveID)
+    {
+        throw new NotImplementedException();
     }
 }
