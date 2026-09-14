@@ -394,7 +394,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2053700590951969521}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 305465970235483634}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: BackToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &652837306979531891
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8099666383087376025
 Transform:
   m_ObjectHideFlags: 0
@@ -673,8 +685,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da403df95b43704597d89c7683b3bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  bgmSource: {fileID: 0}
-  defaultBGM: {fileID: 0}
+  bgmSource: {fileID: 2801731490644397447}
+  defaultBGM: {fileID: 8300000, guid: b7677443014887241ab625c2d3220faf, type: 3}
 --- !u!1 &1146817082154114873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,7 +1421,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6179264980264082201}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 305465970235483634}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ResumeGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5114504973603085100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,7 +1846,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1550299588680560784}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6789067782309285517}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: ToggleAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6375269518211009110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2369,7 +2405,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7423763942611343246}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 305465970235483634}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SaveGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7852898251859494491
 GameObject:
   m_ObjectHideFlags: 0
