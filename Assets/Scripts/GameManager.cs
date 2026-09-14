@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     public void BackToMainMenu()
     {
         Time.timeScale = 1f; 
-        SceneManager.LoadScene("MainMenu"); // Sesuaikan nama scene
+        SceneManager.LoadScene("01_MainMenu"); // Sesuaikan nama scene
     }
 
     public void SaveGame()
