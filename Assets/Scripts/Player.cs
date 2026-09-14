@@ -33,17 +33,28 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-// ... (biarkan sisa kode ke bawah sama seperti sebelumnya)
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
 
         extraJumps = extraJumpsValue;
-
         startPosition = transform.position;
+
+        // --- Cek apakah ada data tersimpan dari tombol Save ---
+        if (PlayerPrefs.HasKey("PlayerX"))
+        {
+            float x = PlayerPrefs.GetFloat("PlayerX");
+            float y = PlayerPrefs.GetFloat("PlayerY");
+            float z = PlayerPrefs.GetFloat("PlayerZ");
+
+            transform.position = new Vector3(x, y, z);
+            coins = PlayerPrefs.GetInt("PlayerCoins", 0);
+            health = PlayerPrefs.GetInt("PlayerHealth", 100);
+            
+            Debug.Log("Data Player Berhasil Dimuat!");
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         float moveInput = Input.GetAxis("Horizontal");
@@ -76,7 +87,11 @@ public class Player : MonoBehaviour
 
         SetAnimation(moveInput);
 
-        healthImage.fillAmount = health / 100f;
+        // --- Proteksi Null agar tidak error jika healthImage belum dipasang ---
+        if (healthImage != null)
+        {
+            healthImage.fillAmount = health / 100f;
+        }    
     }
 
     private void FixedUpdate()
@@ -137,12 +152,11 @@ public class Player : MonoBehaviour
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = Color.white;
-
     }
 
     private void Die()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnDrawGizmosSelected()
@@ -156,7 +170,33 @@ public class Player : MonoBehaviour
 
     public void PlaySFX(AudioClip audioClip)
     {
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        if (audioSource != null && audioClip != null)
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+        }
+    }
+
+    public void SaveGame()
+    {
+        Player player = FindFirstObjectByType<Player>();
+
+        if (player != null)
+        {
+            PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
+            PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
+            PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
+
+            PlayerPrefs.SetInt("PlayerCoins", player.coins);
+            PlayerPrefs.SetInt("PlayerHealth", player.health);
+
+            PlayerPrefs.Save();
+
+            Debug.Log("Game Berhasil Disimpan!");
+        }
+        else
+        {
+            Debug.LogWarning("Objek Player tidak ditemukan untuk disimpan.");
+        }
     }
 }
