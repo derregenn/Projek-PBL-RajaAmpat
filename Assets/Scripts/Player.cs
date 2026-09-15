@@ -9,18 +9,10 @@ public class Player : MonoBehaviour
     public int coins = 0;
     public bool hasMap = false;
     public float moveSpeed = 5f;
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
     public Image healthImage;
     public AudioClip hurtClip;
 
-    [Header("Fall & Respawn Settings")]
-    public float fallThresholdY = -10f;
-    private Vector2 startPosition;
-
     private Rigidbody2D rb;
-    private bool isGrounded;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -28,12 +20,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // ... (biarkan sisa kode ke bawah sama seperti sebelumnya)
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-
-        startPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -42,43 +31,23 @@ public class Player : MonoBehaviour
         float moveInput = Input.GetAxis("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
-        if (transform.position.y < fallThresholdY)
-        {
-            ResetToStartPosition();
-        }
-
         SetAnimation(moveInput);
 
-        healthImage.fillAmount = health / 100f;
-    }
-
-    private void FixedUpdate()
-    {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    }
-
-    private void ResetToStartPosition()
-    {
-        transform.position = startPosition;
-        rb.linearVelocity = Vector2.zero;
+        if (healthImage != null)
+        {
+            healthImage.fillAmount = health / 100f;
+        }
     }
 
     private void SetAnimation(float moveInput)
     {
-        if (isGrounded)
+        if (moveInput == 0)
         {
-            if (moveInput == 0)
-            {
-                animator.Play("Player_Idle");
-            }
-            else
-            {
-                animator.Play("Player_Run");
-            }
+            animator.Play("Player_Idle");
         }
         else
         {
-            animator.Play("Player_Fall");
+            animator.Play("Player_Run");
         }
     }
 
@@ -108,15 +77,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
-        {
-            Gizmos.color = isGrounded ? Color.green : Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
     }
 
     public void PlaySFX(AudioClip audioClip)
