@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.61835
+      value: 3.04
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -316,26 +316,30 @@ PrefabInstance:
     - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: gameplayCamera
       value: 
-      objectReference: {fileID: 445936730}
+      objectReference: {fileID: 855946470}
+    - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: orthographic size
+      value: 4.6994505
+      objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.8978193
+      value: 0.9924528
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.9169811
+      value: 0.66144574
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.26125312
+      value: 0.1404413
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.04
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.53
+      value: -2.93
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -378,17 +382,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
---- !u!114 &445936730 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3466410428206950840, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-  m_PrefabInstance: {fileID: 3170238193671865080}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1001 &543477456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -538,10 +531,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &855946470 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+  m_PrefabInstance: {fileID: 3170238193671865080}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1 &1010710965 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 706784742934618681, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
   m_PrefabInstance: {fileID: 416318645}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1043198160 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 167453878}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1067226685
 GameObject:
@@ -665,6 +674,10 @@ PrefabInstance:
       propertyPath: infoPanel
       value: 
       objectReference: {fileID: 1010710965}
+    - target: {fileID: 3050146572259751978, guid: b6a6418b27da4e145a27e303f81a7864, type: 3}
+      propertyPath: infoTitle
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3050146572259751978, guid: b6a6418b27da4e145a27e303f81a7864, type: 3}
       propertyPath: descTextUI
       value: 
@@ -801,6 +814,14 @@ PrefabInstance:
     - target: {fileID: 2417710247067626775, guid: 00cc4c8d229628545a474afef4354966, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533295705925590396, guid: 00cc4c8d229628545a474afef4354966, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -27.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 2533295705925590396, guid: 00cc4c8d229628545a474afef4354966, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.85
       objectReference: {fileID: 0}
     - target: {fileID: 4433978720761801739, guid: 00cc4c8d229628545a474afef4354966, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1091,6 +1112,10 @@ PrefabInstance:
       propertyPath: dialogueCamera
       value: 
       objectReference: {fileID: 1475532302}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[1]'
+      value: 'selamat datang di pulau pianemo! '
+      objectReference: {fileID: 0}
     - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1117,11 +1142,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.08
+      value: 14.37
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: -2.54
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1211,18 +1236,18 @@ PrefabInstance:
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1043198160}
     - target: {fileID: 4686589836079735778, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_Name
       value: CinemachineCameraDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.04
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.53
+      value: -2.93
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1273,6 +1298,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinemachineCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.93
+      objectReference: {fileID: 0}
     - target: {fileID: 3466410428206950840, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -1317,6 +1350,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 1043198160}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
