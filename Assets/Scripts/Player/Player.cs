@@ -40,6 +40,11 @@ public class Player : MonoBehaviour
 
     private void SetAnimation(float moveInput)
     {
+        if (moveInput != 0)
+        {
+            spriteRenderer.flipX = moveInput < 0;
+        }
+
         if (moveInput == 0)
         {
             animator.Play("Player_Idle");
