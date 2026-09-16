@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public int health = 100;
-    public int coins = 0;
     public bool hasMap = false;
     public float moveSpeed = 5f;
     public Image healthImage;
