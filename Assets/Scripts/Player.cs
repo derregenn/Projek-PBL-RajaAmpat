@@ -65,21 +65,6 @@ public class Player : MonoBehaviour
             extraJumps = extraJumpsValue;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                PlaySFX(jumpClip);
-            }
-            else if (extraJumps > 0)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                extraJumps--;
-                PlaySFX(jumpClip);
-            }
-        }
-
         if (transform.position.y < fallThresholdY)
         {
             ResetToStartPosition();
@@ -177,26 +162,5 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SaveGame()
-    {
-        Player player = FindFirstObjectByType<Player>();
-
-        if (player != null)
-        {
-            PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
-            PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
-            PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
-
-            PlayerPrefs.SetInt("PlayerCoins", player.coins);
-            PlayerPrefs.SetInt("PlayerHealth", player.health);
-
-            PlayerPrefs.Save();
-
-            Debug.Log("Game Berhasil Disimpan!");
-        }
-        else
-        {
-            Debug.LogWarning("Objek Player tidak ditemukan untuk disimpan.");
-        }
-    }
+    
 }
