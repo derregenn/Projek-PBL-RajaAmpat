@@ -39,12 +39,11 @@ public class GameManager : MonoBehaviour
     public void BackToMainMenu()
     {
         Time.timeScale = 1f; 
-        SceneManager.LoadScene("MainMenu"); // Sesuaikan nama scene
+        SceneManager.LoadScene("01_MainMenu");
     }
 
     public void SaveGame()
     {
-        // Cari objek Player di dalam Scene
         Player player = FindFirstObjectByType<Player>();
 
         if (player != null)
@@ -54,11 +53,9 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
             PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
 
-            // Simpan data koin dan kesehatan
-            PlayerPrefs.SetInt("PlayerCoins", player.coins);
+            // Simpan data kesehatan
             PlayerPrefs.SetInt("PlayerHealth", player.health);
 
-            // Tulis permanen ke sistem penyimpanan laptop
             PlayerPrefs.Save();
 
             Debug.Log("Game Berhasil Disimpan!");
@@ -71,12 +68,10 @@ public class GameManager : MonoBehaviour
 
     public void LoadGame()
     {
-        // Cari objek Player di dalam Scene
         Player player = FindFirstObjectByType<Player>();
 
         if (player != null)
         {
-            // Cek apakah ada data tersimpan
             if (PlayerPrefs.HasKey("PlayerX"))
             {
                 float x = PlayerPrefs.GetFloat("PlayerX");
@@ -84,7 +79,6 @@ public class GameManager : MonoBehaviour
                 float z = PlayerPrefs.GetFloat("PlayerZ");
 
                 player.transform.position = new Vector3(x, y, z);
-                player.coins = PlayerPrefs.GetInt("PlayerCoins", 0);
                 player.health = PlayerPrefs.GetInt("PlayerHealth", 100);
 
                 Debug.Log("Game Berhasil Dimuat!");
