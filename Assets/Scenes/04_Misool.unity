@@ -848,6 +848,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+    - target: {fileID: 2463706222190206533, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 3.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2463706222190206533, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 7.86
+      objectReference: {fileID: 0}
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -855,7 +863,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      insertIndex: 7
+      addedObject: {fileID: 1168410545}
   m_SourcePrefab: {fileID: 100100000, guid: d9eef132e72927948852f0a723f816bb, type: 3}
 --- !u!1 &846246510
 GameObject:
@@ -1168,6 +1179,63 @@ RectTransform:
   m_AnchoredPosition: {x: -199, y: -90}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1032257947
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.00817
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -40.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340991233865532635, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5844402475458568484, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
+      propertyPath: m_Name
+      value: Barrier_Diving
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f343254dfc67bf4bb066496ff0e9233, type: 3}
 --- !u!1 &1067226685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1315,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1168410543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 665525897}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1168410545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168410543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b50db0e3668d048810fb074af53f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDiving
+  swimSpeed: 5
+  waterGravity: 0.5
+  isDiving: 0
 --- !u!1 &1475532301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,3 +2161,4 @@ SceneRoots:
   - {fileID: 1067226688}
   - {fileID: 2510603234849018992}
   - {fileID: 8981017579152383961}
+  - {fileID: 1032257947}
