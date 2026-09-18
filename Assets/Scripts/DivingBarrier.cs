@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI; // Jika nanti ingin memakai teks UI
 
 public class DivingBarrier : MonoBehaviour
 {
@@ -16,31 +15,42 @@ public class DivingBarrier : MonoBehaviour
         }
     }
 
-    // Terpanggil ketika pemain menabrak tembok barrier ini
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Menggunakan OnTrigger agar bisa ditembus dan mendeteksi pemain masuk ke air
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Pastikan objek karaktermu memiliki Tag "Player" di Inspector
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            Debug.Log("Pemain mencoba ke air. Memicu peringatan!");
-            
-            // Tampilkan UI Peringatan (misal: "Tekan E untuk Menyelam")
+            // 1. Tampilkan UI Peringatan
             if (warningPanel != null)
             {
                 warningPanel.SetActive(true);
             }
+
+            // 2. Aktifkan Mode Berenang
+            PlayerDiving playerDiving = collision.GetComponent<PlayerDiving>();
+            if (playerDiving != null)
+            {
+                playerDiving.StartDiving();
+            }
         }
     }
 
-    // Terpanggil ketika pemain menjauh dari tembok barrier
-    private void OnCollisionExit2D(Collision2D collision)
+    // Terpanggil ketika pemain keluar dari area air ke darat
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            // Sembunyikan UI Peringatan saat pemain menjauh
+            // 1. Sembunyikan UI Peringatan
             if (warningPanel != null)
             {
                 warningPanel.SetActive(false);
+            }
+
+            // 2. Matikan Mode Berenang
+            PlayerDiving playerDiving = collision.GetComponent<PlayerDiving>();
+            if (playerDiving != null)
+            {
+                playerDiving.StopDiving();
             }
         }
     }
