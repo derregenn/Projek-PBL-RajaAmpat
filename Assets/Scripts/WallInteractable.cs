@@ -7,8 +7,23 @@ public class WallInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // Fungsi ini bisa dikosongkan jika mekanisme panjat 
-        // ditangani langsung oleh tombol hold E di PlayerClimbHold.cs
+        // Cari komponen StepClimbing di GameObject Player
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            StepClimbing stepClimbing = player.GetComponent<StepClimbing>();
+
+            if (stepClimbing != null)
+            {
+                // Pemicu otomatis urutan panjat step-by-step saat tombol E ditekan
+                stepClimbing.StartClimbSequence();
+            }
+            else
+            {
+                Debug.LogWarning("Skrip StepClimbing tidak ditemukan pada GameObject Player!");
+            }
+        }
     }
 
     public string GetPromptText()

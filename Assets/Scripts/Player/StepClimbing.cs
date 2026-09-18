@@ -1,16 +1,14 @@
 using UnityEngine;
-using TMPro;
 
 public class StepClimbing : MonoBehaviour
 {
     [Header("Climb Positions")]
-    [SerializeField] private Transform[] climbSteps; // Titik-titik posisi pemanjatan (Waypoint)
+    [SerializeField] private Transform[] climbSteps; // Titik-titik posisi pemanjatan
     [SerializeField] private Transform topPlatformPoint; // Titik akhir di atas tebing
     [SerializeField] private float moveSpeed = 5f;
 
-    [Header("UI Prompt")]
-    [SerializeField] private GameObject promptPanel;
-    [SerializeField] private TextMeshProUGUI promptText;
+    [Header("QTE Reference")]
+    [SerializeField] private QTE1 qte1Script; // Drag GameObject QTE1 ke sini
 
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
@@ -23,25 +21,12 @@ public class StepClimbing : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
-        if (promptPanel != null) promptPanel.SetActive(false);
+        if (qte1Script != null) qte1Script.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        // Mode uji sementara: mulai pemanjatan langsung tanpa menunggu NPC/dialog.
-        if (!isClimbingMode && Input.GetKeyDown(KeyCode.E))
-        {
-            StartClimbSequence();
-            return;
-        }
-
         if (!isClimbingMode) return;
-
-        // Player menekan tombol E satu per satu saat sudah berhenti di step
-        if (!isMovingToStep && Input.GetKeyDown(KeyCode.E))
-        {
-            AdvanceClimbStep();
-        }
 
         // Pergerakan mulus antar step
         if (isMovingToStep)
@@ -53,10 +38,10 @@ public class StepClimbing : MonoBehaviour
                 transform.position = targetPosition;
                 isMovingToStep = false;
 
-                // Tampilkan kembali prompt [E] untuk step berikutnya
+                // Jika belum sampai puncak, tampilkan QTE1 sekali untuk step berikutnya
                 if (currentStepIndex < climbSteps.Length)
                 {
-                    ShowPrompt("E");
+                    ShowQTEOnce();
                 }
                 else
                 {
@@ -66,29 +51,41 @@ public class StepClimbing : MonoBehaviour
         }
     }
 
-    // Dipanggil saat interaksi NPC/Dialog selesai
     public void StartClimbSequence()
     {
         isClimbingMode = true;
         currentStepIndex = 0;
 
-        // Matikan fisik & gravitasi agar player melayang mengikuti waypoint
+        // Matikan fisik & gravitasi
         if (rb != null) rb.bodyType = RigidbodyType2D.Kinematic;
         if (playerCollider != null) playerCollider.enabled = false;
 
         // Pindahkan player ke step pertama
-        if (climbSteps.Length > 0)
+        if (climbSteps != null && climbSteps.Length > 0)
         {
             targetPosition = climbSteps[0].position;
             isMovingToStep = true;
-            HidePrompt();
+            HideQTE();
+        }
+        else
+        {
+            FinishClimbing();
+        }
+    }
+
+    // Dipanggil saat Player BERHASIL menekan QTE 1x
+    public void OnQTESuccess()
+    {
+        if (isClimbingMode && !isMovingToStep)
+        {
+            AdvanceClimbStep();
         }
     }
 
     private void AdvanceClimbStep()
     {
         currentStepIndex++;
-        HidePrompt();
+        HideQTE();
 
         if (currentStepIndex < climbSteps.Length)
         {
@@ -100,26 +97,35 @@ public class StepClimbing : MonoBehaviour
             targetPosition = topPlatformPoint.position;
             isMovingToStep = true;
         }
+        else
+        {
+            FinishClimbing();
+        }
     }
 
     private void FinishClimbing()
     {
         isClimbingMode = false;
-        HidePrompt();
+        HideQTE();
 
         // Kembalikan fisik & gravitasi ke normal
         if (rb != null) rb.bodyType = RigidbodyType2D.Dynamic;
         if (playerCollider != null) playerCollider.enabled = true;
     }
 
-    private void ShowPrompt(string msg)
+    private void ShowQTEOnce()
     {
-        if (promptPanel != null) promptPanel.SetActive(true);
-        if (promptText != null) promptText.text = msg;
+        if (qte1Script != null)
+        {
+            qte1Script.ResetQTE(); // Aktifkan QTE1 sekali tekan
+        }
     }
 
-    private void HidePrompt()
+    private void HideQTE()
     {
-        if (promptPanel != null) promptPanel.SetActive(false);
+        if (qte1Script != null)
+        {
+            qte1Script.gameObject.SetActive(false);
+        }
     }
 }
