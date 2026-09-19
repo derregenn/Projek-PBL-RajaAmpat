@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 349254554}
   - component: {fileID: 349254556}
   - component: {fileID: 349254555}
+  - component: {fileID: 349254557}
   m_Layer: 7
   m_Name: Wall
   m_TagString: Untagged
@@ -370,6 +371,34 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &349254557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349254553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
+  objectiveID: panjat_tebing
+  onObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8044083799191093413}
+        m_TargetAssemblyTypeName: QTE1, Assembly-CSharp
+        m_MethodName: ResetQTE
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &362561026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2417710247067626775, guid: 00cc4c8d229628545a474afef4354966, type: 3}
@@ -507,6 +536,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8786893707353035849, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
   m_PrefabInstance: {fileID: 416318645}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &416318648 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8496680159648469688, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+  m_PrefabInstance: {fileID: 416318645}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0405a126ead04c3439c4867f4b709258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestController
 --- !u!1001 &430058924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -734,6 +774,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &661082513
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 58.10228
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.34094
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: questUI
+      value: 
+      objectReference: {fileID: 416318648}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &689647328
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +959,8 @@ MonoBehaviour:
   - {fileID: 1072419430}
   topPlatformPoint: {fileID: 1871648890}
   moveSpeed: 5
+  climbSprite1: {fileID: -2779171473872518320, guid: 6de9882ef1acd834a8e0ea0cde5834b0, type: 3}
+  climbSprite2: {fileID: 1234387758572528291, guid: 3c3ee0fc8f84c7d4a9e7ed80c89857ff, type: 3}
   qte1Script: {fileID: 8044083799191093413}
 --- !u!1 &1067226685
 GameObject:
@@ -1010,6 +1113,143 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3062459637267409552, guid: b6a6418b27da4e145a27e303f81a7864, type: 3}
   m_PrefabInstance: {fileID: 1715599964}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1168478951
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 91230330481801686, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: objectiveID
+      value: panjat_tebing
+      objectReference: {fileID: 0}
+    - target: {fileID: 91230330481801686, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 91230330481801686, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1345998838312901537, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_Name
+      value: NPCQuest2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2799835035156739714, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: questToGive
+      value: 
+      objectReference: {fileID: 11400000, guid: 68f60a3ebdafe6f48bea8c99fba3518d, type: 2}
+    - target: {fileID: 2976470645624636245, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: dialogueCamera
+      value: 
+      objectReference: {fileID: 1475532302}
+    - target: {fileID: 2976470645624636245, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: 'DialogueLines.Array.data[0]'
+      value: panjat tebing itu!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617711909738443888, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617711909738443888, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617711909738443888, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617711909738443888, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617711909738443888, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617711909738443888, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -34.1525
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047987721326595357, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514624452718240227, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514624452718240227, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514624452718240227, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514624452718240227, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514624452718240227, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514624452718240227, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717279604830307504, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 56.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.5815086
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951482903259205231, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
 --- !u!114 &1475532302 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
@@ -1596,7 +1836,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -14.086037, y: 0.1266346}
+  m_Offset: {x: -1.7519684, y: 1.3886914}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1606,7 +1846,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 84.85069, y: 26.01234}
+  m_Size: {x: 109.51883, y: 23.488228}
   m_EdgeRadius: 0
 --- !u!1001 &341935612170193131
 PrefabInstance:
@@ -1989,6 +2229,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 64353299}
     - target: {fileID: 7213206742640457406, guid: c86a933670e2e1041932996b43ac471a, type: 3}
+      propertyPath: amountToAdd
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213206742640457406, guid: c86a933670e2e1041932996b43ac471a, type: 3}
+      propertyPath: objectiveID
+      value: panjat_tebing
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213206742640457406, guid: c86a933670e2e1041932996b43ac471a, type: 3}
       propertyPath: successColor.b
       value: 0.123506784
       objectReference: {fileID: 0}
@@ -2053,6 +2301,8 @@ SceneRoots:
   - {fileID: 167453878}
   - {fileID: 341935612170193131}
   - {fileID: 1995329084}
+  - {fileID: 1168478951}
   - {fileID: 1067226688}
   - {fileID: 1100493321}
   - {fileID: 1973246782}
+  - {fileID: 661082513}
