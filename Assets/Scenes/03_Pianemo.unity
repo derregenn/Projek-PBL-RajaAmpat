@@ -402,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.52
+      value: -1.36
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -847,7 +847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.52
+      value: -1.36
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1342,11 +1342,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineConfiner2D
-  BoundingShape2D: {fileID: 1512604668}
-  Damping: 1
+  BoundingShape2D: {fileID: 1512604670}
+  Damping: 0.5
   SlowingDistance: 5
   OversizeWindow:
-    Enabled: 0
+    Enabled: 1
     MaxWindowSize: 0
     Padding: 0
   m_LegacyMaxWindowSize: -2
@@ -2358,7 +2358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1512604669}
-  - component: {fileID: 1512604668}
+  - component: {fileID: 1512604670}
   m_Layer: 0
   m_Name: CameraBounds
   m_TagString: Untagged
@@ -2366,7 +2366,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!60 &1512604668
+--- !u!4 &1512604669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512604667}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.37703, y: -7.76, z: -2.58151}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &1512604670
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2412,27 +2427,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.10587692, y: 0.25886202}
-      - {x: -46.7623, y: 0.089707166}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 53.865635, y: 0.21699184}
+    - - {x: -61.505665, y: 17.081778}
+      - {x: -61.29492, y: 2.2903686}
+      - {x: 56.53625, y: 2.1514041}
+      - {x: 56.62893, y: 17.162184}
   m_UseDelaunayMesh: 1
---- !u!4 &1512604669
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1512604667}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.37703, y: -3, z: -2.58151}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1581823410 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8079811083638974895, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
@@ -3740,7 +3739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.52
+      value: -1.36
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3885,7 +3884,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.52
+      value: -1.36
       objectReference: {fileID: 0}
     - target: {fileID: 3466410428206950840, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Target.TrackingTarget
