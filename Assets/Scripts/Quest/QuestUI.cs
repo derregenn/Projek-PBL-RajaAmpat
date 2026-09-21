@@ -3,95 +3,106 @@ using TMPro;
 
 public class QuestUI : MonoBehaviour
 {
-    public static QuestUI Instance { get; private set; }
+    [Header("Referensi HUD Asli Regen")]
+    [SerializeField] private TMP_Text questTitleText;
+    [SerializeField] private TMP_Text questDescriptionText;
+    [SerializeField] private TMP_Text objectiveListText;
 
-    [Header("UI References")]
-    [SerializeField] private GameObject questHUDPanel;
-    [SerializeField] private TextMeshProUGUI questTitleText;
-    [SerializeField] private TextMeshProUGUI questDescriptionText;
-    [SerializeField] private TextMeshProUGUI objectiveListText;
+    private Quest currentActiveQuest;
 
-    private Quest activeQuest;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
-
-    private void Start()
-    {
-        // Ambil quest aktif jika pemain berpindah scene atau me-reload level
-        if (QuestController.Instance != null && QuestController.Instance.ActiveQuests.Count > 0)
-        {
-            activeQuest = QuestController.Instance.ActiveQuests[0];
-        }
-
-        UpdateQuestUI();
-    }
-
+    // Dipanggil otomatis oleh sistem Regen saat quest diterima
     public void SetQuest(Quest quest)
     {
-        activeQuest = quest;
-        UpdateQuestUI();
-    }
-
-    public void UpdateQuestUI()
-    {
-        if (activeQuest == null)
+        if (quest == null)
         {
-            if (questHUDPanel != null)
-            {
-                questHUDPanel.SetActive(false);
-            }
+            Debug.LogWarning("QuestUI: Quest yang diterima bernilai NULL!");
             return;
         }
 
-        if (questHUDPanel != null)
-            questHUDPanel.SetActive(true);
+        currentActiveQuest = quest;
+        Debug.Log("QuestUI: Menerima Quest -> " + quest.QuestTitle);
 
+        // 1. Paksa Panel HUD Aktif
+        gameObject.SetActive(true);
+
+        // 2. Masukkan Judul ke TMP_Text
         if (questTitleText != null)
-            questTitleText.text = activeQuest.QuestTitle;
+        {
+            questTitleText.gameObject.SetActive(true);
+            questTitleText.text = quest.QuestTitle;
+            Debug.Log("QuestUI: Berhasil set Judul ke HUD -> " + quest.QuestTitle);
+        }
+        else
+        {
+            Debug.LogError("QuestUI ERROR: questTitleText di Inspector belum ditarik!");
+        }
 
+        // 3. Masukkan Deskripsi ke TMP_Text
         if (questDescriptionText != null)
-            questDescriptionText.text = activeQuest.Description;
+        {
+            questDescriptionText.gameObject.SetActive(true);
+            questDescriptionText.text = quest.Description;
+        }
+
+        // 4. Update Angka Objective
+        UpdateQuestUI();
+
+        // 5. Sinkronkan ke Buku Jurnal Cokelat
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.currentOngoingQuest = quest.QuestTitle;
+            QuestJournalManager.Instance.RefreshQuestTabText();
+        }
+    }
+
+    // Dipanggil otomatis oleh sistem Regen saat progress bertambah
+    public void UpdateQuestUI()
+    {
+        if (currentActiveQuest == null) return;
 
         if (objectiveListText != null)
         {
-            objectiveListText.text = "";
-
-            for (int i = 0; i < activeQuest.Objectives.Count; i++)
+            objectiveListText.gameObject.SetActive(true);
+            string objectiveText = "";
+            
+            if (currentActiveQuest.Objectives != null)
             {
-                QuestObjective objective = activeQuest.Objectives[i];
-                char prefix = (char)('A' + i);
-                string progress = $"({objective.CurrentAmount}/{objective.RequiredAmount})";
-
-                if (objective.IsComplete)
+                foreach (var obj in currentActiveQuest.Objectives)
                 {
-                    objectiveListText.text +=
-                        $"<color=#55FF55><s>[{prefix}] {objective.Description} {progress}</s></color>\n";
-                }
-                else
-                {
-                    objectiveListText.text +=
-                        $"[{prefix}] {objective.Description} {progress}\n";
+                    if (obj != null)
+                    {
+                        objectiveText += $"{obj.CurrentAmount} / {obj.RequiredAmount}\n";
+                    }
                 }
             }
+            
+            objectiveListText.text = objectiveText;
+            Debug.Log("QuestUI: Berhasil set Objective ke HUD -> " + objectiveText);
         }
-    }
-
-    public void ClearQuest()
-    {
-        activeQuest = null;
-
-        if (questHUDPanel != null)
+        else
         {
-            questHUDPanel.SetActive(false);
+            Debug.LogError("QuestUI ERROR: objectiveListText di Inspector belum ditarik!");
         }
     }
+
+    // Dipanggil otomatis oleh sistem Regen saat quest selesai
+public void ClearQuest()
+{
+    currentActiveQuest = null;
+    Debug.Log("QuestUI: ClearQuest dipanggil.");
+
+    if (questTitleText != null) questTitleText.text = "";
+    if (questDescriptionText != null) questDescriptionText.text = "";
+    if (objectiveListText != null) objectiveListText.text = "";
+
+    if (QuestJournalManager.Instance != null)
+    {
+        QuestJournalManager.Instance.lastCompletedQuest = QuestJournalManager.Instance.currentOngoingQuest;
+        QuestJournalManager.Instance.currentOngoingQuest = "Tidak ada misi aktif.";
+        QuestJournalManager.Instance.RefreshQuestTabText();
+
+        // --- INI YANG WAJIB ADA AGAR AWARDNYA MENYALA ---
+        QuestJournalManager.Instance.UnlockPianemoAward();
+    }
+}
 }

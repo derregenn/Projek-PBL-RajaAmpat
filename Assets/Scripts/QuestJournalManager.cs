@@ -4,19 +4,23 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
-// --- STRUKTUR DATABASE JURNAL ---
+// Struktur database yang memisahkan Sprite Halaman Buku dan Opsi Foto Polaroid
 [System.Serializable]
 public class JournalEntry
 {
-    public int photoID; 
-    public string title;
-    [TextArea(3, 10)] public string triviaDescription; // TextArea agar kotaknya besar di Inspector
-    public Sprite photoIllustration; // Tempat menaruh gambar HD dari Visual Designer
+    public int pageID; 
+    [Tooltip("Sprite halaman buku penuh (latar buku + teks dari desainer)")]
+    public Sprite pageBackgroundSprite; 
+
+    [Header("Pengaturan Foto Polaroid (Opsional)")]
+    [Tooltip("Centang jika halaman ini butuh menampilkan hasil foto jepretan pemain")]
+    public bool requiresPhoto = false; 
+    [Tooltip("ID foto yang akan dicetak di halaman ini (jika requiresPhoto dicentang)")]
+    public int photoIDToDisplay;
 }
 
 public class QuestJournalManager : MonoBehaviour
 {
-    // Singleton: Cara cepat agar skrip Trigger di luar sana bisa "berbicara" langsung ke skrip ini
     public static QuestJournalManager Instance; 
 
     [Header("Photography Popup UI")]
@@ -24,24 +28,42 @@ public class QuestJournalManager : MonoBehaviour
     public GameObject polaroidPopup;
     public Image popupPhotoDisplay;
 
+    [Header("Award Pianemo Collectible")]
+    public Image pianemoAwardImage;         
+    public Sprite pianemoDisableSprite;     
+    public Sprite pianemoActiveSprite;      
+
     [Header("Quest Tab UI (Kiri)")]
     public GameObject questTabPanel;
+    public Image folderImage; 
     public TextMeshProUGUI ongoingQuestText; 
-    
-    [Header("Journal UI (Kanan)")]
-    public TextMeshProUGUI journalTitleText;
-    public TextMeshProUGUI journalTriviaText;
-    public Image journalPhotoImage;
-    public GameObject noPhotoWarning; 
 
-    [Header("Database (Isi Sesuai GDD)")]
-    public JournalEntry[] allJournalDatabase; 
+    [Header("Aset Tab (Dari Desainer)")]
+    public Sprite tabOngoingSprite;   
+    public Sprite tabCompletedSprite; 
     
-    // List ini mencatat ID foto apa saja yang sudah berhasil difoto oleh pemain
-    public List<int> unlockedPhotoIDs = new List<int>();
+    private bool isOngoingTabActive = true; 
+
+    [Header("Journal UI (Kanan)")]
+    public Image journalPageImage;        // Menampilkan sprite halaman buku penuh dari desainer
+    public Image journalPhotoImage;       // Wadah foto hasil jepretan (hanya muncul jika halaman butuh foto)
+    public GameObject noPhotoWarning; 
+    public TextMeshProUGUI pageNumberText; 
+
+    [Header("Database Buku Jurnal (Isi Sesuai GDD)")]
+    public JournalEntry[] allJournalDatabase; // Daftar semua halaman buku
+    public List<int> unlockedPages = new List<int>(); // Halaman yang sudah terbuka
+
+    // Database terpisah khusus menyimpan koleksi foto jepretan pemain (untuk mekanik fotografi)
+    [Header("Database Foto Hasil Jepretan")]
+    public Sprite[] allPhotoSpritesDatabase; 
+    private Dictionary<int, Sprite> collectedPhotos = new Dictionary<int, Sprite>();
 
     private int currentJournalIndex = 0;
     private bool isFlashing = false;
+
+    [HideInInspector] public string currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
+    [HideInInspector] public string lastCompletedQuest = "Belum ada misi selesai.";
 
     void Awake()
     {
@@ -50,14 +72,19 @@ public class QuestJournalManager : MonoBehaviour
 
     void Start()
     {
-        if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 0); // Pastikan layar bening di awal
+        if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 0);
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
         if (questTabPanel != null) questTabPanel.SetActive(false);
+
+        // Otomatis buka halaman pertama (ID 0) saat game mulai agar buku tidak kosong melompong
+        if (allJournalDatabase.Length > 0 && !unlockedPages.Contains(allJournalDatabase[0].pageID))
+        {
+            unlockedPages.Add(allJournalDatabase[0].pageID);
+        }
     }
 
     void Update()
     {
-        // Tombol Tab: Buka tutup UI Jurnal dan Pause Game
         if (Input.GetKeyDown(KeyCode.Tab) && !isFlashing)
         {
             bool isOpen = questTabPanel.activeSelf;
@@ -66,25 +93,50 @@ public class QuestJournalManager : MonoBehaviour
 
             if (!isOpen)
             {
-                UpdateJournalUI(); // Refresh isi jurnal setiap kali dibuka
+                UpdateJournalUI();
             }
         }
     }
 
-    // --- FUNGSI JEPRET FOTO (Dipanggil dari Trigger Area) ---
-    public void TakeSpecificPhoto(int idToUnlock)
+    public void ToggleQuestTab()
     {
-        if (isFlashing) return; // Jangan biarkan pemain jepret berkali-kali saat masih flash
-
-        JournalEntry entry = GetEntryByID(idToUnlock);
-        if (entry != null)
+        isOngoingTabActive = !isOngoingTabActive; 
+        if (folderImage != null)
         {
-            // Tambahkan ke memori jika belum pernah difoto
-            if (!unlockedPhotoIDs.Contains(idToUnlock))
+            folderImage.sprite = isOngoingTabActive ? tabOngoingSprite : tabCompletedSprite;
+        }
+        RefreshQuestTabText(); 
+    }
+
+    public void RefreshQuestTabText()
+    {
+        if (ongoingQuestText != null)
+        {
+            if (isOngoingTabActive)
             {
-                unlockedPhotoIDs.Add(idToUnlock);
+                ongoingQuestText.text = "Objective:\n" + currentOngoingQuest;
             }
-            StartCoroutine(PhotoSequence(entry.photoIllustration));
+            else
+            {
+                ongoingQuestText.text = "Selesai:\n" + lastCompletedQuest;
+            }
+        }
+    }
+
+    // --- MEKANIK FOTOGRAFI ---
+    public void TakeSpecificPhoto(int photoID)
+    {
+        if (isFlashing) return; 
+
+        // Cari sprite foto dari database foto
+        Sprite photoSprite = GetPhotoSpriteByID(photoID);
+        if (photoSprite != null)
+        {
+            if (!collectedPhotos.ContainsKey(photoID))
+            {
+                collectedPhotos.Add(photoID, photoSprite);
+            }
+            StartCoroutine(PhotoSequence(photoSprite));
         }
     }
 
@@ -92,90 +144,143 @@ public class QuestJournalManager : MonoBehaviour
     {
         isFlashing = true;
         
-        // 1. Flash Putih
         if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 1);
-
-        // 2. Munculkan kotak polaroid di tengah layar beserta ilustrasinya
         if (polaroidPopup != null) polaroidPopup.SetActive(true);
         if (popupPhotoDisplay != null) popupPhotoDisplay.sprite = illustration;
 
-        // 3. Pudarkan Flash
         float alpha = 1f;
         while (alpha > 0)
         {
-            alpha -= Time.deltaTime * 2.5f;
+            alpha -= Time.unscaledDeltaTime * 2.5f;
             if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, alpha);
             yield return null;
         }
 
-        // 4. Biarkan pemain melihat hasil fotonya selama 2 detik
-        yield return new WaitForSeconds(2f); 
+        yield return new WaitForSecondsRealtime(2f); 
 
-        // 5. Tutup pop-up
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
         isFlashing = false;
     }
 
-    // --- UPDATE TAMPILAN BUKU JURNAL ---
+    // --- UPDATE TAMPILAN JURNAL ---
     private void UpdateJournalUI()
     {
-        // Teks sementara, nanti kamu bisa buat sistem Quest terpisah untuk ini
-        ongoingQuestText.text = "Objective:\nJelajahi keindahan Raja Ampat!";
+        RefreshQuestTabText();
 
-        if (unlockedPhotoIDs.Count > 0)
+        if (unlockedPages.Count > 0)
         {
-            // Ambil ID foto yang sedang dilihat saat ini
-            int currentID = unlockedPhotoIDs[currentJournalIndex];
-            JournalEntry entry = GetEntryByID(currentID);
+            int currentPageID = unlockedPages[currentJournalIndex];
+            JournalEntry entry = GetPageEntryByID(currentPageID);
 
             if (entry != null)
             {
-                // Tampilkan Teks & Foto
-                journalTitleText.text = entry.title;
-                journalTriviaText.text = entry.triviaDescription;
-                journalPhotoImage.sprite = entry.photoIllustration;
-                
-                journalPhotoImage.gameObject.SetActive(true);
-                noPhotoWarning.SetActive(false);
+                // 1. Tampilkan Sprite Halaman Buku Full dari Desainer
+                if (journalPageImage != null)
+                {
+                    journalPageImage.sprite = entry.pageBackgroundSprite;
+                    journalPageImage.gameObject.SetActive(true);
+                }
+
+                // 2. CEK APAKAH HALAMAN INI BUTUH FOTO POLAROID
+                if (entry.requiresPhoto)
+                {
+                    // Cek apakah pemain sudah memotret foto untuk halaman ini
+                    if (collectedPhotos.ContainsKey(entry.photoIDToDisplay))
+                    {
+                        journalPhotoImage.sprite = collectedPhotos[entry.photoIDToDisplay];
+                        journalPhotoImage.gameObject.SetActive(true); // Munculkan foto
+                        if (noPhotoWarning != null) noPhotoWarning.SetActive(false);
+                    }
+                    else
+                    {
+                        // Belum dipotret, sembunyikan wadah foto / tampilkan peringatan
+                        journalPhotoImage.gameObject.SetActive(false); 
+                        if (noPhotoWarning != null) noPhotoWarning.SetActive(true);
+                    }
+                }
+                else
+                {
+                    // Halaman ini murni teks/cerita dari desainer, matikan wadah foto!
+                    if (journalPhotoImage != null) journalPhotoImage.gameObject.SetActive(false);
+                    if (noPhotoWarning != null) noPhotoWarning.SetActive(false);
+                }
+
+                // Update Nomor Halaman
+                if (pageNumberText != null)
+                {
+                    pageNumberText.text = "Page " + (currentJournalIndex + 1);
+                }
             }
         }
         else
         {
-            // Jika pemain belum motret satupun
-            journalTitleText.text = "JURNAL KOSONG";
-            journalTriviaText.text = "";
-            journalPhotoImage.gameObject.SetActive(false);
-            noPhotoWarning.SetActive(true);
+            if (journalPageImage != null) journalPageImage.gameObject.SetActive(false);
+            if (journalPhotoImage != null) journalPhotoImage.gameObject.SetActive(false);
+            if (noPhotoWarning != null) noPhotoWarning.SetActive(true);
+            if (pageNumberText != null) pageNumberText.text = "Page 0";
         }
     }
 
-    // --- FUNGSI TOMBOL NAVIGASI (< & >) ---
     public void NextPage()
     {
-        if (unlockedPhotoIDs.Count > 1)
+        if (unlockedPages.Count > 1)
         {
-            currentJournalIndex = (currentJournalIndex + 1) % unlockedPhotoIDs.Count;
+            currentJournalIndex = (currentJournalIndex + 1) % unlockedPages.Count;
             UpdateJournalUI();
         }
     }
 
     public void PrevPage()
     {
-        if (unlockedPhotoIDs.Count > 1)
+        if (unlockedPages.Count > 1)
         {
             currentJournalIndex--;
-            if (currentJournalIndex < 0) currentJournalIndex = unlockedPhotoIDs.Count - 1;
+            if (currentJournalIndex < 0) currentJournalIndex = unlockedPages.Count - 1;
             UpdateJournalUI();
         }
     }
 
-    // Mencari data di database berdasarkan ID
-    private JournalEntry GetEntryByID(int id)
+    // Fungsi untuk membuka halaman baru (bisa dipanggil dari Quest Selesai)
+    public void UnlockNewPage(int pageID)
+    {
+        if (!unlockedPages.Contains(pageID))
+        {
+            unlockedPages.Add(pageID);
+            Debug.Log("Halaman Jurnal Baru Terbuka! ID: " + pageID);
+        }
+    }
+
+    public void UnlockPianemoAward()
+    {
+        if (pianemoAwardImage != null && pianemoActiveSprite != null)
+        {
+            pianemoAwardImage.gameObject.SetActive(true);
+            pianemoAwardImage.sprite = pianemoActiveSprite;
+            Debug.Log("Award Pianemo Berhasil Terbuka dan Menyala!");
+        }
+    }
+
+    private JournalEntry GetPageEntryByID(int id)
     {
         foreach (var entry in allJournalDatabase)
         {
-            if (entry.photoID == id) return entry;
+            if (entry.pageID == id) return entry;
         }
         return null;
+    }
+
+    private Sprite GetPhotoSpriteByID(int id)
+    {
+        if (id >= 0 && id < allPhotoSpritesDatabase.Length)
+        {
+            return allPhotoSpritesDatabase[id];
+        }
+        return null;
+    }
+
+    public void CloseJournal()
+    {
+        if (questTabPanel != null) questTabPanel.SetActive(false);
+        Time.timeScale = 1f; 
     }
 }
