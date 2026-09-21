@@ -15,7 +15,7 @@ public class NPCQuestGiver : MonoBehaviour
             {
                 playerScript.hasMap = true;
                 Debug.Log("Peta Waisai didapatkan!"); // Bisa diganti dengan memunculkan UI Peta
-                
+
                 if (interactUI != null) interactUI.SetActive(false); // Sembunyikan ikon E
             }
         }
@@ -27,7 +27,7 @@ public class NPCQuestGiver : MonoBehaviour
         {
             isPlayerNearby = true;
             playerScript = collision.gameObject.GetComponent<Player>(); //[cite: 5]
-            
+
             // Munculkan ikon E hanya jika pemain belum punya peta
             if (interactUI != null && playerScript != null && !playerScript.hasMap)
             {

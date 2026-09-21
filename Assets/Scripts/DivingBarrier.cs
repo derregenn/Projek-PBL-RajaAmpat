@@ -20,7 +20,15 @@ public class DivingBarrier : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Debug.Log("Pemain mencoba ke air. Memicu peringatan!");
+
             // 1. Tampilkan UI Peringatan
+            // Tampilkan UI Peringatan (misal: "Tekan E untuk Menyelam")
+
+            if (warningPanel != null)
+            {
+                warningPanel.SetActive(true);
+
             if (warningPanel != null)
             {
                 warningPanel.SetActive(true);

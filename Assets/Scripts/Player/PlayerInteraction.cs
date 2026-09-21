@@ -43,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
     private void ShowPrompt(string message)
     {
         if (promptPanel != null) promptPanel.SetActive(true);
-        if (promptText != null) promptText.text = $"[E] {message}";
+        if (promptText != null) promptText.text = "[E]"; // Hanya menampilkan teks "E"
     }
 
     private void HidePrompt()
