@@ -191,4 +191,17 @@ public class Dialogue : MonoBehaviour
             if (isInteracting) EndDialogue();
         }
     }
+
+    // Method tambahan khusus untuk memasukkan teks pertanyaan Trivia dari TriviaQuizUI
+    public void ShowTriviaQuestion(string questionText)
+    {
+        if (DialogueBox != null) DialogueBox.SetActive(true);
+        if (NextPrompt != null) NextPrompt.SetActive(false); // Sembunyikan prompt [E] next karena player harus memilih tombol
+
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+
+        // Tampilkan pertanyaan
+        DialogueText.text = questionText;
+        DialogueText.maxVisibleCharacters = questionText.Length;
+    }
 }

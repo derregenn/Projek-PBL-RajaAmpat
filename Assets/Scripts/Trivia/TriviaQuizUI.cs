@@ -1,47 +1,39 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class TriviaQuizUI : MonoBehaviour
 {
     public static TriviaQuizUI Instance { get; private set; }
 
-    [Header("UI Components")]
-    [SerializeField] private GameObject quizPanel;
-    [SerializeField] private TextMeshProUGUI questionTextUI;
-    [SerializeField] private Button[] optionButtons;
-    [SerializeField] private TextMeshProUGUI[] optionTexts;
-    [SerializeField] private TextMeshProUGUI feedbackText; // Teks "Benar!" / "Salah!"
+    [Header("References")]
+    [SerializeField] private Dialogue dialogueSystem;     // Drag NPC/Dialogue ke sini
+    [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol di bawah
+    [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
+    [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
+    [SerializeField] private TextMeshProUGUI feedbackText; // Optional: Teks "Benar/Salah"
 
     [Header("Close Settings")]
     [SerializeField] private KeyCode closeKey = KeyCode.E;
-    [SerializeField] private Button closeButton; // Opsional: Hubungkan ke Button UI 'X' atau 'E' jika ada
 
     private TriviaQuestion[] currentQuestions;
     private int currentQuestionIndex = 0;
     private System.Action onQuizCompleted;
     private bool isQuizActive = false;
+    private bool canPressEToClose = false;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        if (quizPanel != null) quizPanel.SetActive(false);
-    }
-
-    private void Start()
-    {
-        if (closeButton != null)
-        {
-            closeButton.onClick.AddListener(CloseQuiz);
-        }
+        if (choicesPanel != null) choicesPanel.SetActive(false);
     }
 
     private void Update()
     {
-        // Jika kuis sedang aktif dan player menekan tombol E
-        if (isQuizActive && Input.GetKeyDown(closeKey))
+        if (isQuizActive && canPressEToClose && Input.GetKeyDown(closeKey))
         {
             CloseQuiz();
         }
@@ -54,10 +46,18 @@ public class TriviaQuizUI : MonoBehaviour
         onQuizCompleted = onComplete;
         isQuizActive = true;
 
-        if (quizPanel != null) quizPanel.SetActive(true);
+        if (choicesPanel != null) choicesPanel.SetActive(true);
         if (feedbackText != null) feedbackText.text = "";
 
+        StartCoroutine(EnableCloseDelay());
         ShowQuestion();
+    }
+
+    private IEnumerator EnableCloseDelay()
+    {
+        canPressEToClose = false;
+        yield return new WaitForSeconds(0.2f);
+        canPressEToClose = true;
     }
 
     private void ShowQuestion()
@@ -69,14 +69,24 @@ public class TriviaQuizUI : MonoBehaviour
         }
 
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
-        questionTextUI.text = q.questionText;
 
+        // 1. Kirim Teks Pertanyaan ke Dialogue System bawaan
+        if (dialogueSystem != null)
+        {
+            // Memanggil tayangan teks dialog untuk pertanyaan
+            dialogueSystem.ShowTriviaQuestion(q.questionText);
+        }
+
+        // 2. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
         for (int i = 0; i < optionButtons.Length; i++)
         {
             if (i < q.options.Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
-                optionTexts[i].text = q.options[i];
+                if (i < optionTexts.Length && optionTexts[i] != null)
+                {
+                    optionTexts[i].text = q.options[i];
+                }
 
                 int buttonIndex = i;
                 optionButtons[i].onClick.RemoveAllListeners();
@@ -91,39 +101,30 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void OnOptionSelected(int selectedIndex)
     {
-        // A delayed click can arrive after the last answer increments the index.
-        if (!isQuizActive || currentQuestions == null ||
-            currentQuestionIndex < 0 || currentQuestionIndex >= currentQuestions.Length)
-        {
-            return;
-        }
-
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
-
-        if (q == null || q.options == null || selectedIndex < 0 ||
-            selectedIndex >= q.options.Length)
-        {
-            return;
-        }
 
         if (selectedIndex == q.correctAnswerIndex)
         {
-            CancelInvoke(nameof(ClearFeedback));
             if (feedbackText != null) feedbackText.text = "<color=green>Jawaban Benar!</color>";
+            StartCoroutine(ClearFeedbackAfterDelay(2f));
             currentQuestionIndex++;
-            Invoke(nameof(NextQuestion), 1f);
+            Invoke(nameof(NextQuestion), 0.8f);
         }
         else
         {
             if (feedbackText != null) feedbackText.text = "<color=red>Jawaban Salah, coba lagi!</color>";
-            CancelInvoke(nameof(ClearFeedback));
-            Invoke(nameof(ClearFeedback), 2f);
+            StartCoroutine(ClearFeedbackAfterDelay(2f));
         }
     }
 
-    private void ClearFeedback()
+    private IEnumerator ClearFeedbackAfterDelay(float delay)
     {
-        if (feedbackText != null) feedbackText.text = "";
+        yield return new WaitForSeconds(delay);
+
+        if (feedbackText != null)
+        {
+            feedbackText.text = "";
+        }
     }
 
     private void NextQuestion()
@@ -135,16 +136,15 @@ public class TriviaQuizUI : MonoBehaviour
     public void CloseQuiz()
     {
         isQuizActive = false;
-        CancelInvoke(nameof(ClearFeedback));
-        if (quizPanel != null) quizPanel.SetActive(false);
-        Debug.Log("Kuis ditutup oleh pemain.");
+        canPressEToClose = false;
+        if (choicesPanel != null) choicesPanel.SetActive(false);
     }
 
     private void EndQuiz()
     {
         isQuizActive = false;
-        if (quizPanel != null) quizPanel.SetActive(false);
-        Debug.Log("Kuis Selesai!");
+        canPressEToClose = false;
+        if (choicesPanel != null) choicesPanel.SetActive(false);
 
         onQuizCompleted?.Invoke();
     }
