@@ -12,7 +12,7 @@ public class StepClimbing : MonoBehaviour
     [SerializeField] private Sprite climbSprite2; // Drag pose panjat 2 (misal: tangan kiri atas)
 
     [Header("QTE Reference")]
-    [SerializeField] private QTE1 qte1Script; // Drag GameObject QTE1 ke sini
+    [SerializeField] private QTE2 qte2Script; // Drag GameObject QTE2 ke sini
 
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
@@ -39,7 +39,7 @@ public class StepClimbing : MonoBehaviour
             originalSprite = spriteRenderer.sprite;
         }
 
-        if (qte1Script != null) qte1Script.gameObject.SetActive(false);
+        if (qte2Script != null) qte2Script.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -165,17 +165,17 @@ public class StepClimbing : MonoBehaviour
 
     private void ShowQTEOnce()
     {
-        if (qte1Script != null)
+        if (qte2Script != null)
         {
-            qte1Script.ResetQTE();
+            qte2Script.ResetQTE();
         }
     }
 
     private void HideQTE()
     {
-        if (qte1Script != null)
+        if (qte2Script != null)
         {
-            qte1Script.gameObject.SetActive(false);
+            qte2Script.gameObject.SetActive(false);
         }
     }
 }
