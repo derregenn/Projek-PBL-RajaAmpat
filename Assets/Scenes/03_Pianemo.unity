@@ -186,48 +186,38 @@ PrefabInstance:
       propertyPath: promptPanel
       value: 
       objectReference: {fileID: 885285428}
-    - target: {fileID: 1686357090159600224, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_Sprite
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: qte2Script
       value: 
-      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
-    - target: {fileID: 1686357090159600224, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      objectReference: {fileID: 416318649}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: topPlatformPoint
       value: 
-      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-    - target: {fileID: 2463706222190206533, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 3.12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2463706222190206533, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 8.08
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1871648890}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: 'climbSteps.Array.data[0]'
+      value: 
+      objectReference: {fileID: 909791102}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: 'climbSteps.Array.data[1]'
+      value: 
+      objectReference: {fileID: 560060409}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: 'climbSteps.Array.data[2]'
+      value: 
+      objectReference: {fileID: 568965568}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: 'climbSteps.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1072419430}
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6656067692507628312, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: be314098dfee1cc43ad84d67d2490207, type: 2}
-    - target: {fileID: 6656067692507628312, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656067692507628312, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 689647329}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1052479357}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9eef132e72927948852f0a723f816bb, type: 3}
 --- !u!114 &220813788 stripped
 MonoBehaviour:
@@ -1360,37 +1350,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 894058056}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
---- !u!1 &689647328
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 689647329}
-  m_Layer: 0
-  m_Name: WallCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &689647329
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689647328}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1043198160}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &855946470 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
@@ -1502,33 +1461,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
   m_PrefabInstance: {fileID: 167453878}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1052479341 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+--- !u!114 &1052479357 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
   m_PrefabInstance: {fileID: 167453878}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1052479357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052479341}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1616faa358f33aa40a95b56b0888b24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StepClimbing
-  climbSteps:
-  - {fileID: 909791102}
-  - {fileID: 560060409}
-  - {fileID: 568965568}
-  - {fileID: 1072419430}
-  topPlatformPoint: {fileID: 1871648890}
-  moveSpeed: 5
-  climbSprite1: {fileID: -3792163413847495037, guid: c38b964438cbd5d4897d9d3bf602d81d, type: 3}
-  climbSprite2: {fileID: 5271053423098316305, guid: 76859e94329a867449366cbb8ee8ca2c, type: 3}
-  qte2Script: {fileID: 416318649}
 --- !u!1 &1067226685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,6 +1646,10 @@ PrefabInstance:
     - target: {fileID: 1345998838312901537, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
       propertyPath: m_Name
       value: NPCQuest2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675296515093766986, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -605385043
       objectReference: {fileID: 0}
     - target: {fileID: 2799835035156739714, guid: 9e63c81bf0f1fbf48bdef3f835ea21b5, type: 3}
       propertyPath: questToGive
@@ -2870,6 +2817,10 @@ PrefabInstance:
       propertyPath: dialogueCamera
       value: 
       objectReference: {fileID: 1475532302}
+    - target: {fileID: 6031441284725757604, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -605385043
+      objectReference: {fileID: 0}
     - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -3657,7 +3608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.y
@@ -3711,6 +3662,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5073732478923337293, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5073732478923337293, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -605385043
+      objectReference: {fileID: 0}
+    - target: {fileID: 6012831804265023552, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -605385043
+      objectReference: {fileID: 0}
     - target: {fileID: 8257977044528296014, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Name
       value: NPCTourGuide
@@ -3732,8 +3695,8 @@ SceneRoots:
   - {fileID: 1786986238}
   - {fileID: 167453878}
   - {fileID: 341935612170193131}
-  - {fileID: 1995329084}
   - {fileID: 1168478951}
+  - {fileID: 1995329084}
   - {fileID: 6849082954618122330}
   - {fileID: 1067226688}
   - {fileID: 1973246782}
