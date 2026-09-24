@@ -1,19 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MapManager : MonoBehaviour
+public class MapTeleport : MonoBehaviour
 {
-    // Fungsi ini dipanggil saat tombol pulau di UI Peta diklik
-    public void SelectIsland(string islandSceneName)
+    // Fungsi ini akan dieksekusi saat tombol pulau diklik
+    public void PindahKePulau(string namaSceneTujuan)
     {
-        Time.timeScale = 1; // Kembalikan waktu normal
-        SceneManager.LoadScene(islandSceneName);
-    }
-
-    // Fungsi untuk menutup kembali peta jika pemain batal memilih
-    public void CloseMap(GameObject mapUI)
-    {
-        mapUI.SetActive(false);
-        Time.timeScale = 1;
+        // Kembalikan waktu normal (jika saat buka map gamenya dipause/Time.timeScale = 0)
+        Time.timeScale = 1f; 
+        
+        // Perintah untuk memuat scene baru
+        SceneManager.LoadScene(namaSceneTujuan);
     }
 }
