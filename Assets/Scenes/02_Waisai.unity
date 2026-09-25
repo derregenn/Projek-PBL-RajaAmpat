@@ -660,7 +660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5631455643028285764, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5993519340487428895, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_Pivot.x
@@ -1855,9 +1855,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0405a126ead04c3439c4867f4b709258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestController
-  hudQuestTitle: {fileID: 0}
-  hudQuestDescription: {fileID: 0}
-  objectiveListText: {fileID: 0}
+  panelHUD: {fileID: 1332125742}
+  hudQuestTitle: {fileID: 7973199232626302827}
+  hudQuestDescription: {fileID: 3925860863508123289}
+  objectiveListText: {fileID: 905136537469571232}
   currentActiveQuest: {fileID: 0}
 --- !u!1001 &310586323
 PrefabInstance:
@@ -6220,7 +6221,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1332125743}
-  - component: {fileID: 1332125744}
   m_Layer: 5
   m_Name: QuestHUDPanel
   m_TagString: Untagged
@@ -6247,25 +6247,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -40}
+  m_AnchoredPosition: {x: 145, y: -21}
   m_SizeDelta: {x: 400, y: 150}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1332125744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332125742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0405a126ead04c3439c4867f4b709258, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestUI
-  hudQuestTitle: {fileID: 0}
-  hudQuestDescription: {fileID: 0}
-  objectiveListText: {fileID: 905136537469571232}
-  currentActiveQuest: {fileID: 0}
 --- !u!1 &1343905584
 GameObject:
   m_ObjectHideFlags: 0
@@ -10341,7 +10325,7 @@ PrefabInstance:
     - target: {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       propertyPath: questUI
       value: 
-      objectReference: {fileID: 1332125744}
+      objectReference: {fileID: 293378720}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
