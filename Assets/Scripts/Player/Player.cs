@@ -1,14 +1,10 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public int health = 100;
     public bool hasMap = false;
     public float moveSpeed = 5f;
-    public Image healthImage;
     public AudioClip hurtClip;
 
     private Rigidbody2D rb;
@@ -32,10 +28,6 @@ public class Player : MonoBehaviour
 
         SetAnimation(moveInput);
 
-        if (healthImage != null)
-        {
-            healthImage.fillAmount = health / 100f;
-        }
     }
 
     private void SetAnimation(float moveInput)
@@ -60,13 +52,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "Damage")
         {
             PlaySFX(hurtClip);
-            health -= 25;
             StartCoroutine(BlinkRed());
-
-            if (health <= 0)
-            {
-                Die();
-            }
         }
     }
 
@@ -76,11 +62,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = Color.white;
 
-    }
-
-    private void Die()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     public void PlaySFX(AudioClip audioClip)
