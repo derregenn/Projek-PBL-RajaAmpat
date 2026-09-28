@@ -4,10 +4,11 @@ public class PlayerDiving : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float defaultGravity;
+    private Player playerScript;
 
     [Header("Diving Settings")]
     public float swimSpeed = 5f;
-    public float waterGravity = 0.5f; // Gravitasi lebih ringan agar mengambang
+    public float waterGravity = 0f; // Dibuat 0 agar melayang/tidak jatuh terus
     
     [HideInInspector]
     public bool isDiving = false;
@@ -15,6 +16,7 @@ public class PlayerDiving : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerScript = GetComponent<Player>();
         defaultGravity = rb.gravityScale; // Simpan gravitasi asli saat di darat
     }
 
@@ -22,7 +24,7 @@ public class PlayerDiving : MonoBehaviour
     {
         if (isDiving)
         {
-            // Logika kontrol renang (bisa digerakkan bebas ke atas/bawah/kiri/kanan)
+            // Kontrol renang bebas (kiri, kanan, atas, bawah)
             float moveX = Input.GetAxisRaw("Horizontal");
             float moveY = Input.GetAxisRaw("Vertical");
 
@@ -33,14 +35,26 @@ public class PlayerDiving : MonoBehaviour
     public void StartDiving()
     {
         isDiving = true;
-        rb.gravityScale = waterGravity; // Ubah gravitasi saat masuk air
+        rb.gravityScale = waterGravity; // Matikan gravitasi agar tidak jatuh
+        
+        if (playerScript != null)
+        {
+            playerScript.StartSwimming();
+        }
+
         Debug.Log("Player masuk ke air: Mode Berenang Aktif");
     }
 
     public void StopDiving()
     {
         isDiving = false;
-        rb.gravityScale = defaultGravity; // Kembalikan gravitasi normal
+        rb.gravityScale = defaultGravity; // Kembalikan gravitasi darat
+        
+        if (playerScript != null)
+        {
+            playerScript.StopSwimming();
+        }
+
         Debug.Log("Player naik ke darat: Mode Berjalan Aktif");
     }
 }
