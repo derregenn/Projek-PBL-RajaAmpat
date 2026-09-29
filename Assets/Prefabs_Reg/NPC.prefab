@@ -485,8 +485,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press [E] to talk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
+  m_sharedMaterial: {fileID: -4458713668494365499, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -776,7 +776,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5214326327777863317, guid: 5ae8d595e78676a47bb114d606cfd5df, type: 3}
+  m_Sprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -820,17 +820,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.006539464, y: 0}
+  m_Offset: {x: -0.20187831, y: 0.071213484}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.04, y: 7.86}
+    oldSize: {x: 2.91, y: 7.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8692119, y: 1}
+  m_Size: {x: 4.4337306, y: 7.883905}
   m_EdgeRadius: 0
 --- !u!114 &3861689419981878179
 MonoBehaviour:
@@ -852,8 +852,13 @@ MonoBehaviour:
   - 'haloo '
   - 'selamat datang di pulau waisai! '
   TypeSpeed: 0.04
+  npcSpriteRenderer: {fileID: 7846843865277977716}
+  talkingSprite1: {fileID: 347250365169215157, guid: 56ec11b2799d1a64886dd0c1906c5f60, type: 3}
+  talkingSprite2: {fileID: 5007425876917199656, guid: 3472470bde9ad9e448210584c637c745, type: 3}
+  idleSprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
+  spriteToggleInterval: 3
   dialogueCamera: {fileID: 0}
-  npcLensSize: 4.5
+  npcLensSize: 3.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -867,8 +872,8 @@ GameObject:
   m_Component:
   - component: {fileID: 501246943660097595}
   - component: {fileID: 7964302633909329715}
-  - component: {fileID: 2396048256455567546}
   - component: {fileID: 8945099133873997633}
+  - component: {fileID: 8557846372297262615}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -905,28 +910,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8422842111439378360}
   m_CullTransparentMesh: 1
---- !u!114 &2396048256455567546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8422842111439378360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  cornerRadius: 5
-  cornerSegments: 4
 --- !u!114 &8945099133873997633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,3 +936,33 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8557846372297262615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8422842111439378360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -7422410616830777074, guid: aed1f79c34e52b04a9a0f1cc76a9d0e3, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1

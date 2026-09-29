@@ -307,8 +307,8 @@ Transform:
   m_GameObject: {fileID: 26366569}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.94, y: -1.02, z: 0}
-  m_LocalScale: {x: 0.66059, y: 0.66059, z: 0.66059}
+  m_LocalPosition: {x: 11.94, y: -0.58, z: 0}
+  m_LocalScale: {x: 0.9968963, y: 0.9968963, z: 0.9968963}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 326412525}
@@ -663,7 +663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5631455643028285764, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5993519340487428895, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_Pivot.x
@@ -1197,8 +1197,13 @@ MonoBehaviour:
   DialogueLines:
   - Ambil 3 sampah!
   TypeSpeed: 0.04
-  dialogueCamera: {fileID: 0}
-  npcLensSize: 4.5
+  npcSpriteRenderer: {fileID: 155692440}
+  talkingSprite1: {fileID: 347250365169215157, guid: 56ec11b2799d1a64886dd0c1906c5f60, type: 3}
+  talkingSprite2: {fileID: 5007425876917199656, guid: 3472470bde9ad9e448210584c637c745, type: 3}
+  idleSprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
+  spriteToggleInterval: 3
+  dialogueCamera: {fileID: 2058772416}
+  npcLensSize: 3.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -1236,17 +1241,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.006539464, y: 0}
+  m_Offset: {x: -0.17296565, y: 0.07667065}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.04, y: 7.86}
+    oldSize: {x: 2.91, y: 7.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8692119, y: 1}
+  m_Size: {x: 4.914485, y: 7.7981186}
   m_EdgeRadius: 0
 --- !u!212 &155692440
 SpriteRenderer:
@@ -1297,7 +1302,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1486752389666497123, guid: 9c431c4c340d8a14fbef5233b957dd72, type: 3}
+  m_Sprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -1346,8 +1351,8 @@ GameObject:
   m_Component:
   - component: {fileID: 218617450}
   - component: {fileID: 218617453}
-  - component: {fileID: 218617452}
   - component: {fileID: 218617451}
+  - component: {fileID: 218617454}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -1402,28 +1407,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &218617452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218617449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  cornerRadius: 5
-  cornerSegments: 4
 --- !u!222 &218617453
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1432,6 +1415,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218617449}
   m_CullTransparentMesh: 1
+--- !u!114 &218617454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218617449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -7422410616830777074, guid: aed1f79c34e52b04a9a0f1cc76a9d0e3, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &280150960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,7 +2007,7 @@ PrefabInstance:
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: dialogueCamera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2058772416}
     - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2315,7 +2328,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press [E] to talk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2382,7 +2395,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &558826758
@@ -4551,7 +4564,7 @@ Transform:
   m_GameObject: {fileID: 1017193342}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.01, y: -2.08, z: 0}
+  m_LocalPosition: {x: 40.13, y: -2.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4602,8 +4615,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -605385043
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 5467779485775884872, guid: ae295f2c6b6fee84e8d52f5381971066, type: 3}
@@ -5307,16 +5320,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 317
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -24.59
+      value: -46.545
       objectReference: {fileID: 0}
     - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: dialogueCamera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2058772416}
     - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -5437,7 +5450,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press [E] to talk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5504,7 +5517,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1383514317
@@ -6206,8 +6219,8 @@ Transform:
   m_GameObject: {fileID: 1663974790}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.48, y: -1.25, z: 0}
-  m_LocalScale: {x: 0.7171625, y: 0.7171625, z: 0.7171625}
+  m_LocalPosition: {x: 21.7, y: 0.66, z: 0}
+  m_LocalScale: {x: 1.2039723, y: 1.2039723, z: 1.2039723}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 326412525}
@@ -6426,8 +6439,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1771004215}
   - component: {fileID: 1771004218}
-  - component: {fileID: 1771004217}
   - component: {fileID: 1771004216}
+  - component: {fileID: 1771004219}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -6482,28 +6495,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1771004217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1771004214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  cornerRadius: 5
-  cornerSegments: 4
 --- !u!222 &1771004218
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6512,6 +6503,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771004214}
   m_CullTransparentMesh: 1
+--- !u!114 &1771004219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771004214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -7422410616830777074, guid: aed1f79c34e52b04a9a0f1cc76a9d0e3, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!224 &1780201303 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3375833682341557579, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
@@ -7483,8 +7504,13 @@ MonoBehaviour:
   DialogueLines:
   - ini quest ya
   TypeSpeed: 0.04
-  dialogueCamera: {fileID: 0}
-  npcLensSize: 4.5
+  npcSpriteRenderer: {fileID: 2110659546}
+  talkingSprite1: {fileID: 347250365169215157, guid: 56ec11b2799d1a64886dd0c1906c5f60, type: 3}
+  talkingSprite2: {fileID: 5007425876917199656, guid: 3472470bde9ad9e448210584c637c745, type: 3}
+  idleSprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
+  spriteToggleInterval: 3
+  dialogueCamera: {fileID: 2058772416}
+  npcLensSize: 3.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -7522,17 +7548,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.006539464, y: 0}
+  m_Offset: {x: -0.18777871, y: 0.04624009}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.04, y: 7.86}
+    oldSize: {x: 2.91, y: 7.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8692119, y: 1}
+  m_Size: {x: 4.608045, y: 7.797354}
   m_EdgeRadius: 0
 --- !u!212 &2110659546
 SpriteRenderer:
@@ -7583,7 +7609,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5214326327777863317, guid: 5ae8d595e78676a47bb114d606cfd5df, type: 3}
+  m_Sprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
