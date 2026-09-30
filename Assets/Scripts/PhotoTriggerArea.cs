@@ -1,23 +1,19 @@
 using UnityEngine;
 
-public class PhotoTriggerArea : MonoBehaviour
+public class PhotoAreaTrigger : MonoBehaviour
 {
-    [Header("ID Foto Jurnal")]
-    [Tooltip("Isi dengan ID yang ada di database QuestJournalManager (misal: 1 untuk Sasi)")]
-    public int photoIDToTrigger; 
+    public int photoID = 0; // Sesuaikan dengan indeks di All Photo Sprites Database
+    private bool isPlayerInside = false;
 
-    private bool isPlayerInZone = false;
-    public GameObject interactPromptUI; // Ikon 'F' yang muncul di atas kepala (Opsional)
-
-    void Update()
+    private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.F))
+        // Langsung foto jika player menekan F di dalam area tanpa mengecek status quest
+        if (isPlayerInside && Input.GetKeyDown(KeyCode.F))
         {
-            // Suruh Manager menjepret foto dengan ID ini
-            QuestJournalManager.Instance.TakeSpecificPhoto(photoIDToTrigger);
-            
-            // Hapus area ini agar tidak bisa difoto 2 kali
-            gameObject.SetActive(false); 
+            if (QuestJournalManager.Instance != null)
+            {
+                QuestJournalManager.Instance.TakeSpecificPhoto(photoID);
+            }
         }
     }
 
@@ -25,8 +21,7 @@ public class PhotoTriggerArea : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            isPlayerInZone = true;
-            if (interactPromptUI != null) interactPromptUI.SetActive(true);
+            isPlayerInside = true;
         }
     }
 
@@ -34,8 +29,7 @@ public class PhotoTriggerArea : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            isPlayerInZone = false;
-            if (interactPromptUI != null) interactPromptUI.SetActive(false);
+            isPlayerInside = false;
         }
     }
 }
