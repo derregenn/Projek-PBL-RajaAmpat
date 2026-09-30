@@ -29,27 +29,28 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // 1. KONTROL GERAKAN
-        if (!isSwimming)
+        // 1. AMBIL INPUT GERAKAN HANYA SEKALI DI ATAS
+        float moveInput = Input.GetAxisRaw("Horizontal"); // -1 untuk Kiri, 1 untuk Kanan, 0 untuk Diam
+
+        // 2. OTOMATIS FLIP SPRITE SESUAI ARAH GERAK
+        if (moveInput > 0 && spriteRenderer != null)
         {
-            // Gerakan di darat
-            float moveInput = Input.GetAxis("Horizontal");
-            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-            SetAnimation(moveInput);
+            spriteRenderer.flipX = false; // Menghadap Kanan
         }
-        else
+        else if (moveInput < 0 && spriteRenderer != null)
         {
-            // Gerakan di air dikontrol sepenuhnya oleh PlayerDiving.cs
-            // Di sini kita hanya mengurus pembalikan arah gambar (flipX) dan animasi
-            float moveInput = Input.GetAxisRaw("Horizontal");
-            if (moveInput != 0)
-            {
-                spriteRenderer.flipX = moveInput < 0;
-            }
-            SetAnimation(moveInput);
+            spriteRenderer.flipX = true;  // Menghadap Kiri
         }
 
-        // 2. HEALTH UI
+        // 3. KONTROL FISIKA GERAKAN (Hanya saat di darat)
+        if (!isSwimming && rb != null)
+        {
+            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        }
+
+        // 4. UPDATE ANIMASI & UI
+        SetAnimation(moveInput);
+
         if (healthImage != null)
         {
             healthImage.fillAmount = health / 100f;
@@ -58,15 +59,20 @@ public class Player : MonoBehaviour
 
     private void SetAnimation(float moveInput)
     {
+        if (animator == null) return;
+
+        // JIKA SEDANG BERENANG
         if (isSwimming)
         {
-            // Hanya Play jika animasi yang sedang berjalan BUKAN Player_swim
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_swim"))
             {
                 animator.Play("Player_swim");
             }
+            return; // KUNCI UTAMA: Langsung return agar animasi Idle/Run di bawah tidak dipanggil!
         }
-        else if (moveInput == 0)
+
+        // JIKA SEDANG DI DARAT
+        if (moveInput == 0)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Idle"))
             {
@@ -85,16 +91,26 @@ public class Player : MonoBehaviour
     public void StartSwimming()
     {
         isSwimming = true;
+        if (animator != null)
+        {
+            animator.SetBool("isSwimming", true);
+            animator.Play("Player_swim");
+        }
     }
 
     public void StopSwimming()
     {
         isSwimming = false;
+        if (animator != null)
+        {
+            animator.SetBool("isSwimming", false);
+            animator.Play("Player_Idle");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Damage")
+        if (collision.gameObject.CompareTag("Damage"))
         {
             PlaySFX(hurtClip);
             health -= 25;
@@ -109,22 +125,24 @@ public class Player : MonoBehaviour
 
     private IEnumerator BlinkRed()
     {
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = Color.white;
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = Color.white;
+        }
     }
 
     private void Die()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void PlaySFX(AudioClip audioClip)
     {
-        if (audioSource != null)
+        if (audioSource != null && audioClip != null)
         {
-            audioSource.clip = audioClip;
-            audioSource.Play();
+            audioSource.PlayOneShot(audioClip);
         }
     }
 }

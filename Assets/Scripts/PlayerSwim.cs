@@ -44,9 +44,16 @@ public class PlayerSwim : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         // Enable zero gravity for free swimming / floating
-        rb.gravityScale = 0f;
+        if (rb != null) rb.gravityScale = 0f;
 
         startPosition = transform.position;
+
+        // Kunci status berenang di Animator saat awal start
+        if (animator != null)
+        {
+            animator.SetBool("isSwimming", true);
+            animator.Play("Player_swim");
+        }
     }
 
     void Update()
@@ -76,13 +83,26 @@ public class PlayerSwim : MonoBehaviour
             healthImage.fillAmount = health / 100f;
         }
 
-        // 5. Rotate Player Sprite to face movement direction
+        // 5. Rotate Player Sprite & Keep Swimming Animation Active
         RotateTowardsMovement();
+        UpdateSwimAnimation();
+    }
+
+    private void UpdateSwimAnimation()
+    {
+        // Pastikan animasi Player_swim terus berjalan jika tidak sedang dash/dive
+        if (animator != null && !isDiving)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_swim"))
+            {
+                animator.Play("Player_swim");
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        if (isDiving) return;
+        if (isDiving || rb == null) return;
 
         // Apply smooth velocity based on 2D input
         rb.linearVelocity = moveInput * moveSpeed;
@@ -114,7 +134,7 @@ public class PlayerSwim : MonoBehaviour
 
     private void RotateTowardsMovement()
     {
-        if (moveInput.x != 0)
+        if (moveInput.x != 0 && spriteRenderer != null)
         {
             spriteRenderer.flipX = moveInput.x < 0;
         }
@@ -123,7 +143,7 @@ public class PlayerSwim : MonoBehaviour
     private void ResetToStartPosition()
     {
         transform.position = startPosition;
-        rb.linearVelocity = Vector2.zero;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -135,7 +155,7 @@ public class PlayerSwim : MonoBehaviour
 
             // Knockback effect
             Vector2 knockbackDir = (transform.position - collision.transform.position).normalized;
-            rb.linearVelocity = knockbackDir * 8f;
+            if (rb != null) rb.linearVelocity = knockbackDir * 8f;
 
             StartCoroutine(BlinkRed());
 
@@ -148,9 +168,12 @@ public class PlayerSwim : MonoBehaviour
 
     private IEnumerator BlinkRed()
     {
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = Color.white;
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = Color.white;
+        }
     }
 
     private void Die()

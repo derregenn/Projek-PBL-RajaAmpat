@@ -15,16 +15,19 @@ public class DivingBarrier : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Abaikan collider trigger internal milik player (seperti GroundCheck / WallCheck)
+        if (collision.isTrigger) return;
+
         if (collision.CompareTag("Player"))
         {
-            if (warningPanel != null)
+            PlayerDiving playerDiving = collision.GetComponentInParent<PlayerDiving>();
+            if (playerDiving != null && !playerDiving.isDiving)
             {
-                warningPanel.SetActive(true);
-            }
+                if (warningPanel != null)
+                {
+                    warningPanel.SetActive(true);
+                }
 
-            PlayerDiving playerDiving = collision.GetComponent<PlayerDiving>();
-            if (playerDiving != null)
-            {
                 playerDiving.StartDiving();
             }
         }
@@ -32,16 +35,19 @@ public class DivingBarrier : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        // Abaikan collider trigger internal milik player (seperti GroundCheck / WallCheck)
+        if (collision.isTrigger) return;
+
         if (collision.CompareTag("Player"))
         {
-            if (warningPanel != null)
+            PlayerDiving playerDiving = collision.GetComponentInParent<PlayerDiving>();
+            if (playerDiving != null && playerDiving.isDiving)
             {
-                warningPanel.SetActive(false);
-            }
+                if (warningPanel != null)
+                {
+                    warningPanel.SetActive(false);
+                }
 
-            PlayerDiving playerDiving = collision.GetComponent<PlayerDiving>();
-            if (playerDiving != null)
-            {
                 playerDiving.StopDiving();
             }
         }
