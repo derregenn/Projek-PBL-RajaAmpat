@@ -12,16 +12,27 @@ public class ParallaxBackground : MonoBehaviour
     [Tooltip("Posisi koordinat X awal di sebelah kanan saat di-loop")]
     [SerializeField] private float startPositionX = 20f;
 
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     private void Update()
     {
         // Geser objek ke arah kiri secara kontinyu
         transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime);
 
-        // Jika objek sudah melewai batas kiri, kembalikan ke posisi kanan (Looping)
-        if (transform.position.x <= resetPositionX)
+        // Pindahkan sejauh lebar sprite agar tidak muncul celah saat looping.
+        float loopDistance = spriteRenderer != null
+            ? spriteRenderer.bounds.size.x
+            : startPositionX - resetPositionX;
+
+        while (transform.position.x <= resetPositionX)
         {
             Vector3 newPos = transform.position;
-            newPos.x = startPositionX;
+            newPos.x += loopDistance;
             transform.position = newPos;
         }
     }

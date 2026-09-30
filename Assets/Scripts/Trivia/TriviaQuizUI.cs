@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement; // Wajib ditambahkan untuk LoadScene
+using UnityEngine.Events;          // Ditambahkan untuk UnityEvent
 
 public class TriviaQuizUI : MonoBehaviour
 {
@@ -20,12 +22,24 @@ public class TriviaQuizUI : MonoBehaviour
     [SerializeField] private string correctFeedbackMessage = "Naise, jawaban kamu benar!";
     [SerializeField] private string wrongFeedbackMessage = "Salah, coba lagi ya!";
 
+    [Header("Scene Transition Settings")]
+    [Tooltip("Centang jika ingin otomatis pindah scene setelah kuis selesai")]
+    [SerializeField] private bool loadSceneOnQuizComplete = true;
+    [Tooltip("Isi nama Scene pulau tujuan di sini (misal: 02_Waisai)")]
+    [SerializeField] private string nextSceneName = "02_Waisai";
+    [Tooltip("Jeda sebelum pindah scene setelah pesan feedback benar muncul")]
+    [SerializeField] private float transitionDelay = 1.0f;
+
+    [Header("Events")]
+    [Tooltip("Event tambahan saat kuis selesai (misal: panggil UI Fade Out)")]
+    public UnityEvent onQuizCompletedEvent;
+
     private TriviaQuestion[] currentQuestions;
     private int currentQuestionIndex = 0;
     private System.Action onQuizCompleted;
     private bool isQuizActive = false;
     private bool canPressEToClose = false;
-    private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
+    private bool isShowingFeedback = false;
 
     private void Awake()
     {
@@ -111,13 +125,13 @@ public class TriviaQuizUI : MonoBehaviour
 
         if (selectedIndex == q.correctAnswerIndex)
         {
-            // Jawaban Benar -> Tampilkan feedback di dialogue NPC lalu lanjut ke pertanyaan berikutnya
+            // Jawaban Benar
             string successMsg = GetFeedbackMessage(q, true);
             StartCoroutine(ShowFeedbackRoutine(successMsg, true));
         }
         else
         {
-            // Jawaban Salah -> Tampilkan feedback di dialogue NPC lalu ulangi pertanyaan
+            // Jawaban Salah
             string wrongMsg = GetFeedbackMessage(q, false);
             StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
         }
@@ -204,6 +218,26 @@ public class TriviaQuizUI : MonoBehaviour
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
 
+        // Exec Event Callback
         onQuizCompleted?.Invoke();
+        onQuizCompletedEvent?.Invoke();
+
+        // Pindah Scene Otomatis jika diaktifkan
+        if (loadSceneOnQuizComplete && !string.IsNullOrEmpty(nextSceneName))
+        {
+            StartCoroutine(TransitionToNextScene());
+        }
+    }
+
+    private IEnumerator TransitionToNextScene()
+    {
+        yield return new WaitForSeconds(transitionDelay);
+        SceneManager.LoadScene(nextSceneName);
+    }
+
+    // Method manual jika ingin memanggil pemindahan scene dari luar/UnityEvent
+    public void LoadNextScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }
