@@ -3,18 +3,20 @@ using UnityEngine;
 public class PlayerDiving : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator animator;
     private float defaultGravity;
 
     [Header("Diving Settings")]
     public float swimSpeed = 5f;
     public float waterGravity = 0.5f; // Gravitasi lebih ringan agar mengambang
-    
+
     [HideInInspector]
     public bool isDiving = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         defaultGravity = rb.gravityScale; // Simpan gravitasi asli saat di darat
     }
 
@@ -34,6 +36,10 @@ public class PlayerDiving : MonoBehaviour
     {
         isDiving = true;
         rb.gravityScale = waterGravity; // Ubah gravitasi saat masuk air
+        if (animator != null)
+        {
+            animator.Play("Player_Diving");
+        }
         Debug.Log("Player masuk ke air: Mode Berenang Aktif");
     }
 
