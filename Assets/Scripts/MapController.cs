@@ -96,15 +96,7 @@ public class MapController : MonoBehaviour
 
     public void LoadIslandScene(string sceneName)
     {
-        Debug.Log($"[MapController] Memuat scene target: {sceneName}");
         Time.timeScale = 1f;
-
-        if (string.IsNullOrEmpty(sceneName))
-        {
-            Debug.LogError("[MapController] Nama scene yang dikirim KOSONG!");
-            return;
-        }
-
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 }

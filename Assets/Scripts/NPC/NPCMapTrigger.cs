@@ -7,7 +7,6 @@ public class NPCMapTrigger : MonoBehaviour
     public KeyCode interactKey = KeyCode.E;
 
     private bool isPlayerNearby = false;
-    private bool isMapOpen = false;
 
     void Start()
     {
@@ -20,16 +19,7 @@ public class NPCMapTrigger : MonoBehaviour
         {
             if (mapController != null)
             {
-                if (isMapOpen)
-                {
-                    mapController.CloseWorldMap();
-                    isMapOpen = false;
-                }
-                else
-                {
-                    mapController.OpenWorldMap();
-                    isMapOpen = true;
-                }
+                mapController.OpenWorldMap();
             }
         }
     }

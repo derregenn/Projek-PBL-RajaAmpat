@@ -26,7 +26,7 @@ public class PlayerInteraction : MonoBehaviour
         if (interactable != null)
         {
             currentInteractable = interactable;
-            ShowPrompt(interactable);
+            ShowPrompt(interactable.GetPromptText());
         }
     }
 
@@ -40,14 +40,10 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void ShowPrompt(IInteractable interactable)
+    private void ShowPrompt(string message)
     {
         if (promptPanel != null) promptPanel.SetActive(true);
-        if (promptText != null)
-        {
-            bool isBarrier = interactable.GetType().Name.Contains("Barrier");
-            promptText.text = isBarrier ? interactable.GetPromptText() : "[E]";
-        }
+        if (promptText != null) promptText.text = "[E]"; // Hanya menampilkan teks "E"
     }
 
     private void HidePrompt()
