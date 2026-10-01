@@ -10,21 +10,47 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [Header("Audio & FX (Opsional)")]
     [SerializeField] private AudioClip collectSound;
 
+    [Header("Player Animation")]
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private string crouchAnimationState = "Player_Crouch";
+
     [Header("UI Collectibles (Dari Kamu)")]
     [Tooltip("Tarik teks 'Progress' dari papan cokelat ke kolom ini")]
-    public TextMeshProUGUI collectibleUIText; 
-    
+    public TextMeshProUGUI collectibleUIText;
+
     [Tooltip("Isi ID Jurnal jika sampah ini ngebuka cerita baru. Biarkan -1 jika tidak.")]
-    public int unlockJournalID = -1; 
-    
+    public int unlockJournalID = -1;
+
     // Total sampah global yang sudah diambil pemain
     public static int totalCollected = 0;
-    
+
     // Sesuaikan dengan total sampah mentok yang ada di game kalian
-    private int maxTrash = 20; 
+    private int maxTrash = 20;
 
     public void Interact()
     {
+        // Play the crouch animation when collecting trash.
+        if (playerAnimator != null && !string.IsNullOrEmpty(crouchAnimationState))
+        {
+            int stateHash = Animator.StringToHash(crouchAnimationState);
+            bool stateExists = false;
+
+            for (int layer = 0; layer < playerAnimator.layerCount; layer++)
+            {
+                if (playerAnimator.HasState(layer, stateHash))
+                {
+                    stateExists = true;
+                    playerAnimator.Play(stateHash, layer);
+                    break;
+                }
+            }
+
+            if (!stateExists)
+            {
+                Debug.LogWarning($"Animator state '{crouchAnimationState}' was not found. Check the state name and Animator Controller.", playerAnimator);
+            }
+        }
+
         // 1. Jalankan Logika Quest Regen
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {

@@ -60,7 +60,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -605385043
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &7392156683231420450
@@ -281,8 +281,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -34.1525}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: 190, y: -55.6725}
+  m_SizeDelta: {x: 360, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7334325409922718939
 CanvasRenderer:
@@ -314,8 +314,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: This is the dialogue
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d5a32f60d9053ad419f5759f46e5fad3, type: 2}
+  m_sharedMaterial: {fileID: -7860507484094858828, guid: d5a32f60d9053ad419f5759f46e5fad3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -358,7 +358,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 26.493073}
+  m_margin: {x: 15, y: 15, z: 15, w: 15}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 2
+  m_HorizontalFit: 0
   m_VerticalFit: 2
 --- !u!1 &3979835675472087360
 GameObject:
@@ -428,8 +428,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2515850637544761682}
   - component: {fileID: 2928956460160112892}
-  - component: {fileID: 2932810799659995807}
   - component: {fileID: 3961536190152486966}
+  - component: {fileID: 4387828156358214988}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -456,7 +456,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0013113, y: -47.4}
-  m_SizeDelta: {x: 300, y: 100}
+  m_SizeDelta: {x: 380, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2928956460160112892
 CanvasRenderer:
@@ -466,28 +466,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3979835675472087360}
   m_CullTransparentMesh: 1
---- !u!114 &2932810799659995807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3979835675472087360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  cornerRadius: 5
-  cornerSegments: 4
 --- !u!114 &3961536190152486966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,10 +479,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 20
+    m_Bottom: 20
   m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
@@ -514,6 +492,36 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4387828156358214988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3979835675472087360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -7422410616830777074, guid: aed1f79c34e52b04a9a0f1cc76a9d0e3, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 9
 --- !u!1 &4376546248415051191
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,8 +589,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Next [E]'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9d4f46e89c916274497721114e8754f9, type: 2}
+  m_sharedMaterial: {fileID: -7183190354024451034, guid: 9d4f46e89c916274497721114e8754f9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -718,7 +726,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press [E] to talk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -785,7 +793,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8257977044528296014
@@ -873,7 +881,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5214326327777863317, guid: 5ae8d595e78676a47bb114d606cfd5df, type: 3}
+  m_Sprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -917,17 +925,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.006539464, y: 0}
+  m_Offset: {x: -4.60247, y: 0.046580315}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.04, y: 7.86}
+    oldSize: {x: 2.91, y: 7.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8692119, y: 1}
+  m_Size: {x: 11.924289, y: 7.8628416}
   m_EdgeRadius: 0
 --- !u!114 &127073382651893474
 MonoBehaviour:
@@ -946,8 +954,20 @@ MonoBehaviour:
   DialogueText: {fileID: 7099015682886790851}
   NextPrompt: {fileID: 3073218854470324781}
   DialogueLines:
-  - jawab pertanyaan ini
+  - Nah, informasi di papan itu penting sekali untuk perjalanan mendaki kita
+  - 'Biar kamu tahu, jalur anak tangga kayu bertingkat di depan kita ini punya lebih
+    dari 300 anak tangga! '
+  - Tangga ini sengaja dibangun meliuk di antara pohon agar kaki ribuan turis tidak
+    langsung menginjak dan menghancurkan batu karst di bawahnya
+  - Masalahnya, uap garam laut di sini pekat sekali, bikin kayu tangga gampang lapuk
+    atau patah. Makanya di pertengahan bukit nanti, kamu harus hati-hati
+  - Nah, sebelum kita lanjut, coba jawab pertanyaan ku dulu
   TypeSpeed: 0.04
+  npcSpriteRenderer: {fileID: 5073732478923337293}
+  talkingSprite1: {fileID: 347250365169215157, guid: 56ec11b2799d1a64886dd0c1906c5f60, type: 3}
+  talkingSprite2: {fileID: 5007425876917199656, guid: 3472470bde9ad9e448210584c637c745, type: 3}
+  idleSprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
+  spriteToggleInterval: 3
   dialogueCamera: {fileID: 0}
   npcLensSize: 4.5
   onDialogueEnd:
@@ -980,10 +1000,22 @@ MonoBehaviour:
   tourGuideName: Tour Guide
   objectiveID: finish_trivia_quiz
   quizQuestions:
-  - questionText: siapa nama gnome?
+  - questionText: Pertanyaan pertama, apa fungsi utama dibangunnya jalur anak tangga
+      kayu bertingkat menuju puncak viewpoint Piaynemo ?
     options:
-    - Messi
-    - Ronaldo
-    - Minions
-    correctAnswerIndex: 1
+    - Melindungi batuan karst purba dari gesekan dan erosi akibat pijakan kaki wisatawan
+    - Meratakan kemiringan lereng bukit yang curam demi keselamatan dan kemudahan
+      pendakian wisatawan
+    - Sebagai tempat berfoto wisatawan dan tempat beristirahat saat kelelahan.
+    correctAnswerIndex: 0
+  - questionText: Pertanyaan selanjutnya, Uap garam laut sering membuat anak tangga
+      kayu di tengah bukit lapuk atau patah. Jika kamu menemukannya saat mendaki,
+      apa yang harus kamu lakukan?
+    options:
+    - Melompati anak tangga yang patah dan melanjutkan perjalanan
+    - Mencari potongan kayu di sekitar hutan tebing untuk menutupi bagian tangga
+      yang patah
+    - Berhati-hati, berpegangan pada tebing batu di sampingnya secara perlahan, dan
+      melapor ke pos
+    correctAnswerIndex: 2
   dialogueSystem: {fileID: 127073382651893474}
