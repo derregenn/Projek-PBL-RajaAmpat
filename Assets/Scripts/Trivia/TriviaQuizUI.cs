@@ -78,13 +78,18 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void ShowQuestion()
     {
-        if (currentQuestionIndex >= currentQuestions.Length)
+        if (currentQuestions == null || currentQuestionIndex >= currentQuestions.Length)
         {
             EndQuiz();
             return;
         }
 
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
+        if (q == null)
+        {
+            EndQuiz();
+            return;
+        }
 
         // 1. Tampilkan teks pertanyaan di kotak dialog NPC
         if (dialogueSystem != null)
@@ -96,9 +101,13 @@ public class TriviaQuizUI : MonoBehaviour
         if (choicesPanel != null) choicesPanel.SetActive(true);
 
         // 3. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
+        if (optionButtons == null) return;
+
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            if (i < q.options.Length)
+            if (optionButtons[i] == null) continue;
+
+            if (q.options != null && i < q.options.Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
                 if (i < optionTexts.Length && optionTexts[i] != null)

@@ -111,7 +111,6 @@ public class Dialogue : MonoBehaviour
         if (NextPrompt != null) NextPrompt.SetActive(false);
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
-        lineIndex = 0;
         StartTyping();
     }
 
@@ -201,6 +200,7 @@ public class Dialogue : MonoBehaviour
                 questGiver.GiveQuest();
             }
 
+            lineIndex = 0;
             EndDialogue();
         }
     }
