@@ -10,11 +10,21 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private GameObject InteractPrompt;
     [SerializeField] private GameObject DialogueBox;
     [SerializeField] private TMP_Text DialogueText;
+    [SerializeField] private GameObject PlayerDialogueBox;
+    [SerializeField] private TMP_Text PlayerDialogueText;
     [SerializeField] private GameObject NextPrompt;
+    [SerializeField] private GameObject PlayerNextPrompt;
 
     [Header("Dialogue")]
     [SerializeField] private string[] DialogueLines;
+    [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
     [SerializeField] private float TypeSpeed = 0.02f;
+
+    private enum DialogueSpeaker
+    {
+        NPC,
+        Player
+    }
 
     [Header("NPC Sprite Settings")]
     [SerializeField] private SpriteRenderer npcSpriteRenderer;
@@ -65,7 +75,9 @@ public class Dialogue : MonoBehaviour
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(false);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
     }
 
     private void Update()
@@ -74,7 +86,9 @@ public class Dialogue : MonoBehaviour
         {
             StartDialogue();
         }
-        else if (isInteracting && NextPrompt != null && NextPrompt.activeInHierarchy && Input.GetKeyDown(KeyCode.E))
+        else if (isInteracting && Input.GetKeyDown(KeyCode.E)
+            && ((NextPrompt != null && NextPrompt.activeInHierarchy)
+                || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)))
         {
             NextLine();
         }
@@ -93,9 +107,9 @@ public class Dialogue : MonoBehaviour
         }
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
-        if (DialogueBox != null) DialogueBox.SetActive(true);
-        if (DialogueText != null) DialogueText.text = "";
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         lineIndex = 0;
         StartTyping();
@@ -117,18 +131,32 @@ public class Dialogue : MonoBehaviour
             yield break;
         }
 
-        DialogueText.text = DialogueLines[lineIndex];
-        DialogueText.maxVisibleCharacters = 0;
+        bool isPlayerLine = DialogueLineSpeakers != null
+            && lineIndex < DialogueLineSpeakers.Length
+            && DialogueLineSpeakers[lineIndex] == DialogueSpeaker.Player;
+        TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
+
+        if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(isPlayerLine);
+        if (activeText == null)
+        {
+            isTyping = false;
+            EndDialogue();
+            yield break;
+        }
+
+        activeText.text = DialogueLines[lineIndex];
+        activeText.maxVisibleCharacters = 0;
 
         int totalCharacters = DialogueLines[lineIndex].Length;
         bool toggleSprite = false;
 
         for (int i = 0; i <= totalCharacters; i++)
         {
-            DialogueText.maxVisibleCharacters = i;
+            activeText.maxVisibleCharacters = i;
 
             // Animasi pergantian sprite bicaranya NPC saat teks diketik
-            if (npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
+            if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
             {
                 if (i % spriteToggleInterval == 0)
                 {
@@ -145,7 +173,14 @@ public class Dialogue : MonoBehaviour
         // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
 
-        if (NextPrompt != null) NextPrompt.SetActive(true);
+        if (isPlayerLine)
+        {
+            if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(true);
+        }
+        else if (NextPrompt != null)
+        {
+            NextPrompt.SetActive(true);
+        }
     }
 
     private void NextLine()
@@ -156,6 +191,7 @@ public class Dialogue : MonoBehaviour
         {
             lineIndex++;
             if (NextPrompt != null) NextPrompt.SetActive(false);
+            if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
             StartTyping();
         }
         else
@@ -183,7 +219,9 @@ public class Dialogue : MonoBehaviour
         ResetNPCSprite();
 
         if (DialogueBox != null) DialogueBox.SetActive(false);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         if (dialogueCamera != null)
         {
@@ -238,6 +276,7 @@ public class Dialogue : MonoBehaviour
     public void ShowTriviaQuestion(string questionText)
     {
         if (DialogueBox != null) DialogueBox.SetActive(true);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);

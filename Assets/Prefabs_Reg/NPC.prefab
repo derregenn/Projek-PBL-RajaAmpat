@@ -820,7 +820,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.20187831, y: 0.071213484}
+  m_Offset: {x: -0.26575446, y: 0.071213484}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -830,7 +830,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 4.4337306, y: 7.883905}
+  m_Size: {x: 5.3279977, y: 7.883905}
   m_EdgeRadius: 0
 --- !u!114 &3861689419981878179
 MonoBehaviour:
@@ -847,10 +847,20 @@ MonoBehaviour:
   InteractPrompt: {fileID: 4592805101743799401}
   DialogueBox: {fileID: 8422842111439378360}
   DialogueText: {fileID: 6374775780892446072}
+  PlayerDialogueBox: {fileID: 0}
+  PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 1980316404491635566}
+  PlayerNextPrompt: {fileID: 0}
   DialogueLines:
-  - 'haloo '
-  - 'selamat datang di pulau pianemo! '
+  - Selamat datang ke Surga Terakhir di Bumi kawan!
+  - Halooo!
+  - "Udaranya panas juga yah\u2026"
+  - Hahaha, nanti terbiasa kok
+  - Aku yang akan menjadi Tour Guide mu disini, kita sekarang ada di Airstrip Perintis
+    Waigeo.
+  - Sebelum kita mulai keliling pulau-pulau eksotis pakai perahu, kita harus jalan
+    sedikit ke Pelabuhan Waisai
+  DialogueLineSpeakers: 000000000100000001000000000000000000000000000000
   TypeSpeed: 0.04
   npcSpriteRenderer: {fileID: 7846843865277977716}
   talkingSprite1: {fileID: 347250365169215157, guid: 56ec11b2799d1a64886dd0c1906c5f60, type: 3}
@@ -931,7 +941,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
