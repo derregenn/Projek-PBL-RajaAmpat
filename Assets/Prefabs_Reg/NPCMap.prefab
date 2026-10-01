@@ -759,7 +759,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
+  m_Sprite: {fileID: -3586363740857737927, guid: 5eb43af45d8d56849885eba386f890ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -807,7 +807,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.91, y: 7.84}
+    oldSize: {x: 3.19, y: 8.09}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -830,13 +830,17 @@ MonoBehaviour:
   InteractPrompt: {fileID: 4374705828269611511}
   DialogueBox: {fileID: 1682896032667982557}
   DialogueText: {fileID: 5706760881847068872}
+  PlayerDialogueBox: {fileID: 0}
+  PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 3623676598555574997}
+  PlayerNextPrompt: {fileID: 0}
   DialogueLines:
   - 'Pindah pulau? '
+  DialogueLineSpeakers: 
   TypeSpeed: 0.04
   npcSpriteRenderer: {fileID: 3151358253257188898}
-  talkingSprite1: {fileID: 347250365169215157, guid: 56ec11b2799d1a64886dd0c1906c5f60, type: 3}
-  talkingSprite2: {fileID: 5007425876917199656, guid: 3472470bde9ad9e448210584c637c745, type: 3}
+  talkingSprite1: {fileID: 0}
+  talkingSprite2: {fileID: 0}
   idleSprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 0}

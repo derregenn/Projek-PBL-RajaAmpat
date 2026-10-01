@@ -29,6 +29,16 @@ public class PlayerDiving : MonoBehaviour
             float moveY = Input.GetAxisRaw("Vertical");
 
             rb.linearVelocity = new Vector2(moveX * swimSpeed, moveY * swimSpeed);
+
+            // Keep the diving animation active and restart it after each completed cycle.
+            if (animator != null)
+            {
+                AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+                if (!state.IsName("Player_Diving") || state.normalizedTime >= 1f)
+                {
+                    animator.Play("Player_Diving", 0, 0f);
+                }
+            }
         }
     }
 
