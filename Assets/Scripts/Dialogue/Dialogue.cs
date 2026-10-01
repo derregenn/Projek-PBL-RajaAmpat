@@ -18,6 +18,7 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private string[] DialogueLines;
     [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
+    [SerializeField] private string triviaQuestionText;
     [SerializeField] private float TypeSpeed = 0.02f;
 
     private enum DialogueSpeaker
@@ -195,6 +196,19 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
+            if (!string.IsNullOrEmpty(triviaQuestionText))
+            {
+                if (questGiver != null)
+                {
+                    questGiver.GiveQuest();
+                }
+
+                if (NextPrompt != null) NextPrompt.SetActive(false);
+                if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+                ShowTriviaQuestion(triviaQuestionText);
+                return;
+            }
+
             if (questGiver != null)
             {
                 questGiver.GiveQuest();
@@ -275,14 +289,23 @@ public class Dialogue : MonoBehaviour
 
     public void ShowTriviaQuestion(string questionText)
     {
+        if (string.IsNullOrEmpty(questionText))
+        {
+            return;
+        }
+
         if (DialogueBox != null) DialogueBox.SetActive(true);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
 
-        DialogueText.text = questionText;
-        DialogueText.maxVisibleCharacters = questionText.Length;
+        if (DialogueText != null)
+        {
+            DialogueText.text = questionText;
+            DialogueText.maxVisibleCharacters = questionText.Length;
+        }
 
         // Gunakan sprite bicara saat pertanyaan trivia ditampilkan
         if (npcSpriteRenderer != null && talkingSprite1 != null)
