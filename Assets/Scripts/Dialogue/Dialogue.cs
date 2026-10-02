@@ -24,6 +24,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private DialogueSpeaker[] QuestCompletedLineSpeakers;
     [SerializeField] private string triviaQuestionText;
     [SerializeField] private float TypeSpeed = 0.02f;
+    [SerializeField, Range(0.01f, 1f)] private float fastTypeSpeedMultiplier = 0.1f;
 
     private enum DialogueSpeaker
     {
@@ -49,6 +50,7 @@ public class Dialogue : MonoBehaviour
     private bool isInteracting = false;
     private bool canInteract = false;
     private bool isTyping = false;
+    private bool isSpeedingUpTyping = false;
     private bool hasBeenTriggered = false;
 
     private QuestGiver questGiver;
@@ -95,11 +97,17 @@ public class Dialogue : MonoBehaviour
         {
             StartDialogue();
         }
-        else if (isInteracting && Input.GetKeyDown(KeyCode.E)
-            && ((NextPrompt != null && NextPrompt.activeInHierarchy)
-                || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)))
+        else if (isInteracting && Input.GetKeyDown(KeyCode.E))
         {
-            NextLine();
+            if (isTyping)
+            {
+                isSpeedingUpTyping = true;
+            }
+            else if ((NextPrompt != null && NextPrompt.activeInHierarchy)
+                || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy))
+            {
+                NextLine();
+            }
         }
     }
 
@@ -143,6 +151,7 @@ public class Dialogue : MonoBehaviour
 
     private void StartTyping()
     {
+        isSpeedingUpTyping = false;
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         typingCoroutine = StartCoroutine(WriteLine());
     }
@@ -191,7 +200,10 @@ public class Dialogue : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(TypeSpeed);
+            float currentTypeSpeed = isSpeedingUpTyping
+                ? TypeSpeed * fastTypeSpeedMultiplier
+                : TypeSpeed;
+            yield return new WaitForSeconds(currentTypeSpeed);
         }
 
         isTyping = false;
