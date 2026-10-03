@@ -132,7 +132,7 @@ RectTransform:
   m_GameObject: {fileID: 1682896032667982557}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.61109, y: 0.61109, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4277424708996416077}
@@ -142,7 +142,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0013633657, y: -90}
-  m_SizeDelta: {x: 200, y: 0}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2804361776364322335
 CanvasRenderer:
@@ -537,8 +537,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -44.59}
-  m_SizeDelta: {x: 180, y: 0}
+  m_AnchoredPosition: {x: 150, y: -44.59}
+  m_SizeDelta: {x: 280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7436342740030201267
 CanvasRenderer:
@@ -837,11 +837,17 @@ MonoBehaviour:
   DialogueLines:
   - 'Pindah pulau? '
   DialogueLineSpeakers: 
+  QuestGivenDialogueLines: []
+  QuestGivenLineSpeakers: 
+  QuestCompletedDialogueLines: []
+  QuestCompletedLineSpeakers: 
+  triviaQuestionText: 
   TypeSpeed: 0.04
+  fastTypeSpeedMultiplier: 0.1
   npcSpriteRenderer: {fileID: 3151358253257188898}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 4658603622932732354, guid: 8b8a420ed5678664c9b3776e332c5a5d, type: 3}
+  idleSprite: {fileID: -3586363740857737927, guid: 5eb43af45d8d56849885eba386f890ae, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 0}
   npcLensSize: 3.5

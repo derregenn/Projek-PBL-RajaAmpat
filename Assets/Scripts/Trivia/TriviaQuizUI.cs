@@ -22,6 +22,12 @@ public class TriviaQuizUI : MonoBehaviour
     [SerializeField] private string correctFeedbackMessage = "Naise, jawaban kamu benar!";
     [SerializeField] private string wrongFeedbackMessage = "Salah, coba lagi ya!";
 
+    [Header("Feedback per Pertanyaan")]
+    [Tooltip("Pesan benar berdasarkan urutan pertanyaan di quiz. Entri kosong memakai feedback pada TriviaQuestion atau pesan default.")]
+    [SerializeField] private string[] correctFeedbackByQuestion;
+    [Tooltip("Pesan salah berdasarkan urutan pertanyaan di quiz. Entri kosong memakai feedback pada TriviaQuestion atau pesan default.")]
+    [SerializeField] private string[] wrongFeedbackByQuestion;
+
     [Header("Scene Transition Settings")]
     [Tooltip("Centang jika ingin otomatis pindah scene setelah kuis selesai")]
     [SerializeField] private bool loadSceneOnQuizComplete = true;
@@ -151,6 +157,14 @@ public class TriviaQuizUI : MonoBehaviour
         if (question == null)
         {
             return GetDefaultFeedbackMessage(isCorrect);
+        }
+
+        string[] feedbackByQuestion = isCorrect ? correctFeedbackByQuestion : wrongFeedbackByQuestion;
+        if (feedbackByQuestion != null && currentQuestionIndex >= 0 &&
+            currentQuestionIndex < feedbackByQuestion.Length &&
+            !string.IsNullOrEmpty(feedbackByQuestion[currentQuestionIndex]))
+        {
+            return feedbackByQuestion[currentQuestionIndex];
         }
 
         string fieldName = isCorrect ? "correctFeedback" : "wrongFeedback";
