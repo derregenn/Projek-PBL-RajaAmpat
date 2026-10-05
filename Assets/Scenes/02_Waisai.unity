@@ -1292,10 +1292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d2fbcc032126cd4ea177f82602947c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  resetPositionX: -20
-  startPositionX: 20
-  spriteRenderer: {fileID: 0}
 --- !u!212 &236610284
 SpriteRenderer:
   serializedVersion: 2
@@ -1998,6 +1994,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: questsToGive.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: dialogueCamera
       value: 
@@ -2036,7 +2036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -37.325
+      value: -38.2
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2081,30 +2081,6 @@ PrefabInstance:
     - target: {fileID: 8226774000362214352, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_Name
       value: TourGuide
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
