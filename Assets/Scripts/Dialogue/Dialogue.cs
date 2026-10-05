@@ -121,7 +121,7 @@ public class Dialogue : MonoBehaviour
         typingCoroutine = StartCoroutine(WriteLine());
     }
 
-    private IEnumerator WriteLine()
+private IEnumerator WriteLine()
     {
         isTyping = true;
 
@@ -134,12 +134,17 @@ public class Dialogue : MonoBehaviour
         bool isPlayerLine = DialogueLineSpeakers != null
             && lineIndex < DialogueLineSpeakers.Length
             && DialogueLineSpeakers[lineIndex] == DialogueSpeaker.Player;
-        TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
 
-        if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine);
+        // Pilih teks aktif, gunakan DialogueText NPC jika PlayerDialogueText belum diisi
+        TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
+        if (activeText == null) activeText = DialogueText; 
+
+        if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine || PlayerDialogueBox == null);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(isPlayerLine);
+
         if (activeText == null)
         {
+            Debug.LogError("DialogueText belum di-assign di Inspector!");
             isTyping = false;
             EndDialogue();
             yield break;
@@ -155,7 +160,6 @@ public class Dialogue : MonoBehaviour
         {
             activeText.maxVisibleCharacters = i;
 
-            // Animasi pergantian sprite bicaranya NPC saat teks diketik
             if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
             {
                 if (i % spriteToggleInterval == 0)
@@ -169,20 +173,17 @@ public class Dialogue : MonoBehaviour
         }
 
         isTyping = false;
-
-        // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
 
-        if (isPlayerLine)
+        if (isPlayerLine && PlayerNextPrompt != null)
         {
-            if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(true);
+            PlayerNextPrompt.SetActive(true);
         }
         else if (NextPrompt != null)
         {
             NextPrompt.SetActive(true);
         }
     }
-
     private void NextLine()
     {
         if (isTyping) return;
