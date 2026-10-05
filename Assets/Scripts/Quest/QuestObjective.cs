@@ -3,16 +3,7 @@ using UnityEngine;
 
 public enum QuestObjectiveType
 {
-    Interact,
-    Talk,
-    Trivia,
-    Hold,
-    Photo,
-    QTE,
-    Collect,
-    Fetch,
-    Deliver,
-    Diving
+    Interact, Talk, Trivia, Hold, Photo, QTE, Collect, Fetch, Deliver, Diving
 }
 
 [Serializable]
@@ -20,12 +11,12 @@ public class QuestObjective
 {
     public string ObjectiveID;
     public QuestObjectiveType Type;
-
+    
     [TextArea]
     public string Description;
-
+    
     public int RequiredAmount = 1;
-
+    
     [HideInInspector]
     public int CurrentAmount = 0;
 
@@ -44,6 +35,12 @@ public class QuestObjective
         if (CurrentAmount > RequiredAmount)
         {
             CurrentAmount = RequiredAmount;
+        }
+
+        QuestUI questUI = UnityEngine.Object.FindObjectOfType<QuestUI>();
+        if (questUI != null)
+        {
+            questUI.UpdateQuestUI();
         }
     }
 }

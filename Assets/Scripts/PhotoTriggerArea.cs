@@ -1,41 +1,46 @@
 using UnityEngine;
 
-public class PhotoTriggerArea : MonoBehaviour
+public class PhotoAreaTrigger : MonoBehaviour
 {
-    [Header("ID Foto Jurnal")]
-    [Tooltip("Isi dengan ID yang ada di database QuestJournalManager (misal: 1 untuk Sasi)")]
-    public int photoIDToTrigger; 
+    [Header("Quest & Journal Integration")]
+    public string objectiveID = "Foto_alam"; // SAMA PERSIS dengan Objective ID di Inspector Quest 3
+    public int photoID = 0;                  // Element 0 di All Photo Sprites Database
+    public int pageIDToUnlock = 1;           // Page ID 1 di All Journal Database (Halaman Arborek)
 
-    private bool isPlayerInZone = false;
-    public GameObject interactPromptUI; // Ikon 'F' yang muncul di atas kepala (Opsional)
+    private bool isPlayerInside = false;
 
-    void Update()
+    private void Update()
     {
-        if (isPlayerInZone && Input.GetKeyDown(KeyCode.F))
+        if (isPlayerInside && Input.GetKeyDown(KeyCode.F))
         {
-            // Suruh Manager menjepret foto dengan ID ini
-            QuestJournalManager.Instance.TakeSpecificPhoto(photoIDToTrigger);
-            
-            // Hapus area ini agar tidak bisa difoto 2 kali
-            gameObject.SetActive(false); 
+            // 1. Selesaikan Objective Quest 'Foto_alam'
+            if (QuestController.Instance != null)
+            {
+                QuestController.Instance.ProgressObjective(objectiveID, 1);
+            }
+
+            // 2. Simpan Foto & Buka Halaman Jurnal Arborek
+            if (QuestJournalManager.Instance != null)
+            {
+                QuestJournalManager.Instance.TakeSpecificPhoto(photoID);    // Pasang foto Arborek
+                QuestJournalManager.Instance.UnlockNewPage(pageIDToUnlock); // Buka Halaman Arborek
+                QuestJournalManager.Instance.AddCompletedQuest();        // Tambah % progress
+
+                QuestJournalManager.Instance.currentOngoingQuest = "";
+                QuestJournalManager.Instance.lastCompletedQuest = "Memotret Pemandangan Sasi Laut";
+            }
+
+            Debug.Log("Quest Foto Selesai & Foto masuk ke Jurnal Halaman 2!");
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerInZone = true;
-            if (interactPromptUI != null) interactPromptUI.SetActive(true);
-        }
+        if (collision.CompareTag("Player")) isPlayerInside = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerInZone = false;
-            if (interactPromptUI != null) interactPromptUI.SetActive(false);
-        }
+        if (collision.CompareTag("Player")) isPlayerInside = false;
     }
 }

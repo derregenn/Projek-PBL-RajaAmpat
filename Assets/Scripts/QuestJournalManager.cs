@@ -4,18 +4,12 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
-// Struktur database yang memisahkan Sprite Halaman Buku dan Opsi Foto Polaroid
 [System.Serializable]
 public class JournalEntry
 {
     public int pageID; 
-    [Tooltip("Sprite halaman buku penuh (latar buku + teks dari desainer)")]
     public Sprite pageBackgroundSprite; 
-
-    [Header("Pengaturan Foto Polaroid (Opsional)")]
-    [Tooltip("Centang jika halaman ini butuh menampilkan hasil foto jepretan pemain")]
     public bool requiresPhoto = false; 
-    [Tooltip("ID foto yang akan dicetak di halaman ini (jika requiresPhoto dicentang)")]
     public int photoIDToDisplay;
 }
 
@@ -23,39 +17,31 @@ public class QuestJournalManager : MonoBehaviour
 {
     public static QuestJournalManager Instance; 
 
-    [Header("Photography Popup UI")]
     public Image cameraFlash;
     public GameObject polaroidPopup;
     public Image popupPhotoDisplay;
 
-    [Header("Award Pianemo Collectible")]
     public Image pianemoAwardImage;         
     public Sprite pianemoDisableSprite;     
     public Sprite pianemoActiveSprite;      
 
-    [Header("Quest Tab UI (Kiri)")]
     public GameObject questTabPanel;
     public Image folderImage; 
     public TextMeshProUGUI ongoingQuestText; 
 
-    [Header("Aset Tab (Dari Desainer)")]
     public Sprite tabOngoingSprite;   
     public Sprite tabCompletedSprite; 
     
     private bool isOngoingTabActive = true; 
 
-    [Header("Journal UI (Kanan)")]
-    public Image journalPageImage;        // Menampilkan sprite halaman buku penuh dari desainer
-    public Image journalPhotoImage;       // Wadah foto hasil jepretan (hanya muncul jika halaman butuh foto)
+    public Image journalPageImage;        
+    public Image journalPhotoImage;       
     public GameObject noPhotoWarning; 
     public TextMeshProUGUI pageNumberText; 
 
-    [Header("Database Buku Jurnal (Isi Sesuai GDD)")]
-    public JournalEntry[] allJournalDatabase; // Daftar semua halaman buku
-    public List<int> unlockedPages = new List<int>(); // Halaman yang sudah terbuka
+    public JournalEntry[] allJournalDatabase; 
+    public List<int> unlockedPages = new List<int>(); 
 
-    // Database terpisah khusus menyimpan koleksi foto jepretan pemain (untuk mekanik fotografi)
-    [Header("Database Foto Hasil Jepretan")]
     public Sprite[] allPhotoSpritesDatabase; 
     private Dictionary<int, Sprite> collectedPhotos = new Dictionary<int, Sprite>();
 
@@ -64,6 +50,10 @@ public class QuestJournalManager : MonoBehaviour
 
     [HideInInspector] public string currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
     [HideInInspector] public string lastCompletedQuest = "Belum ada misi selesai.";
+
+    public TextMeshProUGUI progressPercentageText;
+    public int totalQuestsInIsland = 15;
+    private int completedQuestsCount = 0;
 
     void Awake()
     {
@@ -76,11 +66,12 @@ public class QuestJournalManager : MonoBehaviour
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
         if (questTabPanel != null) questTabPanel.SetActive(false);
 
-        // Otomatis buka halaman pertama (ID 0) saat game mulai agar buku tidak kosong melompong
         if (allJournalDatabase.Length > 0 && !unlockedPages.Contains(allJournalDatabase[0].pageID))
         {
             unlockedPages.Add(allJournalDatabase[0].pageID);
         }
+        
+        UpdateProgressUI();
     }
 
     void Update()
@@ -123,12 +114,10 @@ public class QuestJournalManager : MonoBehaviour
         }
     }
 
-    // --- MEKANIK FOTOGRAFI ---
     public void TakeSpecificPhoto(int photoID)
     {
         if (isFlashing) return; 
 
-        // Cari sprite foto dari database foto
         Sprite photoSprite = GetPhotoSpriteByID(photoID);
         if (photoSprite != null)
         {
@@ -162,7 +151,6 @@ public class QuestJournalManager : MonoBehaviour
         isFlashing = false;
     }
 
-    // --- UPDATE TAMPILAN JURNAL ---
     private void UpdateJournalUI()
     {
         RefreshQuestTabText();
@@ -174,38 +162,32 @@ public class QuestJournalManager : MonoBehaviour
 
             if (entry != null)
             {
-                // 1. Tampilkan Sprite Halaman Buku Full dari Desainer
                 if (journalPageImage != null)
                 {
                     journalPageImage.sprite = entry.pageBackgroundSprite;
                     journalPageImage.gameObject.SetActive(true);
                 }
 
-                // 2. CEK APAKAH HALAMAN INI BUTUH FOTO POLAROID
                 if (entry.requiresPhoto)
                 {
-                    // Cek apakah pemain sudah memotret foto untuk halaman ini
                     if (collectedPhotos.ContainsKey(entry.photoIDToDisplay))
                     {
                         journalPhotoImage.sprite = collectedPhotos[entry.photoIDToDisplay];
-                        journalPhotoImage.gameObject.SetActive(true); // Munculkan foto
+                        journalPhotoImage.gameObject.SetActive(true); 
                         if (noPhotoWarning != null) noPhotoWarning.SetActive(false);
                     }
                     else
                     {
-                        // Belum dipotret, sembunyikan wadah foto / tampilkan peringatan
                         journalPhotoImage.gameObject.SetActive(false); 
                         if (noPhotoWarning != null) noPhotoWarning.SetActive(true);
                     }
                 }
                 else
                 {
-                    // Halaman ini murni teks/cerita dari desainer, matikan wadah foto!
                     if (journalPhotoImage != null) journalPhotoImage.gameObject.SetActive(false);
                     if (noPhotoWarning != null) noPhotoWarning.SetActive(false);
                 }
 
-                // Update Nomor Halaman
                 if (pageNumberText != null)
                 {
                     pageNumberText.text = "Page " + (currentJournalIndex + 1);
@@ -240,13 +222,11 @@ public class QuestJournalManager : MonoBehaviour
         }
     }
 
-    // Fungsi untuk membuka halaman baru (bisa dipanggil dari Quest Selesai)
     public void UnlockNewPage(int pageID)
     {
         if (!unlockedPages.Contains(pageID))
         {
             unlockedPages.Add(pageID);
-            Debug.Log("Halaman Jurnal Baru Terbuka! ID: " + pageID);
         }
     }
 
@@ -256,7 +236,6 @@ public class QuestJournalManager : MonoBehaviour
         {
             pianemoAwardImage.gameObject.SetActive(true);
             pianemoAwardImage.sprite = pianemoActiveSprite;
-            Debug.Log("Award Pianemo Berhasil Terbuka dan Menyala!");
         }
     }
 
@@ -282,5 +261,24 @@ public class QuestJournalManager : MonoBehaviour
     {
         if (questTabPanel != null) questTabPanel.SetActive(false);
         Time.timeScale = 1f; 
+    }
+
+    public void AddCompletedQuest()
+    {
+        completedQuestsCount++;
+        UpdateProgressUI();
+    }
+
+private void UpdateProgressUI()
+    {
+        if (progressPercentageText != null)
+        {
+            float percentage = (completedQuestsCount / (float)totalQuestsInIsland) * 100f;
+            
+            // Membulatkan angka (misal 6.67 menjadi 6)
+            int displayPercentage = Mathf.FloorToInt(percentage);
+            
+            progressPercentageText.text = "Progress: " + displayPercentage + "%";
+        }
     }
 }
