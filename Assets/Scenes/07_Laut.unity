@@ -199,12 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &88220808
 SpriteRenderer:
   serializedVersion: 2
@@ -689,12 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &221525937
 SpriteRenderer:
   serializedVersion: 2
@@ -952,6 +940,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 52.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -52.4225
+      objectReference: {fileID: 0}
     - target: {fileID: 1686357090159600224, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -976,9 +988,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5130259613458300511, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 52.155
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -120.9225
+      objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: isSwimming
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 157
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1058,12 +1102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &368092589
 SpriteRenderer:
   serializedVersion: 2
@@ -1460,7 +1498,7 @@ SpriteRenderer:
   m_Size: {x: 19.201698, y: 25.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &611378379
 Transform:
@@ -1522,12 +1560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbfb97d4b2f62742aa8d3c3f61591aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VolumetricLightEffect
-  pulseSpeed: 1.5
-  minAlpha: 0.3
-  maxAlpha: 0.7
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAmount: 0.15
 --- !u!212 &655527989
 SpriteRenderer:
   serializedVersion: 2
@@ -1705,12 +1737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &787634986
 SpriteRenderer:
   serializedVersion: 2
@@ -1815,12 +1841,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbfb97d4b2f62742aa8d3c3f61591aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VolumetricLightEffect
-  pulseSpeed: 1.5
-  minAlpha: 0.3
-  maxAlpha: 0.7
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAmount: 0.15
 --- !u!212 &811588877
 SpriteRenderer:
   serializedVersion: 2
@@ -2095,12 +2115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbfb97d4b2f62742aa8d3c3f61591aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VolumetricLightEffect
-  pulseSpeed: 1.5
-  minAlpha: 0.3
-  maxAlpha: 0.7
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAmount: 0.15
 --- !u!212 &827201337
 SpriteRenderer:
   serializedVersion: 2
@@ -2340,12 +2354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbfb97d4b2f62742aa8d3c3f61591aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VolumetricLightEffect
-  pulseSpeed: 1.5
-  minAlpha: 0.3
-  maxAlpha: 0.7
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAmount: 0.15
 --- !u!212 &929021074
 SpriteRenderer:
   serializedVersion: 2
@@ -2450,12 +2458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &961899628
 SpriteRenderer:
   serializedVersion: 2
@@ -2651,12 +2653,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &1036240078
 SpriteRenderer:
   serializedVersion: 2
@@ -2927,12 +2923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &1201802631
 SpriteRenderer:
   serializedVersion: 2
@@ -3219,12 +3209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &1521337764
 SpriteRenderer:
   serializedVersion: 2
@@ -3539,12 +3523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb632760418764d9c5fe042f9dcd93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeamLightEffect
-  pulseSpeed: 1.2
-  minAlpha: 0.15
-  maxAlpha: 0.65
-  enableSway: 1
-  swaySpeed: 0.8
-  swayAngle: 2.5
 --- !u!212 &2007306942
 SpriteRenderer:
   serializedVersion: 2
