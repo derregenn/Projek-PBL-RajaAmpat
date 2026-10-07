@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questsToGive: []
+  questToGive: {fileID: 11400000, guid: 9985949b11c35a644ad26b819187ccec, type: 2}
 --- !u!114 &137816130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -677,13 +677,8 @@ MonoBehaviour:
   DialogueLines:
   - ini quest ya
   DialogueLineSpeakers: 
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
   npcSpriteRenderer: {fileID: 0}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -1288,6 +1283,10 @@ PrefabInstance:
       propertyPath: pianemoActiveSprite
       value: 
       objectReference: {fileID: -8746646610199593172, guid: d0c8869451512474396a33ef6e333e56, type: 3}
+    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
+      propertyPath: totalQuestsInIsland
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: pianemoDisableSprite
       value: 
@@ -3444,30 +3443,6 @@ PrefabInstance:
       propertyPath: promptPanel
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 280
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 52.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -52.4225
-      objectReference: {fileID: 0}
     - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: qte2Script
       value: 
@@ -3495,38 +3470,6 @@ PrefabInstance:
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5130259613458300511, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 280
-      objectReference: {fileID: 0}
-    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 52.155
-      objectReference: {fileID: 0}
-    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -120.9225
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 157
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4237,7 +4180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questsToGive: []
+  questToGive: {fileID: 11400000, guid: 13bd15be21a29624fa8902f094e2eb7f, type: 2}
 --- !u!114 &1313240534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4931,7 +4874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questsToGive: []
+  questToGive: {fileID: 11400000, guid: cabb46b59b136a4478e01c558f56b29d, type: 2}
 --- !u!114 &1668667927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4953,14 +4896,9 @@ MonoBehaviour:
   PlayerNextPrompt: {fileID: 0}
   DialogueLines:
   - Foto keindahan alam pulau arborek
-  DialogueLineSpeakers: 01000000
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
+  DialogueLineSpeakers: 00000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
   npcSpriteRenderer: {fileID: 0}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -6578,7 +6516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questsToGive: []
+  questToGive: {fileID: 11400000, guid: 13bd15be21a29624fa8902f094e2eb7f, type: 2}
 --- !u!114 &2022872704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6602,13 +6540,8 @@ MonoBehaviour:
   - 'Aduh, bantu sebentar saja lah! Kasihan saya ini sudah tua tapi harus nyari sana-sini '
   - Cari Kotak ikan di sekitar pesisir pulau.
   DialogueLineSpeakers: 
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
   npcSpriteRenderer: {fileID: 0}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
