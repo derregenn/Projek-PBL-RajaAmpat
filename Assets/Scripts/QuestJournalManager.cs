@@ -66,7 +66,7 @@ public class QuestJournalManager : MonoBehaviour
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
         if (questTabPanel != null) questTabPanel.SetActive(false);
 
-        if (allJournalDatabase != null && allJournalDatabase.Length > 0 && !unlockedPages.Contains(allJournalDatabase[0].pageID))
+        if (allJournalDatabase.Length > 0 && !unlockedPages.Contains(allJournalDatabase[0].pageID))
         {
             unlockedPages.Add(allJournalDatabase[0].pageID);
         }
@@ -78,19 +78,11 @@ public class QuestJournalManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab) && !isFlashing)
         {
-            if (questTabPanel == null)
-            {
-                Debug.LogError("[QuestJournalManager] questTabPanel belum di-assign di Inspector!");
-                return;
-            }
+            bool isOpen = questTabPanel.activeSelf;
+            questTabPanel.SetActive(!isOpen);
+            Time.timeScale = isOpen ? 1 : 0; 
 
-            bool isCurrentlyOpen = questTabPanel.activeSelf;
-            bool willOpen = !isCurrentlyOpen;
-
-            questTabPanel.SetActive(willOpen);
-            Time.timeScale = willOpen ? 0f : 1f; // Pause game saat jurnal buka, resume saat tutup
-
-            if (willOpen)
+            if (!isOpen)
             {
                 UpdateJournalUI();
             }
@@ -156,7 +148,6 @@ public class QuestJournalManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f); 
 
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
-        if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 0);
         isFlashing = false;
     }
 
@@ -164,14 +155,8 @@ public class QuestJournalManager : MonoBehaviour
     {
         RefreshQuestTabText();
 
-        if (unlockedPages != null && unlockedPages.Count > 0)
+        if (unlockedPages.Count > 0)
         {
-            // Mencegah OutOfRangeException pada index halaman
-            if (currentJournalIndex < 0 || currentJournalIndex >= unlockedPages.Count)
-            {
-                currentJournalIndex = 0;
-            }
-
             int currentPageID = unlockedPages[currentJournalIndex];
             JournalEntry entry = GetPageEntryByID(currentPageID);
 
@@ -187,16 +172,13 @@ public class QuestJournalManager : MonoBehaviour
                 {
                     if (collectedPhotos.ContainsKey(entry.photoIDToDisplay))
                     {
-                        if (journalPhotoImage != null)
-                        {
-                            journalPhotoImage.sprite = collectedPhotos[entry.photoIDToDisplay];
-                            journalPhotoImage.gameObject.SetActive(true); 
-                        }
+                        journalPhotoImage.sprite = collectedPhotos[entry.photoIDToDisplay];
+                        journalPhotoImage.gameObject.SetActive(true); 
                         if (noPhotoWarning != null) noPhotoWarning.SetActive(false);
                     }
                     else
                     {
-                        if (journalPhotoImage != null) journalPhotoImage.gameObject.SetActive(false); 
+                        journalPhotoImage.gameObject.SetActive(false); 
                         if (noPhotoWarning != null) noPhotoWarning.SetActive(true);
                     }
                 }
@@ -211,10 +193,6 @@ public class QuestJournalManager : MonoBehaviour
                     pageNumberText.text = "Page " + (currentJournalIndex + 1);
                 }
             }
-            else
-            {
-                Debug.LogWarning("[QuestJournalManager] Page ID " + currentPageID + " tidak ditemukan di All Journal Database.");
-            }
         }
         else
         {
@@ -227,7 +205,7 @@ public class QuestJournalManager : MonoBehaviour
 
     public void NextPage()
     {
-        if (unlockedPages != null && unlockedPages.Count > 1)
+        if (unlockedPages.Count > 1)
         {
             currentJournalIndex = (currentJournalIndex + 1) % unlockedPages.Count;
             UpdateJournalUI();
@@ -236,7 +214,7 @@ public class QuestJournalManager : MonoBehaviour
 
     public void PrevPage()
     {
-        if (unlockedPages != null && unlockedPages.Count > 1)
+        if (unlockedPages.Count > 1)
         {
             currentJournalIndex--;
             if (currentJournalIndex < 0) currentJournalIndex = unlockedPages.Count - 1;
@@ -246,7 +224,7 @@ public class QuestJournalManager : MonoBehaviour
 
     public void UnlockNewPage(int pageID)
     {
-        if (unlockedPages != null && !unlockedPages.Contains(pageID))
+        if (!unlockedPages.Contains(pageID))
         {
             unlockedPages.Add(pageID);
         }
@@ -263,17 +241,16 @@ public class QuestJournalManager : MonoBehaviour
 
     private JournalEntry GetPageEntryByID(int id)
     {
-        if (allJournalDatabase == null) return null;
         foreach (var entry in allJournalDatabase)
         {
-            if (entry != null && entry.pageID == id) return entry;
+            if (entry.pageID == id) return entry;
         }
         return null;
     }
 
     private Sprite GetPhotoSpriteByID(int id)
     {
-        if (allPhotoSpritesDatabase != null && id >= 0 && id < allPhotoSpritesDatabase.Length)
+        if (id >= 0 && id < allPhotoSpritesDatabase.Length)
         {
             return allPhotoSpritesDatabase[id];
         }
@@ -292,13 +269,15 @@ public class QuestJournalManager : MonoBehaviour
         UpdateProgressUI();
     }
 
-    private void UpdateProgressUI()
+private void UpdateProgressUI()
     {
         if (progressPercentageText != null)
         {
-            if (totalQuestsInIsland <= 0) totalQuestsInIsland = 1;
             float percentage = (completedQuestsCount / (float)totalQuestsInIsland) * 100f;
+            
+            // Membulatkan angka (misal 6.67 menjadi 6)
             int displayPercentage = Mathf.FloorToInt(percentage);
+            
             progressPercentageText.text = "Progress: " + displayPercentage + "%";
         }
     }

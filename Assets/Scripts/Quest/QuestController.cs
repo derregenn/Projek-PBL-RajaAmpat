@@ -1,17 +1,10 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
 public class QuestController : MonoBehaviour
 {
     public static QuestController Instance { get; private set; }
-
-    // ========================================
-    // EVENT FOR PROGRESS & BARRIER UNLOCK
-    // ========================================
-    // Event ini disiarkan saat quest selesai (mengirimkan questID)
-    public static event Action<string> OnQuestCompleted;
 
     [Header("Quest UI Reference")]
     [SerializeField] private QuestUI questUI;
@@ -74,6 +67,12 @@ public class QuestController : MonoBehaviour
             );
             return;
         }
+
+        // ====================================
+        // PENTING
+        // Quest baru diterima di sini.
+        // BELUM mengecek quest.IsComplete.
+        // ====================================
 
         ActiveQuests.Add(quest);
 
@@ -143,6 +142,10 @@ public class QuestController : MonoBehaviour
             QuestObjective objective =
                 quest.GetObjective(objectiveID);
 
+            // ====================================
+            // OBJECTIVE DITEMUKAN
+            // ====================================
+
             if (objective == null)
                 continue;
 
@@ -153,10 +156,14 @@ public class QuestController : MonoBehaviour
                     "Objective already complete: "
                     + objectiveID
                 );
+
                 return;
             }
 
-            // Tambahkan progress
+            // ====================================
+            // TAMBAHKAN PROGRESS
+            // ====================================
+
             objective.AddProgress(amount);
 
             Debug.Log(
@@ -174,7 +181,10 @@ public class QuestController : MonoBehaviour
                 questUI.UpdateQuestUI();
             }
 
+            // ====================================
             // CEK QUEST SELESAI
+            // ====================================
+
             if (IsQuestFinished(quest))
             {
                 CompleteQuest(quest);
@@ -205,6 +215,7 @@ public class QuestController : MonoBehaviour
                 "Quest tidak memiliki objective: "
                 + quest.QuestTitle
             );
+
             return false;
         }
 
@@ -232,14 +243,22 @@ public class QuestController : MonoBehaviour
         if (quest == null)
             return;
 
+        // Pastikan quest memang aktif
         if (!ActiveQuests.Contains(quest))
             return;
 
-        string completedQuestID = quest.QuestID;
+        Debug.Log(
+            "================================"
+        );
 
-        Debug.Log("================================");
-        Debug.Log("QUEST COMPLETE: " + quest.QuestTitle);
-        Debug.Log("================================");
+        Debug.Log(
+            "QUEST COMPLETE: "
+            + quest.QuestTitle
+        );
+
+        Debug.Log(
+            "================================"
+        );
 
         // Hapus quest dari ActiveQuests
         ActiveQuests.Remove(quest);
@@ -251,9 +270,13 @@ public class QuestController : MonoBehaviour
         }
 
         // ====================================
-        // SIARKAN EVENT KE BARRIER & SYSTEM PROGRESS
+        // FITUR NANTI
         // ====================================
-        OnQuestCompleted?.Invoke(completedQuestID);
+
+        // UnlockNextQuest();
+        // GiveReward();
+        // SaveGame();
+        // LoadNextScene();
     }
 
     internal void AcceptQuest(string objectiveID)
