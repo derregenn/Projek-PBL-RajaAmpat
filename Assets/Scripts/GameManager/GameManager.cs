@@ -64,7 +64,22 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("Objek Player tidak ditemukan untuk disimpan.");
         }
+
+        
+
+    PlayerPrefs.SetString("SavedScene", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    
+    // Menyimpan fase cerita saat ini
+    if (StoryManager.Instance != null) 
+    {
+        PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
     }
+    
+    // Wajib dipanggil agar data benar-benar tersimpan, terutama untuk WebGL
+    PlayerPrefs.Save(); 
+
+    Debug.Log("Game Berhasil Disimpan beserta status Scene & Story Phase!");
+}
 
     public void LoadGame()
     {
