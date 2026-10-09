@@ -6,7 +6,7 @@ public class StepClimbing : MonoBehaviour
     [Header("Climb Positions")]
     [SerializeField] private Transform[] climbSteps; // Titik-titik posisi pemanjatan
     [SerializeField] private Transform topPlatformPoint; // Titik akhir di atas tebing
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 2f;
 
     [Header("Climb Sprites")]
     [SerializeField] private Sprite climbSprite1; // Pose panjat 1

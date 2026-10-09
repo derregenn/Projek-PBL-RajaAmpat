@@ -13,7 +13,17 @@ public class QuestObjectiveTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
+        TryTriggerObjective(collision.gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        TryTriggerObjective(collision.gameObject);
+    }
+
+    private void TryTriggerObjective(GameObject other)
+    {
+        if (!other.CompareTag("Player"))
             return;
 
         if (hasTriggered)
