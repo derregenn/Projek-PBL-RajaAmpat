@@ -7,7 +7,7 @@ public class ScreenFader : MonoBehaviour
 
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private float fadeDuration = 1.0f;
-    [SerializeField] private bool fadeInOnStart = true; // Otomatis fade in saat game mulai
+    [SerializeField] private bool fadeInOnStart = true;
 
     private Coroutine currentFadeCoroutine;
 
@@ -28,11 +28,11 @@ public class ScreenFader : MonoBehaviour
             canvasGroup = GetComponent<CanvasGroup>();
         }
     }
+
     private void Start()
     {
         if (fadeInOnStart && canvasGroup != null)
         {
-            // Mulai dari hitam pekat (1), lalu perlahan transparan ke (0)
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             FadeIn();
@@ -47,6 +47,17 @@ public class ScreenFader : MonoBehaviour
     public void FadeIn()
     {
         StartFade(0f);
+    }
+
+    // --- TAMBAHAN METHOD UNTUK COROUTINE INTERAL/EXTERNAL ---
+    public IEnumerator FadeOutRoutine()
+    {
+        yield return FadeRoutine(1f);
+    }
+
+    public IEnumerator FadeInRoutine()
+    {
+        yield return FadeRoutine(0f);
     }
 
     private void StartFade(float targetAlpha)
@@ -76,7 +87,6 @@ public class ScreenFader : MonoBehaviour
         }
 
         canvasGroup.alpha = targetAlpha;
-        // Buka blokir klik mouse hanya saat layar sudah benar-benar terang
         canvasGroup.blocksRaycasts = targetAlpha > 0.05f;
     }
 }

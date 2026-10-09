@@ -11,12 +11,12 @@ public class QuestObjective
 {
     public string ObjectiveID;
     public QuestObjectiveType Type;
-    
+
     [TextArea]
     public string Description;
-    
+
     public int RequiredAmount = 1;
-    
+
     [HideInInspector]
     public int CurrentAmount = 0;
 
@@ -37,7 +37,7 @@ public class QuestObjective
             CurrentAmount = RequiredAmount;
         }
 
-        QuestUI questUI = UnityEngine.Object.FindObjectOfType<QuestUI>();
+        QuestUI questUI = UnityEngine.Object.FindFirstObjectByType<QuestUI>();
         if (questUI != null)
         {
             questUI.UpdateQuestUI();

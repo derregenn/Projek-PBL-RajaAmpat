@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StepClimbing : MonoBehaviour
@@ -8,11 +9,14 @@ public class StepClimbing : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
 
     [Header("Climb Sprites")]
-    [SerializeField] private Sprite climbSprite1; // Drag pose panjat 1 (misal: tangan kanan atas)
-    [SerializeField] private Sprite climbSprite2; // Drag pose panjat 2 (misal: tangan kiri atas)
+    [SerializeField] private Sprite climbSprite1; // Pose panjat 1
+    [SerializeField] private Sprite climbSprite2; // Pose panjat 2
 
     [Header("QTE Reference")]
     [SerializeField] private QTE2 qte2Script; // Drag GameObject QTE2 ke sini
+
+    [Header("Quest Settings")]
+    [SerializeField] private string questObjectiveID = "piaynemo_hiking";
 
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
@@ -62,7 +66,8 @@ public class StepClimbing : MonoBehaviour
                 }
                 else
                 {
-                    FinishClimbing();
+                    // Jalankan sekuens penutup (Teleport & ScreenFader) saat semua step selesai
+                    StartCoroutine(FinishClimbingRoutine());
                 }
             }
         }
@@ -90,7 +95,7 @@ public class StepClimbing : MonoBehaviour
         }
         else
         {
-            FinishClimbing();
+            StartCoroutine(FinishClimbingRoutine());
         }
     }
 
@@ -123,7 +128,7 @@ public class StepClimbing : MonoBehaviour
         }
         else
         {
-            FinishClimbing();
+            StartCoroutine(FinishClimbingRoutine());
         }
     }
 
@@ -141,16 +146,34 @@ public class StepClimbing : MonoBehaviour
         }
     }
 
-    private void FinishClimbing()
+    private IEnumerator FinishClimbingRoutine()
     {
         isClimbingMode = false;
         HideQTE();
 
-        // Kembalikan fisik & gravitasi ke normal
+        // 1. Transisi Layar Hitam (Fade Out)
+        if (ScreenFader.Instance != null)
+        {
+            yield return ScreenFader.Instance.FadeOutRoutine();
+        }
+
+        // 2. Pindahkan Posisi ke Puncak Bukit jika ada
+        if (topPlatformPoint != null)
+        {
+            transform.position = topPlatformPoint.position;
+        }
+
+        // 3. Laporkan Progres Quest 2 (Cliff Hiking)
+        if (QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
+        {
+            QuestController.Instance.ProgressObjective(questObjectiveID);
+        }
+
+        // 4. Kembalikan fisik & gravitasi ke normal
         if (rb != null) rb.bodyType = RigidbodyType2D.Dynamic;
         if (playerCollider != null) playerCollider.enabled = true;
 
-        // Kembalikan Sprite asli dan aktifkan Animator kembali
+        // 5. Kembalikan Sprite asli dan aktifkan Animator
         if (spriteRenderer != null && originalSprite != null)
         {
             spriteRenderer.sprite = originalSprite;
@@ -159,7 +182,15 @@ public class StepClimbing : MonoBehaviour
         if (anim != null)
         {
             anim.enabled = true;
-            anim.Play("Idle"); // Sesuaikan nama state Idle kamu
+            anim.Play("Idle");
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        // 6. Layar Terang Kembali (Fade In)
+        if (ScreenFader.Instance != null)
+        {
+            yield return ScreenFader.Instance.FadeInRoutine();
         }
     }
 
