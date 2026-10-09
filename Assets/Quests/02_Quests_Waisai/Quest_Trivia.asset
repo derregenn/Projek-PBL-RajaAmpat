@@ -10,14 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2192e413909301f44b7dcad3df94beca, type: 3}
-  m_Name: Quest1_Waisai
+  m_Name: Quest_Trivia
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  QuestID: 001
-  QuestTitle: Temui Petugas Hub di loket
+  QuestID: Tour_Guide_Quest
+  QuestTitle: Jawab Trivia berikut
   Description: 
   Objectives:
-  - ObjectiveID: petugas_hub
+  - ObjectiveID: Meet_Hub
+    Type: 1
+    Description: 
+    RequiredAmount: 2
+    CurrentAmount: 0
+  - ObjectiveID: Tour_Guide_Quest
     Type: 2
     Description: 
-    RequiredAmount: 1
+    RequiredAmount: 2
     CurrentAmount: 0
