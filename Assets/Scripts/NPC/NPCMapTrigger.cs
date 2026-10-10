@@ -3,52 +3,30 @@ using UnityEngine;
 public class NPCMapTrigger : MonoBehaviour
 {
     public MapController mapController;
-    public GameObject interactPromptUI; // Opsional: Teks UI "Press E to talk/open map"
-    public KeyCode interactKey = KeyCode.E;
-
-    private bool isPlayerNearby = false;
     private bool isMapOpen = false;
 
-    void Start()
+    private void Update()
     {
-        if (interactPromptUI != null) interactPromptUI.SetActive(false);
-    }
-
-    void Update()
-    {
-        if (isPlayerNearby && Input.GetKeyDown(interactKey))
+        if (isMapOpen && Input.GetKeyDown(KeyCode.E))
         {
-            if (mapController != null)
-            {
-                if (isMapOpen)
-                {
-                    mapController.CloseWorldMap();
-                    isMapOpen = false;
-                }
-                else
-                {
-                    mapController.OpenWorldMap();
-                    isMapOpen = true;
-                }
-            }
+            CloseWorldMap();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    // Hanya dipanggil melalui UnityEvent atau script event lain.
+    public void OpenWorldMap()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNearby = true;
-            if (interactPromptUI != null) interactPromptUI.SetActive(true);
-        }
+        if (mapController == null) return;
+
+        mapController.OpenWorldMap();
+        isMapOpen = true;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void CloseWorldMap()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNearby = false;
-            if (interactPromptUI != null) interactPromptUI.SetActive(false);
-        }
+        if (mapController == null) return;
+
+        mapController.CloseWorldMap();
+        isMapOpen = false;
     }
 }

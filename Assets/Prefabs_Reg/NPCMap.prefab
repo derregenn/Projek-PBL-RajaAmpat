@@ -687,6 +687,7 @@ GameObject:
   - component: {fileID: 1128920564684957261}
   - component: {fileID: 4656081642101474642}
   - component: {fileID: 8685177386890641346}
+  - component: {fileID: 181294527704724109}
   m_Layer: 0
   m_Name: NPCMap
   m_TagString: Untagged
@@ -704,7 +705,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 44.46, y: 3.52, z: 0}
-  m_LocalScale: {x: 0.2434, y: 0.2434, z: 1}
+  m_LocalScale: {x: 0.16, y: 0.16, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2033402688843814290}
@@ -755,8 +756,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayerID: -72866051
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3586363740857737927, guid: 6f573fdf8e4543546a18253532016591, type: 3}
@@ -835,8 +836,9 @@ MonoBehaviour:
   NextPrompt: {fileID: 3623676598555574997}
   PlayerNextPrompt: {fileID: 0}
   DialogueLines:
-  - 'Pindah pulau? '
-  DialogueLineSpeakers: 
+  - Udah siap berangkat?
+  - Siap bang!
+  DialogueLineSpeakers: 0000000001000000
   QuestGivenDialogueLines: []
   QuestGivenLineSpeakers: 
   QuestCompletedDialogueLines: []
@@ -850,10 +852,22 @@ MonoBehaviour:
   idleSprite: {fileID: -3586363740857737927, guid: 6f573fdf8e4543546a18253532016591, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 0}
-  npcLensSize: 3.5
+  npcLensSize: 2
   onDialogueEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8685177386890641346}
+        m_TargetAssemblyTypeName: NPCMapTrigger, Assembly-CSharp
+        m_MethodName: OpenWorldMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8685177386890641346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -869,6 +883,22 @@ MonoBehaviour:
   mapController: {fileID: 0}
   interactPromptUI: {fileID: 1270992414121551918}
   interactKey: 101
+--- !u!114 &181294527704724109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7563776255713643221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
+  objectiveID: 
+  onObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9213326106999517350
 GameObject:
   m_ObjectHideFlags: 0

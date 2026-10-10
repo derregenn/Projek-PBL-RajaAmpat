@@ -27,13 +27,17 @@ public class ParallaxBackground : MonoBehaviour
 
     private void Update()
     {
+        if (lengthX <= 0f)
+        {
+            return;
+        }
+
         // Geser posisi ke kiri
         transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime);
 
-        // Jika gambar sudah bergeser sejauh panjang lebarnya sendiri, reset posisi secara mulus
-        if (transform.position.x <= startPosition.x - lengthX)
+        // Pertahankan sisa jarak agar tetap mulus meski satu frame bergerak melewati batas.
+        while (transform.position.x <= startPosition.x - lengthX)
         {
-            // Menambahkan offset presisi agar tidak ada celah/gap pixel
             transform.position += new Vector3(lengthX * 2f, 0, 0);
         }
     }
