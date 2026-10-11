@@ -26,6 +26,7 @@ public class InfographicUI : MonoBehaviour
     private CanvasGroup infographicCanvasGroup;
     private RectTransform infographicRectTransform;
     private Coroutine popupCoroutine;
+    private Coroutine closePopupCoroutine;
     private Coroutine autoCloseCoroutine;
     private Coroutine enablePlayerControlCoroutine;
     private readonly List<MonoBehaviour> toggledPlayerScripts = new List<MonoBehaviour>();
@@ -128,16 +129,25 @@ public class InfographicUI : MonoBehaviour
         if (popupCoroutine != null)
         {
             StopCoroutine(popupCoroutine);
+            popupCoroutine = null;
+        }
+
+        if (closePopupCoroutine != null)
+        {
+            StopCoroutine(closePopupCoroutine);
+            closePopupCoroutine = null;
         }
 
         if (autoCloseCoroutine != null)
         {
             StopCoroutine(autoCloseCoroutine);
+            autoCloseCoroutine = null;
         }
 
         if (enablePlayerControlCoroutine != null)
         {
             StopCoroutine(enablePlayerControlCoroutine);
+            enablePlayerControlCoroutine = null;
         }
 
         popupCoroutine = StartCoroutine(EaseInPopup());
@@ -185,6 +195,68 @@ public class InfographicUI : MonoBehaviour
         {
             infographicRectTransform.localScale = targetScale;
         }
+
+        popupCoroutine = null;
+    }
+
+    private IEnumerator EaseOutPopup()
+    {
+        if (infographicCanvasGroup == null)
+        {
+            FinishHidePanel();
+            yield break;
+        }
+
+        Vector3 startScale = infographicRectTransform != null ? infographicRectTransform.localScale : originalPanelScale;
+        Vector3 targetScale = originalPanelScale * 0.85f;
+        float startAlpha = infographicCanvasGroup.alpha;
+        float elapsed = 0f;
+
+        while (elapsed < popupDuration)
+        {
+            float t = Mathf.Clamp01(elapsed / popupDuration);
+            float eased = 1f - Mathf.Pow(1f - t, 3f);
+
+            infographicCanvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, eased);
+
+            if (infographicRectTransform != null)
+            {
+                infographicRectTransform.localScale = Vector3.Lerp(startScale, targetScale, eased);
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        infographicCanvasGroup.alpha = 0f;
+
+        if (infographicRectTransform != null)
+        {
+            infographicRectTransform.localScale = targetScale;
+        }
+
+        FinishHidePanel();
+        closePopupCoroutine = null;
+    }
+
+    private void FinishHidePanel()
+    {
+        if (infographicPanel != null)
+        {
+            infographicPanel.SetActive(false);
+        }
+
+        if (infographicRectTransform != null)
+        {
+            infographicRectTransform.localScale = originalPanelScale;
+        }
+
+        if (infographicCanvasGroup != null)
+        {
+            infographicCanvasGroup.alpha = 0f;
+        }
+
+        onInfographicClosed?.Invoke();
     }
 
     private IEnumerator CloseAfterDelay(float delay)
@@ -288,19 +360,26 @@ public class InfographicUI : MonoBehaviour
             enablePlayerControlCoroutine = null;
         }
 
+        if (popupCoroutine != null)
+        {
+            StopCoroutine(popupCoroutine);
+            popupCoroutine = null;
+        }
+
+        if (closePopupCoroutine != null)
+        {
+            StopCoroutine(closePopupCoroutine);
+            closePopupCoroutine = null;
+        }
+
         RestorePlayerControl();
 
-        if (infographicPanel != null)
+        if (infographicPanel != null && infographicPanel.activeSelf)
         {
-            infographicPanel.SetActive(false);
+            closePopupCoroutine = StartCoroutine(EaseOutPopup());
+            return;
         }
 
-        if (infographicRectTransform != null)
-        {
-            infographicRectTransform.localScale = originalPanelScale;
-        }
-
-        // Jalankan event penutup (misal: memicu Quest Baru)
-        onInfographicClosed?.Invoke();
+        FinishHidePanel();
     }
 }
