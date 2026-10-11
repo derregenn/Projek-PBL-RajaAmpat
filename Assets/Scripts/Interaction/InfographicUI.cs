@@ -29,6 +29,8 @@ public class InfographicUI : MonoBehaviour
     private Coroutine autoCloseCoroutine;
     private Coroutine enablePlayerControlCoroutine;
     private readonly List<MonoBehaviour> toggledPlayerScripts = new List<MonoBehaviour>();
+    private Vector3 originalPanelScale = Vector3.one;
+    private bool hasOriginalPanelScale;
 
     private void Awake()
     {
@@ -43,11 +45,12 @@ public class InfographicUI : MonoBehaviour
 
     private void Start()
     {
-        // Hapus atau comment baris ini sementara untuk testing
-        // if (infographicPanel != null) infographicPanel.SetActive(false);
-
-        // Panggil langsung saat mulai untuk melihat apakah pop-up berfungsi
-        ShowPanel();
+        // Jangan tampilkan panel otomatis di Start agar ukuran/posisi panel tetap sesuai setup editor.
+        // Panggil ShowPanel() hanya saat event yang benar-benar memicu infografis muncul.
+        if (infographicPanel != null)
+        {
+            infographicPanel.SetActive(false);
+        }
     }
 
     private void OnDisable()
@@ -88,6 +91,12 @@ public class InfographicUI : MonoBehaviour
             infographicCanvasGroup = infographicPanel.AddComponent<CanvasGroup>();
         }
 
+        if (infographicRectTransform != null && !hasOriginalPanelScale)
+        {
+            originalPanelScale = infographicRectTransform.localScale;
+            hasOriginalPanelScale = true;
+        }
+
         if (infographicPanel.activeSelf)
         {
             infographicCanvasGroup.alpha = 1f;
@@ -99,7 +108,7 @@ public class InfographicUI : MonoBehaviour
 
         if (infographicRectTransform != null)
         {
-            infographicRectTransform.localScale = Vector3.zero;
+            infographicRectTransform.localScale = originalPanelScale;
         }
     }
 
@@ -143,9 +152,12 @@ public class InfographicUI : MonoBehaviour
             yield break;
         }
 
+        Vector3 startScale = originalPanelScale * 0.85f;
+        Vector3 targetScale = originalPanelScale;
+
         if (infographicRectTransform != null)
         {
-            infographicRectTransform.localScale = Vector3.zero;
+            infographicRectTransform.localScale = startScale;
         }
 
         infographicCanvasGroup.alpha = 0f;
@@ -160,7 +172,7 @@ public class InfographicUI : MonoBehaviour
 
             if (infographicRectTransform != null)
             {
-                infographicRectTransform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, eased);
+                infographicRectTransform.localScale = Vector3.Lerp(startScale, targetScale, eased);
             }
 
             elapsed += Time.deltaTime;
@@ -171,7 +183,7 @@ public class InfographicUI : MonoBehaviour
 
         if (infographicRectTransform != null)
         {
-            infographicRectTransform.localScale = Vector3.one;
+            infographicRectTransform.localScale = targetScale;
         }
     }
 
@@ -281,6 +293,11 @@ public class InfographicUI : MonoBehaviour
         if (infographicPanel != null)
         {
             infographicPanel.SetActive(false);
+        }
+
+        if (infographicRectTransform != null)
+        {
+            infographicRectTransform.localScale = originalPanelScale;
         }
 
         // Jalankan event penutup (misal: memicu Quest Baru)
