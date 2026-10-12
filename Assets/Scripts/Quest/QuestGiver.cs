@@ -5,6 +5,30 @@ public class QuestGiver : MonoBehaviour
     [Header("Quest")]
     [SerializeField] private Quest[] questsToGive = new Quest[0];
 
+    [Header("Physical Collision (2D)")]
+    [SerializeField] private bool giveQuestOnPlayerCollision = true;
+    [SerializeField] private bool requireBoxCollider2D;
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!giveQuestOnPlayerCollision || collision == null)
+        {
+            return;
+        }
+
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
+
+        if (requireBoxCollider2D && !(collision.collider is BoxCollider2D))
+        {
+            return;
+        }
+
+        GiveQuest();
+    }
+
     public void GiveQuest()
     {
         Quest quest = GetFirstAvailableQuest();

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 public class SignboardInteractable : MonoBehaviour, IInteractable
@@ -11,6 +12,10 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private TextMeshProUGUI titleTextUI;
     [SerializeField] private TextMeshProUGUI descTextUI;
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent onOpen;
+    [SerializeField] private UnityEvent onClose;
 
     private bool isOpen = false;
 
@@ -27,6 +32,15 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
                 if (descTextUI != null) descTextUI.text = infoDescription;
             }
         }
+
+        if (isOpen)
+        {
+            onOpen?.Invoke();
+        }
+        else
+        {
+            onClose?.Invoke();
+        }
     }
 
     public string GetPromptText() => isOpen ? "Tutup Info" : "Baca Informasi";
@@ -37,6 +51,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         {
             isOpen = false;
             if (infoPanel != null) infoPanel.SetActive(false);
+            onClose?.Invoke();
         }
     }
 }

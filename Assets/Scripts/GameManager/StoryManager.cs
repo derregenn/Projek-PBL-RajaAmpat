@@ -2,44 +2,76 @@ using UnityEngine;
 
 public class StoryManager : MonoBehaviour
 {
-    public static StoryManager Instance;
+    public static StoryManager Instance { get; private set; }
 
     // Enum untuk mengunci fase cerita secara rapi
-    public enum StoryPhase { 
-        NewGame, 
-        Arrival_Airstrip, 
-        Waisai_Hub, 
-        Piaynemo, 
-        Arborek, 
-        Misool, 
-        Sawinggrai, 
-        Friwen, 
-        Gag_Climax 
+    public enum StoryPhase
+    {
+        NewGame = 0,
+        Arrival_Airstrip = 1,
+        Waisai_Hub = 2,
+        Piaynemo = 3,
+        Arborek = 4,
+        Misool = 5,
+        Sawinggrai = 6,
+        Friwen = 7,
+        Gag_Climax = 8
     }
 
+    [Header("Current Progress")]
+    [Tooltip("Fase cerita yang sedang aktif saat ini.")]
     public StoryPhase currentPhase = StoryPhase.NewGame;
 
-    void Awake()
+    private void Awake()
     {
-        if (Instance == null) {
+        // Pola Singleton & Auto-Destroy jika ada duplikat saat reload scene
+        if (Instance == null)
+        {
             Instance = this;
-            transform.SetParent(null);
+            transform.SetParent(null); // Memastikan objek berada di Root Hierarchy
             DontDestroyOnLoad(gameObject);
-        } else {
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }
 
-    // Fungsi ini dipanggil setiap pemain selesai 1 pulau
+    /// <summary>
+    /// Memajukan cerita ke fase berikutnya secara otomatis.
+    /// </summary>
     public void AdvanceStoryPhase()
     {
-        currentPhase++;
-        CalculateGlobalProgress();
+        int maxPhases = System.Enum.GetValues(typeof(StoryPhase)).Length - 1;
+
+        if ((int)currentPhase < maxPhases)
+        {
+            currentPhase++;
+            Debug.Log($"[StoryManager] Progress Berhasil Naik ke: {currentPhase}");
+        }
+        else
+        {
+            Debug.LogWarning("[StoryManager] Cerita sudah mencapai fase maksimum (Klimaks)!");
+        }
     }
 
+    /// <summary>
+    /// Mengeset fase cerita secara spesifik (misal: loncat ke Gag saat pilih Peta).
+    /// </summary>
+    public void SetStoryPhase(StoryPhase targetPhase)
+    {
+        currentPhase = targetPhase;
+        Debug.Log($"[StoryManager] Fase cerita di-set manual ke: {currentPhase}");
+    }
+
+    /// <summary>
+    /// Mengembalikan persentase progres cerita global dari 0% hingga 100%.
+    /// Dipanggil oleh QuestJournalManager untuk update UI Jurnal.
+    /// </summary>
     public float CalculateGlobalProgress()
     {
-        // Total ada 8 tahap cerita. Kalkulasi persentase global (Misal: Phase 4 = 50%)
-        return ((float)currentPhase / 8f) * 100f; 
+        int totalPhases = System.Enum.GetValues(typeof(StoryPhase)).Length - 1;
+        float percentage = ((float)currentPhase / (float)totalPhases) * 100f;
+        return Mathf.Clamp(percentage, 0f, 100f);
     }
 }

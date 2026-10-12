@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     private void Update()
@@ -26,19 +27,19 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     public void BackToMainMenu()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         SceneManager.LoadScene("01_MainMenu");
     }
 
@@ -53,11 +54,10 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
             PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
 
-            // Simpan data kesehatan
-            PlayerPrefs.SetInt("PlayerHealth", player.health);
+            // Simpan data kesehatan jika Player memiliki field/property health.
+            PlayerPrefs.SetInt("PlayerHealth", GetPlayerHealth(player, 100));
 
             PlayerPrefs.Save();
-
             Debug.Log("Game Berhasil Disimpan!");
         }
         else
@@ -65,21 +65,19 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Objek Player tidak ditemukan untuk disimpan.");
         }
 
-        
+        PlayerPrefs.SetString("SavedScene", SceneManager.GetActiveScene().name);
 
-    PlayerPrefs.SetString("SavedScene", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    
-    // Menyimpan fase cerita saat ini
-    if (StoryManager.Instance != null) 
-    {
-        PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
+        // Menyimpan fase cerita saat ini
+        if (StoryManager.Instance != null)
+        {
+            PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
+        }
+
+        // Wajib dipanggil agar data benar-benar tersimpan, terutama untuk WebGL
+        PlayerPrefs.Save();
+
+        Debug.Log("Game Berhasil Disimpan beserta status Scene & Story Phase!");
     }
-    
-    // Wajib dipanggil agar data benar-benar tersimpan, terutama untuk WebGL
-    PlayerPrefs.Save(); 
-
-    Debug.Log("Game Berhasil Disimpan beserta status Scene & Story Phase!");
-}
 
     public void LoadGame()
     {
@@ -94,7 +92,7 @@ public class GameManager : MonoBehaviour
                 float z = PlayerPrefs.GetFloat("PlayerZ");
 
                 player.transform.position = new Vector3(x, y, z);
-                player.health = PlayerPrefs.GetInt("PlayerHealth", 100);
+                SetPlayerHealth(player, PlayerPrefs.GetInt("PlayerHealth", 100));
 
                 Debug.Log("Game Berhasil Dimuat!");
             }
@@ -106,6 +104,43 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Objek Player tidak ditemukan untuk dimuat.");
+        }
+    }
+
+    private int GetPlayerHealth(Player player, int defaultValue)
+    {
+        if (player == null) return defaultValue;
+
+        FieldInfo field = typeof(Player).GetField("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (field != null && field.FieldType == typeof(int))
+        {
+            return (int)field.GetValue(player);
+        }
+
+        PropertyInfo property = typeof(Player).GetProperty("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (property != null && property.PropertyType == typeof(int) && property.CanRead)
+        {
+            return (int)property.GetValue(player);
+        }
+
+        return defaultValue;
+    }
+
+    private void SetPlayerHealth(Player player, int value)
+    {
+        if (player == null) return;
+
+        FieldInfo field = typeof(Player).GetField("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (field != null && field.FieldType == typeof(int))
+        {
+            field.SetValue(player, value);
+            return;
+        }
+
+        PropertyInfo property = typeof(Player).GetProperty("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (property != null && property.PropertyType == typeof(int) && property.CanWrite)
+        {
+            property.SetValue(player, value);
         }
     }
 }

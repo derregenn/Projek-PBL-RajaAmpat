@@ -1,15 +1,10 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public int health = 100;
     public bool hasMap = false;
-    public float moveSpeed = 5f;
-    public Image healthImage;
-    public AudioClip hurtClip;
+    public float moveSpeed = 3f;
 
     [Header("Mode Berenang")]
     public bool isSwimming = false;
@@ -17,14 +12,12 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private AudioSource audioSource;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -48,13 +41,8 @@ public class Player : MonoBehaviour
             rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
         }
 
-        // 4. UPDATE ANIMASI & UI
+        // 4. UPDATE ANIMASI
         SetAnimation(moveInput);
-
-        if (healthImage != null)
-        {
-            healthImage.fillAmount = health / 100f;
-        }
     }
 
     private void SetAnimation(float moveInput)
@@ -112,14 +100,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Damage"))
         {
-            PlaySFX(hurtClip);
-            health -= 25;
             StartCoroutine(BlinkRed());
-
-            if (health <= 0)
-            {
-                Die();
-            }
         }
     }
 
@@ -133,16 +114,4 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Die()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void PlaySFX(AudioClip audioClip)
-    {
-        if (audioSource != null && audioClip != null)
-        {
-            audioSource.PlayOneShot(audioClip);
-        }
-    }
 }
