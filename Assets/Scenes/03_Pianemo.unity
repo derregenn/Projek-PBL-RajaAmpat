@@ -907,8 +907,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7128179589020074671, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 702047588036292220}
   m_SourcePrefab: {fileID: 100100000, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+--- !u!1 &702047588036292219 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7128179589020074671, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+  m_PrefabInstance: {fileID: 702047588036292218}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &702047588036292220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702047588036292219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  questsToGive:
+  - {fileID: 11400000, guid: 4a3d10a13dc416c49bfde4034f72dda1, type: 2}
+  giveQuestOnPlayerCollision: 1
+  requireBoxCollider2D: 0
 --- !u!1001 &1268000498493909545
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1524,6 +1548,22 @@ PrefabInstance:
       propertyPath: 'climbSteps.Array.data[2]'
       value: 
       objectReference: {fileID: 568965568}
+    - target: {fileID: 8710260704416412361, guid: 92d386d752fac9f4397d23628610136a, type: 3}
+      propertyPath: climbDownSteps.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710260704416412361, guid: 92d386d752fac9f4397d23628610136a, type: 3}
+      propertyPath: 'climbDownSteps.Array.data[0]'
+      value: 
+      objectReference: {fileID: 568965568}
+    - target: {fileID: 8710260704416412361, guid: 92d386d752fac9f4397d23628610136a, type: 3}
+      propertyPath: 'climbDownSteps.Array.data[1]'
+      value: 
+      objectReference: {fileID: 560060409}
+    - target: {fileID: 8710260704416412361, guid: 92d386d752fac9f4397d23628610136a, type: 3}
+      propertyPath: 'climbDownSteps.Array.data[2]'
+      value: 
+      objectReference: {fileID: 909791102}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2559,6 +2599,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9085413168976862463, guid: 4147478e8c3ed854db1a59d65b59bc4d, type: 3}
+      propertyPath: objectiveID
+      value: map_piaynemo
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2636,10 +2680,66 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.23
       objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[0].x
+      value: -47.32758
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[0].y
+      value: -3.9962602
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[1].x
+      value: -29.32275
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[1].y
+      value: -4.002479
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[2].y
+      value: -3.1827967
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[4].x
+      value: 18.282255
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428551788600548285, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: m_Points.Array.data[4].y
+      value: -3.2372277
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
       propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 416318649}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1052479357}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartClimbDownSequence
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: StepClimbing, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305163906894500687, guid: 31ba02d660af29e44a6dfb6d6a5e3654, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

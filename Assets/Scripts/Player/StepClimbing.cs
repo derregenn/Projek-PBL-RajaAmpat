@@ -5,6 +5,7 @@ public class StepClimbing : MonoBehaviour
 {
     [Header("Climb Positions")]
     [SerializeField] private Transform[] climbSteps; // Titik-titik posisi pemanjatan
+    [SerializeField] private Transform[] climbDownSteps; // Titik-titik posisi turun
     [SerializeField] private Transform topPlatformPoint; // Titik akhir di atas tebing
     [SerializeField] private float moveSpeed = 2f;
 
@@ -21,6 +22,8 @@ public class StepClimbing : MonoBehaviour
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
     private bool isMovingToStep = false;
+    private bool isClimbingDown = false;
+    private Transform[] activeSteps;
     private Vector3 targetPosition;
 
     private Rigidbody2D rb;
@@ -60,7 +63,7 @@ public class StepClimbing : MonoBehaviour
                 transform.position = targetPosition;
                 isMovingToStep = false;
 
-                if (currentStepIndex < climbSteps.Length)
+                if (currentStepIndex < activeSteps.Length)
                 {
                     ShowQTEOnce();
                 }
@@ -75,7 +78,19 @@ public class StepClimbing : MonoBehaviour
 
     public void StartClimbSequence()
     {
+        StartClimb(climbSteps, false);
+    }
+
+    public void StartClimbDownSequence()
+    {
+        StartClimb(climbDownSteps, true);
+    }
+
+    private void StartClimb(Transform[] steps, bool climbingDown)
+    {
         isClimbingMode = true;
+        isClimbingDown = climbingDown;
+        activeSteps = steps;
         currentStepIndex = 0;
         isUsingSprite1 = true;
 
@@ -86,10 +101,10 @@ public class StepClimbing : MonoBehaviour
         if (rb != null) rb.bodyType = RigidbodyType2D.Kinematic;
         if (playerCollider != null) playerCollider.enabled = false;
 
-        if (climbSteps != null && climbSteps.Length > 0)
+        if (activeSteps != null && activeSteps.Length > 0)
         {
             UpdateClimbSprite();
-            targetPosition = climbSteps[0].position;
+            targetPosition = activeSteps[0].position;
             isMovingToStep = true;
             HideQTE();
         }
@@ -116,12 +131,12 @@ public class StepClimbing : MonoBehaviour
         isUsingSprite1 = !isUsingSprite1;
         UpdateClimbSprite();
 
-        if (currentStepIndex < climbSteps.Length)
+        if (currentStepIndex < activeSteps.Length)
         {
-            targetPosition = climbSteps[currentStepIndex].position;
+            targetPosition = activeSteps[currentStepIndex].position;
             isMovingToStep = true;
         }
-        else if (topPlatformPoint != null)
+        else if (!isClimbingDown && topPlatformPoint != null)
         {
             targetPosition = topPlatformPoint.position;
             isMovingToStep = true;
@@ -158,13 +173,13 @@ public class StepClimbing : MonoBehaviour
         }
 
         // 2. Pindahkan Posisi ke Puncak Bukit jika ada
-        if (topPlatformPoint != null)
+        if (!isClimbingDown && topPlatformPoint != null)
         {
             transform.position = topPlatformPoint.position;
         }
 
         // 3. Laporkan Progres Quest 2 (Cliff Hiking)
-        if (QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
+        if (!isClimbingDown && QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
         {
             QuestController.Instance.ProgressObjective(questObjectiveID);
         }
