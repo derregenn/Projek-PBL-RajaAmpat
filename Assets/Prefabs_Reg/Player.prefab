@@ -160,7 +160,6 @@ GameObject:
   m_Component:
   - component: {fileID: 778457785774907932}
   - component: {fileID: 1686357090159600224}
-  - component: {fileID: 7181134596191210720}
   - component: {fileID: 6656067692507628312}
   - component: {fileID: 2463706222190206533}
   - component: {fileID: 6393122351999611172}
@@ -190,7 +189,6 @@ Transform:
   m_Children:
   - {fileID: 4899115752309090273}
   - {fileID: 994758816447089966}
-  - {fileID: 5631512482485545516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1686357090159600224
@@ -252,21 +250,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &7181134596191210720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3084285833909959657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3b50db0e3668d048810fb074af53f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDiving
-  swimSpeed: 5
-  waterGravity: 0.5
-  isDiving: 0
 --- !u!50 &6656067692507628312
 Rigidbody2D:
   serializedVersion: 5
