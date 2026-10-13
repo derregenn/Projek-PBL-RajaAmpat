@@ -113,9 +113,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6779139200214658869}
   - component: {fileID: 2804361776364322335}
-  - component: {fileID: 1274925115319280999}
   - component: {fileID: 6395974407082505145}
   - component: {fileID: 1569992165347334190}
+  - component: {fileID: 5083580525548510807}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -152,28 +152,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682896032667982557}
   m_CullTransparentMesh: 1
---- !u!114 &1274925115319280999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682896032667982557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  cornerRadius: 5
-  cornerSegments: 4
 --- !u!114 &6395974407082505145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &6112478439698799987
+--- !u!114 &5083580525548510807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,27 +201,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1682896032667982557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7422410616830777074, guid: e9a23b86e6dc28249b3a973d39aee270, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 9
+  cornerRadius: 25
+  cornerSegments: 8
 --- !u!1 &3623676598555574997
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +313,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
+    m_NormalColor: {r: 0.18039216, g: 1, b: 0.7411765, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -559,8 +529,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -68.5}
-  m_SizeDelta: {x: 280, y: 0}
+  m_AnchoredPosition: {x: 100, y: -24.59}
+  m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7436342740030201267
 CanvasRenderer:
@@ -853,18 +823,16 @@ MonoBehaviour:
   InteractPrompt: {fileID: 4374705828269611511}
   DialogueBox: {fileID: 1682896032667982557}
   DialogueText: {fileID: 5706760881847068872}
+  PlayerDialogueBox: {fileID: 0}
+  PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 3623676598555574997}
+  PlayerNextPrompt: {fileID: 0}
   DialogueLines:
   - Udah siap berangkat?
   - Siap bang!
   DialogueLineSpeakers: 0000000001000000
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
   npcSpriteRenderer: {fileID: 3151358253257188898}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -900,8 +868,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCMapTrigger
   mapController: {fileID: 0}
-  interactPromptUI: {fileID: 1270992414121551918}
-  interactKey: 101
+  popupDuration: 0.35
+  popupScaleMin: {x: 0.75, y: 0.75, z: 1}
 --- !u!114 &181294527704724109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -914,7 +882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
-  objectiveID: 
+  objectiveID: Dermaga_Waisai
   onObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []

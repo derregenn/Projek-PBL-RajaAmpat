@@ -5,10 +5,19 @@ public class NPCMapTrigger : MonoBehaviour
 {
     public MapController mapController;
     private bool isMapOpen = false;
+    private int mapOpenedFrame = -1;
     private Coroutine popupRoutine;
 
     [SerializeField] private float popupDuration = 0.35f;
     [SerializeField] private Vector3 popupScaleMin = new Vector3(0.75f, 0.75f, 1f);
+
+    private void Update()
+    {
+        if (isMapOpen && Time.frameCount > mapOpenedFrame && Input.GetKeyDown(KeyCode.E))
+        {
+            CloseWorldMap();
+        }
+    }
 
     // Hanya dipanggil melalui UnityEvent atau script event lain.
     public void OpenWorldMap()
@@ -17,6 +26,7 @@ public class NPCMapTrigger : MonoBehaviour
 
         mapController.OpenWorldMap();
         isMapOpen = true;
+        mapOpenedFrame = Time.frameCount;
         PlayPopupAnimation(true);
     }
 
@@ -55,7 +65,7 @@ public class NPCMapTrigger : MonoBehaviour
             float t = elapsed / duration;
             float eased = EaseOutBack(t);
             target.localScale = Vector3.LerpUnclamped(startScale, endScale, eased);
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 
