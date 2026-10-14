@@ -127,7 +127,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -7422410616830777074, guid: e9a23b86e6dc28249b3a973d39aee270, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -239,7 +239,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -72866051
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
@@ -352,11 +352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b742a5b9f113eb4db0a7a77f62ebb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  health: 100
   hasMap: 0
   moveSpeed: 2
-  healthImage: {fileID: 0}
-  hurtClip: {fileID: 8300000, guid: 3dc7d265f9c42437492a59228fc7b6d7, type: 3}
   isSwimming: 0
 --- !u!95 &585931584632713692
 Animator:
@@ -514,6 +511,7 @@ MonoBehaviour:
   climbSprite1: {fileID: -3792163413847495037, guid: c38b964438cbd5d4897d9d3bf602d81d, type: 3}
   climbSprite2: {fileID: 5271053423098316305, guid: 76859e94329a867449366cbb8ee8ca2c, type: 3}
   qte2Script: {fileID: 0}
+  questObjectiveID: piaynemo_hiking
 --- !u!1 &3185970182691614766
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +819,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -52.4225}
+  m_AnchoredPosition: {x: 150, y: -36.6725}
   m_SizeDelta: {x: 280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9084911414562746442
