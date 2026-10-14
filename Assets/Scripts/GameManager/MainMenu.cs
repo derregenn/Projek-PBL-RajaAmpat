@@ -5,16 +5,22 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [Header("Cutscene Assets")]
+<<<<<<< HEAD
     public Sprite[] arrivalPortraits; // Gambar portrait pesawat
     
     [TextArea(2, 5)] // Membuat kotak input teks di Inspector jadi lebih luas
     public string[] arrivalDialogues; // Teks cerita/dialogue untuk masing-masing gambar
 
+=======
+    public Sprite[] arrivalPortraits; // Gambar jendela pesawat
+    
+>>>>>>> parent of bccb1f1 (save state to game phase, continue button)
     [Header("UI Buttons")]
     public Button continueButton;
 
     void Start()
     {
+<<<<<<< HEAD
         if (PlayerPrefs.HasKey("SavedScene"))
         {
             continueButton.interactable = true;
@@ -22,6 +28,7 @@ public class MainMenu : MonoBehaviour
         else
         {
             continueButton.interactable = false;
+=======
         // Cek apakah ada data save sebelumnya. 
         // (Misal kamu simpan nama scene terakhir di PlayerPrefs dengan key "SavedScene")
         if (PlayerPrefs.HasKey("SavedScene"))
