@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 261027719438941447}
   - component: {fileID: 6338161344214296626}
   - component: {fileID: 2503409592739409047}
+  - component: {fileID: 1482249624679772159}
   m_Layer: 0
   m_Name: Barrier
   m_TagString: Untagged
@@ -138,3 +139,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1482249624679772159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2244106994036948547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf552d24d284df347af94722fece5a68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestCompletionTrigger
+  requiredQuestID: collect_trash
+  barrierObject: {fileID: 0}
+  destroyBarrier: 0
+  unlockSound: {fileID: 0}
+  unlockParticleFX: {fileID: 0}
+  onQuestCompletedEvents:
+    m_PersistentCalls:
+      m_Calls: []

@@ -1,124 +1,213 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.Collections;
 
 public class CutsceneTransitionManager : MonoBehaviour
 {
-    public static CutsceneTransitionManager Instance { get; private set; }
+    public static CutsceneTransitionManager Instance;
 
     [Header("UI Components")]
-    [Tooltip("Canvas tempat UI Cutscene diletakkan.")]
     public GameObject cutsceneCanvas;
+    public Image portraitDisplay;       // Gambar ilustrasi pesawat/lokasi
+    public GameObject dialogueBox;     // Panel/Box Dialog
+    public TMP_Text dialogueText;       // Komponen Teks Narasi
+    
+    [Header("Typewriter Settings")]
+    [Tooltip("Kecepatan munculnya huruf (semakin kecil nilainya, semakin cepat)")]
+    public float typingSpeed = 0.03f;   // 🔴 Kecepatan ketikan per huruf
 
-    [Tooltip("Komponen UI Image yang menampilkan gambar portrait.")]
-    public Image portraitDisplay;
+    [Header("Fade Settings")]
+    public Image fadeBlackScreen;
+    public float fadeDuration = 1.0f;
 
-    // Variabel internal
     private Sprite[] currentPortraits;
+    private string[] currentDialogues;
     private int portraitIndex = 0;
     private string nextSceneName;
-    private bool isCutsceneActive = false;
+    private bool isTransitioning = false;
 
-    private void Awake()
+    // Status Efek Ketikan
+    private bool isTyping = false;
+    private string currentFullText = "";
+    private Coroutine typingCoroutine;
+
+    void Awake()
     {
-        // Pola Singleton & Auto-Destroy
-        if (Instance == null)
-        {
+        if (Instance == null) {
             Instance = this;
-            transform.SetParent(null); // Memastikan objek berada di Root Hierarchy
+            transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            
+            if (cutsceneCanvas != null) {
+                DontDestroyOnLoad(cutsceneCanvas);
+            }
         }
         else
         {
             Destroy(gameObject);
-            return;
-        }
-
-        // Matikan canvas secara otomatis saat awal game berjalan
-        if (cutsceneCanvas != null)
-        {
-            cutsceneCanvas.SetActive(false);
         }
     }
 
-    private void Update()
+    public void StartPortraitCutscene(Sprite[] portraits, string[] dialogues, string sceneToLoad)
     {
-        // Deteksi klik mouse / Enter hanya jika cutscene sedang aktif
-        if (isCutsceneActive && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)))
-        {
-            ShowNextPortrait();
-        }
-    }
-
-    /// <summary>
-    /// Panggil fungsi ini dari mana saja (MainMenuController / Tombol Peta Kapal) untuk memulai Cutscene.
-    /// </summary>
-    /// <param name="portraits">Array gambar Sprite yang ingin ditampilkan berurutan.</param>
-    /// <param name="sceneToLoad">Nama Scene tujuan setelah cutscene selesai.</param>
-    public void StartPortraitCutscene(Sprite[] portraits, string sceneToLoad)
-    {
-        // Validasi data
-        if (portraits == null || portraits.Length == 0)
-        {
-            Debug.LogError("[CutsceneManager] Array gambar kosong! Pindah scene tanpa cutscene.");
-            SceneManager.LoadScene(sceneToLoad);
-            return;
-        }
-
         currentPortraits = portraits;
+        currentDialogues = dialogues;
         nextSceneName = sceneToLoad;
         portraitIndex = 0;
-        isCutsceneActive = true;
+        isTransitioning = false;
+        
+        SetFadeAlpha(0f); 
 
-        if (cutsceneCanvas != null)
-        {
-            cutsceneCanvas.SetActive(true);
-        }
+        portraitDisplay.gameObject.SetActive(true);
+        if (dialogueBox != null) dialogueBox.SetActive(true);
 
+        cutsceneCanvas.SetActive(true);
         ShowNextPortrait();
+    }
+
+    void Update()
+    {
+        if (isTransitioning) return;
+
+        // BISA KLIK KIRI / SPACE / ENTER
+        if (cutsceneCanvas.activeSelf && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
+        {
+            // 🔴 Logika Pintar: 
+            // Jika teks SEDANG diketik -> Selesaikan teks seketika
+            // Jika teks SUDAH selesai -> Lanjut ke portrait berikutnya
+            if (isTyping)
+            {
+                CompleteTyping();
+            }
+            else
+            {
+                ShowNextPortrait();
+            }
+        }
     }
 
     private void ShowNextPortrait()
     {
         if (portraitIndex < currentPortraits.Length)
         {
-            // Update gambar
-            if (portraitDisplay != null && currentPortraits[portraitIndex] != null)
-            {
-                portraitDisplay.sprite = currentPortraits[portraitIndex];
-            }
-
+            string txt = (currentDialogues != null && portraitIndex < currentDialogues.Length) ? currentDialogues[portraitIndex] : "";
+            StartCoroutine(FadeToNextPortrait(currentPortraits[portraitIndex], txt));
             portraitIndex++;
         }
         else
         {
-            // Gambar habis -> Masuk ke proses pindah scene
             StartCoroutine(EndCutsceneAndLoadScene());
         }
     }
 
+    private IEnumerator FadeToNextPortrait(Sprite nextSprite, string nextText)
+    {
+        isTransitioning = true;
+
+        // Selesaikan/hentikan coroutine ketikan lama jika ada
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        isTyping = false;
+
+        // Fade out gambar lama
+        if (portraitDisplay.sprite != null && portraitDisplay.color.a > 0)
+        {
+            yield return StartCoroutine(FadeAlpha(portraitDisplay, 1f, 0f, 0.3f));
+        }
+
+        // Reset teks dan pasang gambar baru
+        portraitDisplay.sprite = nextSprite;
+        if (dialogueText != null) dialogueText.text = "";
+
+        // Fade in gambar baru
+        yield return StartCoroutine(FadeAlpha(portraitDisplay, 0f, 1f, 0.3f));
+
+        isTransitioning = false;
+
+        // 🔴 Mulai Efek Ketikan setelah Gambar Selesai Fade In
+        if (dialogueText != null && !string.IsNullOrEmpty(nextText))
+        {
+            currentFullText = nextText;
+            typingCoroutine = StartCoroutine(TypewriterText(nextText));
+        }
+    }
+
+    // 🔴 Coroutine untuk Mengetik Teks Karakter per Karakter
+    private IEnumerator TypewriterText(string textToType)
+    {
+        isTyping = true;
+        dialogueText.text = "";
+
+        foreach (char letter in textToType.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSecondsRealtime(typingSpeed);
+        }
+
+        isTyping = false;
+    }
+
+    // 🔴 Fungsi Instan untuk Memunculkan Seluruh Teks saat Pemain Mengklik Cepat
+    private void CompleteTyping()
+    {
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (dialogueText != null) dialogueText.text = currentFullText;
+        isTyping = false;
+    }
+
     private IEnumerator EndCutsceneAndLoadScene()
     {
-        isCutsceneActive = false;
+        isTransitioning = true; 
 
-        // Jeda sebentar sebelum load (bisa ditambah animasi Fade Out jika ada)
-        yield return new WaitForSeconds(0.2f);
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        isTyping = false;
 
-        // Muat scene baru
-        if (!string.IsNullOrEmpty(nextSceneName))
+        // Fade In Layar Hitam
+        yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 0f, 1f, fadeDuration));
+
+        portraitDisplay.gameObject.SetActive(false); 
+        portraitDisplay.sprite = null; 
+        if (dialogueBox != null) dialogueBox.SetActive(false);
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextSceneName);
+        while (!asyncLoad.isDone)
         {
-            SceneManager.LoadScene(nextSceneName);
+            yield return null; 
         }
-        else
-        {
-            Debug.LogError("[CutsceneManager] Nama target Scene belum diisi!");
-        }
 
-        // Sembunyikan kembali Canvas Cutscene
-        if (cutsceneCanvas != null)
+        // Fade Out Layar Hitam
+        yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 1f, 0f, fadeDuration));
+
+        portraitDisplay.gameObject.SetActive(true); 
+        if (dialogueBox != null) dialogueBox.SetActive(true);
+        cutsceneCanvas.SetActive(false);
+        isTransitioning = false;
+    }
+
+    private IEnumerator FadeAlpha(Image img, float startAlpha, float targetAlpha, float duration)
+    {
+        float time = 0;
+        Color c = img.color;
+        
+        while (time < duration)
         {
-            cutsceneCanvas.SetActive(false);
+            time += Time.deltaTime;
+            c.a = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
+            img.color = c;
+            yield return null; 
+        }
+        
+        c.a = targetAlpha;
+        img.color = c;
+    }
+
+    private void SetFadeAlpha(float alpha)
+    {
+        if (fadeBlackScreen != null) {
+            Color c = fadeBlackScreen.color;
+            c.a = alpha;
+            fadeBlackScreen.color = c;
         }
     }
 }
