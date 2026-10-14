@@ -21,10 +21,12 @@ public class StepClimbing : MonoBehaviour
 
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
+    private bool isClimbingSequenceActive = false;
     private bool isMovingToStep = false;
     private bool isClimbingDown = false;
     private Transform[] activeSteps;
     private Vector3 targetPosition;
+    private Vector3 climbPosition;
 
     private Rigidbody2D rb;
     private Collider2D playerCollider;
@@ -56,11 +58,13 @@ public class StepClimbing : MonoBehaviour
         // Pergerakan mulus antar step
         if (isMovingToStep)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            climbPosition = Vector3.MoveTowards(climbPosition, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = climbPosition;
 
-            if (Vector3.Distance(transform.position, targetPosition) < 0.05f)
+            if (Vector3.Distance(climbPosition, targetPosition) < 0.05f)
             {
-                transform.position = targetPosition;
+                climbPosition = targetPosition;
+                transform.position = climbPosition;
                 isMovingToStep = false;
 
                 if (currentStepIndex < activeSteps.Length)
@@ -73,6 +77,17 @@ public class StepClimbing : MonoBehaviour
                     StartCoroutine(FinishClimbingRoutine());
                 }
             }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        // Kunci sumbu horizontal setelah semua input gerak diproses.
+        if (isClimbingSequenceActive)
+        {
+            Vector3 position = transform.position;
+            position.x = climbPosition.x;
+            transform.position = position;
         }
     }
 
@@ -89,6 +104,8 @@ public class StepClimbing : MonoBehaviour
     private void StartClimb(Transform[] steps, bool climbingDown)
     {
         isClimbingMode = true;
+        isClimbingSequenceActive = true;
+        climbPosition = transform.position;
         isClimbingDown = climbingDown;
         activeSteps = steps;
         currentStepIndex = 0;
@@ -175,7 +192,8 @@ public class StepClimbing : MonoBehaviour
         // 2. Pindahkan Posisi ke Puncak Bukit jika ada
         if (!isClimbingDown && topPlatformPoint != null)
         {
-            transform.position = topPlatformPoint.position;
+            climbPosition = topPlatformPoint.position;
+            transform.position = climbPosition;
         }
 
         // 3. Laporkan Progres Quest 2 (Cliff Hiking)
@@ -207,6 +225,8 @@ public class StepClimbing : MonoBehaviour
         {
             yield return ScreenFader.Instance.FadeInRoutine();
         }
+
+        isClimbingSequenceActive = false;
     }
 
     private void ShowQTEOnce()
