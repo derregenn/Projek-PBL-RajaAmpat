@@ -9,6 +9,13 @@ public class Player : MonoBehaviour
     [Header("Mode Berenang")]
     public bool isSwimming = false;
 
+    [Header("Audio Player")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip runClip;
+    [SerializeField] private AudioClip swimClip;
+    [SerializeField, Range(0f, 1f)] private float movementVolume = 0.7f;
+    [SerializeField, Range(0.1f, 3f)] private float audioPitch = 1f;
+
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -18,6 +25,18 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+
+        audioSource.playOnAwake = false;
+        audioSource.loop = true;
+        audioSource.pitch = audioPitch;
     }
 
     void Update()
@@ -43,6 +62,35 @@ public class Player : MonoBehaviour
 
         // 4. UPDATE ANIMASI
         SetAnimation(moveInput);
+
+        // 5. AUDIO GERAKAN
+        UpdateMovementAudio(moveInput);
+    }
+
+    private void UpdateMovementAudio(float moveInput)
+    {
+        if (audioSource == null) return;
+
+        AudioClip targetClip = null;
+        if (moveInput != 0)
+        {
+            targetClip = isSwimming ? swimClip : runClip;
+        }
+
+        if (targetClip == null)
+        {
+            if (audioSource.isPlaying) audioSource.Stop();
+            audioSource.clip = null;
+            return;
+        }
+
+        if (audioSource.clip != targetClip || !audioSource.isPlaying)
+        {
+            audioSource.clip = targetClip;
+            audioSource.volume = movementVolume;
+            audioSource.pitch = audioPitch;
+            audioSource.Play();
+        }
     }
 
     private void SetAnimation(float moveInput)
@@ -96,22 +144,5 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Damage"))
-        {
-            StartCoroutine(BlinkRed());
-        }
-    }
-
-    private IEnumerator BlinkRed()
-    {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(0.1f);
-            spriteRenderer.color = Color.white;
-        }
-    }
 
 }

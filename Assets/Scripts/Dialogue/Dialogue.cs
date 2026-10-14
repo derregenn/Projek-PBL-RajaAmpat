@@ -21,6 +21,11 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private string triviaQuestionText;
     [SerializeField] private float TypeSpeed = 0.02f;
 
+    [Header("Typing Audio")]
+    [SerializeField] private AudioSource typingAudioSource;
+    [SerializeField] private AudioClip typingAudioClip;
+    [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 1f;
+
     private enum DialogueSpeaker
     {
         NPC,
@@ -154,6 +159,11 @@ public class Dialogue : MonoBehaviour
         for (int i = 0; i <= totalCharacters; i++)
         {
             activeText.maxVisibleCharacters = i;
+
+            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null)
+            {
+                typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
+            }
 
             // Animasi pergantian sprite bicaranya NPC saat teks diketik
             if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
