@@ -12,17 +12,26 @@ public class CutsceneTransitionManager : MonoBehaviour
     public GameObject cutsceneCanvas;
     public Image portraitDisplay;       // Gambar ilustrasi pesawat/lokasi
     public GameObject dialogueBox;     // Panel/Box Dialog
-    public TMP_Text dialogueText;       // Komponen Teks Narasi cerita
+    public TMP_Text dialogueText;       // Komponen Teks Narasi
     
+    [Header("Typewriter Settings")]
+    [Tooltip("Kecepatan munculnya huruf (semakin kecil nilainya, semakin cepat)")]
+    public float typingSpeed = 0.03f;   // 🔴 Kecepatan ketikan per huruf
+
     [Header("Fade Settings")]
     public Image fadeBlackScreen;
     public float fadeDuration = 1.0f;
 
     private Sprite[] currentPortraits;
-    private string[] currentDialogues;  // Array teks cerita untuk tiap gambar
+    private string[] currentDialogues;
     private int portraitIndex = 0;
     private string nextSceneName;
     private bool isTransitioning = false;
+
+    // Status Efek Ketikan
+    private bool isTyping = false;
+    private string currentFullText = "";
+    private Coroutine typingCoroutine;
 
     void Awake()
     {
@@ -41,7 +50,6 @@ public class CutsceneTransitionManager : MonoBehaviour
         }
     }
 
-    // Panggil fungsi ini dengan mengirimkan Gambar DAN Narasi
     public void StartPortraitCutscene(Sprite[] portraits, string[] dialogues, string sceneToLoad)
     {
         currentPortraits = portraits;
@@ -63,10 +71,20 @@ public class CutsceneTransitionManager : MonoBehaviour
     {
         if (isTransitioning) return;
 
-        // BISA KLIK DI MANA SAJA ATAU TEKAN SPACE / ENTER UNTUK LANJUT
+        // BISA KLIK KIRI / SPACE / ENTER
         if (cutsceneCanvas.activeSelf && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
         {
-            ShowNextPortrait();
+            // 🔴 Logika Pintar: 
+            // Jika teks SEDANG diketik -> Selesaikan teks seketika
+            // Jika teks SUDAH selesai -> Lanjut ke portrait berikutnya
+            if (isTyping)
+            {
+                CompleteTyping();
+            }
+            else
+            {
+                ShowNextPortrait();
+            }
         }
     }
 
@@ -88,45 +106,79 @@ public class CutsceneTransitionManager : MonoBehaviour
     {
         isTransitioning = true;
 
-        // Fade out gambar lama jika ada
+        // Selesaikan/hentikan coroutine ketikan lama jika ada
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        isTyping = false;
+
+        // Fade out gambar lama
         if (portraitDisplay.sprite != null && portraitDisplay.color.a > 0)
         {
             yield return StartCoroutine(FadeAlpha(portraitDisplay, 1f, 0f, 0.3f));
         }
 
-        // Update gambar & teks cerita baru
+        // Reset teks dan pasang gambar baru
         portraitDisplay.sprite = nextSprite;
-        if (dialogueText != null) dialogueText.text = nextText;
+        if (dialogueText != null) dialogueText.text = "";
 
         // Fade in gambar baru
         yield return StartCoroutine(FadeAlpha(portraitDisplay, 0f, 1f, 0.3f));
 
         isTransitioning = false;
+
+        // 🔴 Mulai Efek Ketikan setelah Gambar Selesai Fade In
+        if (dialogueText != null && !string.IsNullOrEmpty(nextText))
+        {
+            currentFullText = nextText;
+            typingCoroutine = StartCoroutine(TypewriterText(nextText));
+        }
+    }
+
+    // 🔴 Coroutine untuk Mengetik Teks Karakter per Karakter
+    private IEnumerator TypewriterText(string textToType)
+    {
+        isTyping = true;
+        dialogueText.text = "";
+
+        foreach (char letter in textToType.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSecondsRealtime(typingSpeed);
+        }
+
+        isTyping = false;
+    }
+
+    // 🔴 Fungsi Instan untuk Memunculkan Seluruh Teks saat Pemain Mengklik Cepat
+    private void CompleteTyping()
+    {
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (dialogueText != null) dialogueText.text = currentFullText;
+        isTyping = false;
     }
 
     private IEnumerator EndCutsceneAndLoadScene()
     {
         isTransitioning = true; 
 
-        // 1. Fade In Layar Hitam
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        isTyping = false;
+
+        // Fade In Layar Hitam
         yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 0f, 1f, fadeDuration));
 
-        // 2. Sembunyikan elemen cutscene
         portraitDisplay.gameObject.SetActive(false); 
         portraitDisplay.sprite = null; 
         if (dialogueBox != null) dialogueBox.SetActive(false);
 
-        // 3. Load Scene Waisai
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextSceneName);
         while (!asyncLoad.isDone)
         {
             yield return null; 
         }
 
-        // 4. Fade Out Hitam di Waisai
+        // Fade Out Layar Hitam
         yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 1f, 0f, fadeDuration));
 
-        // 5. Matikan kanvas
         portraitDisplay.gameObject.SetActive(true); 
         if (dialogueBox != null) dialogueBox.SetActive(true);
         cutsceneCanvas.SetActive(false);
