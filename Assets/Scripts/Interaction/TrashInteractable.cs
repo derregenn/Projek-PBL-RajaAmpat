@@ -3,7 +3,7 @@ using TMPro; // Wajib ditambahkan untuk memanggil UI Text milikmu
 
 public class TrashInteractable : MonoBehaviour, IInteractable
 {
-    [Header("Quest Integration (Dari Regen)")]
+    [Header("Quest Integration")]
     [SerializeField] private string objectiveID = "collect_trash";
     [SerializeField] private int amountToAdd = 1;
 
