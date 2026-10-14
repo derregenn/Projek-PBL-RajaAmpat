@@ -543,7 +543,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
@@ -552,7 +553,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3011771144130992576, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 59106292}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 551202745}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!4 &519397264 stripped
 Transform:
@@ -664,6 +668,38 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 99
   m_TargetDisplay: 0
+--- !u!1 &551202743 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+  m_PrefabInstance: {fileID: 519397263}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &551202745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551202743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c899b7a4e648f44c94c46ec9188d6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamePhaseManager
+  isWaisaiCompleted: 0
+  isPiaynemoCompleted: 0
+  isArborekCompleted: 0
+  isMisoolCompleted: 0
+  isSawinggraiCompleted: 0
+  isFriwenCompleted: 0
+  isGagCompleted: 0
+  currentCompletionPercentage: 0
+  isGagUnlocked: 0
+  OnPercentageUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGagUnlocked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &693657589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,6 +1268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1020809829}
   - component: {fileID: 1020809828}
+  - component: {fileID: 1020809831}
   - component: {fileID: 1020809827}
   - component: {fileID: 1020809826}
   - component: {fileID: 1020809830}
@@ -1348,7 +1385,15 @@ MonoBehaviour:
   - tes 1
   - tes 2
   - tes 3
-  continueButton: {fileID: 0}
+  continueButton: {fileID: 441191867}
+--- !u!222 &1020809831
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020809825}
+  m_CullTransparentMesh: 1
 --- !u!1 &1098574811
 GameObject:
   m_ObjectHideFlags: 0
