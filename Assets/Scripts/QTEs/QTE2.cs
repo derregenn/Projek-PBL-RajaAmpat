@@ -171,7 +171,9 @@ public class QTE2 : MonoBehaviour
 
     internal void BeginQTE()
     {
-        throw new System.NotImplementedException();
+        isCompleted = false;
+        ResetQTE();
+        // throw new System.NotImplementedException();
     }
 
     internal void StartQTE()
