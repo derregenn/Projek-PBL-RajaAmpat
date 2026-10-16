@@ -468,11 +468,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1247773195}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!222 &42803902
+CanvasRenderer:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_CullTransparentMesh: 1
 --- !u!114 &43094192 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6152667075647346966, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
@@ -1396,17 +1404,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
   m_PrefabInstance: {fileID: 1668012663}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &512716666 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7181134596191210720, guid: d9eef132e72927948852f0a723f816bb, type: 3}
-  m_PrefabInstance: {fileID: 1668012663}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3b50db0e3668d048810fb074af53f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDiving
 --- !u!1001 &519727227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4172,11 +4169,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1247773195}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!222 &1111975272
+CanvasRenderer:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1114896729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4562,7 +4567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 280
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.y
@@ -4570,19 +4575,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -68.5
+      value: -24.59
       objectReference: {fileID: 0}
     - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: dialogueCamera
       value: 
       objectReference: {fileID: 916379636}
     - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7310179073834670815, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2434
+      objectReference: {fileID: 0}
+    - target: {fileID: 7310179073834670815, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2434
       objectReference: {fileID: 0}
     - target: {fileID: 7310179073834670815, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5357,13 +5374,11 @@ MonoBehaviour:
   DialogueLines:
   - 'Selamat datang. '
   DialogueLineSpeakers: 00000000
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
+  typingAudioSource: {fileID: 0}
+  typingAudioClip: {fileID: 0}
+  typingAudioVolume: 1
   npcSpriteRenderer: {fileID: 1482452494}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -5501,7 +5516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questsToGive: []
+  questToGive: {fileID: 0}
   giveQuestOnPlayerCollision: 1
   requireBoxCollider2D: 0
 --- !u!61 &1482452498
@@ -6446,8 +6461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questsToGive:
-  - {fileID: 11400000, guid: a1dabde8010eb764ba0d10eb35e71aba, type: 2}
+  questToGive: {fileID: 0}
   giveQuestOnPlayerCollision: 1
   requireBoxCollider2D: 0
 --- !u!114 &1714064101
@@ -6476,13 +6490,11 @@ MonoBehaviour:
   - 'Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
     kalau sudah selesai ya '
   DialogueLineSpeakers: 00000000010000000000000000000000
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
+  typingAudioSource: {fileID: 0}
+  typingAudioClip: {fileID: 0}
+  typingAudioVolume: 1
   npcSpriteRenderer: {fileID: 0}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -7696,7 +7708,7 @@ PrefabInstance:
     - target: {fileID: 1832740822449295551, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: playerMovementScript
       value: 
-      objectReference: {fileID: 512716666}
+      objectReference: {fileID: 0}
     - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

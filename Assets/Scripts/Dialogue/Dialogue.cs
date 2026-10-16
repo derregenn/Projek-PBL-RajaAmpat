@@ -100,7 +100,7 @@ public class Dialogue : MonoBehaviour
         }
     }
 
-    private void StartDialogue()
+    public void StartDialogue()
     {
         canInteract = false;
         isInteracting = true;

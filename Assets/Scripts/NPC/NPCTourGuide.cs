@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events; // Tambahkan ini wajib untuk UnityEvent
 
 public class NPCTourGuide : MonoBehaviour
 {
@@ -10,31 +11,33 @@ public class NPCTourGuide : MonoBehaviour
     [SerializeField] private TriviaQuestion[] quizQuestions;
 
     [Header("References")]
-    [SerializeField] private Dialogue dialogueSystem; // Hubungkan ke skrip Dialogue NPC ini
+    [SerializeField] private Dialogue dialogueSystem; 
+
+    [Header("Events")]
+    // Event ini akan muncul di Inspector untuk memicu dialog lanjutan
+    public UnityEvent onQuizSuccessEvent; 
 
     private bool isQuizFinished = false;
 
     private void Awake()
     {
-        // Otomatis mengambil komponen Dialogue jika berada di GameObject yang sama
         if (dialogueSystem == null)
         {
             dialogueSystem = GetComponent<Dialogue>();
         }
     }
 
-    // Dipanggil dari Event On Dialogue End () di Inspector Dialogue.cs
     public void Interact()
     {
         if (isQuizFinished)
         {
+            // Opsi: Mainkan dialog lain jika pemain ngobrol lagi setelah kuis selesai
             Debug.Log($"{tourGuideName}: Kamu sudah menyelesaikan kuis ini!");
             return;
         }
 
         if (TriviaQuizUI.Instance != null && quizQuestions.Length > 0)
         {
-            // Mulai kuis lewat TriviaQuizUI
             TriviaQuizUI.Instance.StartQuiz(quizQuestions, OnQuizSuccess);
         }
         else
@@ -52,6 +55,12 @@ public class NPCTourGuide : MonoBehaviour
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, 1);
+        }
+
+        // KUNCI: Panggil UnityEvent setelah kuis selesai
+        if (onQuizSuccessEvent != null)
+        {
+            onQuizSuccessEvent.Invoke();
         }
     }
 }
