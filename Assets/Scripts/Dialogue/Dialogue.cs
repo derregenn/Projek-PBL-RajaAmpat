@@ -123,6 +123,7 @@ public class Dialogue : MonoBehaviour
     private void StartTyping()
     {
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (typingAudioSource != null) typingAudioSource.Stop();
         typingCoroutine = StartCoroutine(WriteLine());
     }
 
@@ -175,9 +176,13 @@ public class Dialogue : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(TypeSpeed);
+            if (i < totalCharacters)
+            {
+                yield return new WaitForSeconds(TypeSpeed);
+            }
         }
 
+        if (typingAudioSource != null) typingAudioSource.Stop();
         isTyping = false;
 
         // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
@@ -236,6 +241,7 @@ public class Dialogue : MonoBehaviour
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
         }
+        if (typingAudioSource != null) typingAudioSource.Stop();
 
         isTyping = false;
         isInteracting = false;
@@ -310,6 +316,7 @@ public class Dialogue : MonoBehaviour
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (typingAudioSource != null) typingAudioSource.Stop();
 
         if (DialogueText != null)
         {
