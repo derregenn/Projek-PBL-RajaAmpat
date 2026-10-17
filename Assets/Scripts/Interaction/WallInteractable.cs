@@ -4,6 +4,7 @@ public class WallInteractable : MonoBehaviour, IInteractable
 {
     [Header("Prompt Settings")]
     [SerializeField] private string promptMessage = "Panjat Tebing";
+    [SerializeField] private bool climbDown;
 
     public void Interact()
     {
@@ -16,8 +17,14 @@ public class WallInteractable : MonoBehaviour, IInteractable
 
             if (stepClimbing != null)
             {
-                // Pemicu otomatis urutan panjat step-by-step saat tombol E ditekan
-                stepClimbing.StartClimbSequence();
+                if (climbDown)
+                {
+                    stepClimbing.StartClimbDownSequence();
+                }
+                else
+                {
+                    stepClimbing.StartClimbSequence();
+                }
             }
             else
             {

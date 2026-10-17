@@ -5,6 +5,7 @@ public class StepClimbing : MonoBehaviour
 {
     [Header("Climb Positions")]
     [SerializeField] private Transform[] climbSteps; // Titik-titik posisi pemanjatan
+    [SerializeField] private Transform[] climbDownSteps; // Titik-titik posisi turun
     [SerializeField] private Transform topPlatformPoint; // Titik akhir di atas tebing
     [SerializeField] private float moveSpeed = 2f;
 
@@ -20,8 +21,12 @@ public class StepClimbing : MonoBehaviour
 
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
+    private bool isClimbingSequenceActive = false;
     private bool isMovingToStep = false;
+    private bool isClimbingDown = false;
+    private Transform[] activeSteps;
     private Vector3 targetPosition;
+    private Vector3 climbPosition;
 
     private Rigidbody2D rb;
     private Collider2D playerCollider;
@@ -53,14 +58,16 @@ public class StepClimbing : MonoBehaviour
         // Pergerakan mulus antar step
         if (isMovingToStep)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            climbPosition = Vector3.MoveTowards(climbPosition, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = climbPosition;
 
-            if (Vector3.Distance(transform.position, targetPosition) < 0.05f)
+            if (Vector3.Distance(climbPosition, targetPosition) < 0.05f)
             {
-                transform.position = targetPosition;
+                climbPosition = targetPosition;
+                transform.position = climbPosition;
                 isMovingToStep = false;
 
-                if (currentStepIndex < climbSteps.Length)
+                if (currentStepIndex < activeSteps.Length)
                 {
                     ShowQTEOnce();
                 }
@@ -73,9 +80,34 @@ public class StepClimbing : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        // Kunci sumbu horizontal setelah semua input gerak diproses.
+        if (isClimbingSequenceActive)
+        {
+            Vector3 position = transform.position;
+            position.x = climbPosition.x;
+            transform.position = position;
+        }
+    }
+
     public void StartClimbSequence()
     {
+        StartClimb(climbSteps, false);
+    }
+
+    public void StartClimbDownSequence()
+    {
+        StartClimb(climbDownSteps, true);
+    }
+
+    private void StartClimb(Transform[] steps, bool climbingDown)
+    {
         isClimbingMode = true;
+        isClimbingSequenceActive = true;
+        climbPosition = transform.position;
+        isClimbingDown = climbingDown;
+        activeSteps = steps;
         currentStepIndex = 0;
         isUsingSprite1 = true;
 
@@ -86,10 +118,10 @@ public class StepClimbing : MonoBehaviour
         if (rb != null) rb.bodyType = RigidbodyType2D.Kinematic;
         if (playerCollider != null) playerCollider.enabled = false;
 
-        if (climbSteps != null && climbSteps.Length > 0)
+        if (activeSteps != null && activeSteps.Length > 0)
         {
             UpdateClimbSprite();
-            targetPosition = climbSteps[0].position;
+            targetPosition = activeSteps[0].position;
             isMovingToStep = true;
             HideQTE();
         }
@@ -116,12 +148,12 @@ public class StepClimbing : MonoBehaviour
         isUsingSprite1 = !isUsingSprite1;
         UpdateClimbSprite();
 
-        if (currentStepIndex < climbSteps.Length)
+        if (currentStepIndex < activeSteps.Length)
         {
-            targetPosition = climbSteps[currentStepIndex].position;
+            targetPosition = activeSteps[currentStepIndex].position;
             isMovingToStep = true;
         }
-        else if (topPlatformPoint != null)
+        else if (!isClimbingDown && topPlatformPoint != null)
         {
             targetPosition = topPlatformPoint.position;
             isMovingToStep = true;
@@ -158,13 +190,14 @@ public class StepClimbing : MonoBehaviour
         }
 
         // 2. Pindahkan Posisi ke Puncak Bukit jika ada
-        if (topPlatformPoint != null)
+        if (!isClimbingDown && topPlatformPoint != null)
         {
-            transform.position = topPlatformPoint.position;
+            climbPosition = topPlatformPoint.position;
+            transform.position = climbPosition;
         }
 
         // 3. Laporkan Progres Quest 2 (Cliff Hiking)
-        if (QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
+        if (!isClimbingDown && QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
         {
             QuestController.Instance.ProgressObjective(questObjectiveID);
         }
@@ -192,6 +225,8 @@ public class StepClimbing : MonoBehaviour
         {
             yield return ScreenFader.Instance.FadeInRoutine();
         }
+
+        isClimbingSequenceActive = false;
     }
 
     private void ShowQTEOnce()

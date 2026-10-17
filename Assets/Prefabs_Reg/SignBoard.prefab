@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.15, y: -0.94, z: 0}
-  m_LocalScale: {x: 0.716993, y: 0.7761205, z: 0.33891726}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -5192466388263135704, guid: 0b9bb4d5342a64940a137a5abedc1ed0, type: 3}
@@ -151,8 +151,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091bf06d00fe3af49b7cad71c19018ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SignboardInteractable
-  infoTitle: 
-  infoDescription: 
   infoPanel: {fileID: 0}
-  titleTextUI: {fileID: 0}
-  descTextUI: {fileID: 0}
+  animationDuration: 1
+  pushDistance: 100
+  onOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  onClose:
+    m_PersistentCalls:
+      m_Calls: []

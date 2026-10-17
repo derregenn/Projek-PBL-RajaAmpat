@@ -168,4 +168,16 @@ public class QTE2 : MonoBehaviour
             gameObject.SetActive(true);
         }
     }
+
+    internal void BeginQTE()
+    {
+        isCompleted = false;
+        ResetQTE();
+        // throw new System.NotImplementedException();
+    }
+
+    internal void StartQTE()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -52.4225
+      value: -36.345
       objectReference: {fileID: 0}
     - target: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_IsActive
@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: moveSpeed
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: climbSteps.Array.size
@@ -100,9 +100,21 @@ PrefabInstance:
       propertyPath: 'climbSteps.Array.data[3]'
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: climbDownSteps.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807028851114180606, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.93207544
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807028851114180606, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0.026079332
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchorMax.y
@@ -118,7 +130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 52.155
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -126,18 +138,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -120.9225
+      value: -72.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 6059503312074039744, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_MinHeight
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: moveSpeed
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 157
+      value: 92.69
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3100866956964956624, guid: d9eef132e72927948852f0a723f816bb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8322365530983022533}
   m_SourcePrefab: {fileID: 100100000, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+--- !u!1 &8874706184673691718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 6520481898764080414}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8322365530983022533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8874706184673691718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  cornerRadius: 25
+  cornerSegments: 8

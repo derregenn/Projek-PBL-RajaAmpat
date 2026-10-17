@@ -18,13 +18,13 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private string[] DialogueLines;
     [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
-    [SerializeField] private string[] QuestGivenDialogueLines;
-    [SerializeField] private DialogueSpeaker[] QuestGivenLineSpeakers;
-    [SerializeField] private string[] QuestCompletedDialogueLines;
-    [SerializeField] private DialogueSpeaker[] QuestCompletedLineSpeakers;
     [SerializeField] private string triviaQuestionText;
     [SerializeField] private float TypeSpeed = 0.02f;
-    [SerializeField, Range(0.01f, 1f)] private float fastTypeSpeedMultiplier = 0.1f;
+
+    [Header("Typing Audio")]
+    [SerializeField] private AudioSource typingAudioSource;
+    [SerializeField] private AudioClip typingAudioClip;
+    [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 1f;
 
     private enum DialogueSpeaker
     {
@@ -50,15 +50,10 @@ public class Dialogue : MonoBehaviour
     private bool isInteracting = false;
     private bool canInteract = false;
     private bool isTyping = false;
-    private bool isSpeedingUpTyping = false;
     private bool hasBeenTriggered = false;
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
-    private bool questHasBeenGiven;
-    private bool questHasBeenCompleted;
-    private string[] activeDialogueLines;
-    private DialogueSpeaker[] activeLineSpeakers;
 
     private void Awake()
     {
@@ -97,40 +92,16 @@ public class Dialogue : MonoBehaviour
         {
             StartDialogue();
         }
-        else if (isInteracting && Input.GetKeyDown(KeyCode.E))
+        else if (isInteracting && Input.GetKeyDown(KeyCode.E)
+            && ((NextPrompt != null && NextPrompt.activeInHierarchy)
+                || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)))
         {
-            if (isTyping)
-            {
-                isSpeedingUpTyping = true;
-            }
-            else if ((NextPrompt != null && NextPrompt.activeInHierarchy)
-                || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy))
-            {
-                NextLine();
-            }
+            NextLine();
         }
     }
 
-    private void StartDialogue()
+    public void StartDialogue()
     {
-        // Select dialogue from the current quest state, rather than replaying the initial lines.
-        if (questHasBeenCompleted)
-        {
-            activeDialogueLines = QuestCompletedDialogueLines;
-            activeLineSpeakers = QuestCompletedLineSpeakers;
-        }
-        else if (questHasBeenGiven)
-        {
-            activeDialogueLines = QuestGivenDialogueLines;
-            activeLineSpeakers = QuestGivenLineSpeakers;
-        }
-        else
-        {
-            activeDialogueLines = DialogueLines;
-            activeLineSpeakers = DialogueLineSpeakers;
-        }
-        lineIndex = 0;
-
         canInteract = false;
         isInteracting = true;
 
@@ -151,8 +122,8 @@ public class Dialogue : MonoBehaviour
 
     private void StartTyping()
     {
-        isSpeedingUpTyping = false;
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (typingAudioSource != null) typingAudioSource.Stop();
         typingCoroutine = StartCoroutine(WriteLine());
     }
 
@@ -160,15 +131,15 @@ public class Dialogue : MonoBehaviour
     {
         isTyping = true;
 
-        if (activeDialogueLines == null || activeDialogueLines.Length == 0)
+        if (DialogueLines == null || DialogueLines.Length == 0)
         {
             EndDialogue();
             yield break;
         }
 
-        bool isPlayerLine = activeLineSpeakers != null
-            && lineIndex < activeLineSpeakers.Length
-            && activeLineSpeakers[lineIndex] == DialogueSpeaker.Player;
+        bool isPlayerLine = DialogueLineSpeakers != null
+            && lineIndex < DialogueLineSpeakers.Length
+            && DialogueLineSpeakers[lineIndex] == DialogueSpeaker.Player;
         TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
 
         if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine);
@@ -180,15 +151,20 @@ public class Dialogue : MonoBehaviour
             yield break;
         }
 
-        activeText.text = activeDialogueLines[lineIndex];
+        activeText.text = DialogueLines[lineIndex];
         activeText.maxVisibleCharacters = 0;
 
-        int totalCharacters = activeDialogueLines[lineIndex].Length;
+        int totalCharacters = DialogueLines[lineIndex].Length;
         bool toggleSprite = false;
 
         for (int i = 0; i <= totalCharacters; i++)
         {
             activeText.maxVisibleCharacters = i;
+
+            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null)
+            {
+                typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
+            }
 
             // Animasi pergantian sprite bicaranya NPC saat teks diketik
             if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
@@ -200,12 +176,13 @@ public class Dialogue : MonoBehaviour
                 }
             }
 
-            float currentTypeSpeed = isSpeedingUpTyping
-                ? TypeSpeed * fastTypeSpeedMultiplier
-                : TypeSpeed;
-            yield return new WaitForSeconds(currentTypeSpeed);
+            if (i < totalCharacters)
+            {
+                yield return new WaitForSeconds(TypeSpeed);
+            }
         }
 
+        if (typingAudioSource != null) typingAudioSource.Stop();
         isTyping = false;
 
         // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
@@ -225,7 +202,7 @@ public class Dialogue : MonoBehaviour
     {
         if (isTyping) return;
 
-        if (lineIndex < activeDialogueLines.Length - 1)
+        if (lineIndex < DialogueLines.Length - 1)
         {
             lineIndex++;
             if (NextPrompt != null) NextPrompt.SetActive(false);
@@ -234,13 +211,12 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            if (!questHasBeenGiven && !string.IsNullOrEmpty(triviaQuestionText))
+            if (!string.IsNullOrEmpty(triviaQuestionText))
             {
                 if (questGiver != null)
                 {
                     questGiver.GiveQuest();
                 }
-                questHasBeenGiven = true;
 
                 if (NextPrompt != null) NextPrompt.SetActive(false);
                 if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
@@ -252,7 +228,8 @@ public class Dialogue : MonoBehaviour
             {
                 questGiver.GiveQuest();
             }
-            questHasBeenGiven = true;
+
+            lineIndex = 0;
             EndDialogue();
         }
     }
@@ -264,6 +241,7 @@ public class Dialogue : MonoBehaviour
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
         }
+        if (typingAudioSource != null) typingAudioSource.Stop();
 
         isTyping = false;
         isInteracting = false;
@@ -338,6 +316,7 @@ public class Dialogue : MonoBehaviour
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (typingAudioSource != null) typingAudioSource.Stop();
 
         if (DialogueText != null)
         {
@@ -350,12 +329,5 @@ public class Dialogue : MonoBehaviour
         {
             npcSpriteRenderer.sprite = talkingSprite1;
         }
-    }
-
-    // Call this from the quest completion event to switch to the completed dialogue set.
-    public void SetQuestCompleted()
-    {
-        questHasBeenGiven = true;
-        questHasBeenCompleted = true;
     }
 }

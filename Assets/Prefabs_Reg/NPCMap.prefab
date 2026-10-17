@@ -60,7 +60,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -605385043
+  m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &2852888469475073815
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 2804361776364322335}
   - component: {fileID: 6395974407082505145}
   - component: {fileID: 1569992165347334190}
-  - component: {fileID: 6112478439698799987}
+  - component: {fileID: 5083580525548510807}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -141,8 +141,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013633657, y: -90}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: -0.0013633657, y: -95.70501}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2804361776364322335
 CanvasRenderer:
@@ -165,14 +165,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 10
-    m_Right: 10
-    m_Top: 20
-    m_Bottom: 20
-  m_ChildAlignment: 4
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
@@ -190,9 +190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 0
+  m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &6112478439698799987
+--- !u!114 &5083580525548510807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,27 +201,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1682896032667982557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7422410616830777074, guid: e9a23b86e6dc28249b3a973d39aee270, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 9
+  cornerRadius: 25
+  cornerSegments: 8
 --- !u!1 &3623676598555574997
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +313,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
+    m_NormalColor: {r: 0.18039216, g: 1, b: 0.7411765, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -431,7 +423,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press [E] to talk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -498,7 +490,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &5404382777472333561
@@ -537,8 +529,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -68.5}
-  m_SizeDelta: {x: 280, y: 0}
+  m_AnchoredPosition: {x: 100, y: -24.59}
+  m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7436342740030201267
 CanvasRenderer:
@@ -672,7 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 0
+  m_HorizontalFit: 2
   m_VerticalFit: 2
 --- !u!1 &7563776255713643221
 GameObject:
@@ -687,6 +679,7 @@ GameObject:
   - component: {fileID: 1128920564684957261}
   - component: {fileID: 4656081642101474642}
   - component: {fileID: 8685177386890641346}
+  - component: {fileID: 181294527704724109}
   m_Layer: 0
   m_Name: NPCMap
   m_TagString: Untagged
@@ -704,7 +697,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 44.46, y: 3.52, z: 0}
-  m_LocalScale: {x: 0.2434, y: 0.2434, z: 1}
+  m_LocalScale: {x: 0.16, y: 0.16, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2033402688843814290}
@@ -736,7 +729,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -755,8 +748,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayerID: -72866051
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3586363740857737927, guid: 6f573fdf8e4543546a18253532016591, type: 3}
@@ -803,7 +796,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.16220951, y: 0.033358574}
+  m_Offset: {x: -0.006539464, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -813,7 +806,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 4.2939634, y: 7.9162407}
+  m_Size: {x: 0.8692119, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &4656081642101474642
 MonoBehaviour:
@@ -835,25 +828,33 @@ MonoBehaviour:
   NextPrompt: {fileID: 3623676598555574997}
   PlayerNextPrompt: {fileID: 0}
   DialogueLines:
-  - 'Pindah pulau? '
-  DialogueLineSpeakers: 
-  QuestGivenDialogueLines: []
-  QuestGivenLineSpeakers: 
-  QuestCompletedDialogueLines: []
-  QuestCompletedLineSpeakers: 
+  - Udah siap berangkat?
+  - Siap bang!
+  DialogueLineSpeakers: 0000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  fastTypeSpeedMultiplier: 0.1
   npcSpriteRenderer: {fileID: 3151358253257188898}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
   idleSprite: {fileID: -3586363740857737927, guid: 6f573fdf8e4543546a18253532016591, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 0}
-  npcLensSize: 3.5
+  npcLensSize: 2
   onDialogueEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8685177386890641346}
+        m_TargetAssemblyTypeName: NPCMapTrigger, Assembly-CSharp
+        m_MethodName: OpenWorldMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8685177386890641346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -867,8 +868,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCMapTrigger
   mapController: {fileID: 0}
-  interactPromptUI: {fileID: 1270992414121551918}
-  interactKey: 101
+  popupDuration: 0.35
+  popupScaleMin: {x: 0.75, y: 0.75, z: 1}
+--- !u!114 &181294527704724109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7563776255713643221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
+  objectiveID: Dermaga_Waisai
+  onObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9213326106999517350
 GameObject:
   m_ObjectHideFlags: 0
