@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScreenFader : MonoBehaviour
 {
@@ -49,6 +50,22 @@ public class ScreenFader : MonoBehaviour
         StartFade(0f);
     }
 
+    public void FadeOutAndLoadScene(string sceneName)
+    {
+        if (currentFadeCoroutine != null)
+        {
+            StopCoroutine(currentFadeCoroutine);
+        }
+
+        currentFadeCoroutine = StartCoroutine(FadeOutAndLoadSceneRoutine(sceneName));
+    }
+
+    private IEnumerator FadeOutAndLoadSceneRoutine(string sceneName)
+    {
+        yield return FadeRoutine(1f);
+        SceneManager.LoadScene(sceneName);
+    }
+
     // --- TAMBAHAN METHOD UNTUK COROUTINE INTERAL/EXTERNAL ---
     public IEnumerator FadeOutRoutine()
     {
@@ -79,10 +96,18 @@ public class ScreenFader : MonoBehaviour
 
         canvasGroup.blocksRaycasts = true;
 
+        if (fadeDuration <= 0f)
+        {
+            canvasGroup.alpha = targetAlpha;
+            canvasGroup.blocksRaycasts = targetAlpha > 0.05f;
+            yield break;
+        }
+
         while (elapsed < fadeDuration)
         {
             elapsed += Time.unscaledDeltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / fadeDuration);
+            float progress = Mathf.Clamp01(elapsed / fadeDuration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, Mathf.SmoothStep(0f, 1f, progress));
             yield return null;
         }
 
