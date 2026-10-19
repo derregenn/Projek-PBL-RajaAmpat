@@ -8827,6 +8827,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7563776255713643221, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1543002002}
     - targetCorrespondingSourceObject: {fileID: 1682896032667982557, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1543002000}
@@ -8836,7 +8839,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8685177386890641346, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
   m_PrefabInstance: {fileID: 1543001997}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1543002001}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57617eb66d40c3742af15e2583d59264, type: 3}
@@ -8869,6 +8872,24 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+--- !u!1 &1543002001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7563776255713643221, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+  m_PrefabInstance: {fileID: 1543001997}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1543002002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543002001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4356c2284c93a2545b8b445bc22150aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IslandCompletionTrigger
+  islandToComplete: 0
 --- !u!1 &1546709632
 GameObject:
   m_ObjectHideFlags: 0

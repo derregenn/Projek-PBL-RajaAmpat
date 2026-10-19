@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine.Events;
+using System;
 
 public class Dialogue : MonoBehaviour
 {
@@ -54,6 +55,8 @@ public class Dialogue : MonoBehaviour
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
+
+
 
     private void Awake()
     {
@@ -329,5 +332,10 @@ public class Dialogue : MonoBehaviour
         {
             npcSpriteRenderer.sprite = talkingSprite1;
         }
+    }
+
+    internal void StartDialogue(string[] npcDialogueLines, Action startTrivia)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -906,7 +906,6 @@ RectTransform:
   - {fileID: 864402647}
   - {fileID: 1847507235}
   - {fileID: 5105474819246656554}
-  - {fileID: 2037531011333450041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1754,6 +1753,18 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.9727161
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.028301716
+      objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.86
@@ -2028,7 +2039,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1344894129
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -2252,6 +2263,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2058772416}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: DialogueLines.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1008870065}
@@ -2458,7 +2473,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1698487427
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7502516324235813177, guid: e23afeccc0204e8449a0738850497b45, type: 3}
@@ -2781,7 +2796,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -2878,7 +2893,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1364128971}
-  - component: {fileID: 1364128972}
   - component: {fileID: 1364128973}
   m_Layer: 0
   m_Name: Background
@@ -2887,14 +2901,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1364128971
-Transform:
+--- !u!224 &1364128971
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1364128970}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2904,21 +2917,14 @@ Transform:
   - {fileID: 1336043072}
   - {fileID: 1838396828}
   - {fileID: 819666551}
-  - {fileID: 1441888166}
+  - {fileID: 2009554062}
   m_Father: {fileID: 326412525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1364128972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364128970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d2fbcc032126cd4ea177f82602947c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1364128973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3066,97 +3072,6 @@ MonoBehaviour:
   - Bukan dong! Tangga kayu itu dibuat sebagai pembatas konservasi
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
   closeKey: 101
---- !u!1 &1441888165
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1441888166}
-  - component: {fileID: 1441888167}
-  m_Layer: 0
-  m_Name: Sky
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1441888166
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441888165}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.9981, y: 1.74, z: 0}
-  m_LocalScale: {x: 78.3421, y: 10, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1364128971}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1441888167
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441888165}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1344894129
-  m_SortingLayer: 1
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.24705884, g: 0.83267105, b: 0.9764706, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
 --- !u!114 &1471088820 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
@@ -3386,7 +3301,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -3550,7 +3465,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -3710,6 +3625,111 @@ RectTransform:
   m_AnchoredPosition: {x: 8.6693, y: -141.46}
   m_SizeDelta: {x: 48.4027, y: 14.9139}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1898465146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1898465148}
+  - component: {fileID: 1898465147}
+  m_Layer: 0
+  m_Name: BoatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1898465147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898465146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dc1eeca6ed932e4c811585091e34bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoatTransitionController
+  dialogueSystem: {fileID: 1008870064}
+  triviaSystem: {fileID: 1399827312}
+  islandData:
+  - islandName: 03_Pianemo
+    npcDialogueLines:
+    - Nah, sebentar lagi perahu kita akan sampai di destinasi paling ikonik di Waigeo
+      Barat
+    - Yaitu Gugusan Bukit Karst Piaynemo
+    - Dalam bahasa lokal warga Waigeo Barat, nama Piaynemo memiliki arti 'sambungan'
+      atau 'ujung tombak'
+    - Hal ini merujuk pada posisi geografisnya yang menjadi ujung gugusan kepulauan
+      karst
+    - Biar kamu bisa bayangkan rutenya... Begitu turun di dermaga, kita bakal lewat
+      pos penjaga dan pintu gerbang bawah
+    - Setelah itu, kita harus menaiki jalur tangga kayu yang cukup panjang ditengah
+      pepohonan lebat sampai ke puncak viewpoint
+    - Tahukah kamu kenapa gugusan batu di Piaynemo ini bentuknya unik seperti pulau-pulau
+      kecil melingkar?
+    - Secara geologi purba, batuan karst di sini sebenarnya adalah fosil terumbu
+      karang laut dan gamping yang terangkat naik ke permukaan akibat pergeseran
+      kerak bumi jutaan tahun lalu
+    - 'Karena asalnya dari endapan karang purba, tekstur batu karst di balik tangga
+      kayu itu sangat tajam dan berongga. '
+    - 'Makanya, pemerintah lokal membangun jalur anak tangga kayu berpagar supaya
+      wisatawan tidak menginjak atau merusak batuan karang yang rapuh itu '
+    - Tapi ingat ya, kelembaban udara pantai dan uap garam laut di sini sangat tinggi.
+      Anak tangga kayu di beberapa titik pertengahan bukit kadang bisa lapuk atau
+      rusak tertimpa dahan
+    - Kalau menemui tangga yang bolong, kita harus ekstra hati-hati manjat tebing
+      batu di sampingnya
+    - Dangan lupa jaga kebersihan!
+    - Karena ancaman terbesar Piaynemo adalah sampah plastik!
+    - Sampah yang tersangkut di tebing bukit bisa tertiup angin dan jatuh ke air,
+      mengancam kehidupan penyu dan ikan di bawahnya
+    - Nah, materi di papan Waisai tadi dan penjelasanku barusan harusnya sudah cukup
+      jelas. Coba aku tes daya ingatmu lewat 3 pertanyaan ini sebelum kita mendarat
+    islandTriviaQuestions:
+    - questionText: Pertanyaan pertama, Menurut bahasa lokal warga Waigeo Barat,
+        apa arti dari nama Piaynemo?
+      options:
+      - '"Air Jernih" atau "Laut Toska"'
+      - '"Sambungan" atau "Ujung Tombak" '
+      - '"Gugusan Batu" atau "Puncak Hijau" '
+      correctAnswerIndex: 1
+    - questionText: Pertanyaan Kedua, Bukit-bukit batu yang menjulang cantik di Piaynemo
+        itu sebenarnya terbentuk dari apa?
+      options:
+      - Tumpukan batu gunung berapi dari endapan lava purba
+      - Gumpalan tanah pasir murni yang memadat
+      - Endapan fosil terumbu karang dan gamping yang terangkat jutaan tahun lalu
+      correctAnswerIndex: 2
+    - questionText: Pertanyaan Ketiga, Sampah plastik yang tersangkut di tebing bukit
+        Piaynemo dianggap sebagai ancaman ekologis yang sangat serius. Mengapa begitu?
+      options:
+      - Karena sampah di tebing sangat mudah tertiup angin ke laut di bawahnya, mencemari
+        air dan tertelan oleh biota laut
+      - Karena struktur pori batuan karst akan menyerap racun plastik dan mengubah
+        kandungan kimia tanah bukit
+      - Karena sampah plastik memantulkan sinar matahari yang memicu peningkatan
+        suhu mikro dan mengeringkan vegetasi tebing
+      correctAnswerIndex: 0
+--- !u!4 &1898465148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898465146}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.38157, y: -4.02549, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1962130578
 GameObject:
   m_ObjectHideFlags: 0
@@ -3956,6 +3976,97 @@ RectTransform:
   m_AnchoredPosition: {x: -389, y: -21}
   m_SizeDelta: {x: 200.23, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2009554061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2009554062}
+  - component: {fileID: 2009554063}
+  m_Layer: 0
+  m_Name: Misool_Langit-Bukit_Background_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2009554062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009554061}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1364128971}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2009554063
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009554061}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -5405563570570101810, guid: 58a7af66c240b234aa579666177ac9d2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 157.87999, y: 6.783906}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &2050492411
 GameObject:
   m_ObjectHideFlags: 0
@@ -4462,108 +4573,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aefe9c0683837c84699b580b1281489b, type: 3}
---- !u!1001 &2037531011333450040
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 293378718}
-    m_Modifications:
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1378561333762003984, guid: f021d28b44d157140a07847128753fe0, type: 3}
-      propertyPath: m_Name
-      value: InfoPanel
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f021d28b44d157140a07847128753fe0, type: 3}
---- !u!224 &2037531011333450041 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 939238859222312692, guid: f021d28b44d157140a07847128753fe0, type: 3}
-  m_PrefabInstance: {fileID: 2037531011333450040}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3210961641938993179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5133,3 +5142,4 @@ SceneRoots:
   - {fileID: 310586323}
   - {fileID: 154263647}
   - {fileID: 8882299798580016801}
+  - {fileID: 1898465148}
