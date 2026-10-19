@@ -34,7 +34,7 @@ public class MainMenu : MonoBehaviour
             StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Arrival_Airstrip;
         }
 
-        CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_CutsceneAirstrip");
+        CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_Waisai");
     }
 
     public void ContinueGame()

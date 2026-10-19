@@ -1,38 +1,21 @@
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
-
     [Header("UI References")]
     public GameObject pauseMenuUI;
     private bool isPaused = false;
 
-    void Awake()
-    {
-        // Memastikan hanya ada 1 GameManager (Singleton)
-        if (Instance == null)
-        {
-            Instance = this;
-            transform.SetParent(null);
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void Start()
     {
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     private void Update()
     {
-        // Toggle Pause Menu dengan tombol Escape
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused) ResumeGame();
@@ -44,64 +27,62 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     public void BackToMainMenu()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         SceneManager.LoadScene("01_MainMenu");
     }
 
-    // 🔴 FUNGSI SAVE (Dipanggil saat pindah pulau atau checkpoint)
     public void SaveGame()
     {
-        // 1. Simpan Data Level/Pulau saat ini
-        string currentScene = SceneManager.GetActiveScene().name;
-        PlayerPrefs.SetString("SavedScene", currentScene);
-        
-        // 2. Simpan Data Fase Cerita
+        Player player = FindFirstObjectByType<Player>();
+
+        if (player != null)
+        {
+            // Simpan posisi Player (X, Y, Z)
+            PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
+            PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
+            PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
+
+            // Simpan data kesehatan jika Player memiliki field/property health.
+            PlayerPrefs.SetInt("PlayerHealth", GetPlayerHealth(player, 100));
+
+            PlayerPrefs.Save();
+            Debug.Log("Game Berhasil Disimpan!");
+        }
+        else
+        {
+            Debug.LogWarning("Objek Player tidak ditemukan untuk disimpan.");
+        }
+
+        PlayerPrefs.SetString("SavedScene", SceneManager.GetActiveScene().name);
+
+        // Menyimpan fase cerita saat ini
         if (StoryManager.Instance != null)
         {
             PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
         }
 
-        // 3. Simpan Posisi Player (Jika ada di Scene)
-        Player player = FindFirstObjectByType<Player>();
-        if (player != null)
-        {
-            PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
-            PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
-            PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
-        }
-        else
-        {
-            Debug.LogWarning("GameManager: Objek Player tidak ditemukan. Posisi tidak disimpan.");
-        }
+        // Wajib dipanggil agar data benar-benar tersimpan, terutama untuk WebGL
+        PlayerPrefs.Save();
 
-        // 4. Eksekusi Save
-        PlayerPrefs.Save(); 
-        Debug.Log("Game Berhasil Disimpan di Scene: " + currentScene);
+        Debug.Log("Game Berhasil Disimpan beserta status Scene & Story Phase!");
     }
 
-    // 🟢 FUNGSI LOAD (Dipanggil SETELAH scene termuat)
     public void LoadGame()
     {
-        // Load data cerita
-        if (StoryManager.Instance != null)
-        {
-            StoryManager.Instance.currentPhase = (StoryManager.StoryPhase)PlayerPrefs.GetInt("SavedStoryPhase", 0);
-        }
-
-        // Load posisi Player
         Player player = FindFirstObjectByType<Player>();
+
         if (player != null)
         {
             if (PlayerPrefs.HasKey("PlayerX"))
@@ -110,20 +91,56 @@ public class GameManager : MonoBehaviour
                 float y = PlayerPrefs.GetFloat("PlayerY");
                 float z = PlayerPrefs.GetFloat("PlayerZ");
 
-                // Matikan sementara komponen seperti Rigidbody/CharacterController (jika ada)
-                // agar posisi bisa diset dengan paksa tanpa intervensi physics
                 player.transform.position = new Vector3(x, y, z);
-                
-                Debug.Log("GameManager: Posisi Player Berhasil Dimuat!");
+                SetPlayerHealth(player, PlayerPrefs.GetInt("PlayerHealth", 100));
+
+                Debug.Log("Game Berhasil Dimuat!");
             }
             else
             {
-                Debug.LogWarning("GameManager: Tidak ada data posisi yang tersimpan.");
+                Debug.LogWarning("Tidak ada data tersimpan untuk dimuat.");
             }
         }
         else
         {
-            Debug.LogWarning("GameManager: Objek Player tidak ditemukan untuk diposisikan ulang.");
+            Debug.LogWarning("Objek Player tidak ditemukan untuk dimuat.");
+        }
+    }
+
+    private int GetPlayerHealth(Player player, int defaultValue)
+    {
+        if (player == null) return defaultValue;
+
+        FieldInfo field = typeof(Player).GetField("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (field != null && field.FieldType == typeof(int))
+        {
+            return (int)field.GetValue(player);
+        }
+
+        PropertyInfo property = typeof(Player).GetProperty("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (property != null && property.PropertyType == typeof(int) && property.CanRead)
+        {
+            return (int)property.GetValue(player);
+        }
+
+        return defaultValue;
+    }
+
+    private void SetPlayerHealth(Player player, int value)
+    {
+        if (player == null) return;
+
+        FieldInfo field = typeof(Player).GetField("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (field != null && field.FieldType == typeof(int))
+        {
+            field.SetValue(player, value);
+            return;
+        }
+
+        PropertyInfo property = typeof(Player).GetProperty("health", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (property != null && property.PropertyType == typeof(int) && property.CanWrite)
+        {
+            property.SetValue(player, value);
         }
     }
 }

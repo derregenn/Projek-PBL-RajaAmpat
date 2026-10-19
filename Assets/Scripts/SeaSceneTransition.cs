@@ -1,72 +1,62 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class SeaSceneTransition : MonoBehaviour
 {
     [Header("Pengaturan Scene")]
     public string targetSceneName = "07_Laut";
-    public float fadeDuration = 1.0f;
+    
+    [Header("UI Feedback")]
+    public GameObject interactPromptUI;
 
-    [Header("UI Fade Settings")]
-    public Image fadeBlackScreen; // Tarik objek Image Hitam ke slot ini
-
-    private bool isTransitioning = false;
+    private bool isPlayerInArea = false;
 
     private void Start()
     {
-        // Memastikan tirai hitam transparan (Alpha = 0) saat awal scene
-        if (fadeBlackScreen != null)
+        // Otomatis matikan teks "Tekan E" saat game baru di-Play
+        if (interactPromptUI != null)
         {
-            Color c = fadeBlackScreen.color;
-            c.a = 0f;
-            fadeBlackScreen.color = c;
-            fadeBlackScreen.gameObject.SetActive(true);
+            interactPromptUI.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (isPlayerInArea)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("--> Tombol E Ditekan! Memuat Scene: " + targetSceneName);
+                SceneManager.LoadScene(targetSceneName);
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Cegah pemicu berjalan berulang kali saat proses transisi
-        if (isTransitioning) return;
+        Debug.Log("Pemicu disentuh oleh: " + collision.gameObject.name + " (Tag: " + collision.tag + ")");
 
         if (collision.CompareTag("Player") || collision.gameObject.name.Contains("Player"))
         {
-            Debug.Log("--> Player menyentuh pemicu. Melakukan transisi ke: " + targetSceneName);
-            StartCoroutine(FadeAndLoadScene());
+            isPlayerInArea = true;
+            if (interactPromptUI != null)
+            {
+                interactPromptUI.SetActive(true);
+            }
+            Debug.Log("--> Player Masuk Area Pindah Scene. Tekan E!");
         }
     }
 
-    private IEnumerator FadeAndLoadScene()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        isTransitioning = true;
-
-        // 1. Efek Memudar ke Layar Hitam (Fade Out)
-        if (fadeBlackScreen != null)
+        if (collision.CompareTag("Player") || collision.gameObject.name.Contains("Player"))
         {
-            float timer = 0f;
-            Color c = fadeBlackScreen.color;
-
-            while (timer < fadeDuration)
+            isPlayerInArea = false;
+            if (interactPromptUI != null)
             {
-                timer += Time.deltaTime;
-                c.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
-                fadeBlackScreen.color = c;
-                yield return null;
+                interactPromptUI.SetActive(false);
             }
-
-            c.a = 1f;
-            fadeBlackScreen.color = c;
+            Debug.Log("--> Player Keluar Area Pindah Scene.");
         }
-
-        // 2. Simpan Progres Otomatis sebelum Pindah Scene
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.SaveGame();
-        }
-
-        // 3. Pindah ke Scene Tujuan
-        SceneManager.LoadScene(targetSceneName);
     }
 }
