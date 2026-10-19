@@ -1755,15 +1755,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.9727161
+      value: 0.81886786
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 1
+      value: 0.64705884
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.028301716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2160,7 +2160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &864402647
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2193,7 +2193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   canvasGroup: {fileID: 864402649}
-  fadeDuration: 3
+  fadeDuration: 2
   fadeInOnStart: 1
 --- !u!225 &864402649
 CanvasGroup:
@@ -2259,6 +2259,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: TypeSpeed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: npcLensSize
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: dialogueCamera
       value: 
       objectReference: {fileID: 2058772416}
@@ -2267,9 +2275,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1008870065}
+      objectReference: {fileID: 0}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Interact
@@ -2298,6 +2310,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2714829142977015304, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 12.17
+      objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2308,7 +2324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 360
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2321,6 +2337,42 @@ PrefabInstance:
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -60.6725
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: quizQuestions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: quizQuestions.Array.data[0].options.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Padding.m_Right
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4026320033234950906, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2362,14 +2414,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.23269677
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7099015682886790851, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_overflowMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8257977044528296014, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Name
       value: NPCTourGuide
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+    - {fileID: 4387828156358214988, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3979835675472087360, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008870066}
   m_SourcePrefab: {fileID: 100100000, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
 --- !u!114 &1008870064 stripped
 MonoBehaviour:
@@ -2382,17 +2455,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
---- !u!114 &1008870065 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+--- !u!1 &1008870065 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3979835675472087360, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
   m_PrefabInstance: {fileID: 1008870063}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &1008870066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008870065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8866e511cb55ad45a69cc0ee64b6c5a, type: 3}
+  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NPCTourGuide
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  cornerRadius: 25
+  cornerSegments: 8
 --- !u!1 &1017193342
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,7 +3119,8 @@ PrefabInstance:
       propertyPath: questUI
       value: 
       objectReference: {fileID: 293378720}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3714,6 +3804,49 @@ MonoBehaviour:
         kandungan kimia tanah bukit
       - Karena sampah plastik memantulkan sinar matahari yang memicu peningkatan
         suhu mikro dan mengeringkan vegetasi tebing
+      correctAnswerIndex: 0
+  - islandName: 04_Misool
+    npcDialogueLines:
+    - Coba lihat ke depan! Tebing-tebing batu hitam yang tegak lurus itu tandanya
+      kita sudah makin dekat dengan Pulau Misool.
+    - Misool ini adalah salah satu dari empat pulau besar utama di Raja Ampat.
+    - Berbeda dengan Piaynemo yang bukitnya berbentuk seperti piramida hijau, tebing
+      gamping di Misool ini sangat curam.
+    - Di bagian bawah tebingnya bahkan membentuk ceruk melengkung akibat tergerus
+      ombak selama ribuan tahun!
+    - Tapi yang paling istimewa dari Misool adalah wilayah perairannya yang berstatus
+      sebagai kawasan suaka konservasi laut.
+    - Area ini adalah rumah bagi spesies berharga seperti Penyu Sisik dan Pari Manta.
+    - Bahkan di daratannya yang terisolasi, terdapat Danau Lenmakana yang berisi
+      spesies ubur-ubur tanpa sengat.
+    - Tapi ingat, ekosistem bawah laut yang indah ini rentan sekali terhadap ancaman
+      sampah plastik, jaring hantu nelayan, dan ledakan hama Bulu Seribu yang memakan
+      terumbu karang.
+    - 'Nah, penjelasanku barusan harusnya sudah cukup jelas. Coba aku tes daya ingatmu
+      lewat 3 pertanyaan ini sebelum kita mendarat. '
+    islandTriviaQuestions:
+    - questionText: Pertanyaan pertama, Apa ciri khas geografis utama yang membedakan
+        lanskap tebing batu di Misool dengan bukit karst di pulau lain?
+      options:
+      - Dinding batu gamping tegak lurus dengan cerukan ombak di bawahnya
+      - Gundukan pasir pantai yang selalu pindah terbawa arah angin
+      - Seluruh bukitnya tertutup oleh rumput hijau tanpa ada struktur batu keras
+      correctAnswerIndex: 0
+    - questionText: Pertanyaan Kedua, Di pedalaman Misool terdapat Danau Lenmakana.
+        Apa keunikan fenomena alam yang ada di danau tersebut?
+      options:
+      - Menjadi habitat alami bagi spesies ubur-ubur tanpa sengat
+      - Airnya mengandung garam sangat tinggi sehingga semua benda bisa mengapung
+      - Air danau bisa berganti warna menjadi merah setiap kali pasang surut
+      correctAnswerIndex: 0
+    - questionText: 'Pertanyaan Ketiga, Selain sampah plastik dan jaring nelayan,
+        apa ancaman biologis alami yang bisa merusak ekosistem karang di Misool jika
+        populasinya tidak terkendali? '
+      options:
+      - Ledakan populasi hama Bulu Seribu yang memangsa jaringan terumbu karang
+      - Gesekan dari kawanan Pari Manta yang terlalu sering bersentuhan dengan dasar
+        karang
+      - 'Pertumbuhan berlebih rumput laut yang menutup masuknya sinar matahari '
       correctAnswerIndex: 0
 --- !u!4 &1898465148
 Transform:

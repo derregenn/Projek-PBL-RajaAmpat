@@ -15,8 +15,6 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            transform.SetParent(null);
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -24,10 +22,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     private void Start()
     {
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     private void Update()
@@ -44,19 +50,19 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     public void BackToMainMenu()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         SceneManager.LoadScene("01_MainMenu");
     }
 
@@ -66,7 +72,7 @@ public class GameManager : MonoBehaviour
         // 1. Simpan Data Level/Pulau saat ini
         string currentScene = SceneManager.GetActiveScene().name;
         PlayerPrefs.SetString("SavedScene", currentScene);
-        
+
         // 2. Simpan Data Fase Cerita
         if (StoryManager.Instance != null)
         {
@@ -87,7 +93,7 @@ public class GameManager : MonoBehaviour
         }
 
         // 4. Eksekusi Save
-        PlayerPrefs.Save(); 
+        PlayerPrefs.Save();
         Debug.Log("Game Berhasil Disimpan di Scene: " + currentScene);
     }
 
@@ -113,7 +119,7 @@ public class GameManager : MonoBehaviour
                 // Matikan sementara komponen seperti Rigidbody/CharacterController (jika ada)
                 // agar posisi bisa diset dengan paksa tanpa intervensi physics
                 player.transform.position = new Vector3(x, y, z);
-                
+
                 Debug.Log("GameManager: Posisi Player Berhasil Dimuat!");
             }
             else

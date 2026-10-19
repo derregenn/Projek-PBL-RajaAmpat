@@ -4,9 +4,10 @@ using UnityEngine.SceneManagement;
 public class BoatTransitionController : MonoBehaviour
 {
     [Header("Referensi Sistem")]
-    public Dialogue dialogueSystem;
+    public Dialogue dialogueSystem;       // Skrip dialog NPC di perahu
+    public TriviaQuizUI triviaSystem;     // Skrip UI Trivia (yang baru saja kita perbaiki)
 
-    [Header("Data Perjalanan Tiap Pulau")]
+    [Header("Data Pulau (Isi di Inspector)")]
     public IslandTransitionData[] islandData;
 
     private string currentTarget;
@@ -14,86 +15,108 @@ public class BoatTransitionController : MonoBehaviour
 
     private void Start()
     {
-        // 1. Ambil nama pulau tujuan dari Singleton GamePhaseManager
+        // 1. Ambil UI Trivia secara dinamis via Singleton TriviaQuizUI.Instance
+        if (triviaSystem == null)
+        {
+            triviaSystem = TriviaQuizUI.Instance;
+        }
+
+        // 2. Ambil Dialogue System jika belum di-assign
+        if (dialogueSystem == null)
+        {
+            dialogueSystem = FindFirstObjectByType<Dialogue>();
+        }
+
+        // 3. Ambil target pulau dari Singleton GamePhaseManager
         if (GamePhaseManager.Instance != null && !string.IsNullOrEmpty(GamePhaseManager.Instance.targetIslandName))
         {
             currentTarget = GamePhaseManager.Instance.targetIslandName;
         }
         else
         {
-            currentTarget = "";
+            currentTarget = "Arborek"; // Fallback testing
         }
 
+        // Jalankan logika transisi...
+        LoadIslandDataAndStart();
+    }
+
+    private void LoadIslandDataAndStart()
+    {
         // 2. Cari data dialog & trivia yang cocok untuk pulau ini
-        foreach (var data in islandData)
+        if (islandData != null)
         {
-            if (data.islandName == currentTarget)
+            foreach (var data in islandData)
             {
-                currentData = data;
-                break;
+                if (data != null && string.Equals(data.islandName?.Trim(), currentTarget.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                {
+                    currentData = data;
+                    break;
+                }
             }
         }
 
-        // 3. Mulai alur otomatis
+        // 3. Mulai alur: Mainkan Dialog dulu
         if (currentData != null)
         {
             PlayIntroDialogue();
         }
         else
         {
-            Debug.LogError("Data pulau " + currentTarget + " tidak ditemukan di Inspector BoatTransitionController!");
+            Debug.LogError($"BoatTransitionController: data pulau '{currentTarget}' tidak ditemukan. Periksa elemen islandData di Inspector dan samakan islandName.", this);
         }
     }
 
     private void PlayIntroDialogue()
     {
-        if (dialogueSystem != null && currentData.npcDialogueLines.Length > 0)
+        if (dialogueSystem == null)
         {
-            // Mainkan dialog, saat selesai otomatis jalankan StartTrivia()
-            dialogueSystem.StartDialogue(currentData.npcDialogueLines, StartTrivia);
+            Debug.LogError("BoatTransitionController: dialogueSystem belum di-assign di Inspector.", this);
+            return;
         }
-        else
+
+        if (currentData.npcDialogueLines == null || currentData.npcDialogueLines.Length == 0)
         {
-            // Jika tidak ada dialog, langsung kuis
-            StartTrivia();
+            Debug.LogError($"BoatTransitionController: npcDialogueLines untuk '{currentTarget}' kosong.", this);
+            return;
         }
+
+        // Masukkan naskah khusus pulau ini ke sistem dialog
+        // Setelah dialog selesai, panggil fungsi StartTrivia()
+        dialogueSystem.StartDialogue(currentData.npcDialogueLines, StartTrivia);
     }
 
     private void StartTrivia()
     {
-        // Panggil TriviaQuizUI secara langsung, layaknya skrip NPCTourGuide
-        if (TriviaQuizUI.Instance != null && currentData.islandTriviaQuestions.Length > 0)
+        // Gunakan TriviaQuizUI.Instance langsung agar selalu mengarah ke UI yang aktif
+        if (TriviaQuizUI.Instance != null && currentData != null && currentData.islandTriviaQuestions != null)
         {
             TriviaQuizUI.Instance.StartQuiz(currentData.islandTriviaQuestions, FinishTransition);
         }
         else
         {
-            FinishTransition();
+            Debug.LogWarning("[BoatTransitionController] TriviaQuizUI.Instance tidak ditemukan atau soal kosong!");
+            FinishTransition(); // Langsung lanjut jika kuis tidak ada
         }
     }
 
     private void FinishTransition()
     {
-        Debug.Log("Kuis perahu selesai, menuju pulau: " + currentTarget);
-
-        // Catat bahwa pemain sudah melewati perahu menuju pulau ini
+        // Simpan ke PlayerPrefs bahwa pemain SUDAH melewati perahu untuk pulau ini
         PlayerPrefs.SetInt("Visited_" + currentTarget, 1);
         PlayerPrefs.Save();
 
-        // Pindah ke scene tujuan sesungguhnya
+        // Load scene pulau tujuan
         SceneManager.LoadScene(currentTarget);
     }
 }
 
-// Class ini memastikan array soal TriviaQuestion bisa muncul di Inspector BoatTransitionController
+// Struct untuk mempermudah pengaturan data di Inspector
 [System.Serializable]
 public class IslandTransitionData
 {
-    public string islandName;
-
+    public string islandName; // Misal: "Arborek", "Misool"
     [TextArea(2, 5)]
     public string[] npcDialogueLines;
-
-    // Tarik referensi class TriviaQuestion yang sama dengan yang dipakai NPCTourGuide
     public TriviaQuestion[] islandTriviaQuestions;
 }
