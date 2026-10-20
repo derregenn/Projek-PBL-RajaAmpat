@@ -7,119 +7,174 @@ public class MenuAnimator : MonoBehaviour
 {
     [Header("Referensi UI")]
     public RectTransform logo;
-    public RectTransform[] buttons; // Masukkan berurutan: Play, Continue, Exit
+    public RectTransform[] buttons; // 0=Play, 1=Continue, 2=Exit
     public CanvasGroup whiteFadePanel;
 
-    [Header("Pengaturan Waktu")]
-    public float animSpeed = 0.5f;
+    [Header("Pengaturan Waktu & Jarak Meluncur")]
+    public float animSpeed = 0.55f;
     public float delayBetweenButtons = 0.15f;
+    public float logoDropOffset = 180f;     
+    public float buttonLeftOffset = 800f;   
+    public float buttonRightOffset = 800f;  
 
-    [Header("Kurva Animasi (Bouncy)")]
-    public AnimationCurve popInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Header("Kurva Animasi Logo (Bouncy)")]
+    public AnimationCurve logoPopInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Event Setelah Animasi Outro")]
-    public UnityEvent onOutroFinished_Play;     // Event untuk tombol Play
-    public UnityEvent onOutroFinished_Continue; // Event untuk tombol Continue
+    [Header("Event Setelah Tombol Diklik")]
+    public UnityEvent onOutroFinished_Play;     
+    public UnityEvent onOutroFinished_Continue; 
+
+    private Vector2 logoTargetPos;
+    private Vector2[] buttonTargetPos;
+
+    private void Awake()
+    {
+        if (logo != null) logoTargetPos = logo.anchoredPosition;
+
+        if (buttons != null)
+        {
+            buttonTargetPos = new Vector2[buttons.Length];
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (buttons[i] != null) buttonTargetPos[i] = buttons[i].anchoredPosition;
+            }
+        }
+    }
 
     private void Start()
     {
-        // 1. Sembunyikan semua UI di awal (Skala = 0)
-        if (logo != null) logo.localScale = Vector3.zero;
-        foreach (var btn in buttons)
-        {
-            if (btn != null) btn.localScale = Vector3.zero;
-        }
-
-        // 2. Pastikan panel putih transparan di awal
-        if (whiteFadePanel != null)
-        {
-            whiteFadePanel.alpha = 0f;
-            whiteFadePanel.blocksRaycasts = false;
-        }
-
-        // 3. Mulai animasi intro
-        StartCoroutine(PlayIntroSequence());
+        PrepareInitialPositions();
+        StartCoroutine(PlayIntroSequenceSafe());
     }
 
-    private IEnumerator PlayIntroSequence()
+    private void PrepareInitialPositions()
     {
-        yield return new WaitForSeconds(0.5f); // Jeda sebelum animasi mulai
-
-        // Animasikan Logo
-        if (logo != null) StartCoroutine(ScaleUI(logo, Vector3.zero, Vector3.one));
-        yield return new WaitForSeconds(0.3f);
-
-        // Animasikan Tombol satu per satu
-        foreach (var btn in buttons)
+        if (logo != null)
         {
-            if (btn != null)
+            logo.anchoredPosition = logoTargetPos + new Vector2(0f, logoDropOffset);
+            CanvasGroup cg = logo.GetComponent<CanvasGroup>();
+            if (cg == null) cg = logo.gameObject.AddComponent<CanvasGroup>();
+            cg.alpha = 0f;
+        }
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (buttons[i] != null)
             {
-                StartCoroutine(ScaleUI(btn, Vector3.zero, Vector3.one));
+                float offset = (i == 1) ? buttonRightOffset : -buttonLeftOffset;
+                buttons[i].anchoredPosition = buttonTargetPos[i] + new Vector2(offset, 0f);
+                CanvasGroup cg = buttons[i].GetComponent<CanvasGroup>();
+                if (cg == null) cg = buttons[i].gameObject.AddComponent<CanvasGroup>();
+                cg.alpha = 0f;
+            }
+        }
+
+        if (whiteFadePanel != null)
+        {
+            whiteFadePanel.gameObject.SetActive(true);
+            whiteFadePanel.alpha = 1f;
+            whiteFadePanel.blocksRaycasts = true;
+        }
+    }
+
+    private IEnumerator PlayIntroSequenceSafe()
+    {
+        // Fade out panel putih dengan aman (jika ada)
+        if (whiteFadePanel != null)
+        {
+            float fadeTime = 0f;
+            float duration = 0.6f;
+            while (fadeTime < duration)
+            {
+                fadeTime += Time.deltaTime;
+                if (whiteFadePanel != null)
+                    whiteFadePanel.alpha = Mathf.Lerp(1f, 0f, fadeTime / duration);
+                yield return null;
+            }
+            if (whiteFadePanel != null)
+            {
+                whiteFadePanel.alpha = 0f;
+                whiteFadePanel.blocksRaycasts = false;
+            }
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        // Animasi Logo Masuk
+        if (logo != null)
+        {
+            Vector2 startPos = logoTargetPos + new Vector2(0f, logoDropOffset);
+            StartCoroutine(AnimateElementSafe(logo, startPos, logoTargetPos, true));
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        // Animasi Tombol Masuk Satu Persatu
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (buttons[i] != null)
+            {
+                float offset = (i == 1) ? buttonRightOffset : -buttonLeftOffset;
+                Vector2 startPos = buttonTargetPos[i] + new Vector2(offset, 0f);
+                StartCoroutine(AnimateElementSafe(buttons[i], startPos, buttonTargetPos[i], false));
                 yield return new WaitForSeconds(delayBetweenButtons);
             }
         }
     }
 
-    private IEnumerator ScaleUI(RectTransform uiElement, Vector3 startScale, Vector3 endScale)
+    private IEnumerator AnimateElementSafe(RectTransform rect, Vector2 startPos, Vector2 targetPos, bool isLogo)
     {
+        if (rect == null) yield break;
+
+        CanvasGroup cg = rect.GetComponent<CanvasGroup>();
+        if (cg == null) cg = rect.gameObject.AddComponent<CanvasGroup>();
+
         float time = 0f;
         while (time < animSpeed)
         {
+            if (rect == null || cg == null) yield break;
+
             time += Time.deltaTime;
-            // Gunakan LerpUnclamped agar kurva bisa melampaui 1 (efek membal/bouncy)
-            float curvePercent = popInCurve.Evaluate(time / animSpeed);
-            uiElement.localScale = Vector3.LerpUnclamped(startScale, endScale, curvePercent);
+            float progress = Mathf.Clamp01(time / animSpeed);
+            
+            float factor = isLogo ? logoPopInCurve.Evaluate(progress) : Mathf.SmoothStep(0f, 1f, progress);
+            rect.anchoredPosition = isLogo ? Vector2.LerpUnclamped(startPos, targetPos, factor) : Vector2.Lerp(startPos, targetPos, factor);
+            cg.alpha = Mathf.Lerp(0f, 1f, progress * 2f);
+
             yield return null;
         }
-        uiElement.localScale = endScale;
+
+        if (rect != null) rect.anchoredPosition = targetPos;
+        if (cg != null) cg.alpha = 1f;
     }
 
-    // 🔴 PANGGIL INI DARI TOMBOL "PLAY / NEW GAME"
     public void ClickPlayButton()
     {
-        StartCoroutine(PlayOutroSequence(onOutroFinished_Play));
+        StartCoroutine(PlayDirectFadeSequence(onOutroFinished_Play));
     }
 
-    // 🟢 PANGGIL INI DARI TOMBOL "CONTINUE"
     public void ClickContinueButton()
     {
-        StartCoroutine(PlayOutroSequence(onOutroFinished_Continue));
+        StartCoroutine(PlayDirectFadeSequence(onOutroFinished_Continue));
     }
 
-    private IEnumerator PlayOutroSequence(UnityEvent actionAfterFade)
+    private IEnumerator PlayDirectFadeSequence(UnityEvent actionAfterFade)
     {
-        // 1. Hilangkan tombol bersaman
-        foreach (var btn in buttons)
-        {
-            if (btn != null) StartCoroutine(ScaleUI(btn, btn.localScale, Vector3.zero));
-        }
-        yield return new WaitForSeconds(0.2f);
-
-        // 2. Hilangkan logo
-        if (logo != null) StartCoroutine(ScaleUI(logo, logo.localScale, Vector3.zero));
-        yield return new WaitForSeconds(0.4f);
-
-        // 3. Fade ke Putih
         if (whiteFadePanel != null)
         {
+            whiteFadePanel.gameObject.SetActive(true);
             whiteFadePanel.blocksRaycasts = true;
-            float time = 0;
-            while (time < 1f) // 1 detik durasi fade
+            
+            float time = 0f;
+            while (time < 0.4f)
             {
                 time += Time.deltaTime;
-                whiteFadePanel.alpha = time;
+                if (whiteFadePanel != null) whiteFadePanel.alpha = time / 0.4f;
                 yield return null;
             }
+            if (whiteFadePanel != null) whiteFadePanel.alpha = 1f;
         }
 
-        // 4. Jalankan fungsi sistem game aslimu (pindah scene / reset data)
         actionAfterFade?.Invoke();
-
-        // Bersihkan fade setelah aksi pindah scene; panel persisten tidak boleh menutupi scene baru.
-        if (whiteFadePanel != null)
-        {
-            whiteFadePanel.alpha = 0f;
-            whiteFadePanel.blocksRaycasts = false;
-        }
     }
 }

@@ -2028,7 +2028,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1344894129
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -2252,12 +2252,44 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2058772416}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1399827315}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1008870065}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FinishCutsceneAndLoadIsland
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: Interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CutsceneSceneLoader, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: NPCTourGuide, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2635934312981052917, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2345,6 +2377,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4026320033234950906, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7099015682886790851, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ee03ebe0013c90a4881375f9f4ce550c, type: 2}
+    - target: {fileID: 7099015682886790851, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3364449959617359234, guid: ee03ebe0013c90a4881375f9f4ce550c, type: 2}
+    - target: {fileID: 7099015682886790851, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8257977044528296014, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
@@ -2458,7 +2502,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1698487427
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7502516324235813177, guid: e23afeccc0204e8449a0738850497b45, type: 3}
@@ -2781,7 +2825,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -2919,6 +2963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d2fbcc032126cd4ea177f82602947c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
+  scrollSpeed: 1
 --- !u!114 &1364128973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3031,6 +3076,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1399827312}
+    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1399827315}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &1399827311 stripped
 GameObject:
@@ -3066,6 +3114,18 @@ MonoBehaviour:
   - Bukan dong! Tangga kayu itu dibuat sebagai pembatas konservasi
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
   closeKey: 101
+--- !u!114 &1399827315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399827311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2df953629d1fa64c9fb8c59783638b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneSceneLoader
 --- !u!1 &1441888165
 GameObject:
   m_ObjectHideFlags: 0
@@ -3144,7 +3204,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1344894129
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -3386,7 +3446,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
@@ -3550,7 +3610,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -906517011341428469, guid: 955f1061550f30c41ba89eb2c354c4cf, type: 3}
