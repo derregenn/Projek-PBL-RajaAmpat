@@ -3848,6 +3848,47 @@ MonoBehaviour:
         karang
       - 'Pertumbuhan berlebih rumput laut yang menutup masuknya sinar matahari '
       correctAnswerIndex: 0
+  - islandName: 05_Arborek
+    npcDialogueLines:
+    - Sebentar lagi perahu kita akan bersandar di Desa Wisata Arborek.
+    - Arborek ini adalah pionir desa wisata pesisir di Raja Ampat yang terkenal sangat
+      bersih dan asri.
+    - Tahukah kamu? Menurut sejarah Suku Maya setempat, nama Arborek itu asalnya
+      dari kata yang berarti 'duri'.
+    - Dulunya, pulau ini memang dipenuhi semak berduri sebelum akhirnya disulap warga
+      menjadi desa seindah sekarang.
+    - Kalau kamu penasaran kenapa desa ini bisa sangat bersih, rahasianya bukan pada
+      petugas kebersihan dari luar pulau.
+    - Budaya gotong royong di sini sangat kuat. Bahkan kalau ada sampah plastik kecil
+      yang hanyut terbawa ombak dari laut lepas, mereka tidak akan membiarkannya.
+    - ' Nah, penjelasanku tadi harusnya sudah cukup memberi gambaran. Coba aku tes
+      daya ingatmu lewat 3 pertanyaan ini sebelum kita mendarat.'
+    - 'Nah, penjelasanku barusan harusnya sudah cukup jelas. Coba aku tes daya ingatmu
+      lewat 3 pertanyaan ini sebelum kita mendarat. '
+    islandTriviaQuestions:
+    - questionText: "Pertanyaan pertama, menurut cerita warga Suku Maya di sini,
+        nama 'Arborek' itu asalnya dari kata yang artinya apa?\t"
+      options:
+      - '"Duri", karena dulu pulau ini dipenuhi semak berduri'
+      - '"Pasir Putih", karena pantainya yang mengelilingi pulau'
+      - '"Tepi Laut", karena lokasinya di perairan dangkal'
+      correctAnswerIndex: 0
+    - questionText: Pertanyaan kedua, apa sih rahasia utama yang bikin Desa Arborek
+        ini jadi salah satu desa paling bersih di Raja Ampat?
+      options:
+      - Karena pemerintah mengirim banyak petugas kebersihan setiap hari
+      - Karena kesadaran adat warga lokal yang menanamkan tradisi kebersihan sejak
+        kecil
+      - Karena turis dilarang keras membawa barang apapun ke pulau
+      correctAnswerIndex: 1
+    - questionText: Pertanyaan terakhir, Kalau kamu lagi jalan di pantai Arborek
+        dan lihat sampah plastik kecil hanyut terbawa ombak dari laut, apa yang harus
+        kamu lakukan?
+      options:
+      - Biarkan saja, toh itu bukan sampah kita dan asalnya dari laut lepas
+      - Langsung pungut dan buang ke tempat sampah terdekat untuk bantu jaga desa
+      - Tendang kembali ke laut supaya pemandangan pantai tetap bersih
+      correctAnswerIndex: 1
 --- !u!4 &1898465148
 Transform:
   m_ObjectHideFlags: 0
@@ -4961,8 +5002,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: moveSpeed
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: isSwimming
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: healthImage

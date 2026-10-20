@@ -9,7 +9,7 @@ public class MapTeleport : MonoBehaviour
 
         int hasVisited = PlayerPrefs.GetInt("Visited_" + namaSceneTujuan, 0);
 
-        if (hasVisited == 0)
+        if (hasVisited == 0 && namaSceneTujuan != "02_Waisai")
         {
             if (GamePhaseManager.Instance != null)
             {
