@@ -1270,7 +1270,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: Petugas_Hub
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!82 &155692445
@@ -4292,6 +4294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
+  manualWidth: 0
 --- !u!212 &1228864024
 SpriteRenderer:
   serializedVersion: 2
@@ -7278,7 +7281,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!224 &796359907857770784 stripped
@@ -7811,6 +7816,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: MapTeleport, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.7495
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.7495
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.7495
+      objectReference: {fileID: 0}
     - target: {fileID: 4409511276344703766, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_Name
       value: MapMenuPanel
@@ -7827,6 +7844,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1670217813}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 06_Sawinggrai
+      objectReference: {fileID: 0}
     - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
