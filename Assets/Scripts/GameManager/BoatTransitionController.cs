@@ -14,59 +14,66 @@ public class BoatTransitionController : MonoBehaviour
     private IslandTransitionData currentData;
 
     private void Start()
+{
+    // 1. Ambil UI Trivia secara dinamis via Singleton TriviaQuizUI.Instance
+    if (triviaSystem == null)
     {
-        // 1. Ambil UI Trivia secara dinamis via Singleton TriviaQuizUI.Instance
-        if (triviaSystem == null)
-        {
-            triviaSystem = TriviaQuizUI.Instance;
-        }
-
-        // 2. Ambil Dialogue System jika belum di-assign
-        if (dialogueSystem == null)
-        {
-            dialogueSystem = FindFirstObjectByType<Dialogue>();
-        }
-
-        // 3. Ambil target pulau dari Singleton GamePhaseManager
-        if (GamePhaseManager.Instance != null && !string.IsNullOrEmpty(GamePhaseManager.Instance.targetIslandName))
-        {
-            currentTarget = GamePhaseManager.Instance.targetIslandName;
-        }
-        else
-        {
-            currentTarget = "Arborek"; // Fallback testing
-        }
-
-        // Jalankan logika transisi...
-        LoadIslandDataAndStart();
+        triviaSystem = TriviaQuizUI.Instance;
     }
 
-    private void LoadIslandDataAndStart()
+    // 2. Ambil Dialogue System jika belum di-assign
+    if (dialogueSystem == null)
     {
-        // 2. Cari data dialog & trivia yang cocok untuk pulau ini
-        if (islandData != null)
+        dialogueSystem = FindFirstObjectByType<Dialogue>();
+    }
+
+    // 3. Ambil target pulau dari Singleton GamePhaseManager
+    if (GamePhaseManager.Instance != null && !string.IsNullOrEmpty(GamePhaseManager.Instance.targetIslandName))
+    {
+        currentTarget = GamePhaseManager.Instance.targetIslandName;
+    }
+    else
+    {
+        currentTarget = "05_Arborek"; // 👈 DISAMAKAN DENGAN INSPECTOR ("05_Arborek")
+    }
+
+    LoadIslandDataAndStart();
+}
+
+private void LoadIslandDataAndStart()
+{
+    // Cari data dialog & trivia yang cocok untuk pulau ini
+    if (islandData != null)
+    {
+        foreach (var data in islandData)
         {
-            foreach (var data in islandData)
+            if (data != null && !string.IsNullOrEmpty(data.islandName))
             {
-                if (data != null && string.Equals(data.islandName?.Trim(), currentTarget.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                string targetClean = currentTarget.Trim();
+                string dataClean = data.islandName.Trim();
+
+                // Cek apakah namanya persis sama, atau salah satunya mengandung nama pulaunya
+                if (string.Equals(dataClean, targetClean, System.StringComparison.OrdinalIgnoreCase) ||
+                    dataClean.EndsWith(targetClean, System.StringComparison.OrdinalIgnoreCase) ||
+                    targetClean.EndsWith(dataClean, System.StringComparison.OrdinalIgnoreCase))
                 {
                     currentData = data;
                     break;
                 }
             }
         }
-
-        // 3. Mulai alur: Mainkan Dialog dulu
-        if (currentData != null)
-        {
-            PlayIntroDialogue();
-        }
-        else
-        {
-            Debug.LogError($"BoatTransitionController: data pulau '{currentTarget}' tidak ditemukan. Periksa elemen islandData di Inspector dan samakan islandName.", this);
-        }
     }
 
+    // Mulai alur: Mainkan Dialog dulu
+    if (currentData != null)
+    {
+        PlayIntroDialogue();
+    }
+    else
+    {
+        Debug.LogError($"BoatTransitionController: data pulau '{currentTarget}' tidak ditemukan. Periksa elemen islandData di Inspector dan samakan islandName.", this);
+    }
+}
     private void PlayIntroDialogue()
     {
         if (dialogueSystem == null)
