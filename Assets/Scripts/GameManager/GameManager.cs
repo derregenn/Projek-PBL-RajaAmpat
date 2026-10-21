@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            transform.SetParent(null); // Lepas dari parent agar DontDestroyOnLoad berjalan sempurna
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -22,18 +25,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        if (Instance == this)
-        {
-            Instance = null;
-        }
+        // Daftarkan event setiap kali scene baru selesai dimuat
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start()
+    private void OnDisable()
     {
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        // Hapus event saat object dihancurkan
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // 🔄 FUNGSI INI OTOMATIS DIPANGGIL SETIAP KALI MASUK SCENE BARU
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 1. Jika referensi pauseMenuUI hilang/null di scene baru, cari ulang secara otomatis
+        if (pauseMenuUI == null)
+        {
+            GameObject foundPause = GameObject.Find("PauseMenuUI");
+            if (foundPause != null) 
+            {
+                pauseMenuUI = foundPause;
+            }
+        }
+
+        // 2. Paksa matikan Pause Menu & reset waktu game setiap kali masuk scene baru
+        ResumeGame();
     }
 
     private void Update()
@@ -50,36 +68,32 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; 
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; 
     }
 
     public void BackToMainMenu()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; 
         SceneManager.LoadScene("01_MainMenu");
     }
 
-    // 🔴 FUNGSI SAVE (Dipanggil saat pindah pulau atau checkpoint)
-    public void SaveGame()
+     public void SaveGame()
     {
-        // 1. Simpan Data Level/Pulau saat ini
         string currentScene = SceneManager.GetActiveScene().name;
         PlayerPrefs.SetString("SavedScene", currentScene);
-
-        // 2. Simpan Data Fase Cerita
+        
         if (StoryManager.Instance != null)
         {
             PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
         }
 
-        // 3. Simpan Posisi Player (Jika ada di Scene)
         Player player = FindFirstObjectByType<Player>();
         if (player != null)
         {
@@ -92,21 +106,17 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("GameManager: Objek Player tidak ditemukan. Posisi tidak disimpan.");
         }
 
-        // 4. Eksekusi Save
-        PlayerPrefs.Save();
+        PlayerPrefs.Save(); 
         Debug.Log("Game Berhasil Disimpan di Scene: " + currentScene);
     }
 
-    // 🟢 FUNGSI LOAD (Dipanggil SETELAH scene termuat)
-    public void LoadGame()
+     public void LoadGame()
     {
-        // Load data cerita
         if (StoryManager.Instance != null)
         {
             StoryManager.Instance.currentPhase = (StoryManager.StoryPhase)PlayerPrefs.GetInt("SavedStoryPhase", 0);
         }
 
-        // Load posisi Player
         Player player = FindFirstObjectByType<Player>();
         if (player != null)
         {
@@ -116,10 +126,7 @@ public class GameManager : MonoBehaviour
                 float y = PlayerPrefs.GetFloat("PlayerY");
                 float z = PlayerPrefs.GetFloat("PlayerZ");
 
-                // Matikan sementara komponen seperti Rigidbody/CharacterController (jika ada)
-                // agar posisi bisa diset dengan paksa tanpa intervensi physics
                 player.transform.position = new Vector3(x, y, z);
-
                 Debug.Log("GameManager: Posisi Player Berhasil Dimuat!");
             }
             else

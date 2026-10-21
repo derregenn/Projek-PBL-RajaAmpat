@@ -29,8 +29,8 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void Awake()
     {
-        // Selalu perbarui Instance ke TriviaQuizUI milik scene yang sedang aktif saat ini
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
 
         if (choicesPanel != null) choicesPanel.SetActive(false);
     }
