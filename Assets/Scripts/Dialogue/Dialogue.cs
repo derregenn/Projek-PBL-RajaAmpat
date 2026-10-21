@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine.Events;
+using System;
 
 public class Dialogue : MonoBehaviour
 {
@@ -54,6 +55,9 @@ public class Dialogue : MonoBehaviour
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
+    private Action onDialogueCompleteCallback;
+
+
 
     private void Awake()
     {
@@ -102,8 +106,11 @@ public class Dialogue : MonoBehaviour
 
     public void StartDialogue()
     {
+        if (isInteracting) return;
+
         canInteract = false;
         isInteracting = true;
+        lineIndex = 0;
 
         if (dialogueCamera != null)
         {
@@ -118,6 +125,21 @@ public class Dialogue : MonoBehaviour
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         StartTyping();
+    }
+
+    public void StartDialogue(string[] npcDialogueLines, Action onComplete)
+    {
+        onDialogueCompleteCallback = onComplete;
+        DialogueLines = npcDialogueLines;
+
+        DialogueLineSpeakers = new DialogueSpeaker[npcDialogueLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
+
+        lineIndex = 0;
+        StartDialogue();
     }
 
     private void StartTyping()
@@ -261,6 +283,9 @@ public class Dialogue : MonoBehaviour
         if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
 
         onDialogueEnd?.Invoke();
+
+        onDialogueCompleteCallback?.Invoke();
+        onDialogueCompleteCallback = null;
     }
 
     private void ResetNPCSprite()
@@ -330,4 +355,5 @@ public class Dialogue : MonoBehaviour
             npcSpriteRenderer.sprite = talkingSprite1;
         }
     }
+
 }
