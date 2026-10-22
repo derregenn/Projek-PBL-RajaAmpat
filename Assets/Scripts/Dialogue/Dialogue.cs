@@ -26,6 +26,8 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private AudioSource typingAudioSource;
     [SerializeField] private AudioClip typingAudioClip;
     [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 1f;
+    [SerializeField, Min(0f)] private float typingAudioInterval = 0.06f;
+    private float nextTypingAudioTime;
 
     private enum DialogueSpeaker
     {
@@ -183,9 +185,11 @@ public class Dialogue : MonoBehaviour
         {
             activeText.maxVisibleCharacters = i;
 
-            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null)
+            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null
+                && Time.time >= nextTypingAudioTime && !typingAudioSource.isPlaying)
             {
                 typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
+                nextTypingAudioTime = Time.time + typingAudioInterval;
             }
 
             // Animasi pergantian sprite bicaranya NPC saat teks diketik
@@ -204,8 +208,8 @@ public class Dialogue : MonoBehaviour
             }
         }
 
-        if (typingAudioSource != null) typingAudioSource.Stop();
         isTyping = false;
+        if (typingAudioSource != null) typingAudioSource.Stop();
 
         // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
