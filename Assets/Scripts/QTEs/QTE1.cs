@@ -11,7 +11,7 @@ public class QTE1 : MonoBehaviour
 
     [Header("QTE Settings")]
     public KeyCode targetKey = KeyCode.E;
-    public float timeLimit = 3.0f; // Durasi batas waktu untuk menekan (detik)
+    public float timeLimit = 3.0f;
 
     [Header("Random Position Settings")]
     [SerializeField] private bool randomizePosition = true;
@@ -23,9 +23,9 @@ public class QTE1 : MonoBehaviour
     [SerializeField] private int amountToAdd = 1;
 
     [Header("Feedback Visual Settings")]
-    [SerializeField] private Graphic keyGraphic; // Image/Text yang ingin diubah warnanya
-    [SerializeField] private Color successColor = Color.cyan; // Warna kilatan saat sukses (misal: biru terang)
-    [SerializeField] private float flashDuration = 0.15f; // Durasi kilatan berkedip
+    [SerializeField] private Graphic keyGraphic;
+    [SerializeField] private Color successColor = Color.cyan;
+    [SerializeField] private float flashDuration = 0.15f;
 
     [Header("Events")]
     public UnityEvent onSuccess;
@@ -41,16 +41,10 @@ public class QTE1 : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    void Start()
-    {
-        InitQTE();
-    }
-
     void Update()
     {
         if (!isActive || isCompleted) return;
 
-        // Kurangi waktu tersisa
         currentTimer -= Time.deltaTime;
 
         if (timerFillImage != null)
@@ -58,12 +52,10 @@ public class QTE1 : MonoBehaviour
             timerFillImage.fillAmount = Mathf.Clamp01(currentTimer / timeLimit);
         }
 
-        // Cek input tombol berhasil
         if (Input.GetKeyDown(targetKey))
         {
             Success();
         }
-        // Cek jika waktu habis (Gagal)
         else if (currentTimer <= 0f)
         {
             Fail();
@@ -73,6 +65,7 @@ public class QTE1 : MonoBehaviour
     public void InitQTE()
     {
         currentTimer = timeLimit;
+        isCompleted = false;
 
         if (keyText != null)
         {
@@ -96,7 +89,6 @@ public class QTE1 : MonoBehaviour
     {
         if (rectTransform == null) return;
 
-        // Menghitung posisi acak baru di dalam area batas offset
         float randomX = Random.Range(minPositionOffset.x, maxPositionOffset.x);
         float randomY = Random.Range(minPositionOffset.y, maxPositionOffset.y);
 
@@ -108,16 +100,13 @@ public class QTE1 : MonoBehaviour
         isActive = false;
         Debug.Log("QTE Berhasil!");
 
-        // Jalankan efek kilatan visual
         StartCoroutine(FlashSuccessAndProceed());
     }
 
     private System.Collections.IEnumerator FlashSuccessAndProceed()
     {
-        // Jalankan animasi kedip
         yield return StartCoroutine(FlashSuccessRoutine());
 
-        // Tambah progres quest setelah animasi selesai
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
@@ -125,7 +114,6 @@ public class QTE1 : MonoBehaviour
 
         onSuccess?.Invoke();
 
-        // Lanjutkan logika reset/penyelesaian QTE
         bool needMoreProgress = false;
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
@@ -159,8 +147,6 @@ public class QTE1 : MonoBehaviour
         Debug.Log("QTE Press Gagal!");
 
         onFail?.Invoke();
-
-        // Reset ulang QTE saat gagal agar pemain bisa mencoba kembali dari awal
         ResetQTE();
     }
 
@@ -194,14 +180,11 @@ public class QTE1 : MonoBehaviour
             Color originalColor = keyGraphic.color;
             Vector3 originalScale = transform.localScale;
 
-            // 1. Ubah warna ke warna kilatan & sedikit perbesar skala UI (efek pop)
             keyGraphic.color = successColor;
             transform.localScale = originalScale * 1.2f;
 
-            // Tunggu sejenak
             yield return new WaitForSeconds(flashDuration);
 
-            // 2. Kembalikan ke warna dan skala semula
             keyGraphic.color = originalColor;
             transform.localScale = originalScale;
         }

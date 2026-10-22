@@ -33,37 +33,31 @@ public class QuestGiver : MonoBehaviour
     {
         if (questToGive == null)
         {
-            Debug.LogWarning(
-                "QuestGiver: Quest To Give belum diisi."
-            );
+            Debug.LogWarning("QuestGiver: Quest To Give belum diisi.");
             return;
         }
 
-        if (QuestController.Instance == null)
+        // Cari QuestController (menggunakan Instance atau cari di Scene)
+        QuestController controller = QuestController.Instance;
+        if (controller == null)
         {
-            Debug.LogError(
-                "QuestGiver: QuestController tidak ditemukan."
-            );
-            return;
+            controller = FindFirstObjectByType<QuestController>();
         }
 
-        if (QuestController.Instance.IsQuestActive(
-            questToGive.QuestID))
+        if (controller == null)
         {
-            Debug.Log(
-                "Quest sudah aktif: " +
-                questToGive.QuestID
-            );
+            Debug.LogError("QuestGiver: QuestController tidak ditemukan di scene!");
             return;
         }
 
-        QuestController.Instance.AcceptQuest(
-            questToGive
-        );
+        if (controller.IsQuestActive(questToGive.QuestID))
+        {
+            Debug.Log("Quest sudah aktif: " + questToGive.QuestID);
+            return;
+        }
 
-        Debug.Log(
-            "NPC memberikan quest: " +
-            questToGive.QuestTitle
-        );
+        controller.AcceptQuest(questToGive);
+
+        Debug.Log("NPC memberikan quest: " + questToGive.QuestTitle);
     }
 }

@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Events; // Tambahkan ini wajib untuk UnityEvent
+using UnityEngine.Events; // Wajib untuk UnityEvent
 
 public class NPCTourGuide : MonoBehaviour
 {
@@ -14,8 +14,8 @@ public class NPCTourGuide : MonoBehaviour
     [SerializeField] private Dialogue dialogueSystem; 
 
     [Header("Events")]
-    // Event ini akan muncul di Inspector untuk memicu dialog lanjutan
     public UnityEvent onQuizSuccessEvent; 
+    public UnityEvent onDialogueEndEvent; // 👈 Ditambahkan agar slot "On Dialogue End" muncul di Inspector
 
     private bool isQuizFinished = false;
 
@@ -31,7 +31,6 @@ public class NPCTourGuide : MonoBehaviour
     {
         if (isQuizFinished)
         {
-            // Opsi: Mainkan dialog lain jika pemain ngobrol lagi setelah kuis selesai
             Debug.Log($"{tourGuideName}: Kamu sudah menyelesaikan kuis ini!");
             return;
         }
@@ -42,14 +41,15 @@ public class NPCTourGuide : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("TriviaQuizUI.Instance belum ada di Scene atau Quiz Questions masih kosong!");
+            // Jika tidak ada kuis, langsung jalankan event selesai
+            OnQuizSuccess();
         }
     }
 
     private void OnQuizSuccess()
     {
         isQuizFinished = true;
-        Debug.Log("Kuis berhasil diselesaikan!");
+        Debug.Log("Kuis/Dialog berhasil diselesaikan!");
 
         // Update progres quest
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
@@ -57,10 +57,15 @@ public class NPCTourGuide : MonoBehaviour
             QuestController.Instance.ProgressObjective(objectiveID, 1);
         }
 
-        // KUNCI: Panggil UnityEvent setelah kuis selesai
-        if (onQuizSuccessEvent != null)
+        // Panggil event Inspector jika ada
+        onQuizSuccessEvent?.Invoke();
+        onDialogueEndEvent?.Invoke();
+
+        // 🚀 AUTO-LOAD: Memanggil pindah scene ke Pianemo secara otomatis lewat kode
+        CutsceneSceneLoader loader = FindObjectOfType<CutsceneSceneLoader>();
+        if (loader != null)
         {
-            onQuizSuccessEvent.Invoke();
+            loader.FinishCutsceneAndLoadIsland();
         }
     }
 }
