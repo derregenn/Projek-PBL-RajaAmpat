@@ -2741,13 +2741,13 @@ MonoBehaviour:
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
   typingAudioInterval: 0.06
-  npcSpriteRenderer: {fileID: 0}
+  npcSpriteRenderer: {fileID: 712012536}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
   idleSprite: {fileID: 0}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1410084802}
-  npcLensSize: 3
+  npcLensSize: 4.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -4736,6 +4736,11 @@ CanvasRenderer:
 --- !u!4 &712012532 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+  m_PrefabInstance: {fileID: 193927110}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &712012536 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7846843865277977716, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
   m_PrefabInstance: {fileID: 193927110}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &717184290
@@ -6835,17 +6840,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1335368526}
     m_Modifications:
-    - target: {fileID: 4649934160272151316, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 7944565279778858164, guid: bb0c0979e3abb074baae0dc51e04f466, type: 3}
     - target: {fileID: 4837829111106036318, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
       propertyPath: m_Name
       value: InfographicPanel
       objectReference: {fileID: 0}
     - target: {fileID: 4837829111106036318, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5220377647093216403, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
       propertyPath: m_Pivot.x
@@ -6873,11 +6874,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5220377647093216403, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 5220377647093216403, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 5220377647093216403, guid: 662566a4e160b2849868a7f01fed2383, type: 3}
       propertyPath: m_LocalPosition.x

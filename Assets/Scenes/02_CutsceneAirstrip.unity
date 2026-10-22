@@ -659,8 +659,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 98c34b3d4d9684a4b9c32cd528d781fd, type: 2}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: objectiveID
-      value: Tour_Guide
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.size
@@ -4881,6 +4885,7 @@ MonoBehaviour:
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
+  typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 1248542705}
   talkingSprite1: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
   talkingSprite2: {fileID: -7049961335842751518, guid: e6b7acc4b028a174aa45f7b2d2cbd49e, type: 3}
@@ -4983,7 +4988,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -72866051
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}

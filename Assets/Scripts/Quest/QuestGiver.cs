@@ -9,24 +9,15 @@ public class QuestGiver : MonoBehaviour
     [SerializeField] private bool giveQuestOnPlayerCollision = true;
     [SerializeField] private bool requireBoxCollider2D;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!giveQuestOnPlayerCollision || collision == null)
+        // Pastikan objek yang masuk memiliki Tag "Player"
+        if (collision.CompareTag("Player"))
         {
-            return;
+            // Panggil fungsi pemberian quest di sini
+            // Misal: GiveQuest(); atau QuestController.Instance.GiveQuest(questToGive);
+            Debug.Log("Pemain memasuki area quest!");
         }
-
-        if (!collision.gameObject.CompareTag("Player"))
-        {
-            return;
-        }
-
-        if (requireBoxCollider2D && !(collision.collider is BoxCollider2D))
-        {
-            return;
-        }
-
-        GiveQuest();
     }
 
     public void GiveQuest()
