@@ -12,9 +12,16 @@ public class SequenceQTE : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private RectTransform qtePanelTransform;
+    [SerializeField] private CanvasGroup qteCanvasGroup;
     [SerializeField] private Slider timerSlider;
     [SerializeField] private TextMeshProUGUI[] keyTexts;
     [SerializeField] private Image[] keyBoxes;
+
+    [Header("QTE SFX")]
+    [SerializeField] private AudioSource qteAudioSource;
+    [SerializeField] private AudioClip tappingSfx;
+    [SerializeField] private AudioClip timerSfx;
+    [SerializeField] private AudioClip successSfx;
 
     [Header("QTE Settings")]
     [SerializeField] private float timeLimit = 5f;
@@ -27,6 +34,9 @@ public class SequenceQTE : MonoBehaviour
     [Header("UI Shake Settings")]
     [SerializeField] private float shakeDuration = 0.2f;
     [SerializeField] private float shakeMagnitude = 10f;
+
+    [Header("UI Fade Settings")]
+    [SerializeField] private float fadeDuration = 0.25f;
 
     [Header("Possible Keys Pool")]
     [SerializeField]
@@ -42,14 +52,23 @@ public class SequenceQTE : MonoBehaviour
     private List<KeyCode> currentSequence = new List<KeyCode>();
     private int currentIndex = 0;
     private float timer = 0f;
+    private int lastTimerSecond = 0;
     private bool isActive = false;
     private Vector3 originalPanelPosition;
+    private Coroutine shakeCoroutine;
+    private Coroutine fadeCoroutine;
 
     private void Awake()
     {
         if (qtePanelTransform != null)
         {
             originalPanelPosition = qtePanelTransform.anchoredPosition;
+            if (qteCanvasGroup == null)
+            {
+                qteCanvasGroup = qtePanelTransform.GetComponent<CanvasGroup>();
+                if (qteCanvasGroup == null) qteCanvasGroup = qtePanelTransform.gameObject.AddComponent<CanvasGroup>();
+            }
+            qteCanvasGroup.alpha = 0f;
             qtePanelTransform.gameObject.SetActive(false);
         }
     }
@@ -58,8 +77,21 @@ public class SequenceQTE : MonoBehaviour
     {
         if (!isActive) return;
 
+        if (currentSequence.Count == 0 || currentIndex < 0 || currentIndex >= currentSequence.Count)
+        {
+            FailQTE();
+            return;
+        }
+
         timer -= Time.deltaTime;
-        if (timerSlider != null) timerSlider.value = timer / timeLimit;
+        if (timerSlider != null) timerSlider.value = timeLimit > 0f ? Mathf.Clamp01(timer / timeLimit) : 0f;
+
+        int currentTimerSecond = Mathf.CeilToInt(timer);
+        if (currentTimerSecond < lastTimerSecond)
+        {
+            PlayQTESfx(timerSfx);
+            lastTimerSecond = currentTimerSecond;
+        }
 
         if (timer <= 0f)
         {
@@ -73,6 +105,7 @@ public class SequenceQTE : MonoBehaviour
 
             if (Input.GetKeyDown(expectedKey))
             {
+                PlayQTESfx(tappingSfx);
                 HighlightBox(currentIndex, successColor);
                 currentIndex++;
 
@@ -87,6 +120,8 @@ public class SequenceQTE : MonoBehaviour
             }
             else
             {
+                if (possibleKeys == null) return;
+
                 foreach (KeyCode key in possibleKeys)
                 {
                     if (Input.GetKeyDown(key) && key != expectedKey)
@@ -108,8 +143,8 @@ public class SequenceQTE : MonoBehaviour
 
         if (qtePanelTransform != null)
         {
-            StopAllCoroutines();
-            StartCoroutine(ShakePanelRoutine());
+            if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+            shakeCoroutine = StartCoroutine(ShakePanelRoutine());
         }
 
         if (timer <= 0f)
@@ -139,23 +174,36 @@ public class SequenceQTE : MonoBehaviour
         {
             HighlightBox(currentIndex, activeColor);
         }
+        shakeCoroutine = null;
     }
 
     [ContextMenu("Start QTE Test")]
     public void StartQTE()
     {
+        if (possibleKeys == null || possibleKeys.Length == 0)
+        {
+            Debug.LogWarning("QTE tidak dapat dimulai karena daftar tombol kosong.");
+            return;
+        }
+
+        CancelInvoke(nameof(HidePanel));
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+
         // 1. Matikan kontrol gerak Player
         SetPlayerControl(false);
 
         currentSequence.Clear();
         currentIndex = 0;
         timer = timeLimit;
+        lastTimerSecond = Mathf.CeilToInt(timer);
         isActive = true;
 
         if (qtePanelTransform != null)
         {
             qtePanelTransform.anchoredPosition = originalPanelPosition;
             qtePanelTransform.gameObject.SetActive(true);
+            fadeCoroutine = StartCoroutine(FadeCanvasGroup(0f, 1f));
         }
 
         for (int i = 0; i < 4; i++)
@@ -163,7 +211,7 @@ public class SequenceQTE : MonoBehaviour
             KeyCode randomKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             currentSequence.Add(randomKey);
 
-            if (i < keyTexts.Length && keyTexts[i] != null)
+            if (keyTexts != null && i < keyTexts.Length && keyTexts[i] != null)
             {
                 keyTexts[i].text = randomKey.ToString().ToUpper();
             }
@@ -185,9 +233,11 @@ public class SequenceQTE : MonoBehaviour
     private void SuccessQTE()
     {
         isActive = false;
+        PlayQTESfx(successSfx);
         Debug.Log("QTE BERHASIL!");
         onSuccess?.Invoke();
-        Invoke(nameof(HidePanel), 0.4f);
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeOutAndHide());
     }
 
     private void FailQTE()
@@ -195,7 +245,37 @@ public class SequenceQTE : MonoBehaviour
         isActive = false;
         Debug.Log("QTE GAGAL!");
         onFail?.Invoke();
-        Invoke(nameof(HidePanel), 0.4f);
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeOutAndHide());
+    }
+
+    private IEnumerator FadeOutAndHide()
+    {
+        yield return new WaitForSeconds(0.4f);
+        yield return FadeCanvasGroup(1f, 0f);
+        HidePanel();
+        fadeCoroutine = null;
+    }
+
+    private IEnumerator FadeCanvasGroup(float startAlpha, float targetAlpha)
+    {
+        if (qteCanvasGroup == null) yield break;
+
+        if (fadeDuration <= 0f)
+        {
+            qteCanvasGroup.alpha = targetAlpha;
+            yield break;
+        }
+
+        float elapsed = 0f;
+        qteCanvasGroup.alpha = startAlpha;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            qteCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / fadeDuration);
+            yield return null;
+        }
+        qteCanvasGroup.alpha = targetAlpha;
     }
 
     private void HidePanel()
@@ -204,6 +284,20 @@ public class SequenceQTE : MonoBehaviour
 
         // 2. Aktifkan kembali kontrol gerak Player
         SetPlayerControl(true);
+    }
+
+    private void PlayQTESfx(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        if (qteAudioSource != null)
+        {
+            qteAudioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(clip, transform.position);
+        }
     }
 
     private void SetPlayerControl(bool enable)
