@@ -461,6 +461,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
   targetSceneName: 08_Laut Misool
   fadeDuration: 1
+  warningUI: {fileID: 0}
+  interactKey: 101
   fadeBlackScreen: {fileID: 94105055}
 --- !u!61 &48946278
 BoxCollider2D:
@@ -5489,6 +5491,7 @@ MonoBehaviour:
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
+  typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 1482452494}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -5599,21 +5602,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: 
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Dialogue, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1482452497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5889,21 +5882,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 291565656}
-        m_TargetAssemblyTypeName: SequenceQTE, Assembly-CSharp
-        m_MethodName: StartQTE
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!61 &1599696236
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5996,7 +5979,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 992077337
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2075236732554384335, guid: 2274e5c4ea4da164da346f0c7e62de0c, type: 3}
@@ -6589,7 +6572,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1714064100
@@ -6638,6 +6623,7 @@ MonoBehaviour:
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
+  typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 0}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -6740,7 +6726,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -72866051
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -8556380925916901931, guid: 9a25b9ea5dd90b645a67440da86cb729, type: 3}
@@ -7797,7 +7783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -280
       objectReference: {fileID: 0}
     - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
