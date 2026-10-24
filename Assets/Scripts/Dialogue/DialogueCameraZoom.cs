@@ -7,10 +7,12 @@ public class DialogueCameraZoom : MonoBehaviour
     [Header("Cinemachine Cameras")]
     [SerializeField] private CinemachineCamera gameplayCamera;
     [SerializeField] private CinemachineCamera dialogueCamera;
+    [SerializeField] private CinemachineCamera objectiveCamera;
 
     [Header("Priority")]
     [SerializeField] private int gameplayPriority = 10;
     [SerializeField] private int dialoguePriority = 20;
+    [SerializeField] private int objectivePriority = 0;
 
     [Header("Zoom")]
     [SerializeField] private float normalSize = 8.28f;
@@ -23,6 +25,7 @@ public class DialogueCameraZoom : MonoBehaviour
         // Kamera gameplay aktif saat game dimulai
         gameplayCamera.Priority.Value = gameplayPriority;
         dialogueCamera.Priority.Value = 0;
+        objectiveCamera.Priority.Value = objectivePriority;
 
         // Set ukuran awal kamera dialogue
         var lens = dialogueCamera.Lens;
