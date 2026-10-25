@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 public class BoatTransitionController : MonoBehaviour
 {
     [Header("Referensi Sistem")]
-    public Dialogue dialogueSystem;       
-    public TriviaQuizUI triviaSystem;     
+    public Dialogue dialogueSystem;
+    public TriviaQuizUI triviaSystem;
 
     [Header("Data Pulau (Isi di Inspector)")]
     public IslandTransitionData[] islandData;
@@ -98,18 +98,49 @@ public class BoatTransitionController : MonoBehaviour
 
     private void FinishTransition()
     {
+        int buildIndex = FindTargetSceneBuildIndex();
+        if (buildIndex < 0)
+        {
+            Debug.LogError($"[BoatTransition] Scene '{currentTarget}' tidak ditemukan di Build Settings. Tambahkan scene tersebut ke Scenes In Build dan pastikan namanya cocok.", this);
+            return;
+        }
+
         PlayerPrefs.SetInt("Visited_" + currentTarget, 1);
         PlayerPrefs.Save();
 
         // Pindah ke scene pulau tujuan yang sesungguhnya
-        SceneManager.LoadScene(currentTarget);
+        SceneManager.LoadScene(buildIndex);
+    }
+
+    private int FindTargetSceneBuildIndex()
+    {
+        string targetName = currentTarget.Trim();
+        int separatorIndex = Mathf.Max(targetName.LastIndexOf('/'), targetName.LastIndexOf('\\'));
+        if (separatorIndex >= 0)
+            targetName = targetName.Substring(separatorIndex + 1);
+        if (targetName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
+            targetName = targetName.Substring(0, targetName.Length - 6);
+
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+            int pathSeparatorIndex = Mathf.Max(scenePath.LastIndexOf('/'), scenePath.LastIndexOf('\\'));
+            string sceneName = scenePath.Substring(pathSeparatorIndex + 1);
+            if (sceneName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
+                sceneName = sceneName.Substring(0, sceneName.Length - 6);
+
+            if (string.Equals(sceneName, targetName, System.StringComparison.OrdinalIgnoreCase))
+                return i;
+        }
+
+        return -1;
     }
 }
 
 [System.Serializable]
 public class IslandTransitionData
 {
-    public string islandName; 
+    public string islandName;
     [TextArea(2, 5)]
     public string[] npcDialogueLines;
     public TriviaQuestion[] islandTriviaQuestions;

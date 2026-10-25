@@ -167,6 +167,9 @@ MonoBehaviour:
   portraitDisplay: {fileID: 1792616525}
   dialogueBox: {fileID: 1008396087}
   dialogueText: {fileID: 132872974}
+  answerFeedbackText: {fileID: 0}
+  correctAnswerFeedback: Benar!
+  incorrectAnswerFeedback: Salah!
   typingSpeed: 0.03
   fadeBlackScreen: {fileID: 1374720323}
   fadeDuration: 1
@@ -2338,6 +2341,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhiteFade_Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 584740665160821917, guid: 89730dc669f7f86478f498000ae375a3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1686372710525868908, guid: 89730dc669f7f86478f498000ae375a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2424,15 +2431,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6749324343267213050, guid: 89730dc669f7f86478f498000ae375a3, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6749324343267213050, guid: 89730dc669f7f86478f498000ae375a3, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6749324343267213050, guid: 89730dc669f7f86478f498000ae375a3, type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
