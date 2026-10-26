@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using System.Collections;
 
 public class QTE1 : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class QTE1 : MonoBehaviour
 
     [Header("QTE Settings")]
     public KeyCode targetKey = KeyCode.E;
-    public float timeLimit = 3.0f;
+    public float timeLimit = 3.0f; // Batas waktu PER pencetan E (atur di Inspector)
+    public int totalPressesRequired = 3; // Target jumlah total pencetan "E" sampai sukses penuh
 
     [Header("Random Position Settings")]
     [SerializeField] private bool randomizePosition = true;
@@ -20,7 +22,7 @@ public class QTE1 : MonoBehaviour
 
     [Header("Quest Objective")]
     [SerializeField] private string objectiveID = "press_interact";
-    [SerializeField] private int amountToAdd = 1;
+    [SerializeField] private int amountToAddPerPress = 1;
 
     [Header("Feedback Visual Settings")]
     [SerializeField] private Graphic keyGraphic;
@@ -28,10 +30,11 @@ public class QTE1 : MonoBehaviour
     [SerializeField] private float flashDuration = 0.15f;
 
     [Header("Events")]
-    public UnityEvent onSuccess;
-    public UnityEvent onFail;
+    public UnityEvent onSuccess; // Dipanggil 1x HANYA SETELAH target pencetan terpenuhi semua
+    public UnityEvent onFail;    // Dipanggil kalau waktu habis di salah satu pencetan
 
     private float currentTimer;
+    private int currentPressCount = 0;
     private bool isActive = false;
     private bool isCompleted = false;
     private RectTransform rectTransform;
@@ -39,6 +42,11 @@ public class QTE1 : MonoBehaviour
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+    }
+
+    void OnEnable()
+    {
+        InitQTE();
     }
 
     void Update()
@@ -54,7 +62,7 @@ public class QTE1 : MonoBehaviour
 
         if (Input.GetKeyDown(targetKey))
         {
-            Success();
+            OnSinglePressSuccess();
         }
         else if (currentTimer <= 0f)
         {
@@ -64,6 +72,7 @@ public class QTE1 : MonoBehaviour
 
     public void InitQTE()
     {
+        currentPressCount = 0;
         currentTimer = timeLimit;
         isCompleted = false;
 
@@ -95,65 +104,43 @@ public class QTE1 : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(randomX, randomY);
     }
 
-    private void Success()
+    private void OnSinglePressSuccess()
     {
         isActive = false;
-        Debug.Log("QTE Berhasil!");
-
-        StartCoroutine(FlashSuccessAndProceed());
+        StartCoroutine(ProcessPressRoutine());
     }
 
-    private System.Collections.IEnumerator FlashSuccessAndProceed()
+    private IEnumerator ProcessPressRoutine()
     {
         yield return StartCoroutine(FlashSuccessRoutine());
 
+        currentPressCount++;
+
+        // Update progress quest di tiap pencetan
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
-            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            QuestController.Instance.ProgressObjective(objectiveID, amountToAddPerPress);
         }
 
-        onSuccess?.Invoke();
-
-        bool needMoreProgress = false;
-        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        // CEK: Apakah jumlah pencetan sudah mencapai target total?
+        if (currentPressCount >= totalPressesRequired)
         {
-            foreach (var quest in QuestController.Instance.ActiveQuests)
-            {
-                if (quest == null) continue;
-
-                var obj = quest.GetObjective(objectiveID);
-                if (obj != null && !obj.IsComplete)
-                {
-                    needMoreProgress = true;
-                    break;
-                }
-            }
-        }
-
-        if (needMoreProgress)
-        {
-            ResetQTE();
+            isCompleted = true;
+            Debug.Log($"[QTE1] Sukses Penuh! Terpencet {currentPressCount}/{totalPressesRequired} kali.");
+            
+            onSuccess?.Invoke(); // Memanggil FaderTrigger.PlaySuccessSequence()
+            gameObject.SetActive(false);
         }
         else
         {
-            isCompleted = true;
-            gameObject.SetActive(false);
+            Debug.Log($"[QTE1] Pencetan ke-{currentPressCount}/{totalPressesRequired} Berhasil. Acak posisi & reset timer!");
+            ResetForNextPress();
         }
     }
 
-    private void Fail()
-    {
-        isActive = false;
-        Debug.Log("QTE Press Gagal!");
-
-        onFail?.Invoke();
-        ResetQTE();
-    }
-
-    public void ResetQTE()
+    private void ResetForNextPress()
     {
         currentTimer = timeLimit;
-        isCompleted = false;
 
         if (timerFillImage != null)
         {
@@ -165,15 +152,19 @@ public class QTE1 : MonoBehaviour
             RandomizeUIPosition();
         }
 
-        if (!gameObject.activeSelf)
-        {
-            gameObject.SetActive(true);
-        }
-
         isActive = true;
     }
 
-    private System.Collections.IEnumerator FlashSuccessRoutine()
+    private void Fail()
+    {
+        isActive = false;
+        currentPressCount = 0;
+        Debug.Log("[QTE1] Gagal (Waktu Habis)!");
+
+        onFail?.Invoke(); // Memanggil FaderTrigger.PlayFailSequence()
+    }
+
+    private IEnumerator FlashSuccessRoutine()
     {
         if (keyGraphic != null)
         {
