@@ -15,8 +15,14 @@ public class QTE2 : MonoBehaviour
     public float holdDuration = 1.5f;
     public int requiredHolds = 3;
 
+    [Header("Failure Settings")]
+    [Tooltip("Batas waktu total (detik) untuk menyelesaikan seluruh QTE. Set 0 jika tidak ingin pakai batas waktu.")]
+    public float timeLimit = 7f;
+    [Tooltip("Jika DICENTANG, melepas tombol E sebelum melingkar penuh akan LANGSUNG memicu OnFail. Jika UNCHECK, bar akan berkurang perlahan.")]
+    public bool failOnRelease = false;
+
     [Header("Quest Objective")]
-    [SerializeField] private string objectiveID = "press_interact";
+    [SerializeField] private string objectiveID = "perahu_friwen";
 
     [Header("Events")]
     public UnityEvent onSuccess;
@@ -24,6 +30,7 @@ public class QTE2 : MonoBehaviour
 
     private float currentHoldTimer = 0f;
     private int currentHoldCount = 0;
+    private float timeRemaining = 0f;
     private bool isActive = false;
     private bool isCompleted = false;
 
@@ -37,6 +44,18 @@ public class QTE2 : MonoBehaviour
     {
         if (!isActive || isCompleted) return;
 
+        // 1. Cek Batas Waktu Total QTE
+        if (timeLimit > 0f)
+        {
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining <= 0f)
+            {
+                FailQTE("Batas waktu QTE habis!");
+                return;
+            }
+        }
+
+        // 2. Logika Menahan Tombol
         if (Input.GetKey(targetKey))
         {
             currentHoldTimer += Time.deltaTime;
@@ -53,6 +72,14 @@ public class QTE2 : MonoBehaviour
         }
         else
         {
+            // Jika tombol dilepas dan opsi failOnRelease diaktifkan
+            if (failOnRelease && currentHoldTimer > 0f)
+            {
+                FailQTE("Tombol dilepas sebelum lingkaran penuh!");
+                return;
+            }
+
+            // Jika failOnRelease mati, bar progress berkurang pelan-pelan
             if (currentHoldTimer > 0f)
             {
                 currentHoldTimer -= Time.deltaTime * 2f;
@@ -72,6 +99,7 @@ public class QTE2 : MonoBehaviour
     {
         currentHoldCount = 0;
         currentHoldTimer = 0f;
+        timeRemaining = timeLimit;
         isCompleted = false;
 
         if (keyText != null) keyText.text = targetKey.ToString();
@@ -121,6 +149,19 @@ public class QTE2 : MonoBehaviour
         }
 
         onSuccess?.Invoke();
+        gameObject.SetActive(false);
+    }
+
+    public void FailQTE(string reason = "")
+    {
+        if (!isActive || isCompleted) return;
+
+        isActive = false;
+        isCompleted = false;
+
+        Debug.Log($"[QTE2] GAGAL! Alasan: {reason}");
+
+        onFail?.Invoke();
         gameObject.SetActive(false);
     }
 }
