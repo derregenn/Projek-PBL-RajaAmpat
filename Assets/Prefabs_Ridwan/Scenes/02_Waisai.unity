@@ -1003,6 +1003,7 @@ MonoBehaviour:
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
+  typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 155692440}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
@@ -1186,7 +1187,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: Petugas_Hub
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &218617449
@@ -2911,17 +2914,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648210074}
   m_CullTransparentMesh: 1
---- !u!114 &668141394 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 149411856518601209, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
-  m_PrefabInstance: {fileID: 7397167459133880675}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &689286815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3330,21 +3322,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1443792979}
-        m_TargetAssemblyTypeName: SequenceQTE, Assembly-CSharp
-        m_MethodName: StartQTE
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!61 &761217208
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3480,6 +3462,13 @@ MonoBehaviour:
   biotaName: Penyu Laut
   qteToTrigger: {fileID: 1443792979}
   objectiveID: inspect_turtle
+  animator: {fileID: 0}
+  animationTrigger: SelesaiInteraksi
+  dialogueCamera: {fileID: 0}
+  activePriority: 20
+  defaultPriority: 0
+  delayBeforeAnim: 1
+  delayAfterAnim: 2
 --- !u!1001 &772214894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4712,6 +4701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
+  manualWidth: 0
 --- !u!212 &1228864024
 SpriteRenderer:
   serializedVersion: 2
@@ -5846,7 +5836,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1698487427
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7898849194892656963, guid: a046a59ce7e270643a3e5cdf01782634, type: 3}
@@ -6751,6 +6741,13 @@ MonoBehaviour:
   biotaName: Penyu Laut
   qteToTrigger: {fileID: 1443792979}
   objectiveID: inspect_turtle
+  animator: {fileID: 0}
+  animationTrigger: SelesaiInteraksi
+  dialogueCamera: {fileID: 0}
+  activePriority: 20
+  defaultPriority: 0
+  delayBeforeAnim: 1
+  delayAfterAnim: 2
 --- !u!61 &1804117475
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7793,6 +7790,7 @@ MonoBehaviour:
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
+  typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 2110659546}
   talkingSprite1: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
   talkingSprite2: {fileID: -7049961335842751518, guid: e6b7acc4b028a174aa45f7b2d2cbd49e, type: 3}
@@ -7895,7 +7893,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -72866051
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
@@ -7937,7 +7935,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &2143375677
@@ -8800,7 +8800,7 @@ PrefabInstance:
     - target: {fileID: 1521833777153546415, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: promptText
       value: 
-      objectReference: {fileID: 668141394}
+      objectReference: {fileID: 0}
     - target: {fileID: 1521833777153546415, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: promptPanel
       value: 
