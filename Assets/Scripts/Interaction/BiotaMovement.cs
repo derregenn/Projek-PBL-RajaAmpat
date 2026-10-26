@@ -14,6 +14,7 @@ public class BiotaMovement : MonoBehaviour
     public SpriteRenderer[] spriteRenderers;
 
     [Header("Parameter Animator")]
+    // Nama parameter Float pada Animator untuk mengatur kecepatan animasi (bergerak/idle).
     public string speedAnimParameter = "Speed";
 
     private Vector2 originPosition;

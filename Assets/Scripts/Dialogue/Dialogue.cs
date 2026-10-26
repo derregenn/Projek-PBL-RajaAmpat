@@ -131,6 +131,8 @@ public class Dialogue : MonoBehaviour
 
     public void StartDialogue(string[] npcDialogueLines, Action onComplete)
     {
+        gameObject.SetActive(true);
+
         onDialogueCompleteCallback = onComplete;
         DialogueLines = npcDialogueLines;
 

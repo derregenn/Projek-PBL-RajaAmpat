@@ -1068,7 +1068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -52.4225
+      value: -36.345
       objectReference: {fileID: 0}
     - target: {fileID: 1686357090159600224, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Sprite
@@ -1082,6 +1082,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+    - target: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2463706222190206533, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 9.06
@@ -1090,13 +1094,17 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 3.89
       objectReference: {fileID: 0}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5130259613458300511, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1112,7 +1120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 52.155
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1120,23 +1128,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -120.9225
+      value: -72.69
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: isSwimming
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6909095479283830814, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -72866051
+      objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 157
+      value: 92.69
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3100866956964956624, guid: d9eef132e72927948852f0a723f816bb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       insertIndex: 7
       addedObject: {fileID: 319518435}
+    - targetCorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 319518444}
+    - targetCorrespondingSourceObject: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 802905266}
   m_SourcePrefab: {fileID: 100100000, guid: d9eef132e72927948852f0a723f816bb, type: 3}
 --- !u!1 &319518433 stripped
 GameObject:
@@ -1163,6 +1186,48 @@ MonoBehaviour:
   swimSpeed: 5
   waterGravity: 0.5
   isDiving: 0
+--- !u!212 &319518443 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1686357090159600224, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 319518432}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &319518444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319518433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
+  InteractPrompt: {fileID: 854278293}
+  DialogueBox: {fileID: 802905260}
+  DialogueText: {fileID: 1205617454}
+  PlayerDialogueBox: {fileID: 802905260}
+  PlayerDialogueText: {fileID: 1205617454}
+  NextPrompt: {fileID: 1328651845}
+  PlayerNextPrompt: {fileID: 1328651845}
+  DialogueLines: []
+  DialogueLineSpeakers: 
+  triviaQuestionText: 
+  TypeSpeed: 0.04
+  typingAudioSource: {fileID: 0}
+  typingAudioClip: {fileID: 0}
+  typingAudioVolume: 1
+  typingAudioInterval: 0.06
+  npcSpriteRenderer: {fileID: 319518443}
+  talkingSprite1: {fileID: 0}
+  talkingSprite2: {fileID: 0}
+  idleSprite: {fileID: 0}
+  spriteToggleInterval: 3
+  dialogueCamera: {fileID: 211287076}
+  npcLensSize: 10
+  onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &368092586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,6 +2261,33 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &802905260 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 319518432}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &802905266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802905260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  cornerRadius: 25
+  cornerSegments: 8
 --- !u!1 &811588874
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,6 +2688,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &854278293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6555353196635145263, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 319518432}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &872490860
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,6 +3592,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1205617454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8362464265808604127, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 319518432}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1212258382
 GameObject:
   m_ObjectHideFlags: 0
@@ -3682,6 +3790,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 5885624977962997061, guid: ce9ef136f91b36a4083825513a1eb3f2, type: 3}
+    - target: {fileID: 8483657295016999184, guid: b68b3424612fe7e43b6f8953cc1231fd, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8483657295016999184, guid: b68b3424612fe7e43b6f8953cc1231fd, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -72866051
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3715,7 +3831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e88d47f51151a48bc1b67fc81502ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomBiotaMovement
-  moveSpeed: 2
+  moveSpeed: 1
   wanderRadius: 5
   minWaitTime: 0
   maxWaitTime: 0
@@ -4022,6 +4138,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1328651845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8649071345623115185, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 319518432}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1521337761
 GameObject:
   m_ObjectHideFlags: 0
@@ -4478,6 +4599,104 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1650328941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1650328944}
+  - component: {fileID: 1650328943}
+  - component: {fileID: 1650328942}
+  m_Layer: 0
+  m_Name: Trigger_MonologKarang
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1650328942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650328941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8968bc29640c08545946fb617a026599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonologueTrigger
+  playerDialogue: {fileID: 319518444}
+  dialogueBoxObject: {fileID: 802905260}
+  mcMonologueLines:
+  - "Indahnya pesona bawah laut disini\u2026"
+  - '?'
+  - Apa itu yang menempel di atas terumbu karang?
+  - Aku harus lapor ini ke petugas tadi!
+--- !u!61 &1650328943
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650328941}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 4.5798492, y: -4.558674}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 114.71367, y: 27.316963}
+  m_EdgeRadius: 0
+--- !u!4 &1650328944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650328941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.49122, y: -51.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1709887979
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4756,7 +4975,7 @@ MonoBehaviour:
   - {fileID: 1524210846}
   - {fileID: 205531986}
   - {fileID: 1308628173}
-  speedAnimParameter: Ikan
+  speedAnimParameter: 
 --- !u!95 &1730227944
 Animator:
   serializedVersion: 7
@@ -5062,8 +5281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e88d47f51151a48bc1b67fc81502ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomBiotaMovement
-  moveSpeed: 5
-  wanderRadius: 5
+  moveSpeed: 1
+  wanderRadius: 10
   minWaitTime: 2
   maxWaitTime: 0
   animator: {fileID: 1822948033}
@@ -5732,4 +5951,5 @@ SceneRoots:
   - {fileID: 1212258384}
   - {fileID: 97841715}
   - {fileID: 1293701530}
+  - {fileID: 1650328944}
   - {fileID: 1709887979}
