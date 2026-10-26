@@ -10,6 +10,7 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
     [SerializeField] private string objectiveID = "inspect_turtle";
 
     [Header("Animation & Camera")]
+    [SerializeField] private Animator startAnimator;
     [SerializeField] private Animator animator;
     [SerializeField] private string animationTrigger = "SelesaiInteraksi";
 
@@ -24,6 +25,13 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        // Animator ini memainkan animasi awal secara mandiri, tanpa menunggu QTE.
+        if (startAnimator != null)
+        {
+            startAnimator.enabled = true;
+        }
+
+        // Animator ini hanya digunakan untuk animasi setelah QTE berhasil.
         if (animator != null)
         {
             animator.enabled = false;

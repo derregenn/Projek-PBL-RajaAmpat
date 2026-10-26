@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RandomBiotaMovement : MonoBehaviour
+public class BiotaMovement : MonoBehaviour
 {
     [Header("Pengaturan Pergerakan")]
     public float moveSpeed = 1.5f;          // Kecepatan renang
@@ -11,7 +11,7 @@ public class RandomBiotaMovement : MonoBehaviour
 
     [Header("Referensi Komponen")]
     public Animator animator;
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer[] spriteRenderers;
 
     [Header("Parameter Animator")]
     public string speedAnimParameter = "Speed";
@@ -26,7 +26,7 @@ public class RandomBiotaMovement : MonoBehaviour
 
         // Auto-get komponen jika belum diisi di Inspector
         if (animator == null) animator = GetComponent<Animator>();
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 
         StartCoroutine(WanderRoutine());
     }
@@ -68,17 +68,17 @@ public class RandomBiotaMovement : MonoBehaviour
 
     private void FlipSprite(float directionX)
     {
-        if (spriteRenderer != null)
+        foreach (SpriteRenderer renderer in spriteRenderers)
         {
             // Jika bergerak ke kanan
             if (directionX > 0.01f)
             {
-                spriteRenderer.flipX = false;
+                renderer.flipX = false;
             }
             // Jika bergerak ke kiri
             else if (directionX < -0.01f)
             {
-                spriteRenderer.flipX = true;
+                renderer.flipX = true;
             }
         }
     }

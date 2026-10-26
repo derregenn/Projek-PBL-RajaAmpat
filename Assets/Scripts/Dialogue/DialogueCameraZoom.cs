@@ -25,7 +25,8 @@ public class DialogueCameraZoom : MonoBehaviour
         // Kamera gameplay aktif saat game dimulai
         gameplayCamera.Priority.Value = gameplayPriority;
         dialogueCamera.Priority.Value = 0;
-        objectiveCamera.Priority.Value = objectivePriority;
+        if (objectiveCamera != null)
+            objectiveCamera.Priority.Value = objectivePriority;
 
         // Set ukuran awal kamera dialogue
         var lens = dialogueCamera.Lens;
