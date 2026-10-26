@@ -3,42 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class MapTeleport : MonoBehaviour
 {
-    public void PindahKePulau(string namaSceneTujuan)
+    // Fungsi ini yang dipanggil oleh On Click () tombol di Inspector
+    public void PindahKePulau(string sceneName)
     {
-        Time.timeScale = 1f;
+Time.timeScale = 1f;
 
-        int hasVisited = PlayerPrefs.GetInt("Visited_" + namaSceneTujuan, 0);
+    if (GamePhaseManager.Instance != null)
+    {
+        GamePhaseManager.Instance.targetIslandName = sceneName;
+    }
 
-        if (hasVisited == 0 && namaSceneTujuan != "02_Waisai")
-        {
-            if (GamePhaseManager.Instance != null)
-            {
-                GamePhaseManager.Instance.targetIslandName = namaSceneTujuan;
-            }
+    PlayerPrefs.SetString("TargetIsland", sceneName);
+    PlayerPrefs.Save();
 
-            SceneManager.LoadScene("Cutscene_BoatToIsland");
-        }
-        else
-        {
-            SceneManager.LoadScene(namaSceneTujuan);
-        }
+        // 3. Selalu pindah ke Cutscene Perahu dulu
+        SceneManager.LoadScene("Cutscene_BoatToIsland");
     }
 }
-
-
-/*
-
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class MapTeleport : MonoBehaviour
-{
-    public void PindahKePulau(string namaSceneTujuan)
-    {
-        Time.timeScale = 1f; 
-        
-        SceneManager.LoadScene(namaSceneTujuan);
-    }
-}
-
-*/
