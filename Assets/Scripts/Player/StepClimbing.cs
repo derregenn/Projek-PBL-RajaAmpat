@@ -233,6 +233,9 @@ public class StepClimbing : MonoBehaviour
     {
         if (qte2Script != null)
         {
+            // TAMBAHKAN BARIS INI: Nyalakan dulu GameObject-nya sebelum di-reset
+            qte2Script.gameObject.SetActive(true);
+
             qte2Script.ResetQTE();
         }
     }

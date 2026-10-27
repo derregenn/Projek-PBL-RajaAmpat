@@ -578,7 +578,8 @@ MonoBehaviour:
   - Baik, ini kartu PIN kamu. Tolong selalu dibawa selama menjelajah
   - 'Sebagai sesama pengunjung, tolong bantu jaga laut kita. Jangan tinggalkan sampah
     plastik dan jangan menyentuh terumbu karang '
-  DialogueLineSpeakers: 000000000100000000000000
+  - Jangan tinggalkan sampah plastik dan jangan menyentuh terumbu karang
+  DialogueLineSpeakers: 00000000010000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 78562408}
@@ -591,7 +592,7 @@ MonoBehaviour:
   idleSprite: {fileID: 3392119709393341599, guid: 2ededcb6ce3a9724c8517c46c8a66d10, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1410084802}
-  npcLensSize: 2
+  npcLensSize: 2.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -1507,7 +1508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: npcLensSize
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: dialogueCamera
@@ -1663,6 +1664,10 @@ PrefabInstance:
         penting diluar sana!
       objectReference: {fileID: 0}
     - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'quizQuestions.Array.data[0].options.Array.data[2]'
+      value: Menjaga jarak aman dan tidak menyentuh atau menginjaknya sama sekali
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onQuizSuccessEvent.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1776,7 +1781,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.59
+      value: -1.96
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3506,7 +3511,8 @@ MonoBehaviour:
     menjelajah.
   - Kamu bisa pakai Jurnal dan Kamera mu untuk mendokumentasikan hal-hal penting
     diluar sana!
-  DialogueLineSpeakers: 0000000000000000
+  - Kamu bisa menekan tombol [TAB] kapan saja untuk membukanya.
+  DialogueLineSpeakers: 000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.02
   typingAudioSource: {fileID: 193927118}
@@ -3519,7 +3525,7 @@ MonoBehaviour:
   idleSprite: {fileID: 0}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1410084802}
-  npcLensSize: 2
+  npcLensSize: 2.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -4018,7 +4024,7 @@ MonoBehaviour:
   idleSprite: {fileID: 7483261957252020623, guid: c3ba00e46ca7da4409bec7f36d517660, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1410084802}
-  npcLensSize: 2
+  npcLensSize: 2.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -4630,7 +4636,7 @@ PrefabInstance:
       objectReference: {fileID: 1994520645284810212}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: orthographic size
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7155,7 +7161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: orthographic size
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7820,7 +7826,7 @@ MonoBehaviour:
   idleSprite: {fileID: 3705358439161303193, guid: 2a7f91195fd858b449766cd56f5ae261, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1410084802}
-  npcLensSize: 2
+  npcLensSize: 2.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -8129,7 +8135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: npcLensSize
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: dialogueCamera
@@ -8936,7 +8942,7 @@ MonoBehaviour:
   idleSprite: {fileID: 1418266967499458360, guid: 814d1e6a73e5ba24bbcd1391add61088, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1410084802}
-  npcLensSize: 2
+  npcLensSize: 2.5
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -10583,7 +10589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Lens.OrthographicSize
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Target.TrackingTarget
@@ -11338,6 +11344,10 @@ PrefabInstance:
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -44.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: npcLensSize
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: dialogueCamera
@@ -12319,7 +12329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Lens.OrthographicSize
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Target.TrackingTarget
@@ -12883,7 +12893,7 @@ Transform:
   m_GameObject: {fileID: 1971256658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.055, y: -1.223, z: 0}
+  m_LocalPosition: {x: 10.99, y: -1.223, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

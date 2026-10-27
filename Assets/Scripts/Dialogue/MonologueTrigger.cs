@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MonologueTrigger : MonoBehaviour
 {
     [Header("Referensi UI Player")]
     [SerializeField] private Dialogue playerDialogue;
-    // 1. Tambahkan slot ini untuk menarik DialogueBox
     [SerializeField] private GameObject dialogueBoxObject;
+    [SerializeField] private UnityEvent onDialogueBoxActivated;
+    [SerializeField] private UnityEvent onMonologueCompleted;
 
     [Header("Naskah Monolog MC")]
     [TextArea(2, 4)]
@@ -23,7 +25,21 @@ public class MonologueTrigger : MonoBehaviour
             if (dialogueBoxObject != null)
             {
                 dialogueBoxObject.SetActive(true);
+                if (dialogueBoxObject.activeInHierarchy)
+                {
+                    Debug.Log(">>> Dialogue box sudah muncul (aktif di hierarchy).");
+                }
+                else
+                {
+                    Debug.LogWarning(">>> Dialogue box belum muncul karena GameObject atau parent-nya tidak aktif.");
+                }
             }
+            else
+            {
+                Debug.LogWarning(">>> Dialogue Box Object belum diisi di Inspector!");
+            }
+
+            onDialogueBoxActivated?.Invoke();
 
             if (playerDialogue != null)
             {
@@ -38,7 +54,7 @@ public class MonologueTrigger : MonoBehaviour
 
     private void OnMonologueEnd()
     {
-        // (Isi dengan kode update quest milikmu yang sebelumnya)
+        onMonologueCompleted?.Invoke();
         gameObject.SetActive(false);
     }
 }

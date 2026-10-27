@@ -3398,7 +3398,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -605385043
+  m_SortingLayerID: -72866051
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1001 &476507205
@@ -4715,8 +4715,20 @@ PrefabInstance:
       value: 17.88
       objectReference: {fileID: 0}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: countText
+      value: 
+      objectReference: {fileID: 1605882492}
+    - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: objectiveID
       value: sasi_arborek
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: holdFillImage
+      value: 
+      objectReference: {fileID: 1605882493}
+    - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: requiredHolds
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: randomizePosition
@@ -7231,6 +7243,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5993519340487428895, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
   m_PrefabInstance: {fileID: 1784624378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1605882492 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2198507782558653500, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+  m_PrefabInstance: {fileID: 752712728}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1605882493 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7324524790678508209, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+  m_PrefabInstance: {fileID: 752712728}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &1619692028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9041,7 +9075,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 2022872706}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8311407304413757896, guid: 25bca17a63b81d64a944e99e5f8f3ef7, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
