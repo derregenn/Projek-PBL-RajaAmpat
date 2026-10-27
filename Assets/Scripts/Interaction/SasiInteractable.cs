@@ -40,6 +40,9 @@ public class SasiInteractable : MonoBehaviour
 
             if (qteToTrigger != null)
             {
+                // WAJIB: Nyalakan dulu GameObject QTE sebelum memanggil fungsi di dalamnya!
+                qteToTrigger.gameObject.SetActive(true);
+
                 // Hubungkan listener sukses dan gagal
                 qteToTrigger.onSuccess.RemoveAllListeners();
                 qteToTrigger.onSuccess.AddListener(OnQTESuccess);
@@ -48,7 +51,7 @@ public class SasiInteractable : MonoBehaviour
                 // qteToTrigger.onFailure.RemoveAllListeners();
                 // qteToTrigger.onFailure.AddListener(OnQTEFailed);
 
-                // Jalankan animasi jongkok sekali saja di awal QTE
+                // Jalankan animasi jongkok
                 SetCrouchAnimation(true);
                 qteToTrigger.BeginQTE();
             }
@@ -92,7 +95,11 @@ public class SasiInteractable : MonoBehaviour
     {
         if (playerAnimator != null && !string.IsNullOrEmpty(crouchAnimParameter))
         {
-            playerAnimator.SetBool(crouchAnimParameter, isCrouching);
+            // Proteksi: Cek state animasi saat ini biar nggak bentrok/spam
+            if (playerAnimator.GetBool(crouchAnimParameter) != isCrouching)
+            {
+                playerAnimator.SetBool(crouchAnimParameter, isCrouching);
+            }
         }
     }
 }
