@@ -20,14 +20,13 @@ public class MonologueTrigger : MonoBehaviour
             hasTriggered = true;
             Debug.Log(">>> Player masuk area monolog!");
 
+            if (dialogueBoxObject != null)
+            {
+                dialogueBoxObject.SetActive(true);
+            }
+
             if (playerDialogue != null)
             {
-                // 2. Paksa nyalakan kotak dialog SECARA OTOMATIS sebelum teks dimulai
-                if (dialogueBoxObject != null)
-                {
-                    dialogueBoxObject.SetActive(true);
-                }
-
                 playerDialogue.StartDialogue(mcMonologueLines, OnMonologueEnd);
             }
             else
