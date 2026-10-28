@@ -110,6 +110,8 @@ public class Dialogue : MonoBehaviour
     {
         if (isInteracting) return;
 
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+
         canInteract = false;
         isInteracting = true;
         lineIndex = 0;
@@ -121,7 +123,6 @@ public class Dialogue : MonoBehaviour
             dialogueCamera.Priority.Value = 20;
         }
 
-        if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);

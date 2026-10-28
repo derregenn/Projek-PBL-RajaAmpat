@@ -12,6 +12,9 @@ public class ParallaxBackground : MonoBehaviour
 
     private float lengthX;
     private Vector3 startPosition;
+    
+    // Variabel baru untuk melacak jarak absolut
+    private float currentDistance; 
 
     private void Start()
     {
@@ -50,17 +53,19 @@ public class ParallaxBackground : MonoBehaviour
         }
     }
 
-    private void Update()
+    // Menggunakan LateUpdate agar dieksekusi setelah semua pergerakan (seperti kamera/player) selesai di frame ini
+    private void LateUpdate()
     {
         if (lengthX <= 0f) return;
 
-        // Geser posisi ke kiri
-        transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime);
+        // 1. Tambahkan jarak tempuh secara absolut
+        currentDistance += scrollSpeed * Time.deltaTime;
 
-        // Reset posisi agar looping mulus
-        while (transform.position.x <= startPosition.x - lengthX)
-        {
-            transform.position += new Vector3(lengthX * 2f, 0, 0);
-        }
+        // 2. Gunakan Mathf.Repeat untuk menghitung sisa offset dengan presisi absolut
+        // Ini memastikan jaraknya akan mengulang persis dari 0 saat menyentuh nilai lengthX
+        float offset = Mathf.Repeat(currentDistance, lengthX);
+
+        // 3. Terapkan posisinya berdasarkan posisi awal agar tidak ada pergeseran/drift posisi
+        transform.position = startPosition + (Vector3.left * offset);
     }
 }
