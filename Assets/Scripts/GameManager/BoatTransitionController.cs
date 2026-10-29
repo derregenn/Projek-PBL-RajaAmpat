@@ -7,6 +7,10 @@ public class BoatTransitionController : MonoBehaviour
     public Dialogue dialogueSystem;       
     public TriviaQuizUI triviaSystem;     
 
+    [Header("Lokasi Spawn Background")]
+    [Tooltip("Pilih objek Environment sebagai tempat munculnya background parallax")]
+    public Transform environmentParent; // Drag objek 'Environment' dari Hierarchy ke sini
+
     [Header("Data Pulau (Isi di Inspector)")]
     public IslandTransitionData[] islandData;
 
@@ -17,27 +21,21 @@ public class BoatTransitionController : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-    if (triviaSystem == null) triviaSystem = TriviaQuizUI.Instance;
-    if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
         if (triviaSystem == null) triviaSystem = TriviaQuizUI.Instance;
         if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
 
-        // 1. Cek dari GamePhaseManager
         if (GamePhaseManager.Instance != null && !string.IsNullOrEmpty(GamePhaseManager.Instance.targetIslandName))
         {
             currentTarget = GamePhaseManager.Instance.targetIslandName;
-            Debug.Log($"[BoatTransition] Target dari GamePhaseManager: '{currentTarget}'");
         }
-        // 2. Fallback: Cek dari PlayerPrefs (Sangat aman jika GamePhaseManager sempat reset)
         else if (PlayerPrefs.HasKey("TargetIsland"))
         {
             currentTarget = PlayerPrefs.GetString("TargetIsland");
-            Debug.Log($"[BoatTransition] Target dari PlayerPrefs: '{currentTarget}'");
         }
         else
         {
-            currentTarget = "06_Sawinggrai"; // Fallback default hanya jika testing langsung di scene perahu
-            Debug.LogWarning($"[BoatTransition] Target tidak ditemukan. Menggunakan fallback testing: '{currentTarget}'");
+            currentTarget = "06_Sawinggrai"; 
+            Debug.LogWarning($"Target tidak ditemukan. Fallback: '{currentTarget}'");
         }
 
         LoadIslandDataAndStart();
@@ -54,11 +52,9 @@ public class BoatTransitionController : MonoBehaviour
                     string targetClean = currentTarget.ToLower().Trim();
                     string dataClean = data.islandName.ToLower().Trim();
 
-                    // Pencocokan fleksibel (misal "06_Sawinggrai" cocok dengan "Sawinggrai" atau "06_sawinggrai")
                     if (targetClean == dataClean || targetClean.Contains(dataClean) || dataClean.Contains(targetClean))
                     {
                         currentData = data;
-                        Debug.Log($"[BoatTransition] Data dialog & trivia ditemukan untuk: '{data.islandName}'");
                         break;
                     }
                 }
@@ -67,27 +63,37 @@ public class BoatTransitionController : MonoBehaviour
 
         if (currentData != null)
         {
+            SpawnParallaxBackground();
             PlayIntroDialogue();
         }
         else
         {
-            Debug.LogError($"[BoatTransition] Data pulau untuk '{currentTarget}' TIDAK DITEMUKAN di Inspector 'Island Data'!", this);
+            Debug.LogError($"Data pulau '{currentTarget}' TIDAK DITEMUKAN di Inspector 'Island Data'!", this);
         }
     }
 
+private void SpawnParallaxBackground()
+    {
+        if (currentData.islandBackgroundPrefab != null && environmentParent != null)
+        {
+            // Spawn background dan simpan ke variabel
+            GameObject spawnedBG = Instantiate(currentData.islandBackgroundPrefab, environmentParent);
+            
+            // PAKSA posisi lokalnya ke titik tengah (0,0,0) agar pasti masuk kamera
+            spawnedBG.transform.localPosition = Vector3.zero;
+            
+            // Jaga-jaga jika prefab tersimpan dalam keadaan mati, kita paksa hidupkan
+            spawnedBG.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Prefab Background atau Environment Parent belum di-assign di Inspector.");
+        }
+    }
     private void PlayIntroDialogue()
     {
-        if (dialogueSystem == null)
-        {
-            Debug.LogError("[BoatTransition] dialogueSystem belum di-assign di Inspector!", this);
-            return;
-        }
-
-        if (currentData.npcDialogueLines == null || currentData.npcDialogueLines.Length == 0)
-        {
-            Debug.LogError($"[BoatTransition] npcDialogueLines untuk '{currentTarget}' kosong di Inspector!", this);
-            return;
-        }
+        if (dialogueSystem == null) return;
+        if (currentData.npcDialogueLines == null || currentData.npcDialogueLines.Length == 0) return;
 
         dialogueSystem.StartDialogue(currentData.npcDialogueLines, StartTrivia);
     }
@@ -100,7 +106,6 @@ public class BoatTransitionController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[BoatTransition] Soal trivia kosong / TriviaQuizUI null, langsung pindah scene.");
             FinishTransition();
         }
     }
@@ -110,10 +115,7 @@ public class BoatTransitionController : MonoBehaviour
         PlayerPrefs.SetInt("Visited_" + currentTarget, 1);
         PlayerPrefs.Save();
 
-        // Gunakan sceneName jika diisi, atau fallback ke currentTarget
         string sceneToLoad = !string.IsNullOrEmpty(currentData.targetSceneName) ? currentData.targetSceneName : currentTarget;
-        
-        Debug.Log($"[BoatTransition] Memuat scene tujuan: '{sceneToLoad}'");
         SceneManager.LoadScene(sceneToLoad);
     }
 }
@@ -121,9 +123,13 @@ public class BoatTransitionController : MonoBehaviour
 [System.Serializable]
 public class IslandTransitionData
 {
-    public string islandName;       // Misal: "Sawinggrai", "Arborek", "Pianemo"
-    public string targetSceneName;  // Nama persis file Scene di Unity (misal: "06_Sawinggrai", "05_Arborek")
+    public string islandName;       
+    public string targetSceneName;  
     
+    [Header("Visual Environment (Parallax)")]
+    [Tooltip("Masukkan Prefab Parallax Background (contoh: BG_Arborek) dari panel Project")]
+    public GameObject islandBackgroundPrefab; 
+
     [TextArea(2, 5)]
     public string[] npcDialogueLines;
     public TriviaQuestion[] islandTriviaQuestions;
