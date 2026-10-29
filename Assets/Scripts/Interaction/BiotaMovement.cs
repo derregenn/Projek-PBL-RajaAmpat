@@ -74,12 +74,12 @@ public class BiotaMovement : MonoBehaviour
             // Jika bergerak ke kanan
             if (directionX > 0.01f)
             {
-                renderer.flipX = false;
+                renderer.flipX = true;
             }
             // Jika bergerak ke kiri
             else if (directionX < -0.01f)
             {
-                renderer.flipX = true;
+                renderer.flipX = false;
             }
         }
     }
