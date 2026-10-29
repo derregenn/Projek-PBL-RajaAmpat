@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events; // Tambahkan namespace ini untuk UnityEvent
 
 public class PhotoTriggerArea : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class PhotoTriggerArea : MonoBehaviour
 
     [Header("Input Settings")]
     public KeyCode interactKey = KeyCode.F; // Tombol F sesuai permintaan
+
+    [Header("Events")]
+    [Tooltip("Dipanggil tepat setelah foto berhasil diambil & objective quest diproses")]
+    public UnityEvent onObjectiveEnd;
 
     private bool isPlayerInRange = false;
     private bool isPhotoTaken = false;
@@ -65,5 +70,8 @@ public class PhotoTriggerArea : MonoBehaviour
             QuestController.Instance.ProgressObjective(objectiveID, 1);
             Debug.Log($"[PhotoTrigger] Quest Objective '{objectiveID}' Berhasil!");
         }
+
+        // 3. Panggil Event Transisi Layar
+        onObjectiveEnd?.Invoke();
     }
 }
