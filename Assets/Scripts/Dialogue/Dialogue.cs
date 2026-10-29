@@ -282,6 +282,13 @@ public class Dialogue : MonoBehaviour
         if (dialogueCamera != null)
         {
             dialogueCamera.Priority.Value = 0;
+
+            // [PERBAIKAN UTAMA]: Paksa Target Kamera balik membuntut ke Player setiap kali dialog selesai
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                dialogueCamera.Target.TrackingTarget = playerObj.transform;
+            }
         }
 
         if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
