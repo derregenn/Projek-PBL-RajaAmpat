@@ -3,31 +3,57 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     [Header("UI References")]
     public GameObject pauseMenuUI;
     private bool isPaused = false;
 
-    void Awake()
+    private void Awake()
     {
-        // Memastikan hanya ada 1 GameManager (Singleton)
+        // Logik Singleton: Pastikan hanya ada 1 GameManager di seluruh permainan
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject); // Kekalkan GameObject ini apabila berpindah scene
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Musnahkan GameObject duplikat di scene baharu
+            return;
         }
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        if (Instance == this)
+        // Daftar event untuk kesan pertukaran scene
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // Dipanggil secara automatik setiap kali scene baharu selesai dimuatkan
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Cari UI Pause di scene baharu jika rujukan terputus
+        if (pauseMenuUI == null)
         {
-            Instance = null;
+            GameObject canvas = GameObject.Find("Canvas_Pause") ?? GameObject.Find("Canvas");
+            if (canvas != null)
+            {
+                Transform pausePanel = canvas.transform.Find("PauseMenuPanel") ?? canvas.transform.Find("PromptPanel");
+                if (pausePanel != null)
+                {
+                    pauseMenuUI = pausePanel.gameObject;
+                }
+            }
         }
+
+        // Reset semula masa dan status pause apabila berpindah scene
+        ResumeGame();
     }
 
     private void Start()
@@ -38,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Toggle Pause Menu dengan tombol Escape
+        // Toggle Pause Menu dengan punat Escape
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused) ResumeGame();
@@ -66,20 +92,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("01_MainMenu");
     }
 
-    // 🔴 FUNGSI SAVE (Dipanggil saat pindah pulau atau checkpoint)
+    // 🔴 FUNGSI SAVE
     public void SaveGame()
     {
-        // 1. Simpan Data Level/Pulau saat ini
         string currentScene = SceneManager.GetActiveScene().name;
         PlayerPrefs.SetString("SavedScene", currentScene);
 
-        // 2. Simpan Data Fase Cerita
         if (StoryManager.Instance != null)
         {
             PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
         }
 
-        // 3. Simpan Posisi Player (Jika ada di Scene)
         Player player = FindFirstObjectByType<Player>();
         if (player != null)
         {
@@ -89,24 +112,21 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("GameManager: Objek Player tidak ditemukan. Posisi tidak disimpan.");
+            Debug.LogWarning("GameManager: Objek Player tidak dijumpai. Kedudukan tidak disimpan.");
         }
 
-        // 4. Eksekusi Save
         PlayerPrefs.Save();
-        Debug.Log("Game Berhasil Disimpan di Scene: " + currentScene);
+        Debug.Log("Game Berjaya Disimpan di Scene: " + currentScene);
     }
 
-    // 🟢 FUNGSI LOAD (Dipanggil SETELAH scene termuat)
+    // 🟢 FUNGSI LOAD
     public void LoadGame()
     {
-        // Load data cerita
         if (StoryManager.Instance != null)
         {
             StoryManager.Instance.currentPhase = (StoryManager.StoryPhase)PlayerPrefs.GetInt("SavedStoryPhase", 0);
         }
 
-        // Load posisi Player
         Player player = FindFirstObjectByType<Player>();
         if (player != null)
         {
@@ -116,20 +136,17 @@ public class GameManager : MonoBehaviour
                 float y = PlayerPrefs.GetFloat("PlayerY");
                 float z = PlayerPrefs.GetFloat("PlayerZ");
 
-                // Matikan sementara komponen seperti Rigidbody/CharacterController (jika ada)
-                // agar posisi bisa diset dengan paksa tanpa intervensi physics
                 player.transform.position = new Vector3(x, y, z);
-
-                Debug.Log("GameManager: Posisi Player Berhasil Dimuat!");
+                Debug.Log("GameManager: Kedudukan Player Berjaya Dimuatkan!");
             }
             else
             {
-                Debug.LogWarning("GameManager: Tidak ada data posisi yang tersimpan.");
+                Debug.LogWarning("GameManager: Tiada data kedudukan disimpan.");
             }
         }
         else
         {
-            Debug.LogWarning("GameManager: Objek Player tidak ditemukan untuk diposisikan ulang.");
+            Debug.LogWarning("GameManager: Objek Player tidak dijumpai untuk disusun semula.");
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SasiInteractable : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class SasiInteractable : MonoBehaviour
     [Header("Animasi Karakter (Opsional)")]
     public Animator playerAnimator;
     public string crouchAnimParameter = "isCrouching";
+
+    [Header("Event Transisi Layar")]
+    [Tooltip("Dipanggil tepat setelah QTE tancap sasi sukses dilakukan")]
+    public UnityEvent onSasiCompleted;
 
     private bool isPlayerInRange = false;
     private bool isCompleted = false;
@@ -40,15 +45,11 @@ public class SasiInteractable : MonoBehaviour
 
             if (qteToTrigger != null)
             {
-                // Hubungkan listener sukses dan gagal
+                qteToTrigger.gameObject.SetActive(true);
+
                 qteToTrigger.onSuccess.RemoveAllListeners();
                 qteToTrigger.onSuccess.AddListener(OnQTESuccess);
 
-                // Tambahkan listener gagal jika script QTE2 memiliki event onFailure
-                // qteToTrigger.onFailure.RemoveAllListeners();
-                // qteToTrigger.onFailure.AddListener(OnQTEFailed);
-
-                // Jalankan animasi jongkok sekali saja di awal QTE
                 SetCrouchAnimation(true);
                 qteToTrigger.BeginQTE();
             }
@@ -80,6 +81,9 @@ public class SasiInteractable : MonoBehaviour
 
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
+
+        // JALANKAN TRANSISI LAYAR DI SINI (SETELAH QTE TANCAP SASI SUKSES)
+        onSasiCompleted?.Invoke();
     }
 
     private void OnQTEFailed()
@@ -92,7 +96,10 @@ public class SasiInteractable : MonoBehaviour
     {
         if (playerAnimator != null && !string.IsNullOrEmpty(crouchAnimParameter))
         {
-            playerAnimator.SetBool(crouchAnimParameter, isCrouching);
+            if (playerAnimator.GetBool(crouchAnimParameter) != isCrouching)
+            {
+                playerAnimator.SetBool(crouchAnimParameter, isCrouching);
+            }
         }
     }
 }
