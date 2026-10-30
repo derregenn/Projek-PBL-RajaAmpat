@@ -11,6 +11,11 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [SerializeField] private float animationDuration = 0.3f;
     [SerializeField] private float pushDistance = 80f;
 
+    [Header("Quest Options")]
+    [Tooltip("Jika dicentang, event onClose hanya akan dipanggil 1 kali (memicu NPC Warlok 2)")]
+    [SerializeField] private bool triggerOnce = true;
+    private bool hasTriggered = false;
+
     [Header("Events")]
     [SerializeField] private UnityEvent onOpen;
     [SerializeField] private UnityEvent onClose;
@@ -42,7 +47,6 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     public void Interact()
     {
         isOpen = !isOpen;
-
         AnimatePanel(isOpen);
 
         if (isOpen)
@@ -56,7 +60,16 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         }
         else
         {
+            CloseSignboard();
+        }
+    }
+
+    private void CloseSignboard()
+    {
+        if (!hasTriggered || !triggerOnce)
+        {
             onClose?.Invoke();
+            if (triggerOnce) hasTriggered = true;
         }
     }
 
@@ -108,7 +121,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         {
             isOpen = false;
             AnimatePanel(false);
-            onClose?.Invoke();
+            CloseSignboard();
         }
     }
 }
