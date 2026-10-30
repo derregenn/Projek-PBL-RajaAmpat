@@ -2819,6 +2819,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  triggerOnEnter: 1
+  activatorTag: Player
 --- !u!1 &509515395
 GameObject:
   m_ObjectHideFlags: 0
@@ -3793,7 +3795,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: bc9efcb72a82008409a5d5d7c1bbaa6a, type: 3}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: moveSpeed
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: audioSource
@@ -8656,6 +8658,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 1899499008}
   defaultBGM: {fileID: 8300000, guid: ba5bbb00f069de74c8d535f962fd7e00, type: 3}
+  bgmVolume: 1
+  audioLayers: []
 --- !u!82 &1899499008
 AudioSource:
   m_ObjectHideFlags: 0

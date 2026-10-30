@@ -10,6 +10,7 @@ public class NPCMapTrigger : MonoBehaviour
 
     [SerializeField] private float popupDuration = 0.35f;
     [SerializeField] private Vector3 popupScaleMin = new Vector3(0.75f, 0.75f, 1f);
+    [SerializeField] private AudioClip openMapSfx;
 
     private void Update()
     {
@@ -25,6 +26,10 @@ public class NPCMapTrigger : MonoBehaviour
         if (mapController == null || isMapOpen) return;
 
         mapController.OpenWorldMap();
+        if (openMapSfx != null)
+        {
+            AudioSource.PlayClipAtPoint(openMapSfx, transform.position);
+        }
         isMapOpen = true;
         mapOpenedFrame = Time.frameCount;
         PlayPopupAnimation(true);
