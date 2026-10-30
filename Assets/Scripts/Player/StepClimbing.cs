@@ -36,6 +36,9 @@ public class StepClimbing : MonoBehaviour
     private Sprite originalSprite;
     private bool isUsingSprite1 = true;
 
+    [Header("Platform Ground Settings")]
+    [SerializeField] private Collider2D topPlatformCollider; // Drag BoxCollider2D dari TopPlatformGround
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -129,6 +132,12 @@ public class StepClimbing : MonoBehaviour
         {
             StartCoroutine(FinishClimbingRoutine());
         }
+
+        // Matikan collider platform atas agar tidak menabrak player saat naik
+        if (topPlatformCollider != null)
+        {
+            topPlatformCollider.enabled = false;
+        }
     }
 
     public void OnQTESuccess()
@@ -196,6 +205,12 @@ public class StepClimbing : MonoBehaviour
             transform.position = climbPosition;
         }
 
+        // TAMBAHKAN BARIS INI: Nyalakan collider lantai agar player bisa berdiri
+        if (topPlatformCollider != null)
+        {
+            topPlatformCollider.enabled = true;
+        }
+
         // 3. Laporkan Progres Quest 2 (Cliff Hiking)
         if (!isClimbingDown && QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
         {
@@ -215,7 +230,11 @@ public class StepClimbing : MonoBehaviour
         if (anim != null)
         {
             anim.enabled = true;
-            anim.Play("Idle");
+            int idleStateHash = Animator.StringToHash("Idle");
+            if (anim.runtimeAnimatorController != null && anim.layerCount > 0 && anim.HasState(0, idleStateHash))
+            {
+                anim.Play(idleStateHash, 0);
+            }
         }
 
         yield return new WaitForSeconds(0.2f);
