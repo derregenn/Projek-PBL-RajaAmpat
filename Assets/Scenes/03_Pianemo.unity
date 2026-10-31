@@ -1116,8 +1116,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  cornerRadius: 25
-  cornerSegments: 8
+  cornerRadius: 70
+  cornerSegments: 26
 --- !u!222 &1221558515
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4014,6 +4014,10 @@ PrefabInstance:
       propertyPath: questUI
       value: 
       objectReference: {fileID: 416318648}
+    - target: {fileID: 5200973469969712279, guid: c9c9ebc393842784fa5a427f438935f4, type: 3}
+      propertyPath: questSliderAnim
+      value: 
+      objectReference: {fileID: 8555486639208939128}
     - target: {fileID: 7587629315663918622, guid: c9c9ebc393842784fa5a427f438935f4, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -4979,7 +4983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 450909361711316694, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -63
+      value: -116
       objectReference: {fileID: 0}
     - target: {fileID: 450909361711316694, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5091,7 +5095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2185637389663855337, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 149.5
+      value: 96.5
       objectReference: {fileID: 0}
     - target: {fileID: 2185637389663855337, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5267,7 +5271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6074912407047232437, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -63
+      value: -116
       objectReference: {fileID: 0}
     - target: {fileID: 6074912407047232437, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5403,7 +5407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8595981499758825764, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8921004467752228964, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5414,8 +5418,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8921004467752228964, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 615
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921004467752228964, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -400
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 9062730189995800698, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       propertyPath: m_IsActive
@@ -5450,6 +5458,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4786136906515007926, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1221558514}
+    - targetCorrespondingSourceObject: {fileID: 4786136906515007926, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8555486639208939128}
   m_SourcePrefab: {fileID: 100100000, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
 --- !u!224 &8555486639208939123 stripped
 RectTransform:
@@ -5502,6 +5513,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!224 &8555486639208939127 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8921004467752228964, guid: f5764fe28a6d1f64b9e455ccc17495dd, type: 3}
+  m_PrefabInstance: {fileID: 8555486639208939122}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8555486639208939128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221558512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf65d989ede40545bedc97e441d27c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestSlider
+  panelRect: {fileID: 8555486639208939127}
+  hiddenPosition: {x: 500, y: -40}
+  visiblePosition: {x: -300, y: -40}
+  slideDuration: 0.5
+  displayDuration: 3
 --- !u!212 &9034152388987904213
 SpriteRenderer:
   serializedVersion: 2

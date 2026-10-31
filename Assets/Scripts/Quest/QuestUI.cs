@@ -11,20 +11,16 @@ public class QuestUI : MonoBehaviour
     public TextMeshProUGUI hudQuestDescription;
     public TextMeshProUGUI objectiveListText;
 
-    public Quest currentActiveQuest; 
+    public Quest currentActiveQuest;
 
     void Start()
     {
-        // Pastikan panel visual mati saat game pertama kali dijalankan
-        if (panelHUD != null) panelHUD.SetActive(false);
+
     }
 
     public void SetQuest(Quest quest)
     {
         currentActiveQuest = quest;
-
-        // Nyalakan panel visual saat mendapat misi
-        if (panelHUD != null) panelHUD.SetActive(true);
 
         if (hudQuestTitle != null) hudQuestTitle.text = quest.QuestTitle;
         if (hudQuestDescription != null) hudQuestDescription.text = quest.Description;
@@ -50,14 +46,12 @@ public class QuestUI : MonoBehaviour
             QuestJournalManager.Instance.lastCompletedQuest = QuestJournalManager.Instance.currentOngoingQuest;
             QuestJournalManager.Instance.currentOngoingQuest = "Tidak ada misi aktif.";
             QuestJournalManager.Instance.RefreshQuestTabText();
-            
+
             QuestJournalManager.Instance.AddCompletedQuest();
-            
+
             QuestJournalManager.Instance.UnlockPianemoAward();
         }
 
-        // Matikan panel visual kembali setelah misi selesai
-        if (panelHUD != null) panelHUD.SetActive(false);
     }
 
     private void SyncToJournal(string title)
