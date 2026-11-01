@@ -132,6 +132,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 5dc2069aef6e91a40bf3dfe35a14c1cb, type: 2}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: giveQuestOnPlayerCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'questsToGive.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: b8770fc004c15444fba677e7ec5f1414, type: 2}
@@ -639,6 +643,7 @@ GameObject:
   - component: {fileID: 48946279}
   - component: {fileID: 48946278}
   - component: {fileID: 48946277}
+  - component: {fileID: 48946280}
   m_Layer: 0
   m_Name: Trigger_Laut
   m_TagString: Untagged
@@ -658,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bad5d2e3f0ac644983bdb587198655d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
-  targetSceneName: 08_Laut Misool
+  targetSceneName: 08_Laut Misool 1
   fadeDuration: 1
   warningUI: {fileID: 1754165466}
   interactKey: 101
@@ -724,6 +729,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &48946280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48946276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa3f58ebcd375b40abe783d3aa4ae50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DivingSceneTeleporter
+  sceneLautUtama: 08_Laut Misool 1
+  sceneLautManta: 08_Laut Misool 2
 --- !u!1 &50574532
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,8 +1387,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -36.345}
-  m_SizeDelta: {x: 280, y: 0}
+  m_AnchoredPosition: {x: 107.5, y: -36.345}
+  m_SizeDelta: {x: 195, y: 52.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &285213610
 MonoBehaviour:
@@ -1814,7 +1833,6 @@ GameObject:
   - component: {fileID: 438320362}
   - component: {fileID: 438320361}
   - component: {fileID: 438320360}
-  - component: {fileID: 438320359}
   - component: {fileID: 438320366}
   m_Layer: 0
   m_Name: Ibu2
@@ -1823,52 +1841,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &438320359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438320358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bfe88c776d6e8e47a5c0d2a3c8bf5ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PetugasMisool
-  dialogueSystem: {fileID: 438320362}
-  dialogSuruhMenyelam:
-  - Mau melihat keindahan terumbu karang Misool dari dekat ya?
-  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
-  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
-  - Pasti. Area terumbu karang di bawah dermaga ini masih sangat terjaga.
-  - Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
-    kalau sudah selesai ya
-  dialogMintaBantuan:
-  - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
-    terumbu karang
-  - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
-    terumbu karang
-  - Aduh, benarkah? Wah, untung kamu cepat melapor!
-  - Mas, kebetulan kamu kan udah pakai perlengkapan selam lengkap dan jago menyelam
-  - Bisa minta tolong bantu kami sebentar nggak?
-  - Anggap aja jadi relawan konservasi dadakan sebentar buat angkat hama-hama itu
-    ke atas
-  - Jujur aja, tim kita di pos lagi kewalahan banget dan kita benar-benar lagi kekurangan
-    personel buat turun langsung hari ini
-  - Nanti saya pinjamkan capit penjepit dan wadah khususnya kok. Gimana, bisa bersedia
-    bantu?
-  - Boleh Pak, Kasihan karangnya kalau dibiarkan rusak
-  dialogSedangKerja:
-  - Ini Pak, semua hama Bulu Seribunya sudah berhasil saya amankan dari terumbu karang
-  - "Luar biasa! Kerjamu sangat rapi, kawan\u2026"
-  - Terima kasih banyak atas dedikasi dan bantuan cepatmu
-  - Jarang ada wisatawan yang mau ikut turun tangan menjaga alam seperti kamu
-  - Sebagai bentuk apresiasi dari kami, kalau kamu benar-benar mau melihat ikon keindahan
-    Misool yang sebenarnya
-  dialogTerimaKasih:
-  - Coba kamu jalan sedikit ke ujung pesisir sana
-  - Di sana ada spot perairan agak dalam, tempat kawanan Pari Manta biasa melintas.
-  - Silakan dinikmati!
 --- !u!114 &438320360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2059,13 +2031,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438320358}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 70.979996, y: -1.11, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.301174, y: 1.1218101, z: 0}
   m_LocalScale: {x: 0.45, y: 0.45, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 969356457}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 685218634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &438320366
 MonoBehaviour:
@@ -2080,12 +2052,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IbuIbuMisool
   dialogueSystem: {fileID: 438320362}
-  dialogMintaTolongManta:
-  - 
-  dialogTerimaKasihManta: []
-  onQuest3Completed:
-    m_PersistentCalls:
-      m_Calls: []
+  dialogPoint7_MintaTolong: []
+  speakerPoint7_MintaTolong: 
+  dialogPoint9_TerimaKasih: []
+  speakerPoint9_TerimaKasih: 
 --- !u!1 &462170290 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5927749788939344978, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
@@ -2098,7 +2068,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &491292135 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6565062706265240536, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+  m_CorrespondingSourceObject: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
   m_PrefabInstance: {fileID: 708766007}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -2758,6 +2728,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 652083222}
   m_CullTransparentMesh: 1
+--- !u!1 &685218633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 685218634}
+  m_Layer: 0
+  m_Name: Ibu-ibu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &685218634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685218633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 52.67882, y: -2.23181, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1599505561}
+  - {fileID: 438320365}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &688853826
 GameObject:
   m_ObjectHideFlags: 0
@@ -2925,7 +2928,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 15, y: 15, z: 15, w: 15}
+  m_margin: {x: 10, y: 15, z: 15, w: 15}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3069,107 +3072,118 @@ PrefabInstance:
       propertyPath: hudQuestDescription
       value: 
       objectReference: {fileID: 1659133382}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_Name
+      value: QuestHUDPanel 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371388737094505655, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchorMin.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 615
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 150
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -300
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -40
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5109931629480500363, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: m_Name
-      value: QuestHUDPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 5109931629480500363, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5830041137845370007, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 20.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 6457452045459319976, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 25.21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+--- !u!114 &708766008 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+  m_PrefabInstance: {fileID: 708766007}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073081708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf65d989ede40545bedc97e441d27c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestSlider
 --- !u!1 &722280882
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,10 +3400,10 @@ RectTransform:
   - {fileID: 1254385299}
   m_Father: {fileID: 1695990689}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 107.5, y: -67.69}
+  m_SizeDelta: {x: 195, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &749323955
 GameObject:
@@ -3505,6 +3519,7 @@ GameObject:
   - component: {fileID: 836280604}
   - component: {fileID: 836280603}
   - component: {fileID: 836280602}
+  - component: {fileID: 836280605}
   m_Layer: 0
   m_Name: Trigger_Laut (1)
   m_TagString: Untagged
@@ -3590,6 +3605,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &836280605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836280601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa3f58ebcd375b40abe783d3aa4ae50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DivingSceneTeleporter
+  sceneLautUtama: 08_Laut Misool 1
+  sceneLautManta: 08_Laut Misool 2
 --- !u!114 &837644286 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4626086682805859954, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
@@ -3827,6 +3856,7 @@ Transform:
   - {fileID: 208684843}
   - {fileID: 854190954}
   - {fileID: 1906064174}
+  - {fileID: 1299675753}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &896900941
@@ -4177,7 +4207,7 @@ RectTransform:
   m_GameObject: {fileID: 928693073}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 688853827}
@@ -4186,7 +4216,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013113, y: -120}
+  m_AnchoredPosition: {x: -0.0013113, y: -140}
   m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &928693075
@@ -4833,7 +4863,7 @@ PrefabInstance:
     - target: {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       propertyPath: questUI
       value: 
-      objectReference: {fileID: 1073081710}
+      objectReference: {fileID: 0}
     - target: {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -4852,25 +4882,14 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &1073081708 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5109931629480500363, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
   m_PrefabInstance: {fileID: 708766007}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &1073081709 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
   m_PrefabInstance: {fileID: 708766007}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1073081710 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-  m_PrefabInstance: {fileID: 708766007}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1073081708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0405a126ead04c3439c4867f4b709258, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestUI
 --- !u!1001 &1114896729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5111,7 +5130,11 @@ PrefabInstance:
     - target: {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       propertyPath: questUI
       value: 
-      objectReference: {fileID: 1073081710}
+      objectReference: {fileID: 1684323943}
+    - target: {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      propertyPath: questSliderAnim
+      value: 
+      objectReference: {fileID: 708766008}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5583,6 +5606,7 @@ MonoBehaviour:
   infoPanel: {fileID: 1397773909}
   animationDuration: 0.5
   pushDistance: 800
+  triggerOnce: 1
   onOpen:
     m_PersistentCalls:
       m_Calls: []
@@ -5658,13 +5682,327 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299675750}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -5.254601, y: -1.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 888412300}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1302061344
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: questToGive
+      value: 
+      objectReference: {fileID: 11400000, guid: 5dc2069aef6e91a40bf3dfe35a14c1cb, type: 2}
+    - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'questsToGive.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b8770fc004c15444fba677e7ec5f1414, type: 2}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: objectiveID
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: progressObjectiveOnTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11500000, guid: d25f932fa48e4b5428940a68c4c4a9b0, type: 3}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 501246943660097595, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 102.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: npcLensSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: dialogueCamera
+      value: 
+      objectReference: {fileID: 916379636}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: PlayerNextPrompt
+      value: 
+      objectReference: {fileID: 976487319}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: PlayerDialogueBox
+      value: 
+      objectReference: {fileID: 698352860}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: PlayerDialogueText
+      value: 
+      objectReference: {fileID: 1021186074}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLines.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[0]'
+      value: Wahhh, tingkat kepedulian mu sangat tinggi!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[1]'
+      value: Kasihan sekali penyu itu... Jaringnya melilit lehernya lumayan kencang
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[2]'
+      value: Penyu itu terlilit oleh jaring nelayan bekas yang dibuang sembarangan
+        dan hanyut terbawa arus.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[3]'
+      value: Kalau kamu tidak menolongnya tadi, penyu itu bisa mati kehabisan napas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[4]'
+      value: Aku benar-benar bangga membawamu ke sini. Kamu terbukti wisatawan yang
+        betul-betul menjaga alam.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[5]'
+      value: Kalau kamu siap melihat keindahan bawah laut Misool yang sebenarnya,
+        temui Petugas Konservasi di dekat dermaga untuk memakai alat selam ya
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSpeakers.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 52.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -46.345
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 72.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.109
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819392634935380970, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.21747398
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819392634935380970, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819392634935380970, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226774000362214352, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Name
+      value: TourGuide End
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226774000362214352, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ChildScaleWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ChildScaleHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ReverseArrangement
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -77.69
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8422842111439378360, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1302061349}
+    - targetCorrespondingSourceObject: {fileID: 8422842111439378360, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1302061348}
+  m_SourcePrefab: {fileID: 100100000, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+--- !u!4 &1302061345 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+  m_PrefabInstance: {fileID: 1302061344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1302061346 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8422842111439378360, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+  m_PrefabInstance: {fileID: 1302061344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1302061347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8226774000362214352, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+  m_PrefabInstance: {fileID: 1302061344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1302061348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302061346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ba797fcfd256c458e0965dd26df675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralRoundedRect
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  cornerRadius: 25
+  cornerSegments: 8
+--- !u!114 &1302061349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302061346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1360574299
 GameObject:
   m_ObjectHideFlags: 0
@@ -5701,8 +6039,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -36.345}
-  m_SizeDelta: {x: 280, y: 0}
+  m_AnchoredPosition: {x: 107.5, y: -36.345}
+  m_SizeDelta: {x: 195, y: 52.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1360574301
 MonoBehaviour:
@@ -5857,7 +6195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1376259513
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5867,7 +6205,7 @@ RectTransform:
   m_GameObject: {fileID: 1376259512}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 285213609}
@@ -5876,8 +6214,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013113, y: -47.399902}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: -0.0013113, y: -140}
+  m_SizeDelta: {x: 215, y: 82.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1376259514
 MonoBehaviour:
@@ -6793,7 +7131,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 1482452494}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 3392119709393341599, guid: 2ededcb6ce3a9724c8517c46c8a66d10, type: 3}
+  idleSprite: {fileID: 9021643562455031846, guid: 188d24fa638f7f547b7804010a9b048f, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 916379636}
   npcLensSize: 3
@@ -6973,9 +7311,13 @@ MonoBehaviour:
   - Pasti. Area terumbu karang di bawah dermaga ini masih sangat terjaga.
   - Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
     kalau sudah selesai ya
+  speakerSuruhMenyelam: 00000000010000000000000000000000
   dialogMintaBantuan: []
+  speakerMintaBantuan: 
   dialogSedangKerja: []
+  speakerSedangKerja: 
   dialogTerimaKasih: []
+  speakerTerimaKasih: 
 --- !u!114 &1515042441 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
@@ -7148,7 +7490,6 @@ GameObject:
   - component: {fileID: 1599505558}
   - component: {fileID: 1599505557}
   - component: {fileID: 1599505556}
-  - component: {fileID: 1599505555}
   - component: {fileID: 1599505562}
   m_Layer: 0
   m_Name: Ibu1
@@ -7157,52 +7498,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1599505555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599505554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bfe88c776d6e8e47a5c0d2a3c8bf5ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PetugasMisool
-  dialogueSystem: {fileID: 1599505558}
-  dialogSuruhMenyelam:
-  - Mau melihat keindahan terumbu karang Misool dari dekat ya?
-  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
-  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
-  - Pasti. Area terumbu karang di bawah dermaga ini masih sangat terjaga.
-  - Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
-    kalau sudah selesai ya
-  dialogMintaBantuan:
-  - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
-    terumbu karang
-  - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
-    terumbu karang
-  - Aduh, benarkah? Wah, untung kamu cepat melapor!
-  - Mas, kebetulan kamu kan udah pakai perlengkapan selam lengkap dan jago menyelam
-  - Bisa minta tolong bantu kami sebentar nggak?
-  - Anggap aja jadi relawan konservasi dadakan sebentar buat angkat hama-hama itu
-    ke atas
-  - Jujur aja, tim kita di pos lagi kewalahan banget dan kita benar-benar lagi kekurangan
-    personel buat turun langsung hari ini
-  - Nanti saya pinjamkan capit penjepit dan wadah khususnya kok. Gimana, bisa bersedia
-    bantu?
-  - Boleh Pak, Kasihan karangnya kalau dibiarkan rusak
-  dialogSedangKerja:
-  - Ini Pak, semua hama Bulu Seribunya sudah berhasil saya amankan dari terumbu karang
-  - "Luar biasa! Kerjamu sangat rapi, kawan\u2026"
-  - Terima kasih banyak atas dedikasi dan bantuan cepatmu
-  - Jarang ada wisatawan yang mau ikut turun tangan menjaga alam seperti kamu
-  - Sebagai bentuk apresiasi dari kami, kalau kamu benar-benar mau melihat ikon keindahan
-    Misool yang sebenarnya
-  dialogTerimaKasih:
-  - Coba kamu jalan sedikit ke ujung pesisir sana
-  - Di sana ada spot perairan agak dalam, tempat kawanan Pari Manta biasa melintas.
-  - Silakan dinikmati!
 --- !u!114 &1599505556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7394,13 +7689,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599505554}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 69.85, y: -1.11, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.171177, y: 1.1218101, z: 0}
   m_LocalScale: {x: 0.45, y: 0.45, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1395739017}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 685218634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1599505562
 MonoBehaviour:
@@ -7415,12 +7710,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IbuIbuMisool
   dialogueSystem: {fileID: 1599505558}
-  dialogMintaTolongManta:
-  - 
-  dialogTerimaKasihManta: []
-  onQuest3Completed:
-    m_PersistentCalls:
-      m_Calls: []
+  dialogPoint7_MintaTolong: []
+  speakerPoint7_MintaTolong: 
+  dialogPoint9_TerimaKasih: []
+  speakerPoint9_TerimaKasih: 
 --- !u!1 &1599696233
 GameObject:
   m_ObjectHideFlags: 0
@@ -7436,6 +7729,7 @@ GameObject:
   - component: {fileID: 1599696234}
   - component: {fileID: 1599696239}
   - component: {fileID: 1599696240}
+  - component: {fileID: 1599696241}
   m_Layer: 0
   m_Name: Penyu
   m_TagString: Untagged
@@ -7457,7 +7751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiotaInteractable
   biotaName: Penyu Laut
   qteToTrigger: {fileID: 291565656}
-  objectiveID: inspect_turtle
+  objectiveID: penyu_misool
   startAnimator: {fileID: 0}
   animator: {fileID: 1599696239}
   animationTrigger: SelesaiInteraksi
@@ -7656,6 +7950,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &1599696241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599696233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe11e77fb3ee214b80b026a6a4661ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PenyuRescue
+  penyuSprite: {fileID: 1599696233}
+  tourGuideDialogue: {fileID: 81851315}
 --- !u!114 &1624679349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3730888737878647048, guid: 26dda819f04d8434a9cce30c480f4075, type: 3}
@@ -7674,7 +7982,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1659133382 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6286902967701083588, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5178083616762447677, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
   m_PrefabInstance: {fileID: 708766007}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -8227,7 +8535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1695990689
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8237,7 +8545,7 @@ RectTransform:
   m_GameObject: {fileID: 1695990688}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1360574300}
@@ -8246,8 +8554,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0013113, y: -47.399902}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: -0.0013113, y: -140}
+  m_SizeDelta: {x: 215, y: 82.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1695990690
 MonoBehaviour:
@@ -8926,10 +9234,10 @@ RectTransform:
   - {fileID: 2048489231}
   m_Father: {fileID: 1376259513}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 107.5, y: -67.69}
+  m_SizeDelta: {x: 195, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1868452216 stripped
 GameObject:
@@ -8974,10 +9282,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MisoolLandSceneManager
   penyuInteractive: {fileID: 1599696233}
+  tourGuideStart: {fileID: 7296318}
   petugasKonservasi: {fileID: 1482452492}
-  ibuIbuGroup: {fileID: 1599505554}
-  tourGuide: {fileID: 7296318}
-  tourGuideEndPosition: {fileID: 0}
+  ibuIbuGroup: {fileID: 685218633}
+  tourGuideEnd: {fileID: 1302061347}
+  tourGuideEndSpot: {fileID: 1302061345}
 --- !u!1 &1878169943
 GameObject:
   m_ObjectHideFlags: 0
@@ -10003,7 +10312,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2015931814 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8500097624209647766, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6665308479551155172, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
   m_PrefabInstance: {fileID: 708766007}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -10462,12 +10771,11 @@ SceneRoots:
   - {fileID: 888412300}
   - {fileID: 1668012663}
   - {fileID: 7296317}
-  - {fileID: 1599505561}
-  - {fileID: 438320365}
+  - {fileID: 1302061344}
   - {fileID: 722280885}
   - {fileID: 1599696238}
   - {fileID: 1482452495}
-  - {fileID: 1299675753}
+  - {fileID: 685218634}
   - {fileID: 35373075}
   - {fileID: 328742490}
   - {fileID: 1249962485}

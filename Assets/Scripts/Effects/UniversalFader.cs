@@ -80,4 +80,9 @@ public class UniversalFader : MonoBehaviour
         // 6. Buka kembali kunci layar
         fadeCanvasGroup.blocksRaycasts = false;
     }
+
+    internal void FadeToScene(string targetSceneName)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,37 +1,85 @@
 using UnityEngine;
-using UnityEngine.Events;
+using System;
 
 public class IbuIbuMisool : MonoBehaviour
 {
     [SerializeField] private Dialogue dialogueSystem;
 
-    [Header("Naskah Dialog")]
-    [TextArea(2, 4)][SerializeField] private string[] dialogMintaTolongManta; // Stage 6
-    [TextArea(2, 4)][SerializeField] private string[] dialogTerimaKasihManta;  // Stage 8
+    // Menyamakan struktur enum speaker dengan Dialogue.cs
+    private enum DialogueSpeaker { NPC, Player }
 
-    [Header("Quest Selesai")]
-    [SerializeField] private UnityEvent onQuest3Completed;
+    [Header("Naskah Dialog Point 7 (Minta Tolong)")]
+    [TextArea(2, 3)][SerializeField] private string[] dialogPoint7_MintaTolong;
+    [SerializeField] private DialogueSpeaker[] speakerPoint7_MintaTolong;
 
-    public void InteractWithIbuIbu()
+    [Header("Naskah Dialog Point 9 (Terima Kasih)")]
+    [TextArea(2, 3)][SerializeField] private string[] dialogPoint9_TerimaKasih;
+    [SerializeField] private DialogueSpeaker[] speakerPoint9_TerimaKasih;
+
+    public void OnInteractWithIbuIbu()
     {
         int stage = PlayerPrefs.GetInt("Misool_QuestStage", 0);
 
+        // Point 7: Diminta tolong tolong Pari Manta
         if (stage == 6)
         {
-            dialogueSystem.StartDialogue(dialogMintaTolongManta, () =>
+            StartDynamicDialogue(dialogPoint7_MintaTolong, speakerPoint7_MintaTolong, () =>
             {
                 QuestController.Instance?.ProgressObjective("misool_free_manta", 1);
-                PlayerPrefs.SetInt("Misool_QuestStage", 7); // Disuruh menyelam bebaskan Manta
+                PlayerPrefs.SetInt("Misool_QuestStage", 7); // Menyelam bebaskan Manta
                 PlayerPrefs.Save();
             });
         }
+        // Point 9: Lapor Manta sudah bebas
         else if (stage == 8)
         {
-            dialogueSystem.StartDialogue(dialogTerimaKasihManta, () =>
+            StartDynamicDialogue(dialogPoint9_TerimaKasih, speakerPoint9_TerimaKasih, () =>
             {
-                // Selesai dialog terima kasih -> Trigger Fade & Tour Guide
-                onQuest3Completed?.Invoke();
+                // Trigger Fade, Hilangkan Ibu-ibu & Panggil Tour Guide
+                MisoolLandSceneManager.Instance?.TriggerPoint9FadeAndTourGuide();
             });
         }
+    }
+
+    /// <summary>
+    /// Fungsi injeksi dinamis untuk mengatur baris dialog beserta siapa penuturnya
+    /// ke dalam komponen Dialogue yang ter-enkapsulasi.
+    /// </summary>
+    private void StartDynamicDialogue(string[] lines, DialogueSpeaker[] speakers, Action onComplete)
+    {
+        if (dialogueSystem == null || lines == null || lines.Length == 0) return;
+
+        var type = typeof(Dialogue);
+
+        // Inject Naskah
+        var fieldLines = type.GetField("DialogueLines", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        if (fieldLines != null) fieldLines.SetValue(dialogueSystem, lines);
+
+        // Inject Penutur (NPC / Player)
+        var fieldSpeakers = type.GetField("DialogueLineSpeakers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        if (fieldSpeakers != null) fieldSpeakers.SetValue(dialogueSystem, ConvertToIntArray(speakers));
+
+        // Inject Event Akhir Dialog
+        var fieldCallback = type.GetField("onDialogueCompleteCallback", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        if (fieldCallback != null) fieldCallback.SetValue(dialogueSystem, onComplete);
+
+        // Jalankan dialog utama tanpa argumen agar membaca variabel yang baru di-inject
+        dialogueSystem.StartDialogue();
+    }
+
+    // Helper untuk mengonversi Enum lokal ke tipe Enum internal milik Dialogue.cs
+    private Array ConvertToIntArray(DialogueSpeaker[] localSpeakers)
+    {
+        if (localSpeakers == null) return null;
+
+        Type targetEnumType = typeof(Dialogue).GetNestedType("DialogueSpeaker", System.Reflection.BindingFlags.NonPublic);
+        if (targetEnumType == null) return null;
+
+        Array targetArray = Array.CreateInstance(targetEnumType, localSpeakers.Length);
+        for (int i = 0; i < localSpeakers.Length; i++)
+        {
+            targetArray.SetValue((int)localSpeakers[i], i);
+        }
+        return targetArray;
     }
 }
