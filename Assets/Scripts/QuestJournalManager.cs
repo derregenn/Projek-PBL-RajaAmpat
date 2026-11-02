@@ -96,7 +96,24 @@ public class QuestJournalManager : MonoBehaviour
             }
         }
     }
+// Panggil fungsi ini dari Button UI Jurnal
+public void ToggleJournalPanel()
+{
+    if (questTabPanel == null)
+    {
+        Debug.LogError("[QuestJournalManager] questTabPanel belum di-assign di Inspector!");
+        return;
+    }
 
+    bool willOpen = !questTabPanel.activeSelf;
+    questTabPanel.SetActive(willOpen);
+    Time.timeScale = willOpen ? 0f : 1f; // Freeze game saat jurnal buka, resume saat tutup
+
+    if (willOpen)
+    {
+        UpdateJournalUI();
+    }
+}
     public void ToggleQuestTab()
     {
         isOngoingTabActive = !isOngoingTabActive; 
