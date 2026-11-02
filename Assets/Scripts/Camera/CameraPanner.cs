@@ -8,9 +8,15 @@ public class CameraPanner : MonoBehaviour
     [SerializeField] private GameObject objectiveCamera; // Masukkan ObjectiveCamera di sini
     [SerializeField] private float viewDuration = 2.5f;  // Berapa lama kamera menyorot objektif
 
+    [Header("Trigger Collider (Opsional)")]
+    [SerializeField] private bool triggerOnPlayerEnter = true;
+    [SerializeField] private string playerTag = "Player";
+
     [Header("Event Lanjutan (Opsional)")]
     // Event ini berguna jika kamu ingin menjalankan quest/dialog lain SETELAH kamera balik ke player
-    public UnityEvent onPanFinished; 
+    public UnityEvent onPanFinished;
+
+    private bool isPanning;
 
     private void Start()
     {
@@ -21,10 +27,25 @@ public class CameraPanner : MonoBehaviour
         }
     }
 
-    // Fungsi ini yang akan kita panggil dari OnDialogueEnd atau UnityEvent lainnya
+    // Fungsi ini yang dipanggil saat trigger tersentuh atau dipanggil via UnityEvent
     public void ShowObjectivePan()
     {
+        if (isPanning)
+        {
+            return;
+        }
+
+        isPanning = true;
         StartCoroutine(PanCameraRoutine());
+    }
+
+    // PERBAIKAN: Menggunakan OnTriggerEnter2D untuk Fisika 2D (Box Collider 2D)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (triggerOnPlayerEnter && (other.CompareTag(playerTag) || other.gameObject.name.Contains("Player")))
+        {
+            ShowObjectivePan();
+        }
     }
 
     private IEnumerator PanCameraRoutine()
@@ -44,10 +65,11 @@ public class CameraPanner : MonoBehaviour
             objectiveCamera.SetActive(false);
         }
 
-        // 4. Tunggu sebentar agar animasi panning balik selesai (opsional, sesuaikan durasi blend)
-        yield return new WaitForSeconds(1.5f); 
+        // 4. Tunggu sebentar agar animasi panning balik selesai
+        yield return new WaitForSeconds(1.5f);
 
         // 5. Jalankan event lanjutan jika ada
         onPanFinished?.Invoke();
+        isPanning = false;
     }
 }
