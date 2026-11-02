@@ -161,7 +161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 501246943660097595, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 102.69
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: npcLensSize
@@ -240,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 52.69
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -252,7 +252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -56.6
+      value: -62.15
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -306,13 +306,17 @@ PrefabInstance:
       propertyPath: m_Colors.m_NormalColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7846843865277977716, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
     - target: {fileID: 8226774000362214352, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_Name
       value: TourGuide
       objectReference: {fileID: 0}
     - target: {fileID: 8226774000362214352, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8945099133873997633, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_Padding.m_Top
@@ -352,27 +356,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 280
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -77.69
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -663,7 +667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bad5d2e3f0ac644983bdb587198655d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
-  targetSceneName: 08_Laut Misool 1
+  targetSceneName: 08_Laut Misool 2
   fadeDuration: 1
   warningUI: {fileID: 1754165466}
   interactKey: 101
@@ -1001,6 +1005,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3375833682341557579, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
   m_PrefabInstance: {fileID: 1955230233}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &190592172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 190592173}
+  m_Layer: 0
+  m_Name: SpawnPoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &190592173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190592172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.41, y: -1.66, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &195851128
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,7 +2068,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 18.301174, y: 1.1218101, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 969356457}
@@ -2753,7 +2788,7 @@ Transform:
   m_GameObject: {fileID: 685218633}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.67882, y: -2.23181, z: 0}
+  m_LocalPosition: {x: 52.67882, y: -2.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3060,18 +3095,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1684323941}
     m_Modifications:
-    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: panelHUD
-      value: 
-      objectReference: {fileID: 1073081708}
-    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: hudQuestTitle
-      value: 
-      objectReference: {fileID: 491292135}
-    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: hudQuestDescription
-      value: 
-      objectReference: {fileID: 1659133382}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -3168,6 +3191,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: panelHUD
+      value: 
+      objectReference: {fileID: 1073081708}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: hudQuestTitle
+      value: 
+      objectReference: {fileID: 491292135}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: hudQuestDescription
+      value: 
+      objectReference: {fileID: 1659133382}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3539,7 +3574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bad5d2e3f0ac644983bdb587198655d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
-  targetSceneName: 08_Laut Misool 2
+  targetSceneName: 08_Laut Misool 1
   fadeDuration: 1
   warningUI: {fileID: 1754165466}
   interactKey: 101
@@ -5573,6 +5608,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1294409857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1294409858}
+  m_Layer: 0
+  m_Name: SpawnPoint3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1294409858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294409857}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 75.51, y: -1.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1299675750
 GameObject:
   m_ObjectHideFlags: 0
@@ -6893,7 +6959,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -73.5}
+  m_AnchoredPosition: {x: 0, y: -148.7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1428451161
@@ -6918,8 +6984,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press [E] to talk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f76dc5b062d58f043b68c069fe2348f3, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0e81dd4ed92ab884b81125efbea6e107, type: 2}
+  m_sharedMaterial: {fileID: 2382464395408376472, guid: 0e81dd4ed92ab884b81125efbea6e107, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6943,8 +7009,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6985,7 +7051,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1428451162
@@ -7089,6 +7155,7 @@ GameObject:
   - component: {fileID: 1482452497}
   - component: {fileID: 1482452496}
   - component: {fileID: 1482452499}
+  - component: {fileID: 1482452500}
   m_Layer: 0
   m_Name: PetugasMisool
   m_TagString: Untagged
@@ -7115,13 +7182,8 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1719262658}
   PlayerNextPrompt: {fileID: 976487319}
-  DialogueLines:
-  - Mau melihat keindahan terumbu karang Misool dari dekat ya?
-  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
-  - Pasti. Area terumbu karang di bawah dermaga ini masih sangat terjaga.
-  - Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
-    kalau sudah selesai ya
-  DialogueLineSpeakers: 00000000010000000000000000000000
+  DialogueLines: []
+  DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 0}
@@ -7206,8 +7268,8 @@ Transform:
   m_GameObject: {fileID: 1482452492}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.87, y: -1.04, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: -17.87, y: -1.19, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 749323956}
@@ -7311,13 +7373,42 @@ MonoBehaviour:
   - Pasti. Area terumbu karang di bawah dermaga ini masih sangat terjaga.
   - Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
     kalau sudah selesai ya
-  speakerSuruhMenyelam: 00000000010000000000000000000000
-  dialogMintaBantuan: []
-  speakerMintaBantuan: 
-  dialogSedangKerja: []
-  speakerSedangKerja: 
-  dialogTerimaKasih: []
-  speakerTerimaKasih: 
+  dialogMintaBantuan:
+  - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
+    terumbu karang
+  - Aduh, benarkah? Wah, untung kamu cepat melapor!
+  - Mas, kebetulan kamu kan udah pakai perlengkapan selam lengkap dan jago menyelam
+  - Bisa minta tolong bantu kami sebentar nggak?
+  - Anggap aja jadi relawan konservasi dadakan sebentar buat angkat hama-hama itu
+    ke atas
+  - Jujur aja, tim kita di pos lagi kewalahan banget
+  - Kita benar-benar lagi kekurangan personel buat turun langsung hari ini
+  - Nanti saya pinjamkan capit penjepit dan wadah khususnya kok. Gimana, bisa bersedia
+    bantu?
+  - Boleh Pak, Kasihan karangnya kalau dibiarkan rusak
+  - "Sip, terima kasih banyak atas kepedulianmu ya, kawan\u2026"
+  dialogSedangKerja:
+  - Ini Pak, semua hama Bulu Seribunya sudah berhasil saya amankan dari terumbu karang
+  - "Luar biasa! Kerjamu sangat rapi, kawan\u2026"
+  dialogTerimaKasih:
+  - Jarang ada wisatawan yang mau ikut turun tangan menjaga alam seperti kamu
+  - Sebagai bentuk apresiasi dari kami, kalau kamu benar-benar mau melihat ikon keindahan
+    Misool yang sebenarnya
+  - Coba kamu jalan sedikit ke ujung pesisir sana
+  - Di sana ada spot perairan agak dalam, tempat kawanan Pari Manta biasa melintas.
+  - Silahkan Dinikmati!
+--- !u!114 &1482452500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482452492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4fb3a16003898148ba3b76bba25e184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PetugasInteractionTrigger
 --- !u!114 &1515042441 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
@@ -7691,7 +7782,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 17.171177, y: 1.1218101, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1395739017}
@@ -7725,7 +7816,6 @@ GameObject:
   - component: {fileID: 1599696238}
   - component: {fileID: 1599696237}
   - component: {fileID: 1599696236}
-  - component: {fileID: 1599696235}
   - component: {fileID: 1599696234}
   - component: {fileID: 1599696239}
   - component: {fileID: 1599696240}
@@ -7760,24 +7850,21 @@ MonoBehaviour:
   defaultPriority: 0
   delayBeforeAnim: 2
   delayAfterAnim: 2
---- !u!114 &1599696235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599696233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
-  objectiveID: hold_interact
-  amountToAdd: 1
-  progressObjectiveOnTrigger: 0
-  OnObjectiveTriggered:
+  onSequenceComplete:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1599696241}
+        m_TargetAssemblyTypeName: PenyuRescue, Assembly-CSharp
+        m_MethodName: OnQTESuccess
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &1599696236
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7937,19 +8024,7 @@ MonoBehaviour:
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7296318}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1599696241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8086,6 +8161,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2493982966598477783, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -8171,6 +8250,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1668012666}
     - targetCorrespondingSourceObject: {fileID: 2401595063181417816, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 698352861}
@@ -8180,6 +8262,27 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 7162569541499175061, guid: d9eef132e72927948852f0a723f816bb, type: 3}
   m_PrefabInstance: {fileID: 1668012663}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1668012665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 1668012663}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1668012666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668012665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98209cf3c3c038b4f9ea8b41f532aea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MisoolPlayerSpawner
+  playerTransform: {fileID: 512716665}
+  defaultSpawnPoint: {fileID: 1814598114}
+  pierSpawnPoint: {fileID: 190592173}
+  beachSpawnPoint: {fileID: 1294409858}
 --- !u!1 &1684323940
 GameObject:
   m_ObjectHideFlags: 0
@@ -9239,6 +9342,37 @@ RectTransform:
   m_AnchoredPosition: {x: 107.5, y: -67.69}
   m_SizeDelta: {x: 195, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1814598113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1814598114}
+  m_Layer: 0
+  m_Name: SpawnPoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1814598114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814598113}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -74.39828, y: -1.09, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1868452216 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
@@ -10792,3 +10926,6 @@ SceneRoots:
   - {fileID: 48946279}
   - {fileID: 836280604}
   - {fileID: 50574535}
+  - {fileID: 1814598114}
+  - {fileID: 190592173}
+  - {fileID: 1294409858}

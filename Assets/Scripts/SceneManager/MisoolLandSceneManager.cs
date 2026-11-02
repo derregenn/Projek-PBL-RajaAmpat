@@ -3,6 +3,7 @@ using UnityEngine;
 public class MisoolLandSceneManager : MonoBehaviour
 {
     public static MisoolLandSceneManager Instance { get; private set; }
+    private int lastObservedStage = -1;
 
     [Header("Referensi NPC & Objek Darat")]
     [SerializeField] private GameObject penyuInteractive;  // Point 1
@@ -14,6 +15,12 @@ public class MisoolLandSceneManager : MonoBehaviour
 
     private void Awake()
     {
+
+        // TAMBAHKAN BARIS INI SEMENTARA HANYA UNTUK TESTING EDITOR
+        PlayerPrefs.SetInt("Misool_QuestStage", 0);
+        PlayerPrefs.Save();
+        // ---------------------------------------------------------
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -27,9 +34,17 @@ public class MisoolLandSceneManager : MonoBehaviour
         RefreshLandState();
     }
 
+    private void Update()
+    {
+        int stage = PlayerPrefs.GetInt("Misool_QuestStage", 0);
+        if (stage != lastObservedStage)
+            RefreshLandState();
+    }
+
     public void RefreshLandState()
     {
         int stage = PlayerPrefs.GetInt("Misool_QuestStage", 0);
+        lastObservedStage = stage;
 
         // Point 1: Penyu Sisik
         if (penyuInteractive != null)

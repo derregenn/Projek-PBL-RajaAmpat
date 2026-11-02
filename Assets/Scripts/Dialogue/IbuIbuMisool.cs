@@ -47,21 +47,46 @@ public class IbuIbuMisool : MonoBehaviour
     /// </summary>
     private void StartDynamicDialogue(string[] lines, DialogueSpeaker[] speakers, Action onComplete)
     {
-        if (dialogueSystem == null || lines == null || lines.Length == 0) return;
+        if (dialogueSystem == null)
+        {
+            Debug.LogWarning("IbuIbuMisool: Dialogue System belum di-assign di Inspector.", this);
+            return;
+        }
+
+        if (lines == null || lines.Length == 0)
+        {
+            Debug.LogWarning("IbuIbuMisool: Naskah dialog kosong atau belum diisi di Inspector.", this);
+            return;
+        }
 
         var type = typeof(Dialogue);
 
         // Inject Naskah
         var fieldLines = type.GetField("DialogueLines", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        if (fieldLines != null) fieldLines.SetValue(dialogueSystem, lines);
+        if (fieldLines == null)
+        {
+            Debug.LogWarning("IbuIbuMisool: Field DialogueLines tidak ditemukan pada Dialogue.", this);
+            return;
+        }
+        fieldLines.SetValue(dialogueSystem, lines);
 
         // Inject Penutur (NPC / Player)
         var fieldSpeakers = type.GetField("DialogueLineSpeakers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        if (fieldSpeakers != null) fieldSpeakers.SetValue(dialogueSystem, ConvertToIntArray(speakers));
+        if (fieldSpeakers == null)
+        {
+            Debug.LogWarning("IbuIbuMisool: Field DialogueLineSpeakers tidak ditemukan pada Dialogue.", this);
+            return;
+        }
+        fieldSpeakers.SetValue(dialogueSystem, ConvertToIntArray(speakers));
 
         // Inject Event Akhir Dialog
         var fieldCallback = type.GetField("onDialogueCompleteCallback", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        if (fieldCallback != null) fieldCallback.SetValue(dialogueSystem, onComplete);
+        if (fieldCallback == null)
+        {
+            Debug.LogWarning("IbuIbuMisool: Field onDialogueCompleteCallback tidak ditemukan pada Dialogue.", this);
+            return;
+        }
+        fieldCallback.SetValue(dialogueSystem, onComplete);
 
         // Jalankan dialog utama tanpa argumen agar membaca variabel yang baru di-inject
         dialogueSystem.StartDialogue();
@@ -73,12 +98,18 @@ public class IbuIbuMisool : MonoBehaviour
         if (localSpeakers == null) return null;
 
         Type targetEnumType = typeof(Dialogue).GetNestedType("DialogueSpeaker", System.Reflection.BindingFlags.NonPublic);
-        if (targetEnumType == null) return null;
+        if (targetEnumType == null)
+        {
+            Debug.LogWarning("IbuIbuMisool: Enum DialogueSpeaker tidak ditemukan di dalam Dialogue.", this);
+            return null;
+        }
+
+        if (localSpeakers == null) return null;
 
         Array targetArray = Array.CreateInstance(targetEnumType, localSpeakers.Length);
         for (int i = 0; i < localSpeakers.Length; i++)
         {
-            targetArray.SetValue((int)localSpeakers[i], i);
+            targetArray.SetValue(Enum.ToObject(targetEnumType, (int)localSpeakers[i]), i);
         }
         return targetArray;
     }

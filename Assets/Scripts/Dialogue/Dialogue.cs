@@ -368,4 +368,22 @@ public class Dialogue : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fungsi publik agar skrip NPC lain (seperti PetugasMisool) bisa mengirim naskah secara langsung
+    /// </summary>
+    public void StartCustomDialogue(string[] customLines, Action onComplete)
+    {
+        DialogueLines = customLines;
+        onDialogueCompleteCallback = onComplete;
+
+        // Paksa set speaker jadi NPC semua atau sesuaikan jika butuh
+        DialogueLineSpeakers = new DialogueSpeaker[customLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
+
+        StartDialogue();
+    }
+
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Unity.Cinemachine; // Namespace Cinemachine untuk Unity 6
+using UnityEngine.Events;
 
 public class BiotaInteractable : MonoBehaviour, IInteractable
 {
@@ -20,6 +21,10 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
     [SerializeField] private int defaultPriority = 0;   // Priority normal (Standby)
     [SerializeField] private float delayBeforeAnim = 1f;
     [SerializeField] private float delayAfterAnim = 2f;
+
+    // 2. TAMBAHKAN EVENT INI DI SINI
+    [Header("Events")]
+    [SerializeField] private UnityEvent onSequenceComplete;
 
     private bool isDone = false;
 
@@ -99,6 +104,9 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
 
         isDone = true;
         Debug.Log($"Interaksi dengan {biotaName} selesai!");
+
+        // 7. Panggil event jika ada listener
+        onSequenceComplete?.Invoke();
     }
 
     public string GetPromptText() => isDone ? biotaName : $"Bantu {biotaName}";
