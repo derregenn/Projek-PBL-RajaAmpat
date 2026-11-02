@@ -114,6 +114,12 @@ public class QuestController : MonoBehaviour
     // PROGRESS OBJECTIVE
     // ========================================
 
+    // Overload 1 parameter khusus untuk UnityEvent / Inspector Dropdown
+    public void ProgressObjective(string objectiveID)
+    {
+        ProgressObjective(objectiveID, 1);
+    }
+
     public void ProgressObjective(
         string objectiveID,
         int amount = 1)
