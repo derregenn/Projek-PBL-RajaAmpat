@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -9,10 +10,19 @@ public class Player : MonoBehaviour
     [Header("Mode Berenang")]
     public bool isSwimming = false;
 
+    // Struct untuk input audio per jenis tanah di Inspector
+    [System.Serializable]
+    public struct SurfaceAudioData
+    {
+        public SurfaceKind surfaceKind;
+        public AudioClip runClip;
+    }
+
     [Header("Audio Player")]
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip runClip;
     [SerializeField] private AudioClip swimClip;
+    [SerializeField] private AudioClip defaultRunClip; // Suara cadangan jika tanah tidak terdaftar
+    [SerializeField] private List<SurfaceAudioData> surfaceAudioList; // Setup daftar suara di Inspector
     [SerializeField, Range(0f, 1f)] private float movementVolume = 0.7f;
     [SerializeField, Range(0.1f, 3f)] private float audioPitch = 1f;
 
@@ -20,11 +30,28 @@ public class Player : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
+    // Dictionary pencarian cepat (Key: Jenis Tanah -> Value: Audio Clip)
+    private Dictionary<SurfaceKind, AudioClip> surfaceAudioDict = new Dictionary<SurfaceKind, AudioClip>();
+    private AudioClip currentRunClip;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // 1. INSIALISASI DICTIONARY DARI LIST INSPECTOR
+        surfaceAudioDict.Clear();
+        foreach (var data in surfaceAudioList)
+        {
+            if (!surfaceAudioDict.ContainsKey(data.surfaceKind) && data.runClip != null)
+            {
+                surfaceAudioDict.Add(data.surfaceKind, data.runClip);
+            }
+        }
+
+        currentRunClip = defaultRunClip;
+
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -41,29 +68,23 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // 1. AMBIL INPUT GERAKAN HANYA SEKALI DI ATAS
-        float moveInput = Input.GetAxisRaw("Horizontal"); // -1 untuk Kiri, 1 untuk Kanan, 0 untuk Diam
+        float moveInput = Input.GetAxisRaw("Horizontal");
 
-        // 2. OTOMATIS FLIP SPRITE SESUAI ARAH GERAK
         if (moveInput > 0 && spriteRenderer != null)
         {
-            spriteRenderer.flipX = false; // Menghadap Kanan
+            spriteRenderer.flipX = false;
         }
         else if (moveInput < 0 && spriteRenderer != null)
         {
-            spriteRenderer.flipX = true;  // Menghadap Kiri
+            spriteRenderer.flipX = true;
         }
 
-        // 3. KONTROL FISIKA GERAKAN (Hanya saat di darat)
         if (!isSwimming && rb != null)
         {
             rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
         }
 
-        // 4. UPDATE ANIMASI
         SetAnimation(moveInput);
-
-        // 5. AUDIO GERAKAN
         UpdateMovementAudio(moveInput);
     }
 
@@ -74,7 +95,7 @@ public class Player : MonoBehaviour
         AudioClip targetClip = null;
         if (moveInput != 0)
         {
-            targetClip = isSwimming ? swimClip : runClip;
+            targetClip = isSwimming ? swimClip : (currentRunClip != null ? currentRunClip : defaultRunClip);
         }
 
         if (targetClip == null)
@@ -93,21 +114,44 @@ public class Player : MonoBehaviour
         }
     }
 
+    // DETEKSI PERMUKAAN MENGGUNAKAN SCRIPT SurfaceType
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CheckSurface(collision.gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        CheckSurface(other.gameObject);
+    }
+
+    private void CheckSurface(GameObject obj)
+    {
+        SurfaceType surface = obj.GetComponent<SurfaceType>();
+        if (surface == null)
+        {
+            surface = obj.GetComponentInParent<SurfaceType>();
+        }
+
+        if (surface != null && surfaceAudioDict.TryGetValue(surface.surfaceKind, out AudioClip clip))
+        {
+            currentRunClip = clip;
+        }
+    }
+
     private void SetAnimation(float moveInput)
     {
         if (animator == null) return;
 
-        // JIKA SEDANG BERENANG
         if (isSwimming)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_swim"))
             {
                 animator.Play("Player_swim");
             }
-            return; // KUNCI UTAMA: Langsung return agar animasi Idle/Run di bawah tidak dipanggil!
+            return;
         }
 
-        // JIKA SEDANG DI DARAT
         if (moveInput == 0)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Idle"))
@@ -143,6 +187,4 @@ public class Player : MonoBehaviour
             animator.Play("Player_Idle");
         }
     }
-
-
 }

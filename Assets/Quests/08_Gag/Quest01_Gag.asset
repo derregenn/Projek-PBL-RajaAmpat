@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2192e413909301f44b7dcad3df94beca, type: 3}
+  m_Name: Quest01_Gag
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  QuestID: 01
+  QuestTitle: Sampel Air Keruh
+  Description: Ambil sampel air keruh di tepi
+  Objectives:
+  - ObjectiveID: ambil_sampel
+    Type: 6
+    ObjectiveTitle: Ambil sampel air keruh di tepi pantai
+    Description: 
+    RequiredAmount: 1
+    CurrentAmount: 0
+  - ObjectiveID: serahkan_sampel
+    Type: 8
+    ObjectiveTitle: Serahkan sampel air keruh ke Peneliti
+    Description: 
+    RequiredAmount: 1
+    CurrentAmount: 1
