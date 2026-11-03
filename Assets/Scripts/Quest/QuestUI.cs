@@ -13,6 +13,11 @@ public class QuestUI : MonoBehaviour
 
     public Quest currentActiveQuest;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
 

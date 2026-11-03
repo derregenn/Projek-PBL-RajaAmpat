@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro; // Gunakan UnityEngine.UI jika memakai Text standar
+using UnityEngine.UI;
 
 public class LevelMinimap : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class LevelMinimap : MonoBehaviour
 
     [Header("Quest Targets")]
     public List<Transform> questTargets = new List<Transform>();
+    public List<Sprite> questTargetIcons = new List<Sprite>();
 
     private float trackWidth;
     private List<QuestMarker> questMarkers = new List<QuestMarker>();
@@ -63,6 +65,13 @@ public class LevelMinimap : MonoBehaviour
 
             GameObject iconObj = Instantiate(questIconPrefab, questContainer);
             RectTransform iconRect = iconObj.GetComponent<RectTransform>();
+
+            if (i < questTargetIcons.Count && questTargetIcons[i] != null)
+            {
+                Image iconImage = iconObj.GetComponentInChildren<Image>();
+                if (iconImage != null)
+                    iconImage.sprite = questTargetIcons[i];
+            }
 
             iconRect.anchorMin = new Vector2(0, 0.5f);
             iconRect.anchorMax = new Vector2(0, 0.5f);

@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 5dc2069aef6e91a40bf3dfe35a14c1cb, type: 2}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: giveQuestOnPlayerCollision
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'questsToGive.Array.data[0]'
@@ -5229,7 +5229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_SizeDelta.y
@@ -7155,7 +7155,6 @@ GameObject:
   - component: {fileID: 1482452497}
   - component: {fileID: 1482452496}
   - component: {fileID: 1482452499}
-  - component: {fileID: 1482452500}
   m_Layer: 0
   m_Name: PetugasMisool
   m_TagString: Untagged
@@ -7397,18 +7396,6 @@ MonoBehaviour:
   - Coba kamu jalan sedikit ke ujung pesisir sana
   - Di sana ada spot perairan agak dalam, tempat kawanan Pari Manta biasa melintas.
   - Silahkan Dinikmati!
---- !u!114 &1482452500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482452492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4fb3a16003898148ba3b76bba25e184, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PetugasInteractionTrigger
 --- !u!114 &1515042441 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
@@ -7819,7 +7806,6 @@ GameObject:
   - component: {fileID: 1599696234}
   - component: {fileID: 1599696239}
   - component: {fileID: 1599696240}
-  - component: {fileID: 1599696241}
   m_Layer: 0
   m_Name: Penyu
   m_TagString: Untagged
@@ -7853,7 +7839,7 @@ MonoBehaviour:
   onSequenceComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1599696241}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PenyuRescue, Assembly-CSharp
         m_MethodName: OnQTESuccess
         m_Mode: 1
@@ -8025,20 +8011,6 @@ MonoBehaviour:
   OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1599696241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599696233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffe11e77fb3ee214b80b026a6a4661ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PenyuRescue
-  penyuSprite: {fileID: 1599696233}
-  tourGuideDialogue: {fileID: 81851315}
 --- !u!114 &1624679349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3730888737878647048, guid: 26dda819f04d8434a9cce30c480f4075, type: 3}

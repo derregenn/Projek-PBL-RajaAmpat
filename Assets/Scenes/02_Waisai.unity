@@ -511,7 +511,6 @@ GameObject:
   - component: {fileID: 78562403}
   - component: {fileID: 78562402}
   - component: {fileID: 78562401}
-  - component: {fileID: 78562407}
   - component: {fileID: 78562408}
   m_Layer: 0
   m_Name: PetugasHub
@@ -753,23 +752,6 @@ Transform:
   - {fileID: 2037273663}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &78562407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 78562400}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
-  onMidFade:
-    m_PersistentCalls:
-      m_Calls: []
-  triggerOnEnter: 1
-  activatorTag: Player
 --- !u!82 &78562408
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3735,6 +3717,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraPanner
   objectiveCamera: {fileID: 4686589837584288087}
   viewDuration: 3
+  triggerOnPlayerEnter: 1
+  playerTag: Player
   onPanFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -3948,9 +3932,6 @@ GameObject:
   - component: {fileID: 449681126}
   - component: {fileID: 449681125}
   - component: {fileID: 449681124}
-  - component: {fileID: 449681123}
-  - component: {fileID: 449681122}
-  - component: {fileID: 449681121}
   - component: {fileID: 449681120}
   m_Layer: 0
   m_Name: Bule
@@ -4056,56 +4037,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &449681121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449681119}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
-  onMidFade:
-    m_PersistentCalls:
-      m_Calls: []
-  triggerOnEnter: 1
-  activatorTag: Player
---- !u!114 &449681122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449681119}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
-  objectiveID: petugas_hub
-  amountToAdd: 1
-  progressObjectiveOnTrigger: 0
-  OnObjectiveTriggered:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &449681123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449681119}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 0}
-  giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &449681124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6208,6 +6139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraPanner
   objectiveCamera: {fileID: 4686589837584288087}
   viewDuration: 2
+  triggerOnPlayerEnter: 1
+  playerTag: Player
   onPanFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -7811,9 +7744,6 @@ GameObject:
   - component: {fileID: 944592172}
   - component: {fileID: 944592171}
   - component: {fileID: 944592170}
-  - component: {fileID: 944592169}
-  - component: {fileID: 944592168}
-  - component: {fileID: 944592167}
   - component: {fileID: 944592166}
   m_Layer: 0
   m_Name: Warlok
@@ -7919,56 +7849,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &944592167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944592165}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
-  onMidFade:
-    m_PersistentCalls:
-      m_Calls: []
-  triggerOnEnter: 1
-  activatorTag: Player
---- !u!114 &944592168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944592165}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
-  objectiveID: petugas_hub
-  amountToAdd: 1
-  progressObjectiveOnTrigger: 0
-  OnObjectiveTriggered:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &944592169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944592165}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 0}
-  giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &944592170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8934,9 +8814,6 @@ GameObject:
   - component: {fileID: 1057765670}
   - component: {fileID: 1057765669}
   - component: {fileID: 1057765668}
-  - component: {fileID: 1057765667}
-  - component: {fileID: 1057765666}
-  - component: {fileID: 1057765665}
   - component: {fileID: 1057765664}
   m_Layer: 0
   m_Name: Bule2
@@ -9042,56 +8919,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1057765665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057765663}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
-  onMidFade:
-    m_PersistentCalls:
-      m_Calls: []
-  triggerOnEnter: 1
-  activatorTag: Player
---- !u!114 &1057765666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057765663}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
-  objectiveID: petugas_hub
-  amountToAdd: 1
-  progressObjectiveOnTrigger: 0
-  OnObjectiveTriggered:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1057765667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057765663}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 0}
-  giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &1057765668
 MonoBehaviour:
   m_ObjectHideFlags: 0
