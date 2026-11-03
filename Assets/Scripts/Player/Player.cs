@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
 
     [Header("Audio Player")]
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip runClip;
+    [SerializeField] private AudioClip runClip;       // Suara Langkah Dek Kayu / Default
+    [SerializeField] private AudioClip sandRunClip;   // Suara Langkah Pasir (BARU)
     [SerializeField] private AudioClip swimClip;
     [SerializeField, Range(0f, 1f)] private float movementVolume = 0.7f;
     [SerializeField, Range(0.1f, 3f)] private float audioPitch = 1f;
@@ -19,12 +20,17 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private AudioClip currentRunClip; // Menyimpan suara permukaan yang sedang diinjak
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Default suara permukaan awal
+        currentRunClip = runClip;
+
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -74,7 +80,8 @@ public class Player : MonoBehaviour
         AudioClip targetClip = null;
         if (moveInput != 0)
         {
-            targetClip = isSwimming ? swimClip : runClip;
+            // Memilih clip berdasarkan status berenang atau jenis permukaan tanah
+            targetClip = isSwimming ? swimClip : (currentRunClip != null ? currentRunClip : runClip);
         }
 
         if (targetClip == null)
@@ -90,6 +97,29 @@ public class Player : MonoBehaviour
             audioSource.volume = movementVolume;
             audioSource.pitch = audioPitch;
             audioSource.Play();
+        }
+    }
+
+    // DETEKSI PERMUKAAN TANAH YANG DIINJAK PLAYER
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CheckSurface(collision.gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        CheckSurface(other.gameObject);
+    }
+
+    private void CheckSurface(GameObject obj)
+    {
+        if (obj.CompareTag("Wood"))
+        {
+            currentRunClip = runClip; // Set suara ke dek kayu
+        }
+        else if (obj.CompareTag("Sand"))
+        {
+            currentRunClip = sandRunClip; // Set suara ke pasir
         }
     }
 
@@ -143,6 +173,4 @@ public class Player : MonoBehaviour
             animator.Play("Player_Idle");
         }
     }
-
-
 }
