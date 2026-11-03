@@ -19,7 +19,8 @@ public class QuestController : MonoBehaviour
     [Header("Active Quests")]
     public List<Quest> ActiveQuests { get; private set; }
         = new List<Quest>();
-
+    // TAMBAHKAN BARIS INI: Referensi untuk animasi panel
+    [SerializeField] private QuestSlider questSliderAnim;
     // ========================================
     // UNITY
     // ========================================
@@ -87,6 +88,12 @@ public class QuestController : MonoBehaviour
         {
             questUI.SetQuest(quest);
             questUI.UpdateQuestUI();
+
+            // TAMBAHKAN BLOK INI: Jalankan animasi slide masuk-keluar
+            if (questSliderAnim != null)
+            {
+                questSliderAnim.ShowQuestPopup();
+            }
         }
         else
         {

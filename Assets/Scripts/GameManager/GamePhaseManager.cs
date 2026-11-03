@@ -34,6 +34,9 @@ public class GamePhaseManager : MonoBehaviour
     public UnityEvent<float> OnPercentageUpdated;
     public UnityEvent OnGagUnlocked; // Event untuk membuka tombol Gag di UI Peta
 
+    // Di dalam GamePhaseManager.cs
+    public string targetIslandName = "";
+
     private void Awake()
     {
         if (Instance == null)

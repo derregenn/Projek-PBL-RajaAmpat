@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using System.Collections;
 
 public class QTE1 : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class QTE1 : MonoBehaviour
 
     [Header("QTE Settings")]
     public KeyCode targetKey = KeyCode.E;
-    public float timeLimit = 3.0f; // Durasi batas waktu untuk menekan (detik)
+    public float timeLimit = 3.0f; // Batas waktu PER pencetan E (atur di Inspector)
+    public int totalPressesRequired = 3; // Target jumlah total pencetan "E" sampai sukses penuh
 
     [Header("Random Position Settings")]
     [SerializeField] private bool randomizePosition = true;
@@ -20,18 +22,19 @@ public class QTE1 : MonoBehaviour
 
     [Header("Quest Objective")]
     [SerializeField] private string objectiveID = "press_interact";
-    [SerializeField] private int amountToAdd = 1;
+    [SerializeField] private int amountToAddPerPress = 1;
 
     [Header("Feedback Visual Settings")]
-    [SerializeField] private Graphic keyGraphic; // Image/Text yang ingin diubah warnanya
-    [SerializeField] private Color successColor = Color.cyan; // Warna kilatan saat sukses (misal: biru terang)
-    [SerializeField] private float flashDuration = 0.15f; // Durasi kilatan berkedip
+    [SerializeField] private Graphic keyGraphic;
+    [SerializeField] private Color successColor = Color.cyan;
+    [SerializeField] private float flashDuration = 0.15f;
 
     [Header("Events")]
-    public UnityEvent onSuccess;
-    public UnityEvent onFail;
+    public UnityEvent onSuccess; // Dipanggil 1x HANYA SETELAH target pencetan terpenuhi semua
+    public UnityEvent onFail;    // Dipanggil kalau waktu habis di salah satu pencetan
 
     private float currentTimer;
+    private int currentPressCount = 0;
     private bool isActive = false;
     private bool isCompleted = false;
     private RectTransform rectTransform;
@@ -41,7 +44,7 @@ public class QTE1 : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    void Start()
+    void OnEnable()
     {
         InitQTE();
     }
@@ -50,7 +53,6 @@ public class QTE1 : MonoBehaviour
     {
         if (!isActive || isCompleted) return;
 
-        // Kurangi waktu tersisa
         currentTimer -= Time.deltaTime;
 
         if (timerFillImage != null)
@@ -58,12 +60,10 @@ public class QTE1 : MonoBehaviour
             timerFillImage.fillAmount = Mathf.Clamp01(currentTimer / timeLimit);
         }
 
-        // Cek input tombol berhasil
         if (Input.GetKeyDown(targetKey))
         {
-            Success();
+            OnSinglePressSuccess();
         }
-        // Cek jika waktu habis (Gagal)
         else if (currentTimer <= 0f)
         {
             Fail();
@@ -72,7 +72,9 @@ public class QTE1 : MonoBehaviour
 
     public void InitQTE()
     {
+        currentPressCount = 0;
         currentTimer = timeLimit;
+        isCompleted = false;
 
         if (keyText != null)
         {
@@ -96,78 +98,49 @@ public class QTE1 : MonoBehaviour
     {
         if (rectTransform == null) return;
 
-        // Menghitung posisi acak baru di dalam area batas offset
         float randomX = Random.Range(minPositionOffset.x, maxPositionOffset.x);
         float randomY = Random.Range(minPositionOffset.y, maxPositionOffset.y);
 
         rectTransform.anchoredPosition = new Vector2(randomX, randomY);
     }
 
-    private void Success()
+    private void OnSinglePressSuccess()
     {
         isActive = false;
-        Debug.Log("QTE Berhasil!");
-
-        // Jalankan efek kilatan visual
-        StartCoroutine(FlashSuccessAndProceed());
+        StartCoroutine(ProcessPressRoutine());
     }
 
-    private System.Collections.IEnumerator FlashSuccessAndProceed()
+    private IEnumerator ProcessPressRoutine()
     {
-        // Jalankan animasi kedip
         yield return StartCoroutine(FlashSuccessRoutine());
 
-        // Tambah progres quest setelah animasi selesai
+        currentPressCount++;
+
+        // Update progress quest di tiap pencetan
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
-            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            QuestController.Instance.ProgressObjective(objectiveID, amountToAddPerPress);
         }
 
-        onSuccess?.Invoke();
-
-        // Lanjutkan logika reset/penyelesaian QTE
-        bool needMoreProgress = false;
-        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        // CEK: Apakah jumlah pencetan sudah mencapai target total?
+        if (currentPressCount >= totalPressesRequired)
         {
-            foreach (var quest in QuestController.Instance.ActiveQuests)
-            {
-                if (quest == null) continue;
-
-                var obj = quest.GetObjective(objectiveID);
-                if (obj != null && !obj.IsComplete)
-                {
-                    needMoreProgress = true;
-                    break;
-                }
-            }
-        }
-
-        if (needMoreProgress)
-        {
-            ResetQTE();
+            isCompleted = true;
+            Debug.Log($"[QTE1] Sukses Penuh! Terpencet {currentPressCount}/{totalPressesRequired} kali.");
+            
+            onSuccess?.Invoke(); // Memanggil FaderTrigger.PlaySuccessSequence()
+            gameObject.SetActive(false);
         }
         else
         {
-            isCompleted = true;
-            gameObject.SetActive(false);
+            Debug.Log($"[QTE1] Pencetan ke-{currentPressCount}/{totalPressesRequired} Berhasil. Acak posisi & reset timer!");
+            ResetForNextPress();
         }
     }
 
-    private void Fail()
-    {
-        isActive = false;
-        Debug.Log("QTE Press Gagal!");
-
-        onFail?.Invoke();
-
-        // Reset ulang QTE saat gagal agar pemain bisa mencoba kembali dari awal
-        ResetQTE();
-    }
-
-    public void ResetQTE()
+    private void ResetForNextPress()
     {
         currentTimer = timeLimit;
-        isCompleted = false;
 
         if (timerFillImage != null)
         {
@@ -179,29 +152,30 @@ public class QTE1 : MonoBehaviour
             RandomizeUIPosition();
         }
 
-        if (!gameObject.activeSelf)
-        {
-            gameObject.SetActive(true);
-        }
-
         isActive = true;
     }
 
-    private System.Collections.IEnumerator FlashSuccessRoutine()
+    private void Fail()
+    {
+        isActive = false;
+        currentPressCount = 0;
+        Debug.Log("[QTE1] Gagal (Waktu Habis)!");
+
+        onFail?.Invoke(); // Memanggil FaderTrigger.PlayFailSequence()
+    }
+
+    private IEnumerator FlashSuccessRoutine()
     {
         if (keyGraphic != null)
         {
             Color originalColor = keyGraphic.color;
             Vector3 originalScale = transform.localScale;
 
-            // 1. Ubah warna ke warna kilatan & sedikit perbesar skala UI (efek pop)
             keyGraphic.color = successColor;
             transform.localScale = originalScale * 1.2f;
 
-            // Tunggu sejenak
             yield return new WaitForSeconds(flashDuration);
 
-            // 2. Kembalikan ke warna dan skala semula
             keyGraphic.color = originalColor;
             transform.localScale = originalScale;
         }

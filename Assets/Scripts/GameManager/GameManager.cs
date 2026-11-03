@@ -1,62 +1,70 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     [Header("UI References")]
     public GameObject pauseMenuUI;
     private bool isPaused = false;
 
-    void Awake()
+    private void Awake()
     {
-        // Memastikan hanya ada 1 GameManager (Singleton)
+        // Logik Singleton: Pastikan hanya ada 1 GameManager di seluruh permainan
         if (Instance == null)
         {
             Instance = this;
-            transform.SetParent(null); // Lepas dari parent agar DontDestroyOnLoad berjalan sempurna
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // Kekalkan GameObject ini apabila berpindah scene
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Musnahkan GameObject duplikat di scene baharu
+            return;
         }
     }
 
     private void OnEnable()
     {
-        // Daftarkan event setiap kali scene baru selesai dimuat
+        // Daftar event untuk kesan pertukaran scene
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // Hapus event saat object dihancurkan
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // 🔄 FUNGSI INI OTOMATIS DIPANGGIL SETIAP KALI MASUK SCENE BARU
+    // Dipanggil secara automatik setiap kali scene baharu selesai dimuatkan
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 1. Jika referensi pauseMenuUI hilang/null di scene baru, cari ulang secara otomatis
+        // Cari UI Pause di scene baharu jika rujukan terputus
         if (pauseMenuUI == null)
         {
-            GameObject foundPause = GameObject.Find("PauseMenuUI");
-            if (foundPause != null) 
+            GameObject canvas = GameObject.Find("Canvas_Pause") ?? GameObject.Find("Canvas");
+            if (canvas != null)
             {
-                pauseMenuUI = foundPause;
+                Transform pausePanel = canvas.transform.Find("PauseMenuPanel") ?? canvas.transform.Find("PromptPanel");
+                if (pausePanel != null)
+                {
+                    pauseMenuUI = pausePanel.gameObject;
+                }
             }
         }
 
-        // 2. Paksa matikan Pause Menu & reset waktu game setiap kali masuk scene baru
+        // Reset semula masa dan status pause apabila berpindah scene
         ResumeGame();
+    }
+
+    private void Start()
+    {
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     private void Update()
     {
-        // Toggle Pause Menu dengan tombol Escape
+        // Toggle Pause Menu dengan punat Escape
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused) ResumeGame();
@@ -68,27 +76,28 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
     }
 
     public void BackToMainMenu()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         SceneManager.LoadScene("01_MainMenu");
     }
 
-     public void SaveGame()
+    // 🔴 FUNGSI SAVE
+    public void SaveGame()
     {
         string currentScene = SceneManager.GetActiveScene().name;
         PlayerPrefs.SetString("SavedScene", currentScene);
-        
+
         if (StoryManager.Instance != null)
         {
             PlayerPrefs.SetInt("SavedStoryPhase", (int)StoryManager.Instance.currentPhase);
@@ -103,14 +112,15 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("GameManager: Objek Player tidak ditemukan. Posisi tidak disimpan.");
+            Debug.LogWarning("GameManager: Objek Player tidak dijumpai. Kedudukan tidak disimpan.");
         }
 
-        PlayerPrefs.Save(); 
-        Debug.Log("Game Berhasil Disimpan di Scene: " + currentScene);
+        PlayerPrefs.Save();
+        Debug.Log("Game Berjaya Disimpan di Scene: " + currentScene);
     }
 
-     public void LoadGame()
+    // 🟢 FUNGSI LOAD
+    public void LoadGame()
     {
         if (StoryManager.Instance != null)
         {
@@ -127,16 +137,16 @@ public class GameManager : MonoBehaviour
                 float z = PlayerPrefs.GetFloat("PlayerZ");
 
                 player.transform.position = new Vector3(x, y, z);
-                Debug.Log("GameManager: Posisi Player Berhasil Dimuat!");
+                Debug.Log("GameManager: Kedudukan Player Berjaya Dimuatkan!");
             }
             else
             {
-                Debug.LogWarning("GameManager: Tidak ada data posisi yang tersimpan.");
+                Debug.LogWarning("GameManager: Tiada data kedudukan disimpan.");
             }
         }
         else
         {
-            Debug.LogWarning("GameManager: Objek Player tidak ditemukan untuk diposisikan ulang.");
+            Debug.LogWarning("GameManager: Objek Player tidak dijumpai untuk disusun semula.");
         }
     }
 }

@@ -1,0 +1,75 @@
+using UnityEngine;
+using System.Collections;
+using UnityEngine.Events;
+
+public class CameraPanner : MonoBehaviour
+{
+    [Header("Pengaturan Kamera")]
+    [SerializeField] private GameObject objectiveCamera; // Masukkan ObjectiveCamera di sini
+    [SerializeField] private float viewDuration = 2.5f;  // Berapa lama kamera menyorot objektif
+
+    [Header("Trigger Collider (Opsional)")]
+    [SerializeField] private bool triggerOnPlayerEnter = true;
+    [SerializeField] private string playerTag = "Player";
+
+    [Header("Event Lanjutan (Opsional)")]
+    // Event ini berguna jika kamu ingin menjalankan quest/dialog lain SETELAH kamera balik ke player
+    public UnityEvent onPanFinished;
+
+    private bool isPanning;
+
+    private void Start()
+    {
+        // Pastikan kamera objektif mati saat awal mulai
+        if (objectiveCamera != null)
+        {
+            objectiveCamera.SetActive(false);
+        }
+    }
+
+    // Fungsi ini yang dipanggil saat trigger tersentuh atau dipanggil via UnityEvent
+    public void ShowObjectivePan()
+    {
+        if (isPanning)
+        {
+            return;
+        }
+
+        isPanning = true;
+        StartCoroutine(PanCameraRoutine());
+    }
+
+    // PERBAIKAN: Menggunakan OnTriggerEnter2D untuk Fisika 2D (Box Collider 2D)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (triggerOnPlayerEnter && (other.CompareTag(playerTag) || other.gameObject.name.Contains("Player")))
+        {
+            ShowObjectivePan();
+        }
+    }
+
+    private IEnumerator PanCameraRoutine()
+    {
+        // 1. Nyalakan kamera objektif (Cinemachine otomatis melakukan panning mulus ke sini)
+        if (objectiveCamera != null)
+        {
+            objectiveCamera.SetActive(true);
+        }
+
+        // 2. Tunggu pemain melihat objektif tersebut
+        yield return new WaitForSeconds(viewDuration);
+
+        // 3. Matikan kamera objektif (Cinemachine otomatis panning balik ke Player)
+        if (objectiveCamera != null)
+        {
+            objectiveCamera.SetActive(false);
+        }
+
+        // 4. Tunggu sebentar agar animasi panning balik selesai
+        yield return new WaitForSeconds(1.5f);
+
+        // 5. Jalankan event lanjutan jika ada
+        onPanFinished?.Invoke();
+        isPanning = false;
+    }
+}

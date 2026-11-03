@@ -13,7 +13,10 @@ public class CutsceneTransitionManager : MonoBehaviour
     public Image portraitDisplay;       // Gambar ilustrasi pesawat/lokasi
     public GameObject dialogueBox;     // Panel/Box Dialog
     public TMP_Text dialogueText;       // Komponen Teks Narasi
-    
+    public TMP_Text answerFeedbackText; // Teks feedback jawaban benar/salah
+    public string correctAnswerFeedback = "Benar!";
+    public string incorrectAnswerFeedback = "Salah!";
+
     [Header("Typewriter Settings")]
     [Tooltip("Kecepatan munculnya huruf (semakin kecil nilainya, semakin cepat)")]
     public float typingSpeed = 0.03f;   // 🔴 Kecepatan ketikan per huruf
@@ -33,14 +36,25 @@ public class CutsceneTransitionManager : MonoBehaviour
     private string currentFullText = "";
     private Coroutine typingCoroutine;
 
+    public void ShowAnswerFeedback(bool isCorrect)
+    {
+        if (answerFeedbackText == null) return;
+
+        answerFeedbackText.text = isCorrect ? correctAnswerFeedback : incorrectAnswerFeedback;
+        answerFeedbackText.color = isCorrect ? Color.green : Color.red;
+        answerFeedbackText.gameObject.SetActive(true);
+    }
+
     void Awake()
     {
-        if (Instance == null) {
+        if (Instance == null)
+        {
             Instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
-            
-            if (cutsceneCanvas != null) {
+
+            if (cutsceneCanvas != null)
+            {
                 DontDestroyOnLoad(cutsceneCanvas);
             }
         }
@@ -57,8 +71,8 @@ public class CutsceneTransitionManager : MonoBehaviour
         nextSceneName = sceneToLoad;
         portraitIndex = 0;
         isTransitioning = false;
-        
-        SetFadeAlpha(0f); 
+
+        SetFadeAlpha(0f);
 
         portraitDisplay.gameObject.SetActive(true);
         if (dialogueBox != null) dialogueBox.SetActive(true);
@@ -158,7 +172,7 @@ public class CutsceneTransitionManager : MonoBehaviour
 
     private IEnumerator EndCutsceneAndLoadScene()
     {
-        isTransitioning = true; 
+        isTransitioning = true;
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         isTyping = false;
@@ -166,20 +180,20 @@ public class CutsceneTransitionManager : MonoBehaviour
         // Fade In Layar Hitam
         yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 0f, 1f, fadeDuration));
 
-        portraitDisplay.gameObject.SetActive(false); 
-        portraitDisplay.sprite = null; 
+        portraitDisplay.gameObject.SetActive(false);
+        portraitDisplay.sprite = null;
         if (dialogueBox != null) dialogueBox.SetActive(false);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextSceneName);
         while (!asyncLoad.isDone)
         {
-            yield return null; 
+            yield return null;
         }
 
         // Fade Out Layar Hitam
         yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 1f, 0f, fadeDuration));
 
-        portraitDisplay.gameObject.SetActive(true); 
+        portraitDisplay.gameObject.SetActive(true);
         if (dialogueBox != null) dialogueBox.SetActive(true);
         cutsceneCanvas.SetActive(false);
         isTransitioning = false;
@@ -189,22 +203,23 @@ public class CutsceneTransitionManager : MonoBehaviour
     {
         float time = 0;
         Color c = img.color;
-        
+
         while (time < duration)
         {
             time += Time.deltaTime;
             c.a = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
             img.color = c;
-            yield return null; 
+            yield return null;
         }
-        
+
         c.a = targetAlpha;
         img.color = c;
     }
 
     private void SetFadeAlpha(float alpha)
     {
-        if (fadeBlackScreen != null) {
+        if (fadeBlackScreen != null)
+        {
             Color c = fadeBlackScreen.color;
             c.a = alpha;
             fadeBlackScreen.color = c;

@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine.Events;
+using System;
 
 public class Dialogue : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private AudioSource typingAudioSource;
     [SerializeField] private AudioClip typingAudioClip;
     [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 1f;
+    [SerializeField, Min(0f)] private float typingAudioInterval = 0.06f;
+    private float nextTypingAudioTime;
 
     private enum DialogueSpeaker
     {
@@ -54,6 +57,9 @@ public class Dialogue : MonoBehaviour
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
+    private Action onDialogueCompleteCallback;
+
+
 
     private void Awake()
     {
@@ -102,8 +108,13 @@ public class Dialogue : MonoBehaviour
 
     public void StartDialogue()
     {
+        if (isInteracting) return;
+
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+
         canInteract = false;
         isInteracting = true;
+        lineIndex = 0;
 
         if (dialogueCamera != null)
         {
@@ -112,12 +123,26 @@ public class Dialogue : MonoBehaviour
             dialogueCamera.Priority.Value = 20;
         }
 
-        if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         StartTyping();
+    }
+
+    public void StartDialogue(string[] npcDialogueLines, Action onComplete)
+    {
+        onDialogueCompleteCallback = onComplete;
+        DialogueLines = npcDialogueLines;
+
+        DialogueLineSpeakers = new DialogueSpeaker[npcDialogueLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
+
+        lineIndex = 0;
+        StartDialogue();
     }
 
     private void StartTyping()
@@ -161,9 +186,11 @@ public class Dialogue : MonoBehaviour
         {
             activeText.maxVisibleCharacters = i;
 
-            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null)
+            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null
+                && Time.time >= nextTypingAudioTime && !typingAudioSource.isPlaying)
             {
                 typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
+                nextTypingAudioTime = Time.time + typingAudioInterval;
             }
 
             // Animasi pergantian sprite bicaranya NPC saat teks diketik
@@ -182,8 +209,8 @@ public class Dialogue : MonoBehaviour
             }
         }
 
-        if (typingAudioSource != null) typingAudioSource.Stop();
         isTyping = false;
+        if (typingAudioSource != null) typingAudioSource.Stop();
 
         // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
@@ -256,11 +283,21 @@ public class Dialogue : MonoBehaviour
         if (dialogueCamera != null)
         {
             dialogueCamera.Priority.Value = 0;
+
+            // [PERBAIKAN UTAMA]: Paksa Target Kamera balik membuntut ke Player setiap kali dialog selesai
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                dialogueCamera.Target.TrackingTarget = playerObj.transform;
+            }
         }
 
         if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
 
         onDialogueEnd?.Invoke();
+
+        onDialogueCompleteCallback?.Invoke();
+        onDialogueCompleteCallback = null;
     }
 
     private void ResetNPCSprite()
@@ -330,4 +367,23 @@ public class Dialogue : MonoBehaviour
             npcSpriteRenderer.sprite = talkingSprite1;
         }
     }
+
+    /// <summary>
+    /// Fungsi publik agar skrip NPC lain (seperti PetugasMisool) bisa mengirim naskah secara langsung
+    /// </summary>
+    public void StartCustomDialogue(string[] customLines, Action onComplete)
+    {
+        DialogueLines = customLines;
+        onDialogueCompleteCallback = onComplete;
+
+        // Paksa set speaker jadi NPC semua atau sesuaikan jika butuh
+        DialogueLineSpeakers = new DialogueSpeaker[customLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
+
+        StartDialogue();
+    }
+
 }

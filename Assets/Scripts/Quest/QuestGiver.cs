@@ -9,61 +9,46 @@ public class QuestGiver : MonoBehaviour
     [SerializeField] private bool giveQuestOnPlayerCollision = true;
     [SerializeField] private bool requireBoxCollider2D;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!giveQuestOnPlayerCollision || collision == null)
+        // Pastikan objek yang masuk memiliki Tag "Player"
+        if (collision.CompareTag("Player"))
         {
-            return;
+            // Panggil fungsi pemberian quest di sini
+            // Misal: GiveQuest(); atau QuestController.Instance.GiveQuest(questToGive);
+            Debug.Log("Pemain memasuki area quest!");
         }
-
-        if (!collision.gameObject.CompareTag("Player"))
-        {
-            return;
-        }
-
-        if (requireBoxCollider2D && !(collision.collider is BoxCollider2D))
-        {
-            return;
-        }
-
-        GiveQuest();
     }
 
     public void GiveQuest()
     {
         if (questToGive == null)
         {
-            Debug.LogWarning(
-                "QuestGiver: Quest To Give belum diisi."
-            );
+            Debug.LogWarning("QuestGiver: Quest To Give belum diisi.");
             return;
         }
 
-        if (QuestController.Instance == null)
+        // Cari QuestController (menggunakan Instance atau cari di Scene)
+        QuestController controller = QuestController.Instance;
+        if (controller == null)
         {
-            Debug.LogError(
-                "QuestGiver: QuestController tidak ditemukan."
-            );
-            return;
+            controller = FindFirstObjectByType<QuestController>();
         }
 
-        if (QuestController.Instance.IsQuestActive(
-            questToGive.QuestID))
+        if (controller == null)
         {
-            Debug.Log(
-                "Quest sudah aktif: " +
-                questToGive.QuestID
-            );
+            Debug.LogError("QuestGiver: QuestController tidak ditemukan di scene!");
             return;
         }
 
-        QuestController.Instance.AcceptQuest(
-            questToGive
-        );
+        if (controller.IsQuestActive(questToGive.QuestID))
+        {
+            Debug.Log("Quest sudah aktif: " + questToGive.QuestID);
+            return;
+        }
 
-        Debug.Log(
-            "NPC memberikan quest: " +
-            questToGive.QuestTitle
-        );
+        controller.AcceptQuest(questToGive);
+
+        Debug.Log("NPC memberikan quest: " + questToGive.QuestTitle);
     }
 }

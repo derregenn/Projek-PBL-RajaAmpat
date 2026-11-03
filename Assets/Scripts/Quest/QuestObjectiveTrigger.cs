@@ -3,81 +3,57 @@ using UnityEngine.Events;
 
 public class QuestObjectiveTrigger : MonoBehaviour
 {
-    [Header("Objective")]
-    [SerializeField] private string objectiveID;
+    [Header("Objective Settings")]
+    public string objectiveID = "press_interact";
+    public int amountToAdd = 1;
+
+    [Header("Trigger Mode")]
+    [Tooltip("Centang jika quest langsung selesai saat disentuh. Hilangkan centang jika quest diselesaikan oleh QTE.")]
+    public bool progressObjectiveOnTrigger = false;
 
     [Header("Events")]
-    [SerializeField] private UnityEvent onObjectiveTriggered;
+    public UnityEvent OnObjectiveTriggered;
 
-    private bool hasTriggered = false;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        TryTriggerObjective(collision.gameObject);
-    }
+        // Deteksi player fleksibel (termasuk jika collider ada di child object player)
+        bool isPlayer = other.CompareTag("Player") ||
+                        (other.transform.root != null && other.transform.root.CompareTag("Player")) ||
+                        other.name.ToLower().Contains("player");
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        TryTriggerObjective(collision.gameObject);
-    }
+        if (!isPlayer) return;
 
-    private void TryTriggerObjective(GameObject other)
-    {
-        if (!other.CompareTag("Player"))
-            return;
+        Debug.Log($"[Trigger Log] Player BERHASIL menyentuh area '{gameObject.name}'!");
 
-        if (hasTriggered)
-            return;
-
-        if (QuestController.Instance == null)
+        // QTE tetap dimulai meskipun controller/quest belum tersedia.
+        // Progress objective hanya dilakukan jika objective memang aktif.
+        bool isObjectiveActive = false;
+        if (QuestController.Instance != null)
         {
-            Debug.LogWarning(
-                "QuestObjectiveTrigger: QuestController tidak ditemukan."
-            );
-            return;
-        }
-
-        if (!HasActiveObjective())
-        {
-            Debug.Log(
-                "Objective belum aktif: " +
-                objectiveID
-            );
-            return;
-        }
-
-        hasTriggered = true;
-
-        Debug.Log(
-            "Objective Triggered: " +
-            objectiveID
-        );
-
-        onObjectiveTriggered?.Invoke();
-    }
-
-    private bool HasActiveObjective()
-    {
-        foreach (Quest quest in QuestController.Instance.ActiveQuests)
-        {
-            if (quest == null)
-                continue;
-
-            QuestObjective objective =
-                quest.GetObjective(objectiveID);
-
-            if (objective != null &&
-                !objective.IsComplete)
+            foreach (var quest in QuestController.Instance.ActiveQuests)
             {
-                return true;
+                if (quest == null) continue;
+                var obj = quest.GetObjective(objectiveID);
+                if (obj != null && !obj.IsComplete)
+                {
+                    isObjectiveActive = true;
+                    break;
+                }
             }
         }
 
-        return false;
-    }
+        if (isObjectiveActive)
+        {
+            if (progressObjectiveOnTrigger)
+            {
+                QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[Trigger Log] Objective '{objectiveID}' tidak aktif; QTE tetap dipanggil, progress quest dilewati.");
+        }
 
-    public void ResetTrigger()
-    {
-        hasTriggered = false;
+        OnObjectiveTriggered?.Invoke();
     }
 }
