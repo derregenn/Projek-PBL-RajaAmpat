@@ -7,6 +7,10 @@ public class QuestCompletionTrigger : MonoBehaviour
     [Tooltip("ID Quest yang harus diselesaikan untuk memicu event ini")]
     [SerializeField] private string requiredQuestID = "collect_trash";
 
+    [Header("Quest UI")]
+    [Tooltip("UI quest yang akan dimatikan setelah quest selesai")]
+    [SerializeField] private GameObject questUI;
+
     [Header("Barrier / Jalan Terkunci")]
     [Tooltip("GameObject rintangan/pembatas jalan yang akan dihilangkan")]
     [SerializeField] private GameObject barrierObject;
@@ -76,6 +80,11 @@ public class QuestCompletionTrigger : MonoBehaviour
         if (unlockSound != null)
         {
             AudioSource.PlayClipAtPoint(unlockSound, transform.position);
+        }
+
+        if (questUI != null)
+        {
+            questUI.SetActive(false);
         }
 
         onQuestCompletedEvents?.Invoke();

@@ -4,12 +4,8 @@ using UnityEngine.Events;
 public class QuestObjectiveTrigger : MonoBehaviour
 {
     [Header("Objective Settings")]
-    public string objectiveID = "perahu_friwen";
+    public string objectiveID = "press_interact";
     public int amountToAdd = 1;
-
-    [Header("Quest Validation")]
-    [Tooltip("Jika DICENTANG, trigger HANYA berjalan kalau quest terdaftar aktif. Jika UNCHECK, trigger akan LANGSUNG memanggil QTE/Event tanpa memedulikan status quest.")]
-    public bool requireActiveQuest = false;
 
     [Header("Trigger Mode")]
     [Tooltip("Centang jika quest langsung selesai saat disentuh. Hilangkan centang jika quest diselesaikan oleh QTE.")]
@@ -20,8 +16,8 @@ public class QuestObjectiveTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Deteksi player fleksibel
-        bool isPlayer = other.CompareTag("Player") || 
+        // Deteksi player fleksibel (termasuk jika collider ada di child object player)
+        bool isPlayer = other.CompareTag("Player") ||
                         (other.transform.root != null && other.transform.root.CompareTag("Player")) ||
                         other.name.ToLower().Contains("player");
 
@@ -29,50 +25,33 @@ public class QuestObjectiveTrigger : MonoBehaviour
 
         Debug.Log($"[Trigger Log] Player BERHASIL menyentuh area '{gameObject.name}'!");
 
-        // Mode Bypass: Jika tidak membutuhkan validasi quest aktif, langsung jalankan event
-        if (!requireActiveQuest)
-        {
-            Debug.Log($"[Trigger Log] Mode Bypass Aktif! Memanggil Event/QTE untuk '{objectiveID}'...");
-            ExecuteTrigger();
-            return;
-        }
-
-        // Cek ketersediaan QuestController
-        if (QuestController.Instance == null)
-        {
-            Debug.LogError("[Trigger Log] ERROR: QuestController.Instance TIDAK DITEMUKAN di scene!");
-            return;
-        }
-
-        // Cek apakah objective quest sedang aktif dan belum selesai
+        // QTE tetap dimulai meskipun controller/quest belum tersedia.
+        // Progress objective hanya dilakukan jika objective memang aktif.
         bool isObjectiveActive = false;
-        foreach (var quest in QuestController.Instance.ActiveQuests)
+        if (QuestController.Instance != null)
         {
-            if (quest == null) continue;
-            var obj = quest.GetObjective(objectiveID.Trim());
-            if (obj != null && !obj.IsComplete)
+            foreach (var quest in QuestController.Instance.ActiveQuests)
             {
-                isObjectiveActive = true;
-                break;
+                if (quest == null) continue;
+                var obj = quest.GetObjective(objectiveID);
+                if (obj != null && !obj.IsComplete)
+                {
+                    isObjectiveActive = true;
+                    break;
+                }
             }
         }
 
         if (isObjectiveActive)
         {
-            Debug.Log($"[Trigger Log] SUCCESS: Objective '{objectiveID}' AKTIF! Memanggil UI QTE...");
-            ExecuteTrigger();
+            if (progressObjectiveOnTrigger)
+            {
+                QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            }
         }
         else
         {
-            Debug.LogWarning($"[Trigger Log] WARNING: Player menyentuh trigger, tetapi Objective ID '{objectiveID}' TIDAK ADA di daftar quest aktif saat ini!");
-        }
-    }
-
-    private void ExecuteTrigger()
-    {
-        if (progressObjectiveOnTrigger && QuestController.Instance != null)
-        {
-            QuestController.Instance.ProgressObjective(objectiveID.Trim(), amountToAdd);
+            Debug.LogWarning($"[Trigger Log] Objective '{objectiveID}' tidak aktif; QTE tetap dipanggil, progress quest dilewati.");
         }
 
         OnObjectiveTriggered?.Invoke();

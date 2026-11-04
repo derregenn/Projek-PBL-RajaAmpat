@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;  
+using UnityEngine.SceneManagement;
 
 public class MapController : MonoBehaviour
 {
     // Variabel static untuk menyimpan scene pulau tujuan (misal: "03_Pianemo")
-    public static string targetIslandScene = "03_Pianemo"; 
+    public static string targetIslandScene = "03_Pianemo";
 
     [Header("Linear Minimap (Key Q)")]
     public CanvasGroup minimapCanvasGroup; // Masukkan MinimapTrack ke sini
@@ -103,8 +103,8 @@ public class MapController : MonoBehaviour
     {
         targetIslandScene = sceneName; // Simpan nama pulau (contoh: "03_Pianemo")
         Time.timeScale = 1f;
-        
+
         // Pindah ke Scene Cutscene Perahu terlebih dahulu
-        SceneManager.LoadScene("Cutscene_BoatToIsland"); 
+        SceneManager.LoadScene("Cutscene_BoatToIsland");
     }
 }

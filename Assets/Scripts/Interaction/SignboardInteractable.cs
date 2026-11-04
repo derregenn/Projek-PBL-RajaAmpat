@@ -20,6 +20,10 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [SerializeField] private UnityEvent onOpen;
     [SerializeField] private UnityEvent onClose;
 
+    [Header("Popup SFX")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip popupSfx;
+
     private bool isOpen = false;
     private RectTransform panelRect;
     private Vector2 panelOpenPosition;
@@ -47,6 +51,11 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
 
         if (isOpen)
         {
+            if (audioSource != null && popupSfx != null)
+            {
+                audioSource.PlayOneShot(popupSfx);
+            }
+
             onOpen?.Invoke();
         }
         else

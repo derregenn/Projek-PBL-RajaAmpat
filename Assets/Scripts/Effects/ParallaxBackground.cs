@@ -10,12 +10,26 @@ public class ParallaxBackground : MonoBehaviour
     [Tooltip("Isi lebar gambar manual jika SpriteRenderer/RectTransform bernilai 0")]
     [SerializeField] private float manualWidth = 0f;
 
+    [Header("Camera Loop")]
+    [Tooltip("Kamera yang batasnya digunakan untuk mendeteksi loop")]
+    [SerializeField] private Camera targetCamera;
+    [Tooltip("Pindahkan background ke sisi kanan kamera setelah seluruhnya melewati batas kiri")]
+    [SerializeField] private bool loopAtCameraBoundary = true;
+
     private float lengthX;
     private Vector3 startPosition;
+
+    // Variabel baru untuk melacak jarak absolut
+    private float currentDistance;
 
     private void Start()
     {
         startPosition = transform.position;
+
+        if (targetCamera == null)
+        {
+            targetCamera = Camera.main;
+        }
 
         // 1. Coba ambil dari SpriteRenderer di objek ini
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -50,17 +64,43 @@ public class ParallaxBackground : MonoBehaviour
         }
     }
 
-    private void Update()
+    // Menggunakan LateUpdate agar dieksekusi setelah semua pergerakan (seperti kamera/player) selesai di frame ini
+    private void LateUpdate()
     {
         if (lengthX <= 0f) return;
 
-        // Geser posisi ke kiri
-        transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime);
-
-        // Reset posisi agar looping mulus
-        while (transform.position.x <= startPosition.x - lengthX)
+        if (loopAtCameraBoundary && targetCamera != null)
         {
-            transform.position += new Vector3(lengthX * 2f, 0, 0);
+            UpdateCameraBoundaryLoop();
+            return;
+        }
+
+        // 1. Tambahkan jarak tempuh secara absolut
+        currentDistance += scrollSpeed * Time.deltaTime;
+
+        // 2. Gunakan Mathf.Repeat untuk menghitung sisa offset dengan presisi absolut
+        // Ini memastikan jaraknya akan mengulang persis dari 0 saat menyentuh nilai lengthX
+        float offset = Mathf.Repeat(currentDistance, lengthX);
+
+        // 3. Terapkan posisinya berdasarkan posisi awal agar tidak ada pergeseran/drift posisi
+        transform.position = startPosition + (Vector3.left * offset);
+    }
+
+    private void UpdateCameraBoundaryLoop()
+    {
+        Vector3 position = transform.position;
+        position.x -= scrollSpeed * Time.deltaTime;
+        transform.position = position;
+
+        float depth = targetCamera.WorldToScreenPoint(transform.position).z;
+        float cameraLeft = targetCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f, depth)).x;
+        float cameraRight = targetCamera.ViewportToWorldPoint(new Vector3(1f, 0.5f, depth)).x;
+
+        if (transform.position.x + lengthX * 0.5f < cameraLeft)
+        {
+            position = transform.position;
+            position.x = cameraRight + lengthX * 0.5f;
+            transform.position = position;
         }
     }
 }

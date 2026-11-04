@@ -49,17 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d7f7abdcdc0174bb320a5b315a9db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QTE2
-  timerFillImage: {fileID: 4533634018079350438}
+  holdFillImage: {fileID: 0}
   keyText: {fileID: 2277073783948866515}
+  countText: {fileID: 0}
   targetKey: 101
   holdDuration: 2
-  decayWhenReleased: 1
-  decaySpeed: 1.5
-  randomizePosition: 1
-  minPositionOffset: {x: -400, y: -200}
-  maxPositionOffset: {x: 400, y: 200}
+  requiredHolds: 3
   objectiveID: hold_interact
-  amountToAdd: 1
   onSuccess:
     m_PersistentCalls:
       m_Calls:

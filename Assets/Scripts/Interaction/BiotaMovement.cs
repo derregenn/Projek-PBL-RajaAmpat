@@ -1,17 +1,19 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class RandomBiotaMovement : MonoBehaviour
+public class BiotaMovement : MonoBehaviour
 {
     [Header("Pengaturan Pergerakan")]
     public float moveSpeed = 1.5f;          // Kecepatan renang
     public float wanderRadius = 4f;         // Jangkauan area bergerak dari titik awal
     public float minWaitTime = 1f;          // Waktu diam minimal saat sampai tujuan
     public float maxWaitTime = 3f;          // Waktu diam maksimal
+    public float eatDuration = 3f;          // Lama waktu ikan makan di titik umpan
 
     [Header("Referensi Komponen")]
     public Animator animator;
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer[] spriteRenderers;
 
     [Header("Parameter Animator")]
     public string speedAnimParameter = "Speed";
@@ -20,33 +22,32 @@ public class RandomBiotaMovement : MonoBehaviour
     private Vector2 targetPosition;
     private bool movingRight = true;
 
+    private Coroutine currentRoutine;
+    private bool isFeeding = false;
+
     private void Start()
     {
         originPosition = transform.position;
 
-        // Auto-get komponen jika belum diisi di Inspector
         if (animator == null) animator = GetComponent<Animator>();
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 
-        StartCoroutine(WanderRoutine());
+        currentRoutine = StartCoroutine(WanderRoutine());
     }
 
     private IEnumerator WanderRoutine()
     {
-        while (true)
+        while (!isFeeding)
         {
-            // Bergerak bergantian ke kanan dan kiri pada sumbu horizontal.
             targetPosition = originPosition + new Vector2(movingRight ? wanderRadius : -wanderRadius, 0f);
-
-            // Flip sprite sesuai arah tujuan (Kiri/Kanan)
             FlipSprite(targetPosition.x - transform.position.x);
 
-            // 2. Bergerak menuju titik tujuan
             while (Vector2.Distance(transform.position, targetPosition) > 0.05f)
             {
+                if (isFeeding) yield break;
+
                 transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-                // Kirim nilai kecepatan ke Animator
                 if (animator != null)
                 {
                     animator.SetFloat(speedAnimParameter, moveSpeed);
@@ -55,7 +56,6 @@ public class RandomBiotaMovement : MonoBehaviour
                 yield return null;
             }
 
-            // 3. Tiba di tujuan: Set animasi ke Idle & Tunggu sejenak
             if (animator != null)
             {
                 animator.SetFloat(speedAnimParameter, 0f);
@@ -66,26 +66,72 @@ public class RandomBiotaMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Dipanggil oleh FishFeedZone saat tombol E ditekan untuk memberi umpan.
+    /// </summary>
+    public void GoToBait(Vector3 baitPosition, Action onComplete)
+    {
+        isFeeding = true;
+
+        // Hentikan pergerakan wander biasa
+        if (currentRoutine != null)
+        {
+            StopCoroutine(currentRoutine);
+        }
+
+        currentRoutine = StartCoroutine(FeedRoutine(baitPosition, onComplete));
+    }
+
+    private IEnumerator FeedRoutine(Vector3 baitPosition, Action onComplete)
+    {
+        // Berikan offset acak kecil agar ikan tidak menumpuk tepat di 1 titik
+        Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * 0.6f;
+        Vector2 finalBaitTarget = (Vector2)baitPosition + randomOffset;
+
+        // 1. Gerakkan ikan menuju umpan
+        FlipSprite(finalBaitTarget.x - transform.position.x);
+
+        while (Vector2.Distance(transform.position, finalBaitTarget) > 0.05f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, finalBaitTarget, moveSpeed * Time.deltaTime);
+
+            if (animator != null)
+            {
+                animator.SetFloat(speedAnimParameter, moveSpeed);
+            }
+
+            yield return null;
+        }
+
+        // 2. Sampai di lokasi umpan: Set animasi ke Idle untuk memakan umpan
+        if (animator != null)
+        {
+            animator.SetFloat(speedAnimParameter, 0f);
+        }
+
+        yield return new WaitForSeconds(eatDuration);
+
+        // 3. Kabarkan ke FishFeedZone bahwa ikan ini selesai makan
+        onComplete?.Invoke();
+    }
+
     private void FlipSprite(float directionX)
     {
-        if (spriteRenderer != null)
+        foreach (SpriteRenderer renderer in spriteRenderers)
         {
-            // Jika bergerak ke kanan
             if (directionX > 0.01f)
             {
-                spriteRenderer.flipX = false;
+                renderer.flipX = true;
             }
-            // Jika bergerak ke kiri
             else if (directionX < -0.01f)
             {
-                spriteRenderer.flipX = true;
+                renderer.flipX = false;
             }
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Visualisasi radius area bergerak di jendela Scene (Lingkaran Hijau)
         Gizmos.color = Color.green;
         Vector2 center = Application.isPlaying ? originPosition : (Vector2)transform.position;
         Gizmos.DrawWireSphere(center, wanderRadius);

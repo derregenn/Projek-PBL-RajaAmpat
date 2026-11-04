@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events; // Kunci untuk UnityEvent
 using UnityEngine.SceneManagement;
 
 public class GagFaderManager : MonoBehaviour
@@ -10,6 +11,10 @@ public class GagFaderManager : MonoBehaviour
     [Header("Transisi 1: Peneliti Pamit Pulang (Quest 2 Minta Air)")]
     [Tooltip("Drag NPC_Peneliti_Awal (Peneliti Cewek) ke sini")]
     public GameObject npcPeneliti;
+
+    [Header("Events")]
+    [Tooltip("Dipanggil tepat SETELAH fade in selesai (layar kembali terang)")]
+    public UnityEvent OnPenelitiPulangFadeCompleted;
 
     [Header("Transisi 2: Ending Pulau Gag (Pindah Scene)")]
     public string sceneTujuanEnding = "02_Waisai";
@@ -63,6 +68,11 @@ public class GagFaderManager : MonoBehaviour
         // Fade in kembali ke game
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
         isTransitioning = false;
+
+        // =========================================================
+        // DIPANGGIL DI SINI: QUEST TERIMA / UPDATE PAS FADE SELESAI
+        // =========================================================
+        OnPenelitiPulangFadeCompleted?.Invoke();
     }
 
     private IEnumerator RoutinePindahScene(string sceneName)
