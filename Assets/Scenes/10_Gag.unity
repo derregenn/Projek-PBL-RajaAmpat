@@ -710,7 +710,7 @@ RectTransform:
   m_GameObject: {fileID: 67990211}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.026277237, y: 0.028393697, z: 0}
+  m_LocalScale: {x: 0.045403767, y: 0.049060743, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1302035808}
@@ -719,7 +719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 6.2629747}
+  m_AnchoredPosition: {x: 0, y: 10.73}
   m_SizeDelta: {x: 1000, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &67990213
@@ -782,7 +782,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -72866051
+  m_SortingLayerID: -1698487427
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1001 &77674930
@@ -1228,7 +1228,6 @@ GameObject:
   - component: {fileID: 118326640}
   - component: {fileID: 118326639}
   - component: {fileID: 118326636}
-  - component: {fileID: 118326643}
   m_Layer: 0
   m_Name: NPC_Peneliti_Quest2
   m_TagString: Untagged
@@ -1509,21 +1508,6 @@ Transform:
   - {fileID: 362797722}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &118326643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118326635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 11400000, guid: 4aed416cd21911c43adc953c9318f929, type: 2}
-  giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!1 &127668324
 GameObject:
   m_ObjectHideFlags: 0
@@ -17013,6 +16997,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1935109552}
   - component: {fileID: 1935109553}
+  - component: {fileID: 1935109554}
   m_Layer: 0
   m_Name: TransitionManager
   m_TagString: Untagged
@@ -17049,7 +17034,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GagFaderManager
   durasiFade: 1
   npcPeneliti: {fileID: 118326635}
+  OnPenelitiPulangFadeCompleted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1935109554}
+        m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
+        m_MethodName: GiveQuest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   sceneTujuanEnding: 02_Waisai
+--- !u!114 &1935109554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935109550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  questToGive: {fileID: 11400000, guid: 4aed416cd21911c43adc953c9318f929, type: 2}
+  giveQuestOnPlayerCollision: 1
+  requireBoxCollider2D: 0
 --- !u!1001 &1965858059
 PrefabInstance:
   m_ObjectHideFlags: 0
