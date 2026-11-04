@@ -8,7 +8,9 @@ public class MisoolLandSceneManager : MonoBehaviour
     [Header("Referensi NPC & Objek Darat")]
     [SerializeField] private GameObject penyuInteractive;  // Point 1
     [SerializeField] private GameObject tourGuideStart;     // Point 1 (Muncul setelah Penyu bebas)
-    [SerializeField] private GameObject petugasKonservasi; // Point 2, 4, 6
+    [SerializeField] private GameObject petugasStage1;
+    [SerializeField] private GameObject petugasStage3;
+    [SerializeField] private GameObject petugasStage4;
     [SerializeField] private GameObject ibuIbuGroup;        // Point 7 & 9
     [SerializeField] private GameObject tourGuideEnd;      // Point 9 (Di sebelah kanan MC)
     [SerializeField] private Transform tourGuideEndSpot;   // Titik koordinat sebelah kanan MC
@@ -43,20 +45,21 @@ public class MisoolLandSceneManager : MonoBehaviour
 
     public void RefreshLandState()
     {
-        int stage = PlayerPrefs.GetInt("Misool_QuestStage", 0);
+        int stage = MasterQuestManager.Instance.CurrentStage;
         lastObservedStage = stage;
+
+        // Aktifkan NPC yang sesuai dengan stage saat ini
+        if (petugasStage1 != null) petugasStage1.SetActive(stage == 1);
+        if (petugasStage3 != null) petugasStage3.SetActive(stage == 3);
+        if (petugasStage4 != null) petugasStage4.SetActive(stage == 4);
 
         // Point 1: Penyu Sisik
         if (penyuInteractive != null)
-            penyuInteractive.SetActive(stage == 0);
+            penyuInteractive.SetActive(stage == 0 || stage == 1);
 
         // Tour Guide Awal (Aktif dari Stage 1 sampai sebelum Stage 9)
         if (tourGuideStart != null)
             tourGuideStart.SetActive(stage >= 1 && stage < 9);
-
-        // Petugas Konservasi (Aktif dari Stage 1 ke atas)
-        if (petugasKonservasi != null)
-            petugasKonservasi.SetActive(stage >= 1);
 
         // Point 7 & 9: Ibu-Ibu Warga hanya aktif pada Stage 6, 7, dan 8
         if (ibuIbuGroup != null)

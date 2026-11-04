@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro; // Wajib ditambahkan untuk memanggil UI Text milikmu
+using UnityEngine.Events;
 
 public class TrashInteractable : MonoBehaviour, IInteractable
 {
@@ -27,6 +28,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     // Sesuaikan dengan total sampah mentok yang ada di game kalian
     private int maxTrash = 20;
     private bool collectionInProgress;
+    public UnityEvent onInteractComplete; // Akan muncul di Inspector
 
     public void Interact()
     {
@@ -87,6 +89,15 @@ public class TrashInteractable : MonoBehaviour, IInteractable
 
         // 5. Hapus sampah dari layar
         Destroy(gameObject);
+    }
+
+    public void SelesaiInteraksi()
+    {
+        // Lakukan animasi atau efek selesai
+        Debug.Log("Interaksi Selesai!");
+
+        // Berikan sinyal bahwa interaksi ini sudah selesai
+        onInteractComplete?.Invoke();
     }
 
     public string GetPromptText() => "Ambil Sampah";

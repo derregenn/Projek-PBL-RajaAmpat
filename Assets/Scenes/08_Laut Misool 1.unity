@@ -399,6 +399,9 @@ MonoBehaviour:
   holdQTE: {fileID: 2048284470}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &105710993
 SpriteRenderer:
   serializedVersion: 2
@@ -675,6 +678,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+--- !u!1001 &162352377
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4358522999148655461, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_Name
+      value: MasterQuestManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -51.38565
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.02883
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+--- !u!114 &162352378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2969053353881573139, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+  m_PrefabInstance: {fileID: 162352377}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2977c87d74df271468b30849ee42ab67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MasterQuestManager
 --- !u!1 &192646138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1431,9 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &332949506
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,6 +2054,7 @@ MonoBehaviour:
   wanderRadius: 1
   minWaitTime: 1
   maxWaitTime: 3
+  eatDuration: 3
   animator: {fileID: 592203802}
   spriteRenderers:
   - {fileID: 332949509}
@@ -2773,6 +2848,9 @@ MonoBehaviour:
   holdQTE: {fileID: 2048284470}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &815675452
 SpriteRenderer:
   serializedVersion: 2
@@ -3389,6 +3467,9 @@ MonoBehaviour:
   holdQTE: {fileID: 2048284470}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &879914735
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4050,6 +4131,9 @@ MonoBehaviour:
   holdQTE: {fileID: 2048284470}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &975075857
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4682,6 +4766,9 @@ MonoBehaviour:
   warningUI: {fileID: 281407489}
   interactKey: 101
   fadeBlackScreen: {fileID: 1810099234}
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1293701529
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4755,9 +4842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3844bd0ddb1e818468a1b75c373e4e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeaToLandTeleporter
-  currentSeaType: 0
-  targetLandScene: 04_Misool
-  seaSceneTransition: {fileID: 1293701528}
+  landSceneName: 04_Misool
 --- !u!1 &1328651845 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8649071345623115185, guid: d9eef132e72927948852f0a723f816bb, type: 3}
@@ -5028,6 +5113,9 @@ MonoBehaviour:
   holdQTE: {fileID: 2048284470}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1498169100
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5368,6 +5456,9 @@ MonoBehaviour:
   holdQTE: {fileID: 2048284470}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &1552194312
 SpriteRenderer:
   serializedVersion: 2
@@ -5790,6 +5881,33 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 162352378}
+        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
+        m_MethodName: AdvanceStageTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 162352378}
+        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
+        m_MethodName: AdvanceStageTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6694,6 +6812,51 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &2089022564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2089022566}
+  - component: {fileID: 2089022565}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2089022565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089022564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a7f5610cfa94b5418cc4152e38e0918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IslandSceneInitializer
+  currentIsland: 3
+--- !u!4 &2089022566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089022564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19.66294, y: -0.73162, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6721,3 +6884,5 @@ SceneRoots:
   - {fileID: 1650328944}
   - {fileID: 1709887979}
   - {fileID: 618353229}
+  - {fileID: 2089022566}
+  - {fileID: 162352377}
