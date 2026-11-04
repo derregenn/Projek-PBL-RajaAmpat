@@ -8,8 +8,8 @@ public class TriviaQuizUI : MonoBehaviour
     public static TriviaQuizUI Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private Dialogue dialogueSystem;     // Drag NPC/Dialogue ke sini
-    [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol di bawah
+    [SerializeField] private Dialogue dialogueSystem;     // Drag NPC_Warlok2 (Dialogue) ke sini
+    [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
 
@@ -17,30 +17,16 @@ public class TriviaQuizUI : MonoBehaviour
     [SerializeField] private string[] correctFeedbackMessages;
     [SerializeField] private string[] wrongFeedbackMessages;
 
-    [Header("Close Settings")]
-    [SerializeField] private KeyCode closeKey = KeyCode.E;
-
     private TriviaQuestion[] currentQuestions;
     private int currentQuestionIndex = 0;
     private System.Action onQuizCompleted;
     private bool isQuizActive = false;
-    private bool canPressEToClose = false;
-    private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
+    private bool isShowingFeedback = false;
 
     private void Awake()
     {
-        // Selalu perbarui Instance ke TriviaQuizUI milik scene yang sedang aktif saat ini
         Instance = this;
-
         if (choicesPanel != null) choicesPanel.SetActive(false);
-    }
-
-    private void Update()
-    {
-        if (isQuizActive && canPressEToClose && Input.GetKeyDown(closeKey) && !isShowingFeedback)
-        {
-            CloseQuiz();
-        }
     }
 
     public void StartQuiz(TriviaQuestion[] questions, System.Action onComplete)
@@ -51,20 +37,12 @@ public class TriviaQuizUI : MonoBehaviour
         isQuizActive = true;
         isShowingFeedback = false;
 
-        StartCoroutine(EnableCloseDelay());
         ShowQuestion();
-    }
-
-    private IEnumerator EnableCloseDelay()
-    {
-        canPressEToClose = false;
-        yield return new WaitForSeconds(0.2f);
-        canPressEToClose = true;
     }
 
     private void ShowQuestion()
     {
-        if (currentQuestionIndex >= currentQuestions.Length)
+        if (currentQuestions == null || currentQuestionIndex >= currentQuestions.Length)
         {
             EndQuiz();
             return;
@@ -72,16 +50,13 @@ public class TriviaQuizUI : MonoBehaviour
 
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
 
-        // 1. Tampilkan teks pertanyaan di kotak dialog NPC
         if (dialogueSystem != null)
         {
             dialogueSystem.ShowTriviaQuestion(q.questionText);
         }
 
-        // 2. Tampilkan panel tombol opsi jawaban
         if (choicesPanel != null) choicesPanel.SetActive(true);
 
-        // 3. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
         for (int i = 0; i < optionButtons.Length; i++)
         {
             if (i < q.options.Length)
@@ -111,13 +86,11 @@ public class TriviaQuizUI : MonoBehaviour
 
         if (selectedIndex == q.correctAnswerIndex)
         {
-            // Jawaban Benar -> Tampilkan feedback di dialogue NPC lalu lanjut ke pertanyaan berikutnya
             string successMsg = GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
             StartCoroutine(ShowFeedbackRoutine(successMsg, true));
         }
         else
         {
-            // Jawaban Salah -> Tampilkan feedback di dialogue NPC lalu ulangi pertanyaan
             string wrongMsg = GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
             StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
         }
@@ -137,16 +110,13 @@ public class TriviaQuizUI : MonoBehaviour
     {
         isShowingFeedback = true;
 
-        // Sembunyikan panel pilihan jawaban saat feedback ditampilkan di kotak dialog
         if (choicesPanel != null) choicesPanel.SetActive(false);
 
-        // Kirim teks feedback langsung ke dialogue box NPC
         if (dialogueSystem != null)
         {
             dialogueSystem.ShowTriviaQuestion(feedbackMessage);
         }
 
-        // Tunggu sebentar agar player sempat membaca feedback
         yield return new WaitForSeconds(1.5f);
 
         isShowingFeedback = false;
@@ -158,7 +128,6 @@ public class TriviaQuizUI : MonoBehaviour
         }
         else
         {
-            // Tampilkan ulang pertanyaan yang sama
             ShowQuestion();
         }
     }
@@ -166,7 +135,6 @@ public class TriviaQuizUI : MonoBehaviour
     public void CloseQuiz()
     {
         isQuizActive = false;
-        canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
     }
@@ -174,10 +142,12 @@ public class TriviaQuizUI : MonoBehaviour
     private void EndQuiz()
     {
         isQuizActive = false;
-        canPressEToClose = false;
         isShowingFeedback = false;
+
+        // Cukup matikan 3 tombol pilihan kuis saja!
         if (choicesPanel != null) choicesPanel.SetActive(false);
 
+        // Panggil event selesai kuis (akan memicu Dialog Post-Trivia di NPCTourGuide)
         onQuizCompleted?.Invoke();
     }
 }

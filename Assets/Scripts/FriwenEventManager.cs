@@ -215,4 +215,58 @@ private IEnumerator RoutineSequencePerahu()
         if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
         if (playerCamera != null) playerCamera.Priority.Value = 10;
     }
+
+    [Header("Tahap 2: Trigger Foto")]
+    [SerializeField] private GameObject areaFotoPasirTimbul; // Drag AreaFoto_Sasi ke sini
+
+    // ==============================================================
+    // DIPANGGIL SAAT PLAYER SELESAI MENGAMBIL FOTO (Tekan F)
+    // ==============================================================
+    public void OnPhotoTakenSequence()
+    {
+        StartCoroutine(RoutinePostFotoSequence());
+    }
+
+    private IEnumerator RoutinePostFotoSequence()
+    {
+        // 1. Bekukan gerakan Player saat transisi
+        FreezePlayer(true);
+
+        // 2. Animasi Fade Out (Layar Menjadi Hitam)
+        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+
+        // 3. Spawn / Pindahkan NPC Tour Guide ke sebelah kanan player
+        if (tourGuide != null)
+        {
+            if (spotTourGuideSpawn != null)
+            {
+                tourGuide.transform.position = spotTourGuideSpawn.position;
+                tourGuide.transform.rotation = spotTourGuideSpawn.rotation;
+            }
+            tourGuide.SetActive(true); // Munculkan NPC
+        }
+
+        // 4. Matikan Area Foto agar tidak bisa difoto ulang
+        if (areaFotoPasirTimbul != null)
+        {
+            areaFotoPasirTimbul.SetActive(false);
+        }
+
+        yield return new WaitForSeconds(0.3f);
+
+        // 5. Animasi Fade In (Layar Terang Kembali)
+        if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
+
+        // 6. Jalankan Otomatis Dialog Tour Guide di Pasir Timbul
+        if (tourGuide != null)
+        {
+            Dialogue dialogueTourGuide = tourGuide.GetComponent<Dialogue>();
+            if (dialogueTourGuide != null)
+            {
+                dialogueTourGuide.StartDialogue();
+            }
+        }
+
+        FreezePlayer(false);
+    }
 }

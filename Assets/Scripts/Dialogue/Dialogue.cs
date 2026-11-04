@@ -237,18 +237,7 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            if (!string.IsNullOrEmpty(triviaQuestionText))
-            {
-                // HAPUS questGiver.GiveQuest() DARI SINI
-                
-                if (NextPrompt != null) NextPrompt.SetActive(false);
-                if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
-                ShowTriviaQuestion(triviaQuestionText);
-                return;
-            }
-
-            // HAPUS JUGA questGiver.GiveQuest() DARI SINI
-
+            // Selalu akhiri dialog dan panggil event penutup secara instan!
             lineIndex = 0;
             EndDialogue();
         }
