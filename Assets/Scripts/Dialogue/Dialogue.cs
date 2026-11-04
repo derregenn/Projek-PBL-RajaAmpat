@@ -59,6 +59,8 @@ public class Dialogue : MonoBehaviour
     private Coroutine typingCoroutine;
     private Action onDialogueCompleteCallback;
 
+    public UnityEvent onInteractComplete; // Akan muncul di Inspector
+
 
 
     private void Awake()
@@ -109,6 +111,15 @@ public class Dialogue : MonoBehaviour
     public void StartDialogue()
     {
         if (isInteracting) return;
+
+        /* // Tambahan wajib agar Dialogue.cs tahu dia menempel di Petugas
+        PetugasMisool petugas = GetComponent<PetugasMisool>();
+        if (petugas != null)
+        {
+            petugas.InteractWithOfficer();
+            return; // Hentikan eksekusi StartDialogue bawaan karena sudah diambil alih StartCustomDialogue
+        }
+        */
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
@@ -384,6 +395,15 @@ public class Dialogue : MonoBehaviour
         }
 
         StartDialogue();
+    }
+
+    public void SelesaiInteraksi()
+    {
+        // Lakukan animasi atau efek selesai
+        Debug.Log("Interaksi Selesai!");
+
+        // Berikan sinyal bahwa interaksi ini sudah selesai
+        onInteractComplete?.Invoke();
     }
 
 }

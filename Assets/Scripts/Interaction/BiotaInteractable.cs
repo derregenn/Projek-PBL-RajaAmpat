@@ -26,6 +26,8 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
     [Header("Events")]
     [SerializeField] private UnityEvent onSequenceComplete;
 
+    public UnityEvent onInteractComplete; // Akan muncul di Inspector
+
     private bool isDone = false;
 
     private void Start()
@@ -107,6 +109,15 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
 
         // 7. Panggil event jika ada listener
         onSequenceComplete?.Invoke();
+    }
+
+    public void SelesaiInteraksi()
+    {
+        // Lakukan animasi atau efek selesai
+        Debug.Log("Interaksi Selesai!");
+
+        // Berikan sinyal bahwa interaksi ini sudah selesai
+        onInteractComplete?.Invoke();
     }
 
     public string GetPromptText() => isDone ? biotaName : $"Bantu {biotaName}";

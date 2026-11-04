@@ -1,51 +1,47 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SeaToLandTeleporter : MonoBehaviour
 {
-    public enum SeaSceneType
-    {
-        SeaMain,  // Laut Utama (Monolog / Bulu Seribu)
-        SeaManta  // Laut Manta
-    }
+    [SerializeField] private string landSceneName = "04_Misool";
 
-    [SerializeField] private SeaSceneType currentSeaType;
-    [SerializeField] private string targetLandScene = "04_Misool";
-    [SerializeField] private SeaSceneTransition seaSceneTransition;
-
+    // Fungsi ini dipanggil saat pemain menyentuh trigger batas atas laut 
+    // atau menekan tombol kembali ke kapal
     public void ReturnToLand()
     {
-        // 1. Catat asal scene laut sebelum pindah ke darat
-        if (currentSeaType == SeaSceneType.SeaMain)
-        {
-            PlayerPrefs.SetString("Misool_LastExitPoint", "SEA_MAIN");
-        }
-        else if (currentSeaType == SeaSceneType.SeaManta)
-        {
-            PlayerPrefs.SetString("Misool_LastExitPoint", "SEA_MANTA");
-        }
+        // Ambil stage saat ini dari MasterQuestManager
+        int currentStage = MasterQuestManager.Instance.CurrentStage;
 
-        PlayerPrefs.Save();
-
-        // 2. Transisi Pindah Scene ke Darat
-        if (seaSceneTransition == null)
+        // 1. UPDATE STAGE BERDASARKAN ALUR MISOOL
+        if (currentStage == 2)
         {
-            seaSceneTransition = GetComponent<SeaSceneTransition>();
+            // Pemain baru selesai Monolog Laut, kembali untuk bicara dengan Petugas (Poin 3)
+            MasterQuestManager.Instance.AdvanceStageTo(3);
+            MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN"); // Agar spawn di Dermaga
         }
-
-        if (seaSceneTransition != null)
+        else if (currentStage == 4 && MasterQuestManager.Instance.CollectibleCount >= 3)
         {
-            seaSceneTransition.SendMessage("TransitionToScene", targetLandScene, SendMessageOptions.DontRequireReceiver);
-            return;
+            // Pemain sudah ambil 3 Bulu Seribu, kembali untuk lapor ke Petugas (Poin 5)
+            MasterQuestManager.Instance.AdvanceStageTo(5);
+            MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN"); // Agar spawn di Dermaga
         }
-
-        if (UniversalFader.Instance != null)
+        else if (currentStage == 7)
         {
-            UniversalFader.Instance.FadeToScene(targetLandScene);
+            // Pemain selesai menolong Pari Manta, kembali lapor ke Ibu-Ibu (Poin 8)
+            MasterQuestManager.Instance.AdvanceStageTo(8);
+            MasterQuestManager.Instance.SetLastExitPoint("SEA_MANTA"); // Agar spawn di Pesisir Ujung
         }
         else
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(targetLandScene);
+            // Jika pemain kembali ke darat tapi quest belum selesai (misal stage 4 tapi hama baru 1)
+            // Jangan naikkan stage, cukup simpan exit point saja.
+            MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN");
         }
-    }
 
+        // 2. PINDAH KE SCENE DARAT
+        // Jika kamu memakai UniversalFader, panggil fade di sini. 
+        // Jika tidak, gunakan SceneManager langsung:
+        SceneManager.LoadScene(landSceneName);
+    }
 }
+// Contoh trigger otomatis saat player berenang ke permukaan
