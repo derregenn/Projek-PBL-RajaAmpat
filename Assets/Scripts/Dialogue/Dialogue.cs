@@ -59,8 +59,6 @@ public class Dialogue : MonoBehaviour
     private Coroutine typingCoroutine;
     private Action onDialogueCompleteCallback;
 
-
-
     private void Awake()
     {
         questGiver = GetComponent<QuestGiver>();
@@ -112,7 +110,8 @@ public class Dialogue : MonoBehaviour
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
-        canInteract = false;
+        // Kunci di sini: untuk StartDialogue normal, biarkan canInteract ikut mengatur.
+        canInteract = false; 
         isInteracting = true;
         lineIndex = 0;
 
@@ -240,21 +239,15 @@ public class Dialogue : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(triviaQuestionText))
             {
-                if (questGiver != null)
-                {
-                    questGiver.GiveQuest();
-                }
-
+                // HAPUS questGiver.GiveQuest() DARI SINI
+                
                 if (NextPrompt != null) NextPrompt.SetActive(false);
                 if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
                 ShowTriviaQuestion(triviaQuestionText);
                 return;
             }
 
-            if (questGiver != null)
-            {
-                questGiver.GiveQuest();
-            }
+            // HAPUS JUGA questGiver.GiveQuest() DARI SINI
 
             lineIndex = 0;
             EndDialogue();
@@ -292,6 +285,7 @@ public class Dialogue : MonoBehaviour
             }
         }
 
+        // Kalau player kebetulan masih nempel di collider, prompt dimunculkan lagi
         if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
 
         onDialogueEnd?.Invoke();
@@ -368,15 +362,11 @@ public class Dialogue : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Fungsi publik agar skrip NPC lain (seperti PetugasMisool) bisa mengirim naskah secara langsung
-    /// </summary>
     public void StartCustomDialogue(string[] customLines, Action onComplete)
     {
         DialogueLines = customLines;
         onDialogueCompleteCallback = onComplete;
 
-        // Paksa set speaker jadi NPC semua atau sesuaikan jika butuh
         DialogueLineSpeakers = new DialogueSpeaker[customLines.Length];
         for (int i = 0; i < DialogueLineSpeakers.Length; i++)
         {
@@ -386,4 +376,29 @@ public class Dialogue : MonoBehaviour
         StartDialogue();
     }
 
+    // ==============================================================
+    // [BARU] Fungsi pemanggilan paksa tanpa peduli jarak/collider
+    // ==============================================================
+    public void StartDialogueForced()
+    {
+        if (isInteracting) return;
+
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+
+        isInteracting = true;
+        lineIndex = 0;
+
+        if (dialogueCamera != null)
+        {
+            dialogueCamera.Target.TrackingTarget = this.transform;
+            dialogueCamera.Lens.OrthographicSize = npcLensSize;
+            dialogueCamera.Priority.Value = 20;
+        }
+
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
+        if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        StartTyping();
+    }
 }
