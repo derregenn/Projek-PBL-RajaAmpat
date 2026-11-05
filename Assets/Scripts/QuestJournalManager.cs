@@ -88,7 +88,7 @@ public class QuestJournalManager : MonoBehaviour
             bool willOpen = !isCurrentlyOpen;
 
             questTabPanel.SetActive(willOpen);
-            Time.timeScale = willOpen ? 0f : 1f; // Pause game saat jurnal buka, resume saat tutup
+            Time.timeScale = willOpen ? 0f : 1f;
 
             if (willOpen)
             {
@@ -96,24 +96,25 @@ public class QuestJournalManager : MonoBehaviour
             }
         }
     }
-// Panggil fungsi ini dari Button UI Jurnal
-public void ToggleJournalPanel()
-{
-    if (questTabPanel == null)
+
+    public void ToggleJournalPanel()
     {
-        Debug.LogError("[QuestJournalManager] questTabPanel belum di-assign di Inspector!");
-        return;
+        if (questTabPanel == null)
+        {
+            Debug.LogError("[QuestJournalManager] questTabPanel belum di-assign di Inspector!");
+            return;
+        }
+
+        bool willOpen = !questTabPanel.activeSelf;
+        questTabPanel.SetActive(willOpen);
+        Time.timeScale = willOpen ? 0f : 1f;
+
+        if (willOpen)
+        {
+            UpdateJournalUI();
+        }
     }
 
-    bool willOpen = !questTabPanel.activeSelf;
-    questTabPanel.SetActive(willOpen);
-    Time.timeScale = willOpen ? 0f : 1f; // Freeze game saat jurnal buka, resume saat tutup
-
-    if (willOpen)
-    {
-        UpdateJournalUI();
-    }
-}
     public void ToggleQuestTab()
     {
         isOngoingTabActive = !isOngoingTabActive; 
@@ -139,28 +140,35 @@ public void ToggleJournalPanel()
         }
     }
 
+    // ========================================================================
+    // PERBAIKAN MEKANIK FOTO:
+    // Tetap menyimpan data foto ke database koleksi (collectedPhotos),
+    // tapi TIDAK menimpa sprite UI Polaroid Popup agar memakai gambar preset Inspector.
+    // ========================================================================
     public void TakeSpecificPhoto(int photoID)
     {
         if (isFlashing) return; 
 
+        // Simpan sprite dari database jika ada untuk keperluan Jurnal nanti
         Sprite photoSprite = GetPhotoSpriteByID(photoID);
-        if (photoSprite != null)
+        if (photoSprite != null && !collectedPhotos.ContainsKey(photoID))
         {
-            if (!collectedPhotos.ContainsKey(photoID))
-            {
-                collectedPhotos.Add(photoID, photoSprite);
-            }
-            StartCoroutine(PhotoSequence(photoSprite));
+            collectedPhotos.Add(photoID, photoSprite);
         }
+
+        // Jalankan sekuens animasi popup Polaroid
+        StartCoroutine(PhotoSequence());
     }
 
-    private IEnumerator PhotoSequence(Sprite illustration)
+    private IEnumerator PhotoSequence()
     {
         isFlashing = true;
         
         if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 1);
         if (polaroidPopup != null) polaroidPopup.SetActive(true);
-        if (popupPhotoDisplay != null) popupPhotoDisplay.sprite = illustration;
+
+        // [PENTING] popupPhotoDisplay.sprite sengaja TIDAK diisi dari kode
+        // agar menampilkan sprite foto yang diset manual di Inspector Polaroid Popup.
 
         float alpha = 1f;
         while (alpha > 0)
@@ -183,7 +191,6 @@ public void ToggleJournalPanel()
 
         if (unlockedPages != null && unlockedPages.Count > 0)
         {
-            // Mencegah OutOfRangeException pada index halaman
             if (currentJournalIndex < 0 || currentJournalIndex >= unlockedPages.Count)
             {
                 currentJournalIndex = 0;
