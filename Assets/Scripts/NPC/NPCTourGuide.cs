@@ -39,7 +39,7 @@ public class NPCTourGuide : MonoBehaviour
 
     private IEnumerator RoutineStartQuiz()
     {
-        // Jeda 1 frame agar pencetan tombol [E] dari dialog tidak menutup/mengganggu kuis
+        // Jeda 1 frame agar pencetan tombol [E] dari dialog tidak mengganggu kuis
         yield return null;
 
         if (TriviaQuizUI.Instance != null && quizQuestions != null && quizQuestions.Length > 0)

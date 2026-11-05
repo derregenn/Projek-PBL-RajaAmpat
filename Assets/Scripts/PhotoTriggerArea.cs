@@ -1,8 +1,12 @@
 using UnityEngine;
-using UnityEngine.Events; // Tambahkan namespace ini untuk UnityEvent
+using UnityEngine.Events;
 
 public class PhotoTriggerArea : MonoBehaviour
 {
+    [Header("UI Reference")]
+    [Tooltip("Drag GameObject PromptPanelFoto ke sini")]
+    public GameObject photoPromptPanel; // Slot UI Prompt Tombol F
+
     [Header("Quest Integration")]
     public string objectiveID = "foto_sawinggrai";
 
@@ -23,6 +27,15 @@ public class PhotoTriggerArea : MonoBehaviour
     private bool isPlayerInRange = false;
     private bool isPhotoTaken = false;
 
+    private void Start()
+    {
+        // Sembunyikan UI Prompt Foto di awal game
+        if (photoPromptPanel != null)
+        {
+            photoPromptPanel.SetActive(false);
+        }
+    }
+
     private void Update()
     {
         // Menekan tombol F saat berada di area foto
@@ -37,6 +50,12 @@ public class PhotoTriggerArea : MonoBehaviour
         if (other.CompareTag("Player") || (other.transform.root != null && other.transform.root.CompareTag("Player")))
         {
             isPlayerInRange = true;
+
+            // Munculkan UI Prompt Foto saat player mendekat ke area
+            if (!isPhotoTaken && photoPromptPanel != null)
+            {
+                photoPromptPanel.SetActive(true);
+            }
         }
     }
 
@@ -45,12 +64,24 @@ public class PhotoTriggerArea : MonoBehaviour
         if (other.CompareTag("Player") || (other.transform.root != null && other.transform.root.CompareTag("Player")))
         {
             isPlayerInRange = false;
+
+            // Sembunyikan UI Prompt Foto saat player menjauh
+            if (photoPromptPanel != null)
+            {
+                photoPromptPanel.SetActive(false);
+            }
         }
     }
 
     private void TakeAreaPhoto()
     {
         isPhotoTaken = true;
+
+        // Langsung matikan UI Prompt Foto saat tombol F ditekan
+        if (photoPromptPanel != null)
+        {
+            photoPromptPanel.SetActive(false);
+        }
 
         // 1. Panggil QuestJournalManager untuk mengurus Flash, Polaroid Popup, dan Jurnal secara terpusat
         if (QuestJournalManager.Instance != null)

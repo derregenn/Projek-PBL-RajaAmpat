@@ -19,7 +19,9 @@ public class FriwenEventManager : MonoBehaviour
     public GameObject qtePanel;
     public GameObject npcWarlok1;
     [Tooltip("Drag Starting point dari Hierarchy ke sini untuk titik reset saat QTE gagal")]
-    public Transform playerResetPoint; 
+    public Transform playerResetPoint;
+    [Tooltip("Waktu tunggu (detik) agar SFX QTE Berhasil sempat terputar sebelum UI ditutup")]
+    [SerializeField] private float qteSuccessDelay = 0.6f; // 👈 Jeda suara sukses
 
     [Header("Tahap 2: Referensi Tour Guide (Pasir Timbul)")]
     public GameObject tourGuide;
@@ -59,7 +61,7 @@ public class FriwenEventManager : MonoBehaviour
         StartCoroutine(RoutineSequencePerahu());
     }
 
-private IEnumerator RoutineSequencePerahu()
+    private IEnumerator RoutineSequencePerahu()
     {
         FreezePlayer(true);
 
@@ -73,10 +75,8 @@ private IEnumerator RoutineSequencePerahu()
         
         if (qtePanel != null) 
         {
-            // Pastikan GameObject-nya aktif
             qtePanel.SetActive(true); 
             
-            // Panggil logika mulai QTE
             SequenceQTE seq = qtePanel.GetComponent<SequenceQTE>();
             if (seq != null)
             {
@@ -90,11 +90,19 @@ private IEnumerator RoutineSequencePerahu()
         StartCoroutine(RoutineQTESelesai());
     }
 
+    // ==========================================
+    // ALUR SUKSES QTE (DENGAN JEDA SFX)
+    // ==========================================
     private IEnumerator RoutineQTESelesai()
     {
+        // 1. Beri jeda waktu agar SFX sukses QTE terputar mulus sampai habis
+        yield return new WaitForSeconds(qteSuccessDelay);
+
+        // 2. Baru matikan UI QTE dan animasi crouch
         if (qtePanel != null) qtePanel.SetActive(false);
         SetPlayerCrouch(false);
 
+        // 3. Lanjutkan Fade Out ke perahu terikat
         if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
 
         if (perahuLepas != null) perahuLepas.SetActive(false);
@@ -109,9 +117,6 @@ private IEnumerator RoutineSequencePerahu()
         FreezePlayer(false);
     }
 
-    // ==========================================
-    // ALUR GAGAL: FADE OUT -> RESET POSISI -> FADE IN
-    // ==========================================
     public void QTEGagal()
     {
         StartCoroutine(RoutineQTEGagal());
@@ -119,29 +124,23 @@ private IEnumerator RoutineSequencePerahu()
 
     private IEnumerator RoutineQTEGagal()
     {
-        // 1. Matikan UI QTE & Animasi Jongkok
         if (qtePanel != null) qtePanel.SetActive(false);
         SetPlayerCrouch(false);
 
-        // 2. Layar Fade Out ke Hitam Pekat
         if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
 
-        // 3. Teleport Posisi Player ke Reset Point saat Layar Masih Hitam
         if (playerScript != null && playerResetPoint != null)
         {
             playerScript.transform.position = playerResetPoint.position;
         }
 
-        // 4. Balikkan Kamera ke Player
         if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
         if (playerCamera != null) playerCamera.Priority.Value = 10;
 
         yield return new WaitForSeconds(0.2f);
 
-        // 5. Layar Fade In Kembali Terang
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
 
-        // 6. Lepaskan Bekukan Player & Reset Flag Trigger
         FreezePlayer(false);
         hasTriggeredPerahu = false;
         if (currentTrigger != null) currentTrigger.ResetTrigger();
@@ -217,11 +216,8 @@ private IEnumerator RoutineSequencePerahu()
     }
 
     [Header("Tahap 2: Trigger Foto")]
-    [SerializeField] private GameObject areaFotoPasirTimbul; // Drag AreaFoto_Sasi ke sini
+    [SerializeField] private GameObject areaFotoPasirTimbul;
 
-    // ==============================================================
-    // DIPANGGIL SAAT PLAYER SELESAI MENGAMBIL FOTO (Tekan F)
-    // ==============================================================
     public void OnPhotoTakenSequence()
     {
         StartCoroutine(RoutinePostFotoSequence());
@@ -229,13 +225,10 @@ private IEnumerator RoutineSequencePerahu()
 
     private IEnumerator RoutinePostFotoSequence()
     {
-        // 1. Bekukan gerakan Player saat transisi
         FreezePlayer(true);
 
-        // 2. Animasi Fade Out (Layar Menjadi Hitam)
         if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
 
-        // 3. Spawn / Pindahkan NPC Tour Guide ke sebelah kanan player
         if (tourGuide != null)
         {
             if (spotTourGuideSpawn != null)
@@ -243,10 +236,9 @@ private IEnumerator RoutineSequencePerahu()
                 tourGuide.transform.position = spotTourGuideSpawn.position;
                 tourGuide.transform.rotation = spotTourGuideSpawn.rotation;
             }
-            tourGuide.SetActive(true); // Munculkan NPC
+            tourGuide.SetActive(true);
         }
 
-        // 4. Matikan Area Foto agar tidak bisa difoto ulang
         if (areaFotoPasirTimbul != null)
         {
             areaFotoPasirTimbul.SetActive(false);
@@ -254,10 +246,8 @@ private IEnumerator RoutineSequencePerahu()
 
         yield return new WaitForSeconds(0.3f);
 
-        // 5. Animasi Fade In (Layar Terang Kembali)
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
 
-        // 6. Jalankan Otomatis Dialog Tour Guide di Pasir Timbul
         if (tourGuide != null)
         {
             Dialogue dialogueTourGuide = tourGuide.GetComponent<Dialogue>();

@@ -37,10 +37,10 @@ public class Dialogue : MonoBehaviour
 
     [Header("NPC Sprite Settings")]
     [SerializeField] private SpriteRenderer npcSpriteRenderer;
-    [SerializeField] private Sprite talkingSprite1; // Drag sprite talking1_V1 di Inspector
-    [SerializeField] private Sprite talkingSprite2; // Drag sprite talking2_V1 di Inspector
-    [SerializeField] private Sprite idleSprite;      // Sprite default saat NPC diam (opsional)
-    [SerializeField] private int spriteToggleInterval = 3; // Berganti sprite tiap N karakter
+    [SerializeField] private Sprite talkingSprite1; 
+    [SerializeField] private Sprite talkingSprite2; 
+    [SerializeField] private Sprite idleSprite;      
+    [SerializeField] private int spriteToggleInterval = 3; 
 
     [Header("Camera Zoom Settings")]
     public CinemachineCamera dialogueCamera;
@@ -52,27 +52,36 @@ public class Dialogue : MonoBehaviour
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
+    private bool isPlayerInCollider = false; // Penjaga status posisi player
     private bool isTyping = false;
-    private bool hasBeenTriggered = false;
+    private bool hasBeenTriggered = false; 
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
     private Action onDialogueCompleteCallback;
+    
+    // Referensi ke Player Controller untuk dimatikan saat dialog
+    private MonoBehaviour playerMovementScript;
 
     private void Awake()
     {
         questGiver = GetComponent<QuestGiver>();
 
-        // Auto-assign SpriteRenderer jika belum diisi di Inspector
         if (npcSpriteRenderer == null)
         {
             npcSpriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        // Simpan sprite default jika idleSprite belum di-set
         if (npcSpriteRenderer != null && idleSprite == null)
         {
             idleSprite = npcSpriteRenderer.sprite;
+        }
+        
+        // Cari skrip Player pada objek ber-tag Player
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            playerMovementScript = playerObj.GetComponent<Player>(); 
         }
     }
 
@@ -92,10 +101,12 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        if (canInteract && !isInteracting && hasBeenTriggered && Input.GetKeyDown(KeyCode.E))
+        // 1. Memulai dialog manual dengan memencet E
+        if (canInteract && !isInteracting && Input.GetKeyDown(KeyCode.E))
         {
             StartDialogue();
         }
+        // 2. Lanjut dialog
         else if (isInteracting && Input.GetKeyDown(KeyCode.E)
             && ((NextPrompt != null && NextPrompt.activeInHierarchy)
                 || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)))
@@ -110,10 +121,15 @@ public class Dialogue : MonoBehaviour
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
-        // Kunci di sini: untuk StartDialogue normal, biarkan canInteract ikut mengatur.
         canInteract = false; 
         isInteracting = true;
         lineIndex = 0;
+
+        // --- KUNCI GERAKAN PLAYER ---
+        if (playerMovementScript != null)
+        {
+            playerMovementScript.enabled = false;
+        }
 
         if (dialogueCamera != null)
         {
@@ -192,7 +208,6 @@ public class Dialogue : MonoBehaviour
                 nextTypingAudioTime = Time.time + typingAudioInterval;
             }
 
-            // Animasi pergantian sprite bicaranya NPC saat teks diketik
             if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
             {
                 if (i % spriteToggleInterval == 0)
@@ -211,7 +226,6 @@ public class Dialogue : MonoBehaviour
         isTyping = false;
         if (typingAudioSource != null) typingAudioSource.Stop();
 
-        // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
 
         if (isPlayerLine)
@@ -237,7 +251,6 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            // Selalu akhiri dialog dan panggil event penutup secara instan!
             lineIndex = 0;
             EndDialogue();
         }
@@ -255,6 +268,12 @@ public class Dialogue : MonoBehaviour
         isTyping = false;
         isInteracting = false;
 
+        // --- BUKA KUNCI GERAKAN PLAYER ---
+        if (playerMovementScript != null)
+        {
+            playerMovementScript.enabled = true;
+        }
+
         ResetNPCSprite();
 
         if (DialogueBox != null) DialogueBox.SetActive(false);
@@ -266,7 +285,6 @@ public class Dialogue : MonoBehaviour
         {
             dialogueCamera.Priority.Value = 0;
 
-            // [PERBAIKAN UTAMA]: Paksa Target Kamera balik membuntut ke Player setiap kali dialog selesai
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
             {
@@ -274,8 +292,12 @@ public class Dialogue : MonoBehaviour
             }
         }
 
-        // Kalau player kebetulan masih nempel di collider, prompt dimunculkan lagi
-        if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
+        // PERBAIKAN: Jika player masih di dalam area collider, aktifkan lagi izin interaksi & prompt
+        if (isPlayerInCollider)
+        {
+            canInteract = true;
+            if (InteractPrompt != null) InteractPrompt.SetActive(true);
+        }
 
         onDialogueEnd?.Invoke();
 
@@ -295,19 +317,12 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            isPlayerInCollider = true;
             canInteract = true;
 
-            if (!isInteracting)
+            if (!isInteracting && InteractPrompt != null)
             {
-                if (!hasBeenTriggered)
-                {
-                    hasBeenTriggered = true;
-                    StartDialogue();
-                }
-                else if (InteractPrompt != null)
-                {
-                    InteractPrompt.SetActive(true);
-                }
+                InteractPrompt.SetActive(true);
             }
         }
     }
@@ -316,6 +331,7 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            isPlayerInCollider = false;
             canInteract = false;
 
             if (InteractPrompt != null) InteractPrompt.SetActive(false);
@@ -325,10 +341,7 @@ public class Dialogue : MonoBehaviour
 
     public void ShowTriviaQuestion(string questionText)
     {
-        if (string.IsNullOrEmpty(questionText))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(questionText)) return;
 
         if (DialogueBox != null) DialogueBox.SetActive(true);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
@@ -344,7 +357,6 @@ public class Dialogue : MonoBehaviour
             DialogueText.maxVisibleCharacters = questionText.Length;
         }
 
-        // Gunakan sprite bicara saat pertanyaan trivia ditampilkan
         if (npcSpriteRenderer != null && talkingSprite1 != null)
         {
             npcSpriteRenderer.sprite = talkingSprite1;
@@ -365,9 +377,6 @@ public class Dialogue : MonoBehaviour
         StartDialogue();
     }
 
-    // ==============================================================
-    // [BARU] Fungsi pemanggilan paksa tanpa peduli jarak/collider
-    // ==============================================================
     public void StartDialogueForced()
     {
         if (isInteracting) return;
@@ -376,6 +385,11 @@ public class Dialogue : MonoBehaviour
 
         isInteracting = true;
         lineIndex = 0;
+
+        if (playerMovementScript != null)
+        {
+            playerMovementScript.enabled = false;
+        }
 
         if (dialogueCamera != null)
         {
