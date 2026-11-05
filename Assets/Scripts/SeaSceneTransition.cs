@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.Events; // Wajib ditambahkan
 
 public class SeaSceneTransition : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class SeaSceneTransition : MonoBehaviour
 
     private bool isPlayerInRange = false;
     private bool isTransitioning = false;
+    private SeaToLandTeleporter returnTeleporter;
+    public UnityEvent onInteractComplete; // Akan muncul di Inspector
 
     private void Start()
     {
@@ -46,6 +49,10 @@ public class SeaSceneTransition : MonoBehaviour
             }
 
             Debug.Log("--> Player menekan " + interactKey + ". Melakukan transisi ke: " + targetSceneName);
+            if (returnTeleporter != null)
+            {
+                returnTeleporter.ReturnToLand();
+            }
             StartCoroutine(FadeAndLoadScene());
         }
     }
@@ -57,6 +64,16 @@ public class SeaSceneTransition : MonoBehaviour
         if (collision.CompareTag("Player") || collision.gameObject.name.Contains("Player"))
         {
             isPlayerInRange = true;
+
+            returnTeleporter = GetComponent<SeaToLandTeleporter>();
+            if (returnTeleporter == null)
+            {
+                returnTeleporter = GetComponentInParent<SeaToLandTeleporter>();
+            }
+            if (returnTeleporter == null)
+            {
+                returnTeleporter = collision.GetComponent<SeaToLandTeleporter>();
+            }
 
             // Munculkan teks warning saat pemain menyentuh batas laut
             if (warningUI != null)
@@ -71,6 +88,7 @@ public class SeaSceneTransition : MonoBehaviour
         if (collision.CompareTag("Player") || collision.gameObject.name.Contains("Player"))
         {
             isPlayerInRange = false;
+            returnTeleporter = null;
 
             // Sembunyikan teks warning saat pemain menjauh
             if (warningUI != null)
@@ -110,5 +128,14 @@ public class SeaSceneTransition : MonoBehaviour
 
         // 3. Pindah ke Scene Tujuan
         SceneManager.LoadScene(targetSceneName);
+    }
+
+    public void SelesaiInteraksi()
+    {
+        // Lakukan animasi atau efek selesai
+        Debug.Log("Interaksi Selesai!");
+
+        // Berikan sinyal bahwa interaksi ini sudah selesai
+        onInteractComplete?.Invoke();
     }
 }

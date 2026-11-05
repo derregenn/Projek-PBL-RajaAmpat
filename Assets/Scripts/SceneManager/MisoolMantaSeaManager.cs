@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MisoolMantaSeaManager : MonoBehaviour
 {
-    [Header("Objek Poin 8 (Pari Manta)")]
+    [Header("Objek Poin 7 (Pari Manta)")]
     [SerializeField] private GameObject pariMantaJaring; // Objek Manta tersangkut + QTE
     [SerializeField] private GameObject pariMantaBebas;  // Visual Manta berenang bebas (opsional)
 

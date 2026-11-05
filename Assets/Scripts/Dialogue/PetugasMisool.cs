@@ -22,10 +22,11 @@ public class PetugasMisool : MonoBehaviour
     public void InteractWithOfficer()
     {
         if (dialogueSystem == null) dialogueSystem = GetComponent<Dialogue>();
+        if (dialogueSystem == null || MisoolQuestManager.Instance == null) return;
 
         int stage = MisoolQuestManager.Instance.CurrentStage;
 
-        if (stage == 1)
+        if (stage == 1 || stage == 2)
         {
             // Stage 1: Petugas menyuruh Player menyelam pertama kali (Monolog)
             dialogueSystem.StartCustomDialogue(dialogSuruhMenyelam, () =>

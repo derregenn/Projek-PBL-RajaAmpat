@@ -15,12 +15,14 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private TMP_Text PlayerDialogueText;
     [SerializeField] private GameObject NextPrompt;
     [SerializeField] private GameObject PlayerNextPrompt;
+    [SerializeField] private Behaviour playerMovementController;
 
     [Header("Dialogue")]
     [SerializeField] private string[] DialogueLines;
     [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
     [SerializeField] private string triviaQuestionText;
-    [SerializeField] private float TypeSpeed = 0.02f;
+    [SerializeField] private float TypeSpeed = 0.04f;
+    [SerializeField, Min(0f)] private float lineAdvanceCooldown = 0.35f;
 
     [Header("Typing Audio")]
     [SerializeField] private AudioSource typingAudioSource;
@@ -54,10 +56,14 @@ public class Dialogue : MonoBehaviour
     private bool canInteract = false;
     private bool isTyping = false;
     private bool hasBeenTriggered = false;
+    private bool playerMovementWasEnabled;
+    private float nextLineAdvanceTime;
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
     private Action onDialogueCompleteCallback;
+
+    public UnityEvent onInteractComplete; // Akan muncul di Inspector
 
 
 
@@ -110,11 +116,26 @@ public class Dialogue : MonoBehaviour
     {
         if (isInteracting) return;
 
+        /* // Tambahan wajib agar Dialogue.cs tahu dia menempel di Petugas
+        PetugasMisool petugas = GetComponent<PetugasMisool>();
+        if (petugas != null)
+        {
+            petugas.InteractWithOfficer();
+            return; // Hentikan eksekusi StartDialogue bawaan karena sudah diambil alih StartCustomDialogue
+        }
+        */
+
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
         canInteract = false;
         isInteracting = true;
         lineIndex = 0;
+
+        if (playerMovementController != null)
+        {
+            playerMovementWasEnabled = playerMovementController.enabled;
+            playerMovementController.enabled = false;
+        }
 
         if (dialogueCamera != null)
         {
@@ -211,6 +232,7 @@ public class Dialogue : MonoBehaviour
 
         isTyping = false;
         if (typingAudioSource != null) typingAudioSource.Stop();
+        nextLineAdvanceTime = Time.time + lineAdvanceCooldown;
 
         // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
@@ -227,7 +249,7 @@ public class Dialogue : MonoBehaviour
 
     private void NextLine()
     {
-        if (isTyping) return;
+        if (isTyping || Time.time < nextLineAdvanceTime) return;
 
         if (lineIndex < DialogueLines.Length - 1)
         {
@@ -272,6 +294,11 @@ public class Dialogue : MonoBehaviour
 
         isTyping = false;
         isInteracting = false;
+
+        if (playerMovementController != null)
+        {
+            playerMovementController.enabled = playerMovementWasEnabled;
+        }
 
         ResetNPCSprite();
 
@@ -319,12 +346,9 @@ public class Dialogue : MonoBehaviour
                 if (!hasBeenTriggered)
                 {
                     hasBeenTriggered = true;
-                    StartDialogue();
                 }
-                else if (InteractPrompt != null)
-                {
-                    InteractPrompt.SetActive(true);
-                }
+
+                if (InteractPrompt != null) InteractPrompt.SetActive(true);
             }
         }
     }
@@ -384,6 +408,15 @@ public class Dialogue : MonoBehaviour
         }
 
         StartDialogue();
+    }
+
+    public void SelesaiInteraksi()
+    {
+        // Lakukan animasi atau efek selesai
+        Debug.Log("Interaksi Selesai!");
+
+        // Berikan sinyal bahwa interaksi ini sudah selesai
+        onInteractComplete?.Invoke();
     }
 
 }
