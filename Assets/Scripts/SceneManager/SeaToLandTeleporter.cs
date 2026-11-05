@@ -17,10 +17,10 @@ public class SeaToLandTeleporter : MonoBehaviour
             MasterQuestManager.Instance.AdvanceStageTo(3);
             MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN");
         }
-        else if (currentStage == 3 && MasterQuestManager.Instance.CollectibleCount >= 1)
+        else if (currentStage == 4 && MasterQuestManager.Instance.CollectibleCount >= 3)
         {
-            // Selesai Ambil 3 Bulu Seribu -> Lanjut Stage 4 (Serahkan ke Petugas)
-            MasterQuestManager.Instance.AdvanceStageTo(4);
+            // Selesai Ambil 3 Bulu Seribu -> Lanjut Stage 5 (Serahkan ke Petugas)
+            MasterQuestManager.Instance.AdvanceStageTo(5);
             MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN");
         }
         else if (currentStage == 7)

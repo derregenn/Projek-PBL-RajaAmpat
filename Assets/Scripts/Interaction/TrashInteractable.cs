@@ -87,6 +87,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             QuestJournalManager.Instance.TakeSpecificPhoto(unlockJournalID);
         }
 
+        onInteractComplete?.Invoke();
         // 5. Hapus sampah dari layar
         Destroy(gameObject);
     }

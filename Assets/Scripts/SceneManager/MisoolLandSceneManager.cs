@@ -10,19 +10,14 @@ public class MisoolLandSceneManager : MonoBehaviour
     [SerializeField] private GameObject tourGuideStart;     // Point 1 (Muncul setelah Penyu bebas)
     [SerializeField] private GameObject petugasStage1;
     [SerializeField] private GameObject petugasStage3;
-    [SerializeField] private GameObject petugasStage4;
-    [SerializeField] private GameObject ibuIbuGroup;        // Point 7 & 9
+    [SerializeField] private GameObject petugasStage5;
+    [SerializeField] private GameObject ibuIbuStage6;        // Point 7 (Ibu-Ibu Warga)
+    [SerializeField] private GameObject ibuIbuStage8;        // Point 9 (Ibu-Ibu Warga)
     [SerializeField] private GameObject tourGuideEnd;      // Point 9 (Di sebelah kanan MC)
     [SerializeField] private Transform tourGuideEndSpot;   // Titik koordinat sebelah kanan MC
 
     private void Awake()
     {
-
-        // TAMBAHKAN BARIS INI SEMENTARA HANYA UNTUK TESTING EDITOR
-        PlayerPrefs.SetInt("Misool_QuestStage", 0);
-        PlayerPrefs.Save();
-        // ---------------------------------------------------------
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -33,12 +28,13 @@ public class MisoolLandSceneManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("<color=cyan>STAGE SAAT INI ADALAH: " + MasterQuestManager.Instance.CurrentStage + "</color>");
         RefreshLandState();
     }
 
     private void Update()
     {
-        int stage = PlayerPrefs.GetInt("Misool_QuestStage", 0);
+        int stage = MasterQuestManager.Instance.CurrentStage;
         if (stage != lastObservedStage)
             RefreshLandState();
     }
@@ -49,9 +45,9 @@ public class MisoolLandSceneManager : MonoBehaviour
         lastObservedStage = stage;
 
         // Aktifkan NPC yang sesuai dengan stage saat ini
-        if (petugasStage1 != null) petugasStage1.SetActive(stage == 1);
+        if (petugasStage1 != null) petugasStage1.SetActive(stage == 1 || stage == 2);
         if (petugasStage3 != null) petugasStage3.SetActive(stage == 3);
-        if (petugasStage4 != null) petugasStage4.SetActive(stage == 4);
+        if (petugasStage5 != null) petugasStage5.SetActive(stage == 5);
 
         // Point 1: Penyu Sisik
         if (penyuInteractive != null)
@@ -62,14 +58,17 @@ public class MisoolLandSceneManager : MonoBehaviour
             tourGuideStart.SetActive(stage >= 1 && stage < 9);
 
         // Point 7 & 9: Ibu-Ibu Warga hanya aktif pada Stage 6, 7, dan 8
-        if (ibuIbuGroup != null)
-            ibuIbuGroup.SetActive(stage >= 6 && stage <= 8);
+        if (ibuIbuStage6 != null)
+            ibuIbuStage6.SetActive(stage == 6 || stage == 7);
+        if (ibuIbuStage8 != null)
+            ibuIbuStage8.SetActive(stage == 8);
 
         // Point 9 & 10: Akhir Quest (Tour Guide pindah ke kanan MC)
         if (stage >= 9)
         {
             if (tourGuideStart != null) tourGuideStart.SetActive(false);
-            if (ibuIbuGroup != null) ibuIbuGroup.SetActive(false);
+            if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
+            if (ibuIbuStage8 != null) ibuIbuStage8.SetActive(false);
 
             if (tourGuideEnd != null && tourGuideEndSpot != null)
             {
@@ -99,7 +98,8 @@ public class MisoolLandSceneManager : MonoBehaviour
     private void ExecutePoint9Transition()
     {
         // 1. Hilangkan Ibu-Ibu & Tour Guide Awal
-        if (ibuIbuGroup != null) ibuIbuGroup.SetActive(false);
+        if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
+        if (ibuIbuStage8 != null) ibuIbuStage8.SetActive(false);
         if (tourGuideStart != null) tourGuideStart.SetActive(false);
 
         // 2. Pindahkan & Nyalakan Tour Guide di sebelah kanan Player
@@ -110,8 +110,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         }
 
         // 3. Simpan Stage 9 (Selesai Total / Free Roam)
-        PlayerPrefs.SetInt("Misool_QuestStage", 9);
-        PlayerPrefs.Save();
+        MasterQuestManager.Instance.AdvanceStageTo(9);
 
         // 4. Jalankan Dialog Penutup Tour Guide (Point 9)
         if (tourGuideEnd != null)

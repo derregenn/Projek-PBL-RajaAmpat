@@ -11,7 +11,6 @@ public enum IslandType
     Sawinggrai,
     Friwen,
     Gag
-    // Tambahkan nama pulau lain di sini jika ada
 }
 
 public class MasterQuestManager : MonoBehaviour
@@ -35,18 +34,12 @@ public class MasterQuestManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // --- HELPER DYNAMIC KEY (Mencegah Typo & Otomatis Sesuai Pulau) ---
     private string StageKey => $"{currentIsland}_QuestStage";
     private string CollectibleKey => $"{currentIsland}_CollectCount";
     private string ExitPointKey => $"{currentIsland}_LastExitPoint";
 
-    // --- PROPERTI & MANAJEMEN PULAU ---
-
     public IslandType CurrentIsland => currentIsland;
 
-    /// <summary>
-    /// Panggil fungsi ini saat pemain berpindah ke pulau lain di World Map
-    /// </summary>
     public void SetActiveIsland(IslandType newIsland)
     {
         currentIsland = newIsland;
@@ -72,18 +65,12 @@ public class MasterQuestManager : MonoBehaviour
 
     public void AdvanceStageTo(int newStage)
     {
-        if (newStage <= CurrentStage)
-        {
-            Debug.Log($"[{currentIsland}] Quest stage {newStage} sudah selesai atau terlewati.");
-            return;
-        }
-
+        // PERBAIKAN: Hapus pembatasan if (newStage <= CurrentStage) 
+        // agar stage bisa di-set ke angka berapa pun (termasuk reset ke 0)
         CurrentStage = newStage;
-        Debug.Log($"<color=green>[{currentIsland}] Quest Stage Naik Ke: {newStage}</color>");
+        Debug.Log($"<color=green>[{currentIsland}] Quest Stage Naik/Berubah Ke: {newStage}</color>");
 
         onStageChanged?.Invoke(newStage);
-
-        // Auto Refresh Land Manager spesifik pulau jika ada
         RefreshCurrentLandState();
     }
 
@@ -93,21 +80,31 @@ public class MasterQuestManager : MonoBehaviour
 
     public void AddCollectible(int targetAmount, int stageOnComplete)
     {
-        if (stageOnComplete <= CurrentStage)
-        {
-            Debug.Log($"[{currentIsland}] Quest stage {stageOnComplete} sudah selesai atau terlewati.");
-            return;
-        }
 
+        // PERBAIKAN: Tambah item terlebih dahulu tanpa diblokir guard clause
         int count = CollectibleCount + 1;
         PlayerPrefs.SetInt(CollectibleKey, count);
         PlayerPrefs.Save();
-        Debug.Log($"[{currentIsland}] Progress Item/Hama: {count}/{targetAmount}");
+        Debug.Log($"<color=cyan>[{currentIsland}] Progress Item/Hama: {count}/{targetAmount}</color>");
 
+        // Jika jumlah target tercapai, baru naikkan stage
         if (count >= targetAmount)
         {
             AdvanceStageTo(stageOnComplete);
         }
+    }
+
+    // --- FUNGSI HELPER UNTUK UNITY EVENT INSPECTOR ---
+
+    /// <summary>
+    /// Dipanggil dari Inspector UnityEvent untuk pengambilan Bulu Seribu (Target 3, Stage 5)
+    /// </summary>
+    public void AddBuluSeribu()
+    {
+        // MasterQuestManager bertahan antar-scene, jadi pastikan event ini
+        // mencatat progress pada pulau yang memiliki quest Bulu Seribu.
+        SetActiveIsland(IslandType.Misool);
+        AddCollectible(3, 5);
     }
 
     public void ResetCollectibleCount()
@@ -132,8 +129,6 @@ public class MasterQuestManager : MonoBehaviour
         return exit;
     }
 
-    // --- INTEGRASI REFRESH NPC DARAT ---
-
     private void RefreshCurrentLandState()
     {
         switch (currentIsland)
@@ -141,14 +136,8 @@ public class MasterQuestManager : MonoBehaviour
             case IslandType.Misool:
                 MisoolLandSceneManager.Instance?.RefreshLandState();
                 break;
-                // Tambahkan manager darat pulau lain jika ada di kemudian hari:
-                // case IslandType.Pianemo:
-                //     PianemoLandSceneManager.Instance?.RefreshLandState();
-                //     break;
         }
     }
-
-    // --- DEBUGGING MENU (CLICK RIGHT ON SCRIPT COMPONENT) ---
 
     [ContextMenu("Reset Current Island Quest Data")]
     public void ResetCurrentIslandData()
