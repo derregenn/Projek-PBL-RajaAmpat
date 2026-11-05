@@ -7,6 +7,10 @@ public class BoatTransitionController : MonoBehaviour
     public Dialogue dialogueSystem;
     public TriviaQuizUI triviaSystem;
 
+    [Header("Lokasi Spawn Background")]
+    [Tooltip("Pilih objek Environment sebagai tempat munculnya background parallax")]
+    public Transform environmentParent; // Drag objek 'Environment' dari Hierarchy ke sini
+
     [Header("Data Pulau (Isi di Inspector)")]
     public IslandTransitionData[] islandData;
 
@@ -24,11 +28,17 @@ public class BoatTransitionController : MonoBehaviour
             currentTarget = GamePhaseManager.Instance.targetIslandName;
             Debug.Log($"[BoatTransition] Target pulau terdeteksi: '{currentTarget}'");
         }
+        // 2. Fallback: Cek dari PlayerPrefs (Sangat aman jika GamePhaseManager sempat reset)
+        else if (PlayerPrefs.HasKey("TargetIsland"))
+        {
+            currentTarget = PlayerPrefs.GetString("TargetIsland");
+            Debug.Log($"[BoatTransition] Target dari PlayerPrefs: '{currentTarget}'");
+        }
         else
         {
             // Jika testing langsung di scene kapal, gunakan default Sawinggrai
             currentTarget = "06_Sawinggrai";
-            Debug.LogWarning($"[BoatTransition] GamePhaseManager null/kosong. Menggunakan fallback: '{currentTarget}'");
+            Debug.LogWarning($"[BoatTransition] Target tidak ditemukan. Menggunakan fallback: '{currentTarget}'");
         }
 
         LoadIslandDataAndStart();
@@ -58,11 +68,32 @@ public class BoatTransitionController : MonoBehaviour
 
         if (currentData != null)
         {
+            SpawnParallaxBackground(); // <-- Fitur Spawn Background ditambahkan di sini
             PlayIntroDialogue();
         }
         else
         {
             Debug.LogError($"[BoatTransition] Data pulau '{currentTarget}' tidak ditemukan di Inspector islandData!", this);
+        }
+    }
+
+    // <-- Method baru untuk Spawn Background
+    private void SpawnParallaxBackground()
+    {
+        if (currentData.islandBackgroundPrefab != null && environmentParent != null)
+        {
+            // Spawn background dan simpan ke variabel
+            GameObject spawnedBG = Instantiate(currentData.islandBackgroundPrefab, environmentParent);
+            
+            // PAKSA posisi lokalnya ke titik tengah (0,0,0) agar pasti masuk kamera
+            spawnedBG.transform.localPosition = Vector3.zero;
+            
+            // Jaga-jaga jika prefab tersimpan dalam keadaan mati, kita paksa hidupkan
+            spawnedBG.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("[BoatTransition] Prefab Background atau Environment Parent belum di-assign di Inspector.");
         }
     }
 
@@ -141,6 +172,11 @@ public class BoatTransitionController : MonoBehaviour
 public class IslandTransitionData
 {
     public string islandName;
+    
+    [Header("Visual Environment (Parallax)")]
+    [Tooltip("Masukkan Prefab Parallax Background (contoh: BG_Arborek) dari panel Project")]
+    public GameObject islandBackgroundPrefab; // <-- Slot tambahan untuk prefab background
+
     [TextArea(2, 5)]
     public string[] npcDialogueLines;
     public TriviaQuestion[] islandTriviaQuestions;
