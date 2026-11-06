@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+using Unity.Cinemachine;
 
 public class BirdInteractable : MonoBehaviour
 {
@@ -19,6 +21,22 @@ public class BirdInteractable : MonoBehaviour
     [Tooltip("Animator burung yang memiliki state diam")]
     [SerializeField] private Animator birdAnimator;
     [SerializeField] private string birdIdleState = "Idle";
+    [SerializeField] private string birdAnimationTrigger = "Play";
+    [SerializeField] private float delayBeforeBirdAnimation = 0.5f;
+    [SerializeField] private float delayAfterBirdAnimation = 3f;
+
+    [Header("Kamera Saat QTE Gagal")]
+    [Tooltip("Kamera khusus untuk menampilkan animasi burung")]
+    [SerializeField] private CinemachineCamera birdShowcaseCamera;
+    [Tooltip("Kamera player yang dinonaktifkan sementara")]
+    [SerializeField] private Camera playerCamera;
+    [Tooltip("Target kamera. Jika kosong, posisi objek animasi burung digunakan")]
+    [SerializeField] private Transform birdCameraTarget;
+    [SerializeField] private Vector3 birdCameraOffset = new Vector3(0f, 2f, -4f);
+    [SerializeField] private int activePriority = 20;
+    [SerializeField] private int defaultPriority = 0;
+    private Coroutine birdCameraRoutine;
+    private bool followBirdCamera;
 
     [Header("Setup Poin 10 (Ambil Foto)")]
     [SerializeField] private KeyCode photoKey = KeyCode.F;
@@ -38,6 +56,11 @@ public class BirdInteractable : MonoBehaviour
         if (promptFotoUI != null) promptFotoUI.SetActive(false);
         if (flashEffect != null) flashEffect.SetActive(false);
         if (birdAnimator != null) birdAnimator.enabled = false;
+        if (birdShowcaseCamera != null)
+        {
+            birdShowcaseCamera.enabled = true;
+            birdShowcaseCamera.Priority.Value = defaultPriority;
+        }
     }
 
     private void Update()
@@ -47,6 +70,19 @@ public class BirdInteractable : MonoBehaviour
         {
             AmbilFoto();
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!followBirdCamera || birdShowcaseCamera == null) return;
+
+        Transform target = birdCameraTarget != null
+            ? birdCameraTarget
+            : birdAnimation != null ? birdAnimation.transform : null;
+        if (target == null) return;
+
+        birdShowcaseCamera.transform.position = target.position + birdCameraOffset;
+        birdShowcaseCamera.transform.LookAt(target);
     }
 
     // --------------------------------------------------------
@@ -82,15 +118,8 @@ public class BirdInteractable : MonoBehaviour
         currentQTEProgress = 0;
         canTakePhoto = false;
         if (promptFotoUI != null) promptFotoUI.SetActive(false);
-        if (birdAnimator != null) birdAnimator.enabled = true;
-        if (birdAnimator != null && !string.IsNullOrEmpty(birdIdleState))
-        {
-            int idleStateHash = Animator.StringToHash(birdIdleState);
-            if (birdAnimator.HasState(0, idleStateHash))
-                birdAnimator.Play(idleStateHash, 0, 0f);
-            else
-                Debug.LogWarning($"[Cenderawasih] Animator tidak memiliki state '{birdIdleState}'.");
-        }
+        if (birdAnimation != null) birdAnimation.SetActive(true);
+        TampilkanAnimasiBurungDenganKamera();
 
         // 1. Hukuman: Teleport player kembali ke titik awal (Reset Point)
         if (playerTarget != null && resetPoint != null)
@@ -122,6 +151,48 @@ public class BirdInteractable : MonoBehaviour
         Debug.Log($"[Cenderawasih] Reset QTE selesai. {resetCount}/{qteTriggers.Length} Trigger diaktifkan.");
     }
 
+    private void TampilkanAnimasiBurungDenganKamera()
+    {
+        if (birdCameraRoutine != null)
+            StopCoroutine(birdCameraRoutine);
+        birdCameraRoutine = StartCoroutine(FollowBirdCamera());
+    }
+
+    private IEnumerator FollowBirdCamera()
+    {
+        if (birdShowcaseCamera != null)
+            birdShowcaseCamera.Priority.Value = activePriority;
+        followBirdCamera = birdShowcaseCamera != null;
+
+        yield return new WaitForSeconds(Mathf.Max(0f, delayBeforeBirdAnimation));
+
+        if (birdAnimator != null)
+        {
+            birdAnimator.enabled = true;
+            if (!string.IsNullOrEmpty(birdAnimationTrigger))
+                birdAnimator.SetTrigger(birdAnimationTrigger);
+        }
+
+        yield return new WaitForSeconds(Mathf.Max(0f, delayAfterBirdAnimation));
+
+        followBirdCamera = false;
+        if (birdShowcaseCamera != null)
+            birdShowcaseCamera.Priority.Value = defaultPriority;
+        ResetBirdToIdle();
+        birdCameraRoutine = null;
+    }
+
+    private void ResetBirdToIdle()
+    {
+        if (birdAnimator == null || string.IsNullOrEmpty(birdIdleState)) return;
+
+        int idleStateHash = Animator.StringToHash(birdIdleState);
+        if (birdAnimator.HasState(0, idleStateHash))
+            birdAnimator.Play(idleStateHash, 0, 0f);
+        else
+            Debug.LogWarning($"[Cenderawasih] Animator tidak memiliki state '{birdIdleState}'.");
+    }
+
     // --------------------------------------------------------
     // LOGIKA INTERNAL POIN 10 (FOTO)
     // --------------------------------------------------------
@@ -148,7 +219,7 @@ public class BirdInteractable : MonoBehaviour
         if (flashEffect != null)
         {
             flashEffect.SetActive(true);
-            Invoke(nameof(MatikanFlash), 0.15f); // Flash kilat selama 0.15 detik
+            Invoke(nameof(MatikanFlash), 1f); // Flash kilat selama 0.15 detik
         }
 
         // Update Quest Controller sesuai Guideline Poin 10

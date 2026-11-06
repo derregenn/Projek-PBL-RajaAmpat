@@ -30,6 +30,22 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
 
     private bool isDone = false;
 
+    private void Awake()
+    {
+        if (qteToTrigger != null)
+        {
+            qteToTrigger.onSuccess.AddListener(OnQTESuccess);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (qteToTrigger != null)
+        {
+            qteToTrigger.onSuccess.RemoveListener(OnQTESuccess);
+        }
+    }
+
     private void Start()
     {
         // Animator ini memainkan animasi awal secara mandiri, tanpa menunggu QTE.
@@ -58,8 +74,6 @@ public class BiotaInteractable : MonoBehaviour, IInteractable
         if (qteToTrigger != null)
         {
             qteToTrigger.StartQTE();
-            qteToTrigger.onSuccess.RemoveAllListeners();
-            qteToTrigger.onSuccess.AddListener(OnQTESuccess);
             return;
         }
 

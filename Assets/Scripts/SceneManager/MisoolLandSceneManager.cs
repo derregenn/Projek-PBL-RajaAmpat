@@ -28,12 +28,21 @@ public class MisoolLandSceneManager : MonoBehaviour
 
     private void Start()
     {
+        if (MasterQuestManager.Instance == null)
+        {
+            Debug.LogWarning("[MisoolLandSceneManager] MasterQuestManager tidak ditemukan; menunggu manager tersedia.");
+            return;
+        }
+
         Debug.Log("<color=cyan>STAGE SAAT INI ADALAH: " + MasterQuestManager.Instance.CurrentStage + "</color>");
         RefreshLandState();
     }
 
     private void Update()
     {
+        if (MasterQuestManager.Instance == null)
+            return;
+
         int stage = MasterQuestManager.Instance.CurrentStage;
         if (stage != lastObservedStage)
             RefreshLandState();
@@ -41,6 +50,9 @@ public class MisoolLandSceneManager : MonoBehaviour
 
     public void RefreshLandState()
     {
+        if (MasterQuestManager.Instance == null)
+            return;
+
         int stage = MasterQuestManager.Instance.CurrentStage;
         lastObservedStage = stage;
 

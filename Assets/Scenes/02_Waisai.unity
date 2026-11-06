@@ -533,8 +533,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: petugas_hub
   amountToAdd: 1
-  progressObjectiveOnTrigger: 0
+  requireObjectiveActive: 1
+  triggerOnce: 1
+  progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &78562402
@@ -550,8 +555,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 7d4f0c290d4a53743b1b0fc4e87aaa04, type: 2}
+  waitForCurrentQuestToFinish: 1
+  requiredPrerequisiteQuestID: 01_Waisai
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &78562403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,6 +577,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 1443418856}
   PlayerNextPrompt: {fileID: 680250237}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Selamat datang. Mau registrasi PIN Turis untuk akses kawasan konservasi?
   - Iya betul
@@ -581,6 +588,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 78562408}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -631,6 +639,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &78562404
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3605,6 +3616,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 460366931}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Kamu terbukti turis yang bijak dan bertanggung jawab. Sekarang kamu sudah siap
     menjelajah.
@@ -3614,6 +3626,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.02
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 193927118}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -3640,6 +3653,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &412539125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4056,6 +4072,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 1375513364}
   PlayerNextPrompt: {fileID: 680250237}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Halo! Baru sampai juga?
   - 'Oh, hi! Yes, I just arrived! '
@@ -4064,6 +4081,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 01000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 449681120}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -4076,6 +4094,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1410084802}
   npcLensSize: 2.5
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &449681125
@@ -4664,79 +4685,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &483142137
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: dialogueCamera
-      value: 
-      objectReference: {fileID: 1410084802}
-    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: gameplayCamera
-      value: 
-      objectReference: {fileID: 1608187689}
-    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: objectiveCamera
-      value: 
-      objectReference: {fileID: 1994520645284810212}
-    - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: orthographic size
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 13.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8904367384978472653, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: m_Name
-      value: Main Camera
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
 --- !u!1001 &539134374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6330,8 +6278,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &756967811
@@ -6347,8 +6300,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &756967812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6368,11 +6322,13 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 346163010}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - ini quest ya
   DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -6385,6 +6341,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1410084802}
   npcLensSize: 2
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &756967813
@@ -7868,6 +7827,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 318702905}
   PlayerNextPrompt: {fileID: 680250237}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Permisi, Pak. Sedang istirahat?
   - Iya Nak, Baru selesai menambat perahu. Laut lagi bagus anginnya hari ini
@@ -7877,6 +7837,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0100000000000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 944592166}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -7889,6 +7850,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1410084802}
   npcLensSize: 2.5
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &944592171
@@ -8144,7 +8108,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: objectiveID
-      value: Tour_Guide
+      value: tour_guide
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: progressObjectiveOnTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onObjectiveTriggered.m_PersistentCalls.m_Calls.Array.size
@@ -8938,12 +8906,14 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 204028852}
   PlayerNextPrompt: {fileID: 680250237}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Pemandangan di sini benar-benar unbelievable
   - Selamat berlibur ya!
   DialogueLineSpeakers: 0000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 1057765664}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -8956,6 +8926,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1410084802}
   npcLensSize: 2.5
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &1057765669
@@ -14210,7 +14183,6 @@ SceneRoots:
   - {fileID: 638748627}
   - {fileID: 549217786}
   - {fileID: 681049215}
-  - {fileID: 483142137}
   - {fileID: 539134374}
   - {fileID: 1362510632}
   - {fileID: 49479234}

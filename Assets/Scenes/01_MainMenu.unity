@@ -559,9 +559,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 551202745}
-    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 551202746}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!4 &519397264 stripped
@@ -679,34 +676,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
   m_PrefabInstance: {fileID: 519397263}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &551202745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551202743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c899b7a4e648f44c94c46ec9188d6b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GamePhaseManager
-  isWaisaiCompleted: 0
-  isPiaynemoCompleted: 0
-  isArborekCompleted: 0
-  isMisoolCompleted: 0
-  isSawinggraiCompleted: 0
-  isFriwenCompleted: 0
-  isGagCompleted: 0
-  currentCompletionPercentage: 0
-  isGagUnlocked: 0
-  OnPercentageUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-  OnGagUnlocked:
-    m_PersistentCalls:
-      m_Calls: []
-  targetIslandName: 
 --- !u!114 &551202746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1958,6 +1927,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161581035}
   m_CullTransparentMesh: 1
+--- !u!1 &1167385569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1167385571}
+  - component: {fileID: 1167385570}
+  m_Layer: 0
+  m_Name: GamePhaseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1167385570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167385569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c899b7a4e648f44c94c46ec9188d6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamePhaseManager
+  questProgressByIsland:
+  - island: 0
+    quests:
+    - questID: 01_Airstrip
+      percentageWeight: 5
+  - island: 1
+    quests:
+    - questID: 01_Waisai
+      percentageWeight: 5
+    - questID: 02_Waisai
+      percentageWeight: 5
+    - questID: 03_Waisai
+      percentageWeight: 5
+  - island: 2
+    quests:
+    - questID: 01_Piaynemo
+      percentageWeight: 5
+    - questID: 02_Piaynemo
+      percentageWeight: 5
+    - questID: 03_Piaynemo
+      percentageWeight: 5
+    - questID: 04_Piaynemo
+      percentageWeight: 5
+    - questID: 05_Piaynemo
+      percentageWeight: 5
+    - questID: 06_Piaynemo
+      percentageWeight: 5
+  - island: 4
+    quests:
+    - questID: 01_Misool
+      percentageWeight: 5
+    - questID: 02_Misool
+      percentageWeight: 5
+    - questID: 03_Misool
+      percentageWeight: 5
+    - questID: 04_Misool
+      percentageWeight: 5
+    - questID: 05_Misool
+      percentageWeight: 5
+    - questID: 06_Misool
+      percentageWeight: 5
+    - questID: 07_Misool
+      percentageWeight: 5
+  currentCompletionPercentage: 0
+  isGagUnlocked: 0
+  OnPercentageUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGagUnlocked:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &1167385571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167385569}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.54478, y: -2.15199, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!225 &1223156126 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 6060821216377157499, guid: 89730dc669f7f86478f498000ae375a3, type: 3}
@@ -2702,3 +2766,4 @@ SceneRoots:
   - {fileID: 519397263}
   - {fileID: 776584196}
   - {fileID: 2983410235213935254}
+  - {fileID: 1167385571}

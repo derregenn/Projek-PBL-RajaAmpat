@@ -15,7 +15,9 @@ public class QuestUI : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        // QuestUI TIDAK boleh DontDestroyOnLoad — ia harus menjadi bagian dari
+        // Canvas di masing-masing scene gameplay. QuestController akan
+        // mencarinya secara otomatis setiap kali scene baru dimuat.
     }
 
     void Start()

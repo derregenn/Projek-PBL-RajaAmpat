@@ -29,7 +29,12 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void Awake()
     {
-        // Selalu perbarui Instance ke TriviaQuizUI milik scene yang sedang aktif saat ini
+        // Selesaikan quiz pada instance lama sebelum mengganti Instance agar callback-nya tidak hilang.
+        if (Instance != null && Instance != this)
+        {
+            Instance.EndQuiz();
+        }
+
         Instance = this;
 
         if (choicesPanel != null) choicesPanel.SetActive(false);
@@ -173,11 +178,14 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void EndQuiz()
     {
+        StopAllCoroutines();
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
 
-        onQuizCompleted?.Invoke();
+        System.Action completed = onQuizCompleted;
+        onQuizCompleted = null;
+        completed?.Invoke();
     }
 }

@@ -1211,15 +1211,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.0529441
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.0667377
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.0529441
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1259,6 +1259,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778457785774907932, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1633206393516690866, guid: d9eef132e72927948852f0a723f816bb, type: 3}
@@ -1425,10 +1429,12 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1205617454}
   NextPrompt: {fileID: 1328651845}
   PlayerNextPrompt: {fileID: 1328651845}
+  playerMovementController: {fileID: 0}
   DialogueLines: []
   DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -5889,6 +5895,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 1328651845}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - "Indahnya pesona bawah laut disini\u2026"
   - '?'
@@ -5897,6 +5904,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.02
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
