@@ -23,6 +23,8 @@ public class MasterQuestManager : MonoBehaviour
     [Header("Event Perubahan Stage (Opsional)")]
     public UnityEvent<int> onStageChanged;
 
+    private float lastBuluSeribuTime = -1f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -97,10 +99,17 @@ public class MasterQuestManager : MonoBehaviour
     // --- FUNGSI HELPER UNTUK UNITY EVENT INSPECTOR ---
 
     /// <summary>
-    /// Dipanggil dari Inspector UnityEvent untuk pengambilan Bulu Seribu (Target 3, Stage 5)
+    /// Dipanggil dari Inspector UnityEvent atau kode C# untuk pengambilan Bulu Seribu (Target 3, Stage 5)
     /// </summary>
     public void AddBuluSeribu()
     {
+        // Mencegah penambahan ganda jika dipanggil bersamaan dari kode C# dan UnityEvent Inspector
+        if (Mathf.Approximately(Time.time, lastBuluSeribuTime))
+        {
+            return;
+        }
+        lastBuluSeribuTime = Time.time;
+
         // MasterQuestManager bertahan antar-scene, jadi pastikan event ini
         // mencatat progress pada pulau yang memiliki quest Bulu Seribu.
         SetActiveIsland(IslandType.Misool);

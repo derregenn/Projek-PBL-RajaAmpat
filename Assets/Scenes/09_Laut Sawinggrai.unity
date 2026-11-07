@@ -4023,6 +4023,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  pariManta: {fileID: 0}
 --- !u!1 &1302517382
 GameObject:
   m_ObjectHideFlags: 0
@@ -4058,6 +4059,9 @@ MonoBehaviour:
   warningUI: {fileID: 967757526}
   interactKey: 101
   fadeBlackScreen: {fileID: 1330517901}
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1302517384
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5777,10 +5781,12 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1618637142}
   NextPrompt: {fileID: 1618637141}
   PlayerNextPrompt: {fileID: 1618637141}
+  playerMovementController: {fileID: 0}
   DialogueLines: []
   DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -5793,6 +5799,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 2088530271}
   npcLensSize: 10
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1618637148
@@ -6507,7 +6516,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 12.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -7006,6 +7015,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 1618637141}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - "Indahnya pesona bawah laut disini\u2026"
   - '?'
@@ -7014,6 +7024,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.02
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -7026,6 +7037,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 4.5
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &1931851761
@@ -7305,8 +7319,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 4a3d10a13dc416c49bfde4034f72dda1, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!1001 &1972549890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7754,7 +7769,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 10
+    OrthographicSize: 12.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -7945,6 +7960,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: penyu_misool
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -7961,6 +7978,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &2113295043
 Animator:
   serializedVersion: 7

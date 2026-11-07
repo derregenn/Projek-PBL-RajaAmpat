@@ -13,6 +13,23 @@ public class TriviaQuizUI : MonoBehaviour
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
 
+    [Header("Audio Settings (Pattern Recognition & Feedback)")]
+    [SerializeField] private AudioSource audioSource;
+    [Tooltip("SFX/Jingle yang diputar saat kuis dimulai agar player mengenali pattern masuknya state trivia")]
+    [SerializeField] private AudioClip startQuizSFX;
+    [Tooltip("SFX saat tombol pilihan jawaban di-hover oleh kursor/navigasi")]
+    [SerializeField] private AudioClip buttonHoverSFX;
+    [Tooltip("SFX saat jawaban benar")]
+    [SerializeField] private AudioClip correctAnswerSFX;
+    [Tooltip("SFX saat jawaban salah")]
+    [SerializeField] private AudioClip wrongAnswerSFX;
+    [Range(0f, 1f)][SerializeField] private float sfxVolume = 1f;
+
+    [Header("Button Hover Settings")]
+    [SerializeField] private bool enableButtonHover = true;
+    [SerializeField] private float hoverScale = 1.06f;
+    [SerializeField] private float hoverTransitionSpeed = 14f;
+
     [Header("Feedback per Question")]
     [SerializeField] private string[] correctFeedbackMessages;
     [SerializeField] private string[] wrongFeedbackMessages;
@@ -38,6 +55,19 @@ public class TriviaQuizUI : MonoBehaviour
         Instance = this;
 
         if (choicesPanel != null) choicesPanel.SetActive(false);
+
+        // Setup audio source otomatis jika belum diset di inspector
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+            }
+        }
+
+        SetupOptionButtonHovers();
     }
 
     private void Update()
@@ -56,6 +86,7 @@ public class TriviaQuizUI : MonoBehaviour
         isQuizActive = true;
         isShowingFeedback = false;
 
+        SetupOptionButtonHovers();
         StartCoroutine(EnableCloseDelay());
         ShowQuestion();
     }
@@ -76,6 +107,9 @@ public class TriviaQuizUI : MonoBehaviour
         }
 
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
+
+        // Mainkan SFX setiap kali pertanyaan ditampilkan.
+        PlaySFX(startQuizSFX);
 
         // 1. Tampilkan teks pertanyaan di kotak dialog NPC
         if (dialogueSystem != null)
@@ -112,16 +146,24 @@ public class TriviaQuizUI : MonoBehaviour
     {
         if (isShowingFeedback) return;
 
+        ResetButtonScales();
+
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
 
         if (selectedIndex == q.correctAnswerIndex)
         {
+            // SFX Jawaban Benar
+            PlaySFX(correctAnswerSFX);
+
             // Jawaban Benar -> Tampilkan feedback di dialogue NPC lalu lanjut ke pertanyaan berikutnya
             string successMsg = GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
             StartCoroutine(ShowFeedbackRoutine(successMsg, true));
         }
         else
         {
+            // SFX Jawaban Salah
+            PlaySFX(wrongAnswerSFX);
+
             // Jawaban Salah -> Tampilkan feedback di dialogue NPC lalu ulangi pertanyaan
             string wrongMsg = GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
             StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
@@ -170,6 +212,7 @@ public class TriviaQuizUI : MonoBehaviour
 
     public void CloseQuiz()
     {
+        ResetButtonScales();
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
@@ -179,6 +222,7 @@ public class TriviaQuizUI : MonoBehaviour
     private void EndQuiz()
     {
         StopAllCoroutines();
+        ResetButtonScales();
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
@@ -187,5 +231,48 @@ public class TriviaQuizUI : MonoBehaviour
         System.Action completed = onQuizCompleted;
         onQuizCompleted = null;
         completed?.Invoke();
+    }
+
+    private void SetupOptionButtonHovers()
+    {
+        if (!enableButtonHover || optionButtons == null) return;
+
+        foreach (var btn in optionButtons)
+        {
+            if (btn == null) continue;
+
+            TriviaButtonHover hoverComp = btn.GetComponent<TriviaButtonHover>();
+            if (hoverComp == null)
+            {
+                hoverComp = btn.gameObject.AddComponent<TriviaButtonHover>();
+            }
+
+            hoverComp.Initialize(hoverScale, hoverTransitionSpeed, buttonHoverSFX, audioSource, sfxVolume);
+        }
+    }
+
+    private void ResetButtonScales()
+    {
+        if (optionButtons == null) return;
+        foreach (var btn in optionButtons)
+        {
+            if (btn == null) continue;
+            var hoverComp = btn.GetComponent<TriviaButtonHover>();
+            if (hoverComp != null) hoverComp.ResetScaleInstant();
+        }
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(clip, sfxVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(clip, Camera.main != null ? Camera.main.transform.position : Vector3.zero, sfxVolume);
+        }
     }
 }

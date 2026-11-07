@@ -61,19 +61,28 @@ public class TrashInteractable : MonoBehaviour, IInteractable
 
         collectionInProgress = false;
 
-        // 1. Jalankan Logika Quest Regen
+        // 1. Jalankan Logika Quest
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
         }
 
-        // 2. Putar Suara
+        // 2. Integrasi MasterQuestManager (Hama Bulu Seribu Misool)
+        if (objectiveID == "collect_buluseribu")
+        {
+            if (MasterQuestManager.Instance != null)
+            {
+                MasterQuestManager.Instance.AddBuluSeribu();
+            }
+        }
+
+        // 3. Putar Suara
         if (collectSound != null)
         {
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
         }
 
-        // 3. Update UI Progress Bar Kamu
+        // 4. Update UI Progress Bar Kamu
         totalCollected += amountToAdd;
         if (collectibleUIText != null)
         {
@@ -81,14 +90,16 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             collectibleUIText.text = "Progress: " + persentase.ToString("F0") + "%"; // "F0" agar tidak ada koma desimal
         }
 
-        // 4. Buka halaman jurnal baru jika sampah ini punya cerita (Integrasi UI Kanan)
+        // 5. Buka halaman jurnal baru jika sampah ini punya cerita (Integrasi UI Kanan)
         if (unlockJournalID != -1 && QuestJournalManager.Instance != null)
         {
             QuestJournalManager.Instance.TakeSpecificPhoto(unlockJournalID);
         }
 
+        // 6. Panggil Event Inspector jika ada
         onInteractComplete?.Invoke();
-        // 5. Hapus sampah dari layar
+
+        // 7. Hapus sampah/hama dari layar
         Destroy(gameObject);
     }
 

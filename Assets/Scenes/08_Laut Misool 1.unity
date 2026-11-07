@@ -926,7 +926,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 10
+    OrthographicSize: 12.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -5971,8 +5971,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: f86e3e57e781bd445a94b2633d62e071, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!1 &1666714367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8774996007655642343, guid: 962830dd94e60114690e1e128e386d21, type: 3}

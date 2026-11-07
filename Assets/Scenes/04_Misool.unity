@@ -629,6 +629,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver2
   questToGive: {fileID: 11400000, guid: 89060f7fed81d9c488ed370d23087658, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
   requireBoxCollider2D: 0
   giveQuestOnPlayerTrigger: 1
@@ -2561,8 +2563,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: ae60a048ec9ebbe4b864aadda8c505ab, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &438320362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,6 +2585,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 732993963}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Sama, saya juga cuma berani berenang di pinggiran dangkal!
   - Tapi itu Pari Mantanya kasihan sekali, sayapnya tersangkut jaring
@@ -2593,6 +2597,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000000000000000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -3921,8 +3926,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: pesisir_pantai
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &688853826
@@ -5106,8 +5116,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: 
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &893989706
@@ -5123,8 +5138,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: ba4b37366449e5d438c6a3750a5913ea, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &893989707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5144,6 +5160,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1492545980}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Ini Pak, semua hama Bulu Seribunya sudah berhasil saya amankan dari terumbu karang
   - "Luar biasa! Kerjamu sangat rapi, kawan\u2026"
@@ -5156,6 +5173,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 01000000000000000000000000000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -7107,6 +7125,119 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
+--- !u!1001 &1170711801
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 155158413922423083, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -6302528779924984040, guid: 671b7e4c68e420c4d89ec9fb5a6fda4b, type: 3}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2128141074870209410, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3140573611453162455, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_Name
+      value: Canvas_Welcome
+      objectReference: {fileID: 0}
+    - target: {fileID: 3140573611453162455, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358953609451597010, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1081
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358953609451597010, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 308
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9333f55ecfb417d41b42c34fda981bac, type: 3}
 --- !u!1 &1174263397
 GameObject:
   m_ObjectHideFlags: 0
@@ -7158,8 +7289,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: pesisir_pantai
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1174263400
@@ -7175,8 +7311,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &1174263401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7196,6 +7333,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 2075810290}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Sudah aman, Bu! Jaringnya sudah saya potong dan Pari Mantanya sudah berenang
     bebas lagi
@@ -7203,6 +7341,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0100000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -7500,8 +7639,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: petugas_report
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1236486751
@@ -7517,8 +7661,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 24fa48d3d97a2d146806b016348b6dd6, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &1236486752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7538,6 +7683,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 146954193}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
     terumbu karang
@@ -7555,6 +7701,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 01000000000000000000000000000000000000000000000000000000000000000100000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10111,8 +10258,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: petugas_konservasi
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1446603230
@@ -10128,8 +10280,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &1446603231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10149,12 +10302,14 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1621872369}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Sama, saya juga cuma berani berenang di pinggiran dangkal!
   - Semoga liburanmu di Raja Ampat menyenangkan ya, Nak
   DialogueLineSpeakers: 0000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10396,6 +10551,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1719262658}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Mau melihat keindahan terumbu karang Misool dari dekat ya?
   - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
@@ -10405,6 +10561,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10559,8 +10716,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: petugas_konservasi
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1482452497
@@ -10576,8 +10738,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 3aaf0a9a03554d541be8933670510c70, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!61 &1482452498
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11000,8 +11163,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &1599505558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11021,6 +11185,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1813550121}
   PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Aduh, kasihan sekali itu... Bagaimana ini, Kakak?
   - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
@@ -11033,6 +11198,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000000000000100000000000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -11401,8 +11567,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: penyu_misool
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1621872369
@@ -13561,6 +13732,15 @@ MonoBehaviour:
   - {fileID: 2119566194}
   - {fileID: 1666773238}
   - {fileID: 590674048}
+  audioSource: {fileID: 0}
+  startQuizSFX: {fileID: 0}
+  buttonHoverSFX: {fileID: 0}
+  correctAnswerSFX: {fileID: 0}
+  wrongAnswerSFX: {fileID: 0}
+  sfxVolume: 1
+  enableButtonHover: 1
+  hoverScale: 1.06
+  hoverTransitionSpeed: 14
   correctFeedbackMessages: []
   wrongFeedbackMessages: []
   closeKey: 101
@@ -15571,3 +15751,4 @@ SceneRoots:
   - {fileID: 50574535}
   - {fileID: 1080521346}
   - {fileID: 722736205263521838}
+  - {fileID: 1170711801}
