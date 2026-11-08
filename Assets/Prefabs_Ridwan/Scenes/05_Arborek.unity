@@ -260,7 +260,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: kerang_arborek
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -319,6 +318,7 @@ MonoBehaviour:
   objectiveID: kerang_arborek
   amountToAdd: 1
   collectSound: {fileID: 0}
+  holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: 1
 --- !u!61 &17665925
@@ -794,6 +794,10 @@ PrefabInstance:
     - target: {fileID: 7378970224338107521, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Name
       value: AreaFoto_Sasi
+      objectReference: {fileID: 0}
+    - target: {fileID: 7378970224338107521, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8060814205940713165, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1645,7 +1649,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: 
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -2845,7 +2848,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: tetua_adat2
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -4330,6 +4332,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 505551483}
   defaultBGM: {fileID: 8300000, guid: ba5bbb00f069de74c8d535f962fd7e00, type: 3}
+  bgmVolume: 1
+  audioLayers: []
 --- !u!82 &505551483
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4680,7 +4684,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: sasi_arborek
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -4709,26 +4712,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86119c59c15d31b47adffeced0278380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SasiInteractable
-  qteToTrigger: {fileID: 752712733}
-  uiPromptGroup: {fileID: 1210739596}
-  patokSasiObject: {fileID: 2078435497}
+  uiPrompt: {fileID: 0}
+  qtePanel: {fileID: 0}
   playerAnimator: {fileID: 1122863887}
-  crouchAnimParameter: isCrouching
-  onSasiCompleted:
+  crouchBoolName: isCrouching
+  OnSasiCompleted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1935109551}
-        m_TargetAssemblyTypeName: ArborekFaderManager, Assembly-CSharp
-        m_MethodName: PlayTransitionSasi
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!61 &519875270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6173,7 +6163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2325024299419238902, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 17.88
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: objectiveID
@@ -6257,7 +6247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3918571229033141237, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4395482981497428364, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -6317,7 +6307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8235881132182447253, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 22.35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8494008422338546204, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -9045,7 +9035,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: panjat_tebing
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -10021,6 +10010,7 @@ MonoBehaviour:
   objectiveID: umpan_arborek
   amountToAdd: 1
   collectSound: {fileID: 0}
+  holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
 --- !u!61 &1313240535
@@ -10157,7 +10147,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: umpan_arborek
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -11354,7 +11343,6 @@ MonoBehaviour:
   wrongFeedbackMessages:
   - Bukan begitu, kawan. Sasi bukan untuk menutup wisata atau membagi wilayah, coba
     pilih jawaban yang bijak!
-  closeKey: 101
 --- !u!1 &1434921109
 GameObject:
   m_ObjectHideFlags: 0
@@ -11586,12 +11574,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86119c59c15d31b47adffeced0278380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SasiInteractable
-  qteToTrigger: {fileID: 752712733}
-  uiPromptGroup: {fileID: 1210739596}
-  patokSasiObject: {fileID: 1279433045}
+  uiPrompt: {fileID: 0}
+  qtePanel: {fileID: 0}
   playerAnimator: {fileID: 1122863887}
-  crouchAnimParameter: isCrouching
-  onSasiCompleted:
+  crouchBoolName: isCrouching
+  OnSasiCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1454387972
@@ -11608,7 +11595,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: sasi_arborek
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -13123,7 +13109,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: antar_umpan
   amountToAdd: 1
-  requireActiveQuest: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -13778,6 +13763,8 @@ MonoBehaviour:
     - Sebagai penanda batas wilayah kekuasaan antar suku di Raja Ampat
     correctAnswerIndex: 1
   dialogueSystem: {fileID: 1668667927}
+  postTriviaDialogue: {fileID: 0}
+  questGiver: {fileID: 0}
   onQuizSuccessEvent:
     m_PersistentCalls:
       m_Calls:
@@ -13810,7 +13797,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: tetua_adat
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -16138,6 +16124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d074e9a81462c243acd94e9e8991a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
+  pauseMenuUI: {fileID: 0}
 --- !u!1 &1978286729
 GameObject:
   m_ObjectHideFlags: 0
@@ -16769,7 +16756,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: antar_umpan
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -17634,7 +17620,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: antar_kerang
   amountToAdd: 1
-  requireActiveQuest: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -17925,7 +17910,7 @@ SpriteRenderer:
   m_Size: {x: 14.14, y: 4.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &2145643863
 Transform:
