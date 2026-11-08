@@ -21,6 +21,7 @@ public class PauseManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        ResolvePauseMenuReference();
         
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -32,12 +33,54 @@ public class PauseManager : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-       ResumeGame(); 
+        if (pauseMenuUI == null)
+        {
+            pauseMenuUI = GameObject.Find("Canvas_Pause") ?? GameObject.Find("Canvas");
+        }
+
+        ResolvePauseMenuReference();
+        ResumeGame();
     }
 
     private void Start()
     {
+        ResolvePauseMenuReference();
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+    }
+
+    private void ResolvePauseMenuReference()
+    {
+        if (pauseMenuUI == null || pauseMenuUI.GetComponent<Canvas>() == null)
+            return;
+
+        Transform[] descendants = pauseMenuUI.GetComponentsInChildren<Transform>(true);
+        Transform pausePanel = null;
+
+        foreach (Transform child in descendants)
+        {
+            if (child.name == "PauseMenuPanel")
+            {
+                pausePanel = child;
+                break;
+            }
+
+            if (child.name == "PromptPanel")
+                pausePanel = child;
+        }
+
+        if (pausePanel == null)
+        {
+            Debug.LogError(
+                "[PauseManager] pauseMenuUI points to a Canvas, but no PauseMenuPanel or PromptPanel child was found. Assign the pause panel instead.",
+                this);
+            pauseMenuUI = null;
+            return;
+        }
+
+        Debug.LogWarning(
+            "[PauseManager] pauseMenuUI was assigned to a Canvas. Using its child '" + pausePanel.name + "' instead.",
+            this);
+        pauseMenuUI = pausePanel.gameObject;
     }
 
     private void Update()

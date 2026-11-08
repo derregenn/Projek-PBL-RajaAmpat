@@ -343,6 +343,7 @@ public class Dialogue : MonoBehaviour
     {
         if (string.IsNullOrEmpty(questionText)) return;
 
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(true);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);

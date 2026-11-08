@@ -392,6 +392,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: kerang_arborek
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -420,6 +422,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &17665923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,8 +438,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &17665924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +459,9 @@ MonoBehaviour:
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: 1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &17665925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -926,6 +935,14 @@ PrefabInstance:
     - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: m_Size.x
+      value: 0.7606288
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.11968559
       objectReference: {fileID: 0}
     - target: {fileID: 7378970224338107521, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Name
@@ -1796,8 +1813,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: 
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &153149758
@@ -1813,8 +1835,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: b31d09039ac335944a8e6ec42b927677, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &153149759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3096,8 +3119,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: tetua_adat2
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &292704872
@@ -3113,8 +3141,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 7afaf405e095be64e9e17e138f9ec72d, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &292704873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5064,6 +5093,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: sasi_arborek
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -5080,6 +5111,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &519875269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5175,8 +5209,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: acd5407f4b5dc304c9aa6b963ebcbf00, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &530993217 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2241855882261979076, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
@@ -6798,7 +6833,7 @@ PrefabInstance:
     - target: {fileID: 8496680159648469688, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: panelHUD
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 207574586}
     - target: {fileID: 8496680159648469688, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -9505,8 +9540,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: panjat_tebing
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &1203605842
@@ -10463,8 +10503,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &1313240534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10483,6 +10524,9 @@ MonoBehaviour:
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10617,6 +10661,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: umpan_arborek
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -10645,6 +10691,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1329722916
 GameObject:
   m_ObjectHideFlags: 0
@@ -11812,11 +11861,21 @@ MonoBehaviour:
   - {fileID: 1619692034}
   - {fileID: 1619692032}
   - {fileID: 1619692030}
+  audioSource: {fileID: 0}
+  startQuizSFX: {fileID: 0}
+  buttonHoverSFX: {fileID: 0}
+  correctAnswerSFX: {fileID: 0}
+  wrongAnswerSFX: {fileID: 0}
+  sfxVolume: 1
+  enableButtonHover: 1
+  hoverScale: 1.06
+  hoverTransitionSpeed: 14
   correctFeedbackMessages:
   - Benar sekali, Pemahamanmu luar biasa!
   wrongFeedbackMessages:
   - Bukan begitu, kawan. Sasi bukan untuk menutup wisata atau membagi wilayah, coba
     pilih jawaban yang bijak!
+  closeKey: 101
 --- !u!1 &1434921109
 GameObject:
   m_ObjectHideFlags: 0
@@ -12069,8 +12128,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: sasi_arborek
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1459332658
@@ -13583,8 +13647,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: antar_umpan
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1665425514
@@ -13600,8 +13669,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 9ac4f7db2f28f794ca99fffc438d42d5, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &1665425515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14082,7 +14152,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1668667931}
         m_TargetAssemblyTypeName: NPCTourGuide, Assembly-CSharp
-        m_MethodName: Interact
+        m_MethodName: StartQuizAfterDialogue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14271,8 +14341,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: tetua_adat
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &1683606946
@@ -17298,8 +17373,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 5a0dcabd6ef931349ab4f603bc6daeb9, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &2022872704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17492,8 +17568,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: antar_umpan
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!82 &2022872709
@@ -18356,6 +18437,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: antar_kerang
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -18372,6 +18455,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2143221577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18385,8 +18471,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: b31d09039ac335944a8e6ec42b927677, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!114 &2143221578
 MonoBehaviour:
   m_ObjectHideFlags: 0

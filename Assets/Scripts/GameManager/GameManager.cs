@@ -48,19 +48,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (pauseMenuUI == null)
-        {
-            GameObject canvas = GameObject.Find("Canvas_Pause") ?? GameObject.Find("Canvas");
-            if (canvas != null)
-            {
-                Transform pausePanel = canvas.transform.Find("PauseMenuPanel") ?? canvas.transform.Find("PromptPanel");
-                if (pausePanel != null)
-                {
-                    pauseMenuUI = pausePanel.gameObject;
-                }
-            }
-        }
-
+        pauseMenuUI = FindPauseMenuUI();
         ResumeGame();
     }
 
@@ -68,6 +56,33 @@ public class GameManager : MonoBehaviour
     {
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    private GameObject FindPauseMenuUI()
+    {
+        GameObject pauseCanvas = GameObject.Find("Canvas_Pause");
+        if (pauseCanvas != null)
+        {
+            Transform[] descendants = pauseCanvas.GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in descendants)
+            {
+                if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                    return child.gameObject;
+            }
+        }
+
+        GameObject canvas = GameObject.Find("Canvas");
+        if (canvas != null)
+        {
+            Transform[] descendants = canvas.GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in descendants)
+            {
+                if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                    return child.gameObject;
+            }
+        }
+
+        return null;
     }
 
     private void Update()
