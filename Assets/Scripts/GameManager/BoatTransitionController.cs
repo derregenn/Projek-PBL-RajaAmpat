@@ -1,3 +1,5 @@
+using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,18 +28,24 @@ public class BoatTransitionController : MonoBehaviour
         if (GamePhaseManager.Instance != null && !string.IsNullOrEmpty(GamePhaseManager.Instance.targetIslandName))
         {
             currentTarget = GamePhaseManager.Instance.targetIslandName;
-            Debug.Log($"[BoatTransition] Target pulau terdeteksi: '{currentTarget}'");
+            Debug.Log($"[BoatTransition] Target pulau terdeteksi dari GamePhaseManager: '{currentTarget}'");
         }
-        // 2. Fallback: Cek dari PlayerPrefs (Sangat aman jika GamePhaseManager sempat reset)
-        else if (PlayerPrefs.HasKey("TargetIsland"))
+        // 2. Ambil target dari MapController
+        else if (!string.IsNullOrEmpty(MapController.targetIslandScene))
+        {
+            currentTarget = MapController.targetIslandScene;
+            Debug.Log($"[BoatTransition] Target pulau terdeteksi dari MapController: '{currentTarget}'");
+        }
+        // 3. Fallback: Cek dari PlayerPrefs
+        else if (PlayerPrefs.HasKey("TargetIsland") && !string.IsNullOrEmpty(PlayerPrefs.GetString("TargetIsland")))
         {
             currentTarget = PlayerPrefs.GetString("TargetIsland");
             Debug.Log($"[BoatTransition] Target dari PlayerPrefs: '{currentTarget}'");
         }
         else
         {
-            // Jika testing langsung di scene kapal, gunakan default Sawinggrai
-            currentTarget = "06_Sawinggrai";
+            // Jika testing langsung di scene kapal, gunakan default 03_Pianemo
+            currentTarget = "03_Pianemo";
             Debug.LogWarning($"[BoatTransition] Target tidak ditemukan. Menggunakan fallback: '{currentTarget}'");
         }
 
@@ -46,49 +54,58 @@ public class BoatTransitionController : MonoBehaviour
 
     private void LoadIslandDataAndStart()
     {
+        string targetKey = NormalizeIslandKey(currentTarget);
+
         if (islandData != null)
         {
             foreach (var data in islandData)
             {
-                if (data != null && !string.IsNullOrEmpty(data.islandName))
-                {
-                    string targetClean = currentTarget.ToLower().Trim();
-                    string dataClean = data.islandName.ToLower().Trim();
+                if (data == null || string.IsNullOrEmpty(data.islandName)) continue;
 
-                    // Pencocokan fleksibel (misal "06_Sawinggrai" cocok dengan "Sawinggrai")
-                    if (targetClean == dataClean || targetClean.Contains(dataClean) || dataClean.Contains(targetClean))
-                    {
-                        currentData = data;
-                        Debug.Log($"[BoatTransition] Menggunakan data dialog untuk: '{data.islandName}'");
-                        break;
-                    }
+                string dataKey = NormalizeIslandKey(data.islandName);
+
+                // Pencocokan fleksibel (misal "06_Sawinggrai" cocok dengan "Sawinggrai")
+                if (targetKey == dataKey || targetKey.Contains(dataKey) || dataKey.Contains(targetKey))
+                {
+                    currentData = data;
+                    Debug.Log($"[BoatTransition] Menggunakan data dialog untuk: '{data.islandName}' (Key: {dataKey})");
+                    break;
                 }
             }
         }
 
-        if (currentData != null)
+        if (currentData == null)
         {
-            SpawnParallaxBackground(); // <-- Fitur Spawn Background ditambahkan di sini
-            PlayIntroDialogue();
+            Debug.LogWarning($"[BoatTransition] Data pulau '{currentTarget}' tidak ditemukan di Inspector islandData. Membuat fallback data.");
+            currentData = new IslandTransitionData
+            {
+                islandName = currentTarget,
+                npcDialogueLines = new string[] { $"Kapal kita sedang berlayar menuju {currentTarget}. Nikmati pemandangannya!" }
+            };
         }
-        else
-        {
-            Debug.LogError($"[BoatTransition] Data pulau '{currentTarget}' tidak ditemukan di Inspector islandData!", this);
-        }
+
+        SpawnParallaxBackground();
+        PlayIntroDialogue();
     }
 
-    // <-- Method baru untuk Spawn Background
+    private string NormalizeIslandKey(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return "";
+        string clean = name.ToLower().Trim();
+        // Hapus prefix angka seperti 01_, 02_, dst
+        clean = Regex.Replace(clean, @"^\d+_", "");
+        // Normalisasi ejaan Pianemo / Piaynemo
+        clean = clean.Replace("piaynemo", "pianemo");
+        clean = clean.Replace(" ", "").Replace("_", "");
+        return clean;
+    }
+
     private void SpawnParallaxBackground()
     {
-        if (currentData.islandBackgroundPrefab != null && environmentParent != null)
+        if (currentData != null && currentData.islandBackgroundPrefab != null && environmentParent != null)
         {
-            // Spawn background dan simpan ke variabel
             GameObject spawnedBG = Instantiate(currentData.islandBackgroundPrefab, environmentParent);
-            
-            // PAKSA posisi lokalnya ke titik tengah (0,0,0) agar pasti masuk kamera
             spawnedBG.transform.localPosition = Vector3.zero;
-            
-            // Jaga-jaga jika prefab tersimpan dalam keadaan mati, kita paksa hidupkan
             spawnedBG.SetActive(true);
         }
         else
@@ -99,15 +116,19 @@ public class BoatTransitionController : MonoBehaviour
 
     private void PlayIntroDialogue()
     {
+        if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
+
         if (dialogueSystem == null)
         {
-            Debug.LogError("[BoatTransition] dialogueSystem belum di-assign di Inspector!", this);
+            Debug.LogWarning("[BoatTransition] dialogueSystem tidak ditemukan di scene! Langsung lanjut ke trivia/transisi.", this);
+            StartTrivia();
             return;
         }
 
-        if (currentData.npcDialogueLines == null || currentData.npcDialogueLines.Length == 0)
+        if (currentData == null || currentData.npcDialogueLines == null || currentData.npcDialogueLines.Length == 0)
         {
-            Debug.LogError($"[BoatTransition] npcDialogueLines untuk '{currentTarget}' kosong!", this);
+            Debug.LogWarning($"[BoatTransition] npcDialogueLines untuk '{currentTarget}' kosong, langsung lanjut.");
+            StartTrivia();
             return;
         }
 
@@ -116,9 +137,12 @@ public class BoatTransitionController : MonoBehaviour
 
     private void StartTrivia()
     {
-        if (TriviaQuizUI.Instance != null && currentData != null && currentData.islandTriviaQuestions != null && currentData.islandTriviaQuestions.Length > 0)
+        if (TriviaQuizUI.Instance == null) triviaSystem = FindFirstObjectByType<TriviaQuizUI>();
+        else triviaSystem = TriviaQuizUI.Instance;
+
+        if (triviaSystem != null && currentData != null && currentData.islandTriviaQuestions != null && currentData.islandTriviaQuestions.Length > 0)
         {
-            TriviaQuizUI.Instance.StartQuiz(currentData.islandTriviaQuestions, FinishTransition);
+            triviaSystem.StartQuiz(currentData.islandTriviaQuestions, FinishTransition);
         }
         else
         {
@@ -129,18 +153,50 @@ public class BoatTransitionController : MonoBehaviour
 
     private void FinishTransition()
     {
-        int buildIndex = FindTargetSceneBuildIndex();
-        if (buildIndex < 0)
-        {
-            Debug.LogError($"[BoatTransition] Scene '{currentTarget}' tidak ditemukan di Build Settings. Tambahkan scene tersebut ke Scenes In Build dan pastikan namanya cocok.", this);
-            return;
-        }
-
         PlayerPrefs.SetInt("Visited_" + currentTarget, 1);
+        PlayerPrefs.SetString("SavedScene", currentTarget);
         PlayerPrefs.Save();
 
-        // Pindah ke scene pulau tujuan yang sesungguhnya
-        SceneManager.LoadScene(buildIndex);
+        // Update status cerita
+        UpdateStoryPhaseForTarget(currentTarget);
+
+        int buildIndex = FindTargetSceneBuildIndex();
+        if (buildIndex >= 0)
+        {
+            Debug.Log($"[BoatTransition] Memuat target scene via BuildIndex {buildIndex}: '{currentTarget}'");
+            SceneManager.LoadScene(buildIndex);
+        }
+        else
+        {
+            Debug.LogWarning($"[BoatTransition] Scene '{currentTarget}' tidak ditemukan di Build Settings via name exact. Mencoba LoadScene langsung.");
+            try
+            {
+                SceneManager.LoadScene(currentTarget);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[BoatTransition] Gagal memuat '{currentTarget}': {ex.Message}. Fallback ke 02_Waisai.");
+                SceneManager.LoadScene("02_Waisai");
+            }
+        }
+    }
+
+    private void UpdateStoryPhaseForTarget(string sceneName)
+    {
+        string norm = NormalizeIslandKey(sceneName);
+
+        if (StoryManager.Instance != null)
+        {
+            if (norm.Contains("waisai") || norm.Contains("airstrip")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Arrival_Airstrip;
+            else if (norm.Contains("pianemo")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Pianemo;
+            else if (norm.Contains("misool")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Misool;
+            else if (norm.Contains("arborek")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Arborek;
+            else if (norm.Contains("sawinggrai")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Sawinggrai;
+            else if (norm.Contains("friwen")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Friwen;
+            else if (norm.Contains("gag")) StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Gag_Climax;
+            
+            StoryManager.Instance.SaveProgress();
+        }
     }
 
     private int FindTargetSceneBuildIndex()
@@ -149,18 +205,23 @@ public class BoatTransitionController : MonoBehaviour
         int separatorIndex = Mathf.Max(targetName.LastIndexOf('/'), targetName.LastIndexOf('\\'));
         if (separatorIndex >= 0)
             targetName = targetName.Substring(separatorIndex + 1);
-        if (targetName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
+        if (targetName.EndsWith(".unity", StringComparison.OrdinalIgnoreCase))
             targetName = targetName.Substring(0, targetName.Length - 6);
+
+        string targetNorm = NormalizeIslandKey(targetName);
 
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
             int pathSeparatorIndex = Mathf.Max(scenePath.LastIndexOf('/'), scenePath.LastIndexOf('\\'));
             string sceneName = scenePath.Substring(pathSeparatorIndex + 1);
-            if (sceneName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
+            if (sceneName.EndsWith(".unity", StringComparison.OrdinalIgnoreCase))
                 sceneName = sceneName.Substring(0, sceneName.Length - 6);
 
-            if (string.Equals(sceneName, targetName, System.StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(sceneName, targetName, StringComparison.OrdinalIgnoreCase))
+                return i;
+
+            if (NormalizeIslandKey(sceneName) == targetNorm)
                 return i;
         }
 
@@ -175,7 +236,7 @@ public class IslandTransitionData
     
     [Header("Visual Environment (Parallax)")]
     [Tooltip("Masukkan Prefab Parallax Background (contoh: BG_Arborek) dari panel Project")]
-    public GameObject islandBackgroundPrefab; // <-- Slot tambahan untuk prefab background
+    public GameObject islandBackgroundPrefab; // Slot prefab background
 
     [TextArea(2, 5)]
     public string[] npcDialogueLines;

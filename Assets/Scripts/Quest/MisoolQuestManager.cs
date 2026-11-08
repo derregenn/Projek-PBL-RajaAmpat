@@ -2,32 +2,41 @@ using UnityEngine;
 
 public class MisoolQuestManager : MonoBehaviour
 {
-    public static MisoolQuestManager Instance { get; private set; }
+    private static MisoolQuestManager _instance;
+    public static MisoolQuestManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<MisoolQuestManager>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("MisoolQuestManager");
+                    _instance = go.AddComponent<MisoolQuestManager>();
+                    DontDestroyOnLoad(go);
+                }
+            }
+            return _instance;
+        }
+    }
 
-    // String Key terpusat untuk mencegah typo
     private const string STAGE_KEY = "Misool_QuestStage";
     private const string COTS_KEY = "Misool_CotsCount";
     private const string EXIT_KEY = "Misool_LastExitPoint";
 
     private void Awake()
     {
-        // Pola Singleton & Persistent Object antar-scene
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        _instance = this;
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
     }
 
-    // ==========================================
-    // 1. MANAJEMEN QUEST STAGE (0 - 9)
-    // ==========================================
-
-    /// <summary>
-    /// Membaca stage quest saat ini dari PlayerPrefs
-    /// </summary>
     public int CurrentStage
     {
         get => PlayerPrefs.GetInt(STAGE_KEY, 0);
@@ -38,24 +47,25 @@ public class MisoolQuestManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Fungsi utama untuk menaikkan/mengubah stage quest
-    /// </summary>
     public void AdvanceStageTo(int newStage)
     {
         CurrentStage = newStage;
         Debug.Log($"<color=green>[MisoolQuestManager] Quest Stage diperbarui ke: {newStage}</color>");
 
-        // Otomatis memperbarui tampilan NPC di scene darat jika LandManager aktif
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.SetActiveIsland(IslandType.Misool);
+            if (MasterQuestManager.Instance.CurrentStage != newStage)
+            {
+                MasterQuestManager.Instance.AdvanceStageTo(newStage);
+            }
+        }
+
         if (MisoolLandSceneManager.Instance != null)
         {
             MisoolLandSceneManager.Instance.RefreshLandState();
         }
     }
-
-    // ==========================================
-    // 2. MANAJEMEN HAMA BULU SERIBU (POIN 5)
-    // ==========================================
 
     public int CotsCount => PlayerPrefs.GetInt(COTS_KEY, 0);
 
@@ -66,7 +76,11 @@ public class MisoolQuestManager : MonoBehaviour
         PlayerPrefs.Save();
         Debug.Log($"[MisoolQuestManager] Bulu Seribu terkumpul: {count}/3");
 
-        // Jika sudah terkumpul 3, otomatis naik ke Stage 5
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.AddBuluSeribu();
+        }
+
         if (count >= 3)
         {
             AdvanceStageTo(5);
@@ -77,30 +91,33 @@ public class MisoolQuestManager : MonoBehaviour
     {
         PlayerPrefs.SetInt(COTS_KEY, 0);
         PlayerPrefs.Save();
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.ResetCollectibleCount();
+        }
     }
-
-    // ==========================================
-    // 3. MANAJEMEN SPAWN POINT PLAYER
-    // ==========================================
 
     public void SetLastExitPoint(string exitPointName)
     {
         PlayerPrefs.SetString(EXIT_KEY, exitPointName);
         PlayerPrefs.Save();
-        Debug.Log($"[MisoolQuestManager] Exit Point disimpan: {exitPointName}");
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.SetLastExitPoint(exitPointName);
+        }
     }
 
     public string ConsumeLastExitPoint()
     {
+        if (MasterQuestManager.Instance != null)
+        {
+            return MasterQuestManager.Instance.ConsumeLastExitPoint();
+        }
         string exit = PlayerPrefs.GetString(EXIT_KEY, "DEFAULT");
         PlayerPrefs.SetString(EXIT_KEY, "DEFAULT");
         PlayerPrefs.Save();
         return exit;
     }
-
-    // ==========================================
-    // 4. UTILITY DEBUGGING (KHUSUS UNITY EDITOR)
-    // ==========================================
 
     [ContextMenu("Reset All Misool Quest Data")]
     public void ResetAllQuestData()

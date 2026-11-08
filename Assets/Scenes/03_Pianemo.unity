@@ -1216,6 +1216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver2
   questToGive: {fileID: 11400000, guid: 68f60a3ebdafe6f48bea8c99fba3518d, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
   requireBoxCollider2D: 0
   giveQuestOnPlayerTrigger: 1
@@ -1592,8 +1594,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 68f60a3ebdafe6f48bea8c99fba3518d, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!1001 &1162635208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2445,8 +2448,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 68f60a3ebdafe6f48bea8c99fba3518d, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!1 &1597915903
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,8 +3157,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 68f60a3ebdafe6f48bea8c99fba3518d, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!1001 &2008503770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4054,8 +4059,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 4a3d10a13dc416c49bfde4034f72dda1, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1
-  requireBoxCollider2D: 0
 --- !u!224 &739810405835535530
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6862,6 +6868,14 @@ PrefabInstance:
       propertyPath: giveQuestOnPlayerCollision
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7339806136282286634, guid: 62afcba214a7edf40aa8d968e98441d2, type: 3}
+      propertyPath: requiredPrerequisiteQuestID
+      value: 01_Piaynemo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339806136282286634, guid: 62afcba214a7edf40aa8d968e98441d2, type: 3}
+      propertyPath: waitForCurrentQuestToFinish
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7712543008615305479, guid: 62afcba214a7edf40aa8d968e98441d2, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -7221,6 +7235,22 @@ PrefabInstance:
       propertyPath: questToGive
       value: 
       objectReference: {fileID: 11400000, guid: 0bbeaa3fb46968b46af7b1f685ecca03, type: 2}
+    - target: {fileID: 1116406241406356405, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116406241406356405, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116406241406356405, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -138.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906423076439996391, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4331889920801323053, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
       propertyPath: dialogueCamera
       value: 
@@ -7243,12 +7273,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5197679689099813660, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197679689099813660, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197679689099813660, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 76.151
       objectReference: {fileID: 0}
     - target: {fileID: 5197679689099813660, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.194
+      value: -0.072
       objectReference: {fileID: 0}
     - target: {fileID: 5197679689099813660, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7306,6 +7344,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -43.845
       objectReference: {fileID: 0}
+    - target: {fileID: 6914378231916765962, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 6914378231916765962, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 4.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309089395800973306, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2283964402080490727, guid: 87cf295a5ae625448b7abd40a17790a1, type: 3}
     - target: {fileID: 8576848130874876027, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7330,6 +7380,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8655877337582446745, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8655877337582446745, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8655877337582446745, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -150.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724867585111300345, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1904319409956540183, guid: 16773e71d6fb63040a487b2200453eef, type: 2}
     - target: {fileID: 8908634234723244126, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
       propertyPath: m_Name
       value: PetugasHub
@@ -7851,6 +7917,14 @@ PrefabInstance:
       propertyPath: questToGive
       value: 
       objectReference: {fileID: 11400000, guid: 0bbeaa3fb46968b46af7b1f685ecca03, type: 2}
+    - target: {fileID: 2400164367418619416, guid: fe516a91f7c137c47bc1b4594b6674ac, type: 3}
+      propertyPath: requiredPrerequisiteQuestID
+      value: 03_Piaynemo
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400164367418619416, guid: fe516a91f7c137c47bc1b4594b6674ac, type: 3}
+      propertyPath: waitForCurrentQuestToFinish
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2680712380274245691, guid: fe516a91f7c137c47bc1b4594b6674ac, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.7137255
@@ -9572,6 +9646,14 @@ PrefabInstance:
       propertyPath: questToGive
       value: 
       objectReference: {fileID: 11400000, guid: c030f4622442a614aa96bc46a14ca688, type: 2}
+    - target: {fileID: 1194710974178275504, guid: 179a524b27695a144beba7db9270af13, type: 3}
+      propertyPath: requiredPrerequisiteQuestID
+      value: 02_Piaynemo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194710974178275504, guid: 179a524b27695a144beba7db9270af13, type: 3}
+      propertyPath: waitForCurrentQuestToFinish
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2234339725698155879, guid: 179a524b27695a144beba7db9270af13, type: 3}
       propertyPath: dialogueCamera
       value: 

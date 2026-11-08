@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using UnityEngine.Events; // Wajib ditambahkan
+using UnityEngine.Events;
 
 public class SeaSceneTransition : MonoBehaviour
 {
@@ -11,14 +11,14 @@ public class SeaSceneTransition : MonoBehaviour
     public float fadeDuration = 1.0f;
 
     [Header("UI & Input Settings")]
-    public GameObject warningUI; // Tarik objek Teks Warning / Prompt "Tekan E untuk Masuk Laut"
+    public GameObject warningUI; // Objek Teks Warning / Prompt "Tekan E untuk Masuk Laut"
     public KeyCode interactKey = KeyCode.E;
-    public Image fadeBlackScreen; // Tarik objek Image Hitam ke slot ini
+    public Image fadeBlackScreen; // Objek Image Hitam
 
     private bool isPlayerInRange = false;
     private bool isTransitioning = false;
     private SeaToLandTeleporter returnTeleporter;
-    public UnityEvent onInteractComplete; // Akan muncul di Inspector
+    public UnityEvent onInteractComplete;
 
     private void Start()
     {
@@ -48,11 +48,14 @@ public class SeaSceneTransition : MonoBehaviour
                 warningUI.SetActive(false);
             }
 
-            Debug.Log("--> Player menekan " + interactKey + ". Melakukan transisi ke: " + targetSceneName);
+            Debug.Log($"[SeaSceneTransition] Player menekan {interactKey}. Transisi ke: {targetSceneName}");
+            
+            // Persiapkan exit point dan stage pada teleporter tanpa memanggil LoadScene ganda
             if (returnTeleporter != null)
             {
-                returnTeleporter.ReturnToLand();
+                returnTeleporter.PrepareReturn();
             }
+
             StartCoroutine(FadeAndLoadScene());
         }
     }
@@ -61,7 +64,11 @@ public class SeaSceneTransition : MonoBehaviour
     {
         if (isTransitioning) return;
 
-        if (collision.CompareTag("Player") || collision.gameObject.name.Contains("Player"))
+        bool isPlayer = collision.CompareTag("Player") ||
+                        (collision.transform.root != null && collision.transform.root.CompareTag("Player")) ||
+                        collision.gameObject.name.ToLower().Contains("player");
+
+        if (isPlayer)
         {
             isPlayerInRange = true;
 
@@ -75,7 +82,6 @@ public class SeaSceneTransition : MonoBehaviour
                 returnTeleporter = collision.GetComponent<SeaToLandTeleporter>();
             }
 
-            // Munculkan teks warning saat pemain menyentuh batas laut
             if (warningUI != null)
             {
                 warningUI.SetActive(true);
@@ -85,12 +91,15 @@ public class SeaSceneTransition : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") || collision.gameObject.name.Contains("Player"))
+        bool isPlayer = collision.CompareTag("Player") ||
+                        (collision.transform.root != null && collision.transform.root.CompareTag("Player")) ||
+                        collision.gameObject.name.ToLower().Contains("player");
+
+        if (isPlayer)
         {
             isPlayerInRange = false;
             returnTeleporter = null;
 
-            // Sembunyikan teks warning saat pemain menjauh
             if (warningUI != null)
             {
                 warningUI.SetActive(false);
@@ -110,8 +119,8 @@ public class SeaSceneTransition : MonoBehaviour
 
             while (timer < fadeDuration)
             {
-                timer += Time.deltaTime;
-                c.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+                timer += Time.unscaledDeltaTime;
+                c.a = Mathf.Clamp01(timer / fadeDuration);
                 fadeBlackScreen.color = c;
                 yield return null;
             }
@@ -120,22 +129,21 @@ public class SeaSceneTransition : MonoBehaviour
             fadeBlackScreen.color = c;
         }
 
-        // 2. Simpan Progres Otomatis sebelum Pindah Scene
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.SaveGame();
-        }
+        // 2. Simpan Progres Otomatis sebelum Pindah Scene (hindari koordinat tepat di trigger exit)
+        PlayerPrefs.SetString("SavedScene", targetSceneName);
+        PlayerPrefs.DeleteKey("PlayerX");
+        PlayerPrefs.DeleteKey("PlayerY");
+        PlayerPrefs.DeleteKey("PlayerZ");
+        PlayerPrefs.Save();
 
         // 3. Pindah ke Scene Tujuan
+        Debug.Log($"[SeaSceneTransition] Memuat scene tujuan: {targetSceneName}");
         SceneManager.LoadScene(targetSceneName);
     }
 
     public void SelesaiInteraksi()
     {
-        // Lakukan animasi atau efek selesai
-        Debug.Log("Interaksi Selesai!");
-
-        // Berikan sinyal bahwa interaksi ini sudah selesai
+        Debug.Log("[SeaSceneTransition] Interaksi Selesai!");
         onInteractComplete?.Invoke();
     }
 }

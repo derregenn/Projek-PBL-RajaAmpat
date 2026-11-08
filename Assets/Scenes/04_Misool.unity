@@ -2392,6 +2392,97 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 261027719438941447, guid: fe3249c02e7625f43b80187fb1cad612, type: 3}
   m_PrefabInstance: {fileID: 364486182}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &419302267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 419302268}
+  - component: {fileID: 419302269}
+  m_Layer: 0
+  m_Name: SaptaPesona_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &419302268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419302267}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -70.8, y: -0.54, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 888412300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &419302269
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419302267}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: -605385043
+  m_SortingLayer: 3
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 2525403898981495787, guid: f552a6997fa889b4e9fc357c2034fc22, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.78, y: 7.72}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &423842353
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,7 +2676,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 732993963}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Sama, saya juga cuma berani berenang di pinggiran dangkal!
   - Tapi itu Pari Mantanya kasihan sekali, sayapnya tersangkut jaring
@@ -2597,7 +2687,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000000000000000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -2610,21 +2699,6 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 3
   onDialogueEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 722736205263521839}
-        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
-        m_MethodName: AdvanceStageTo
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 7
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onInteractComplete:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 722736205263521839}
@@ -4193,7 +4267,7 @@ Transform:
   m_GameObject: {fileID: 697722882}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1205, y: 0.545, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.545, z: 0}
   m_LocalScale: {x: 1.0432056, y: 1.1577, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5033,6 +5107,7 @@ Transform:
   - {fileID: 208684843}
   - {fileID: 854190954}
   - {fileID: 1906064174}
+  - {fileID: 419302268}
   - {fileID: 1299675753}
   - {fileID: 697722884}
   m_Father: {fileID: 0}
@@ -5160,7 +5235,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1492545980}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Ini Pak, semua hama Bulu Seribunya sudah berhasil saya amankan dari terumbu karang
   - "Luar biasa! Kerjamu sangat rapi, kawan\u2026"
@@ -5173,7 +5247,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 01000000000000000000000000000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -5223,21 +5296,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-  onInteractComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 722736205263521839}
-        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
-        m_MethodName: AdvanceStageTo
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 6
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!61 &893989708
 BoxCollider2D:
@@ -7333,7 +7391,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 2075810290}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Sudah aman, Bu! Jaringnya sudah saya potong dan Pari Mantanya sudah berenang
     bebas lagi
@@ -7341,7 +7398,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 0100000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -7368,9 +7424,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onInteractComplete:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!61 &1174263402
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7683,7 +7736,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 146954193}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
     terumbu karang
@@ -7701,7 +7753,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 01000000000000000000000000000000000000000000000000000000000000000100000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -7751,21 +7802,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-  onInteractComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 722736205263521839}
-        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
-        m_MethodName: AdvanceStageTo
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!61 &1236486753
 BoxCollider2D:
@@ -10302,14 +10338,12 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1621872369}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Sama, saya juga cuma berani berenang di pinggiran dangkal!
   - Semoga liburanmu di Raja Ampat menyenangkan ya, Nak
   DialogueLineSpeakers: 0000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10322,9 +10356,6 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 3
   onDialogueEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &1446603232
@@ -10551,7 +10582,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1719262658}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Mau melihat keindahan terumbu karang Misool dari dekat ya?
   - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
@@ -10561,7 +10591,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10612,21 +10641,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  onInteractComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 722736205263521839}
-        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
-        m_MethodName: AdvanceStageTo
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
 --- !u!212 &1482452494
 SpriteRenderer:
   serializedVersion: 2
@@ -11185,7 +11199,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1813550121}
   PlayerNextPrompt: {fileID: 976487319}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - Aduh, kasihan sekali itu... Bagaimana ini, Kakak?
   - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
@@ -11198,7 +11211,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000000000000100000000000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.04
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -11211,9 +11223,6 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 3
   onDialogueEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &1599505559
@@ -14052,8 +14061,8 @@ Transform:
   m_GameObject: {fileID: 1906064173}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -78.18, y: -1.71, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalPosition: {x: -79.87, y: -1.63, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 888412300}

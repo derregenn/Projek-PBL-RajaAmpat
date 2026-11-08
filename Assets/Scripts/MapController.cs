@@ -101,8 +101,24 @@ public class MapController : MonoBehaviour
     // --- PANGGIL FUNGSI INI DARI TOMBOL PETA ---
     public void LoadIslandScene(string sceneName)
     {
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            Debug.LogWarning("[MapController] sceneName kosong!");
+            return;
+        }
+
         targetIslandScene = sceneName; // Simpan nama pulau (contoh: "03_Pianemo")
+
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.targetIslandName = sceneName;
+        }
+
+        PlayerPrefs.SetString("TargetIsland", sceneName);
+        PlayerPrefs.Save();
+
         Time.timeScale = 1f;
+        Debug.Log($"[MapController] Navigasi ke pulau: '{sceneName}'. Memuat Cutscene_BoatToIsland.");
 
         // Pindah ke Scene Cutscene Perahu terlebih dahulu
         SceneManager.LoadScene("Cutscene_BoatToIsland");

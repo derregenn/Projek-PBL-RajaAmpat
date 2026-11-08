@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events; // Kunci untuk UnityEvent
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GagFaderManager : MonoBehaviour
@@ -19,6 +19,9 @@ public class GagFaderManager : MonoBehaviour
     [Header("Transisi 2: Ending Pulau Gag (Pindah Scene)")]
     public string sceneTujuanEnding = "02_Waisai";
 
+    [Header("Event Tamat Game")]
+    public UnityEvent OnGameFinished;
+
     // =========================================================
     // PUBLIC METHODS FOR INSPECTOR EVENTS
     // =========================================================
@@ -35,7 +38,12 @@ public class GagFaderManager : MonoBehaviour
         if (!isTransitioning) StartCoroutine(RoutinePindahScene(sceneTujuanEnding));
     }
 
-    // Alternatif jika ingin pindah ke scene lain
+    // 3. Panggil ini saat cerita Pulau Gag dan seluruh quest tamat
+    public void TamatGame()
+    {
+        if (!isTransitioning) StartCoroutine(RoutineTamatGame());
+    }
+
     public void PindahKeScene(string sceneName)
     {
         if (!isTransitioning) StartCoroutine(RoutinePindahScene(sceneName));
@@ -69,9 +77,6 @@ public class GagFaderManager : MonoBehaviour
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
         isTransitioning = false;
 
-        // =========================================================
-        // DIPANGGIL DI SINI: QUEST TERIMA / UPDATE PAS FADE SELESAI
-        // =========================================================
         OnPenelitiPulangFadeCompleted?.Invoke();
     }
 
@@ -80,14 +85,54 @@ public class GagFaderManager : MonoBehaviour
         isTransitioning = true;
         ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
 
-        // Fade ke layar hitam
         if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
 
-        // Pindah Scene setelah layar hitam pekat
+        // Catat progres pulau selesai
+        RecordGagCompletion();
+
         SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator RoutineTamatGame()
+    {
+        isTransitioning = true;
+        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
+
+        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        else yield return new WaitForSeconds(durasiFade);
+
+        CloseDialogueUI();
+        RecordGagCompletion();
+
+        OnGameFinished?.Invoke();
+
+        yield return new WaitForSeconds(1.0f);
+
+        // Pindah ke Main Menu atau scene tujuan ending
+        string nextScene = !string.IsNullOrEmpty(sceneTujuanEnding) ? sceneTujuanEnding : "01_MainMenu";
+        SceneManager.LoadScene(nextScene);
+    }
+
+    private void RecordGagCompletion()
+    {
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.CompleteIsland(IslandName.Gag);
+            GamePhaseManager.Instance.SetPercentageDirectly(100f);
+        }
+
+        if (StoryManager.Instance != null)
+        {
+            StoryManager.Instance.CompleteIsland(6); // Indeks 6 = Gag
+        }
+
+        PlayerPrefs.SetInt("Visited_10_Gag", 1);
+        PlayerPrefs.SetInt("GameCompleted", 1);
+        PlayerPrefs.Save();
+        Debug.Log("<color=gold>[GagFaderManager] Game Selesai! Selamat Anda Telah Menamatkan Game!</color>");
     }
 
     private void ResetKamera(GameObject npc)

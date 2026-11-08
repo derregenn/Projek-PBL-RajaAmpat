@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Wajib ditambahkan untuk memanggil UI Text milikmu
+using TMPro;
 using UnityEngine.Events;
 
 public class TrashInteractable : MonoBehaviour, IInteractable
@@ -37,7 +37,11 @@ public class TrashInteractable : MonoBehaviour, IInteractable
         if (holdQTE != null)
         {
             collectionInProgress = true;
+            holdQTE.onSuccess.RemoveListener(CompleteCollection);
             holdQTE.onSuccess.AddListener(CompleteCollection);
+
+            holdQTE.onFail.RemoveListener(CancelCollection);
+            holdQTE.onFail.AddListener(CancelCollection);
 
             if (!holdQTE.gameObject.activeInHierarchy)
             {
@@ -51,23 +55,35 @@ public class TrashInteractable : MonoBehaviour, IInteractable
         CompleteCollection();
     }
 
+    private void CancelCollection()
+    {
+        if (holdQTE != null)
+        {
+            holdQTE.onSuccess.RemoveListener(CompleteCollection);
+            holdQTE.onFail.RemoveListener(CancelCollection);
+        }
+        collectionInProgress = false;
+        Debug.Log("[TrashInteractable] QTE Gagal/Dibatalkan. Interaksi siap dicoba kembali.");
+    }
+
     // Dipanggil otomatis saat QTE2 berhasil.
     private void CompleteCollection()
     {
         if (holdQTE != null)
         {
             holdQTE.onSuccess.RemoveListener(CompleteCollection);
+            holdQTE.onFail.RemoveListener(CancelCollection);
         }
 
         collectionInProgress = false;
 
-        // 1. Jalankan Logika Quest
+        // 1. Jalankan Logika Quest di QuestController jika ada
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
         }
 
-        // 2. Integrasi MasterQuestManager (Hama Bulu Seribu Misool)
+        // 2. Integrasi MasterQuestManager (Bulu Seribu / Hama Misool)
         if (objectiveID == "collect_buluseribu")
         {
             if (MasterQuestManager.Instance != null)
@@ -82,12 +98,12 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
         }
 
-        // 4. Update UI Progress Bar Kamu
+        // 4. Update UI Progress Bar
         totalCollected += amountToAdd;
         if (collectibleUIText != null)
         {
             float persentase = ((float)totalCollected / maxTrash) * 100f;
-            collectibleUIText.text = "Progress: " + persentase.ToString("F0") + "%"; // "F0" agar tidak ada koma desimal
+            collectibleUIText.text = "Progress: " + persentase.ToString("F0") + "%";
         }
 
         // 5. Buka halaman jurnal baru jika sampah ini punya cerita (Integrasi UI Kanan)
@@ -105,10 +121,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
 
     public void SelesaiInteraksi()
     {
-        // Lakukan animasi atau efek selesai
-        Debug.Log("Interaksi Selesai!");
-
-        // Berikan sinyal bahwa interaksi ini sudah selesai
+        Debug.Log("[TrashInteractable] Interaksi Selesai!");
         onInteractComplete?.Invoke();
     }
 

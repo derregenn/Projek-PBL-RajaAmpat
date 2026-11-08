@@ -4,6 +4,7 @@ public class QuestGiver2 : MonoBehaviour
 {
     [Header("Quest Configuration")]
     [SerializeField] private Quest questToGive;
+    public Quest QuestToGive => questToGive;
 
     [Header("Prerequisite & Condition")]
     [Tooltip("Jika dicentang, NPC tidak akan memberikan quest baru jika masih ada quest lain yang belum diselesaikan pemain.")]

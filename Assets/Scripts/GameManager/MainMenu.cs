@@ -15,13 +15,11 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("SavedScene"))
+        Time.timeScale = 1f;
+
+        if (continueButton != null)
         {
-            continueButton.interactable = true;
-        }
-        else
-        {
-            continueButton.interactable = false;
+            continueButton.interactable = PlayerPrefs.HasKey("SavedScene");
         }
     }
 
@@ -29,12 +27,38 @@ public class MainMenu : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
 
-        if (StoryManager.Instance != null)
+        if (GamePhaseManager.Instance != null)
         {
-            StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Arrival_Airstrip;
+            GamePhaseManager.Instance.ResetAllProgress();
         }
 
-        CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_CutsceneAirstrip");
+        if (StoryManager.Instance != null)
+        {
+            StoryManager.Instance.ResetProgress();
+        }
+
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.ResetAllProgress();
+        }
+
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ActiveQuests.Clear();
+        }
+
+        PlayerPrefs.SetString("SavedScene", "02_CutsceneAirstrip");
+        PlayerPrefs.Save();
+
+        if (CutsceneTransitionManager.Instance != null && arrivalPortraits != null && arrivalPortraits.Length > 0)
+        {
+            CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_CutsceneAirstrip");
+        }
+        else
+        {
+            Debug.Log("[MainMenu] Memuat 02_CutsceneAirstrip langsung.");
+            SceneManager.LoadScene("02_CutsceneAirstrip");
+        }
     }
 
     public void ContinueGame()
@@ -43,9 +67,16 @@ public class MainMenu : MonoBehaviour
 
         if (StoryManager.Instance != null)
         {
-            StoryManager.Instance.currentPhase = (StoryManager.StoryPhase)PlayerPrefs.GetInt("SavedStoryPhase", 0);
+            StoryManager.Instance.LoadProgress();
         }
 
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.CalculatePercentage();
+        }
+
+        Time.timeScale = 1f;
+        Debug.Log($"[MainMenu] Melanjutkan game ke scene: {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
 

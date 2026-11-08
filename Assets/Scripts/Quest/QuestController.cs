@@ -6,7 +6,19 @@ using System;
 
 public class QuestController : MonoBehaviour
 {
-    public static QuestController Instance { get; private set; }
+    private static QuestController _instance;
+    public static QuestController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<QuestController>();
+            }
+            return _instance;
+        }
+        private set => _instance = value;
+    }
 
     // ========================================
     // EVENT FOR PROGRESS & BARRIER UNLOCK
@@ -32,19 +44,19 @@ public class QuestController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        _instance = this;
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
     {
-        // Daftar ke event perpindahan scene agar referensi UI bisa diperbarui
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -53,14 +65,8 @@ public class QuestController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    /// <summary>
-    /// Dipanggil otomatis setiap kali scene baru selesai dimuat.
-    /// Mencari ulang QuestUI dan QuestSlider di scene aktif agar tidak null
-    /// ketika game dijalankan dari Main Menu.
-    /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Tunda satu frame agar semua objek di scene sudah selesai Awake/Start
         StartCoroutine(ReconnectUINextFrame());
     }
 
@@ -68,17 +74,13 @@ public class QuestController : MonoBehaviour
     {
         yield return null; // tunggu satu frame
 
-        // Cari QuestUI di scene aktif jika referensi saat ini sudah null atau berasal dari scene yang berbeda
         if (questUI == null)
         {
             questUI = FindFirstObjectByType<QuestUI>();
             if (questUI != null)
                 Debug.Log($"[QuestController] QuestUI ditemukan di scene '{SceneManager.GetActiveScene().name}'.");
-            else
-                Debug.Log($"[QuestController] Tidak ada QuestUI di scene '{SceneManager.GetActiveScene().name}' — quest berjalan tanpa HUD.");
         }
 
-        // Cari QuestSlider di scene aktif jika referensi saat ini sudah null
         if (questSliderAnim == null)
         {
             questSliderAnim = FindFirstObjectByType<QuestSlider>();
@@ -122,14 +124,12 @@ public class QuestController : MonoBehaviour
 
         Debug.Log("QUEST ACCEPTED: " + quest.QuestTitle);
 
-        // Pastikan referensi UI masih valid; cari ulang jika perlu
         if (questUI == null)
             questUI = FindFirstObjectByType<QuestUI>();
 
         if (questSliderAnim == null)
             questSliderAnim = FindFirstObjectByType<QuestSlider>();
 
-        // Tampilkan quest ke UI
         if (questUI != null)
         {
             questUI.SetQuest(quest);
@@ -139,11 +139,6 @@ public class QuestController : MonoBehaviour
             {
                 questSliderAnim.ShowQuestPopup();
             }
-        }
-        else
-        {
-            Debug.LogWarning("QuestController: QuestUI tidak ditemukan di scene ini. " +
-                             "Pastikan ada GameObject dengan komponen QuestUI di scene gameplay.");
         }
     }
 
@@ -159,17 +154,11 @@ public class QuestController : MonoBehaviour
         return ActiveQuests.Exists(q => q != null && q.QuestID == questID);
     }
 
-    /// <summary>
-    /// Mengetahui apakah sedang ada minimal satu quest aktif yang belum selesai.
-    /// </summary>
     public bool HasActiveQuest()
     {
         return ActiveQuests != null && ActiveQuests.Count > 0;
     }
 
-    /// <summary>
-    /// Mengambil quest aktif terakhir di daftar antrean.
-    /// </summary>
     public Quest GetCurrentActiveQuest()
     {
         if (ActiveQuests != null && ActiveQuests.Count > 0)
@@ -217,9 +206,7 @@ public class QuestController : MonoBehaviour
             objective.AddProgress(amount);
 
             Debug.Log(
-                "Objective Progress: " + objectiveID
-                + " " + objective.CurrentAmount
-                + "/" + objective.RequiredAmount
+                $"Objective Progress: {objectiveID} {objective.CurrentAmount}/{objective.RequiredAmount}"
             );
 
             // Update UI
@@ -230,6 +217,39 @@ public class QuestController : MonoBehaviour
             if (IsQuestFinished(quest))
                 CompleteQuest(quest);
 
+            return;
+        }
+
+        // Fallback: Jika quest belum aktif di antrean (misal player langsung ambil item sebelum bicara ke NPC atau test isolated scene)
+        Quest foundQuest = null;
+        QuestGiver[] givers1 = FindObjectsByType<QuestGiver>(FindObjectsSortMode.None);
+        foreach (var g in givers1)
+        {
+            if (g != null && g.QuestToGive != null && g.QuestToGive.GetObjective(objectiveID) != null)
+            {
+                foundQuest = g.QuestToGive;
+                break;
+            }
+        }
+
+        if (foundQuest == null)
+        {
+            QuestGiver2[] givers2 = FindObjectsByType<QuestGiver2>(FindObjectsSortMode.None);
+            foreach (var g in givers2)
+            {
+                if (g != null && g.QuestToGive != null && g.QuestToGive.GetObjective(objectiveID) != null)
+                {
+                    foundQuest = g.QuestToGive;
+                    break;
+                }
+            }
+        }
+
+        if (foundQuest != null)
+        {
+            Debug.Log($"[QuestController] Auto-accepting quest '{foundQuest.QuestTitle}' untuk objective '{objectiveID}' (Isolated scene testing fallback).");
+            AcceptQuest(foundQuest);
+            ProgressObjective(objectiveID, amount);
             return;
         }
 
@@ -251,7 +271,6 @@ public class QuestController : MonoBehaviour
             return false;
         }
 
-        // Semua objective harus selesai
         foreach (QuestObjective objective in quest.Objectives)
         {
             if (objective == null)
@@ -282,11 +301,8 @@ public class QuestController : MonoBehaviour
         Debug.Log("QUEST COMPLETE: " + quest.QuestTitle);
         Debug.Log("================================");
 
-        // Hapus quest dari ActiveQuests
         ActiveQuests.Remove(quest);
 
-        // Jika masih ada quest aktif lain yang tersisa (misal quest lama yang sempat tertimpa),
-        // pulihkan tampilannya di UI bukannya mengosongkan HUD!
         if (ActiveQuests.Count > 0)
         {
             Quest remainingQuest = ActiveQuests[ActiveQuests.Count - 1];
@@ -299,7 +315,6 @@ public class QuestController : MonoBehaviour
         }
         else
         {
-            // Bersihkan UI jika semua quest benar-benar telah tuntas
             if (questUI != null)
                 questUI.ClearQuest();
         }
@@ -308,5 +323,11 @@ public class QuestController : MonoBehaviour
         // SIARKAN EVENT KE BARRIER & SYSTEM PROGRESS
         // ====================================
         OnQuestCompleted?.Invoke(completedQuestID);
+
+        // Selaraskan ke GamePhaseManager
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.HandleQuestCompleted(completedQuestID);
+        }
     }
 }

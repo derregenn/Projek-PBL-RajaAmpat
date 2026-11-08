@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-// Daftar pulau untuk mempermudah identifikasi (tetap ada agar kode lain yang mereferensikannya tidak error)
+// Daftar pulau untuk mempermudah identifikasi
 public enum IslandName
 {
     Airstrip,
@@ -42,12 +42,23 @@ public class IslandQuestProgressGroup
 
 /// <summary>
 /// Mengelola progres keseluruhan game berdasarkan quest-quest yang sudah diselesaikan player.
-/// Progress diperbarui otomatis setiap kali QuestController.OnQuestCompleted terpicu —
-/// tidak perlu memanggil CompleteIsland() secara manual lagi.
+/// Progress diperbarui otomatis setiap kali QuestController.OnQuestCompleted terpicu.
 /// </summary>
 public class GamePhaseManager : MonoBehaviour
 {
-    public static GamePhaseManager Instance;
+    private static GamePhaseManager _instance;
+    public static GamePhaseManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<GamePhaseManager>();
+            }
+            return _instance;
+        }
+        set => _instance = value;
+    }
 
     // =========================================================
     // KONFIGURASI QUEST → PERSENTASE (atur dari Inspector)
@@ -69,21 +80,46 @@ public class GamePhaseManager : MonoBehaviour
     private HashSet<string> completedQuestIDs = new HashSet<string>();
 
     // =========================================================
+    // TARGET PULAU (Sinkron dengan MapController & PlayerPrefs)
+    // =========================================================
+
+    [SerializeField] private string _targetIslandName;
+    public string targetIslandName
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_targetIslandName))
+            {
+                _targetIslandName = PlayerPrefs.GetString(SaveKeyTargetIsland, "03_Pianemo");
+            }
+            return _targetIslandName;
+        }
+        set
+        {
+            _targetIslandName = value;
+            PlayerPrefs.SetString(SaveKeyTargetIsland, value);
+            PlayerPrefs.Save();
+            MapController.targetIslandScene = value;
+        }
+    }
+
+    // =========================================================
     // EVENTS
     // =========================================================
 
     [Header("Events")]
     public UnityEvent<float> OnPercentageUpdated;
     public UnityEvent OnGagUnlocked; // Event untuk membuka tombol Gag di UI Peta
-    internal string targetIslandName;
+    public UnityEvent<IslandName> OnIslandCompleted;
+    public UnityEvent OnGameCompleted;
 
     // =========================================================
     // SAVE / LOAD KEYS
     // =========================================================
 
-
     private const string SaveKeyCompletedQuests = "GPM_CompletedQuests";
     private const string SaveKeyGagUnlocked = "GPM_GagUnlocked";
+    private const string SaveKeyTargetIsland = "TargetIsland";
 
     // =========================================================
     // UNITY LIFECYCLE
@@ -91,14 +127,15 @@ public class GamePhaseManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
+            transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
             LoadProgress();
             CalculatePercentage();
         }
-        else
+        else if (_instance != this)
         {
             Destroy(gameObject);
         }
@@ -106,7 +143,6 @@ public class GamePhaseManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // Dengarkan event dari QuestController setiap kali sebuah quest selesai
         QuestController.OnQuestCompleted += HandleQuestCompleted;
     }
 
@@ -119,43 +155,13 @@ public class GamePhaseManager : MonoBehaviour
     // HANDLER: QUEST SELESAI
     // =========================================================
 
-    /// <summary>
-    /// Dipanggil otomatis oleh QuestController.OnQuestCompleted
-    /// setiap kali player menyelesaikan sebuah quest.
-    /// </summary>
-    private void HandleQuestCompleted(string questID)
+    public void HandleQuestCompleted(string questID)
     {
         if (string.IsNullOrEmpty(questID)) return;
 
-        // Jangan proses quest yang sama dua kali
         if (completedQuestIDs.Contains(questID))
         {
             Debug.Log($"[GamePhaseManager] Quest '{questID}' sudah tercatat sebelumnya, dilewati.");
-            return;
-        }
-
-        // Periksa apakah quest ini ada di tabel mapping
-        bool foundInTable = false;
-        foreach (var islandGroup in questProgressByIsland)
-        {
-            if (islandGroup == null || islandGroup.quests == null) continue;
-
-            foreach (var entry in islandGroup.quests)
-            {
-                if (entry != null && entry.questID == questID)
-                {
-                    foundInTable = true;
-                    break;
-                }
-            }
-
-            if (foundInTable) break;
-        }
-
-        if (!foundInTable)
-        {
-            // Quest ini selesai tapi tidak dikonfigurasi di tabel — tidak pengaruhi persentase
-            Debug.Log($"[GamePhaseManager] Quest '{questID}' tidak ada di mapping quest per pulau, progres tidak diubah.");
             return;
         }
 
@@ -170,22 +176,32 @@ public class GamePhaseManager : MonoBehaviour
     // HITUNG PERSENTASE
     // =========================================================
 
-    private void CalculatePercentage()
+    public void CalculatePercentage()
     {
         float total = 0f;
 
-        foreach (var islandGroup in questProgressByIsland)
+        if (questProgressByIsland != null && questProgressByIsland.Count > 0)
         {
-            if (islandGroup == null || islandGroup.quests == null) continue;
-
-            foreach (var entry in islandGroup.quests)
+            foreach (var islandGroup in questProgressByIsland)
             {
-                if (entry != null && completedQuestIDs.Contains(entry.questID))
-                    total += entry.percentageWeight;
+                if (islandGroup == null || islandGroup.quests == null) continue;
+
+                foreach (var entry in islandGroup.quests)
+                {
+                    if (entry != null && completedQuestIDs.Contains(entry.questID))
+                        total += entry.percentageWeight;
+                }
+            }
+        }
+        else
+        {
+            // Fallback jika mapping inspector kosong: hitung dari StoryManager
+            if (StoryManager.Instance != null)
+            {
+                total = StoryManager.Instance.CalculateProgressPercentage();
             }
         }
 
-        // Clamp agar tidak melebihi 100%
         total = Mathf.Clamp(total, 0f, 100f);
 
         // Cek threshold 85% untuk membuka Pulau Gag
@@ -194,7 +210,7 @@ public class GamePhaseManager : MonoBehaviour
             isGagUnlocked = true;
             PlayerPrefs.SetInt(SaveKeyGagUnlocked, 1);
             PlayerPrefs.Save();
-            Debug.Log("[GamePhaseManager] 85% Tercapai! Pulau Gag Terbuka!");
+            Debug.Log("<color=green>[GamePhaseManager] 85% Tercapai! Pulau Gag Terbuka!</color>");
             OnGagUnlocked?.Invoke();
         }
 
@@ -203,7 +219,8 @@ public class GamePhaseManager : MonoBehaviour
 
         if (currentCompletionPercentage >= 100f)
         {
-            Debug.Log("[GamePhaseManager] 100% Tercapai! Mainkan Ending!");
+            Debug.Log("<color=gold>[GamePhaseManager] 100% Tercapai! Permainan Tamat!</color>");
+            OnGameCompleted?.Invoke();
         }
     }
 
@@ -213,7 +230,6 @@ public class GamePhaseManager : MonoBehaviour
 
     private void SaveProgress()
     {
-        // Simpan semua completed questID sebagai satu string CSV
         string joined = string.Join(",", completedQuestIDs);
         PlayerPrefs.SetString(SaveKeyCompletedQuests, joined);
         PlayerPrefs.Save();
@@ -234,32 +250,54 @@ public class GamePhaseManager : MonoBehaviour
         }
 
         isGagUnlocked = PlayerPrefs.GetInt(SaveKeyGagUnlocked, 0) == 1;
-
-        Debug.Log($"[GamePhaseManager] Progress dimuat. Quest selesai: {completedQuestIDs.Count}");
+        Debug.Log($"[GamePhaseManager] Progress dimuat. Quest selesai: {completedQuestIDs.Count}, Gag Unlocked: {isGagUnlocked}");
     }
 
     // =========================================================
-    // PUBLIC API (tetap kompatibel dengan kode lama)
+    // PUBLIC API
     // =========================================================
 
     public float GetCurrentPercentage() => currentCompletionPercentage;
 
     public bool GetIsGagUnlocked() => isGagUnlocked;
 
-    /// <summary>
-    /// Cek apakah sebuah quest sudah diselesaikan.
-    /// </summary>
     public bool IsQuestCompleted(string questID) => completedQuestIDs.Contains(questID);
 
     /// <summary>
-    /// [LEGACY - Tidak digunakan lagi] Sebelumnya dipanggil manual saat naik perahu.
-    /// Sekarang progress ditentukan otomatis dari quest yang diselesaikan.
-    /// Fungsi ini dibiarkan agar tidak memutus referensi Inspector yang sudah ada.
+    /// Mencatat penyelesaian sebuah pulau secara terintegrasi (dipanggil dari supir kapal / trigger).
     /// </summary>
     public void CompleteIsland(IslandName island)
     {
-        Debug.LogWarning($"[GamePhaseManager] CompleteIsland({island}) dipanggil. " +
-                         "Fungsi ini sudah tidak aktif. Gunakan sistem QuestID di questProgressTable.");
+        Debug.Log($"[GamePhaseManager] CompleteIsland({island}) diproses.");
+        PlayerPrefs.SetInt("Island_" + (int)island, 1);
+        PlayerPrefs.Save();
+
+        if (StoryManager.Instance != null)
+        {
+            StoryManager.Instance.CompleteIsland((int)island);
+        }
+
+        OnIslandCompleted?.Invoke(island);
+        CalculatePercentage();
+    }
+
+    public void UnlockGag(bool unlock = true)
+    {
+        isGagUnlocked = unlock;
+        PlayerPrefs.SetInt(SaveKeyGagUnlocked, unlock ? 1 : 0);
+        PlayerPrefs.Save();
+        if (unlock) OnGagUnlocked?.Invoke();
+        Debug.Log($"[GamePhaseManager] Status Pulau Gag diubah: {unlock}");
+    }
+
+    public void SetPercentageDirectly(float pct)
+    {
+        currentCompletionPercentage = Mathf.Clamp(pct, 0f, 100f);
+        if (currentCompletionPercentage >= 85f && !isGagUnlocked)
+        {
+            UnlockGag(true);
+        }
+        OnPercentageUpdated?.Invoke(currentCompletionPercentage);
     }
 
     /// <summary>
@@ -274,33 +312,10 @@ public class GamePhaseManager : MonoBehaviour
 
         PlayerPrefs.DeleteKey(SaveKeyCompletedQuests);
         PlayerPrefs.DeleteKey(SaveKeyGagUnlocked);
+        PlayerPrefs.DeleteKey(SaveKeyTargetIsland);
         PlayerPrefs.Save();
 
         CalculatePercentage();
-        Debug.LogWarning("[GamePhaseManager] Seluruh progress telah direset.");
+        Debug.LogWarning("[GamePhaseManager] Seluruh progress GamePhaseManager telah direset.");
     }
-
-#if UNITY_EDITOR
-    /// <summary>Hanya untuk testing di Editor — simulasikan quest pertama di tabel selesai.</summary>
-    [ContextMenu("Debug: Simulate First Quest Completed")]
-    private void DebugSimulateFirstQuest()
-    {
-        if (questProgressByIsland != null)
-        {
-            foreach (var islandGroup in questProgressByIsland)
-            {
-                if (islandGroup == null || islandGroup.quests == null) continue;
-
-                foreach (var entry in islandGroup.quests)
-                {
-                    if (entry == null || string.IsNullOrEmpty(entry.questID)) continue;
-                    HandleQuestCompleted(entry.questID);
-                    return;
-                }
-            }
-        }
-        else
-            Debug.LogWarning("[GamePhaseManager] Mapping quest per pulau kosong, tidak ada yang disimulasikan.");
-    }
-#endif
 }
