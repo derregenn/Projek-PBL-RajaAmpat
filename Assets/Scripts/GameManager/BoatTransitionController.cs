@@ -19,6 +19,13 @@ public class BoatTransitionController : MonoBehaviour
 
     private void Start()
     {
+        // Pastikan Player & NPC di-anchor ke kapal dan kontrol player dinonaktifkan
+        BoatBobbing bobbing = FindFirstObjectByType<BoatBobbing>();
+        if (bobbing != null)
+        {
+            bobbing.InitializeAnchoring();
+        }
+
         if (triviaSystem == null) triviaSystem = TriviaQuizUI.Instance;
         if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
 

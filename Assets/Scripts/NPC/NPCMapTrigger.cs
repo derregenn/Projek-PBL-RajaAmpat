@@ -25,6 +25,7 @@ public class NPCMapTrigger : MonoBehaviour
     {
         if (mapController == null || isMapOpen) return;
 
+        // Buka peta dunia tanpa menyelesaikan quest atau membuka award secara prematur
         mapController.OpenWorldMap();
         if (openMapSfx != null)
         {

@@ -28,16 +28,55 @@ public class QuestUI : MonoBehaviour
     public void SetQuest(Quest quest)
     {
         currentActiveQuest = quest;
-
-        if (hudQuestTitle != null) hudQuestTitle.text = quest.QuestTitle;
-        if (hudQuestDescription != null) hudQuestDescription.text = quest.Description;
-
-        SyncToJournal(quest.QuestTitle);
+        UpdateQuestUI();
     }
 
     public void UpdateQuestUI()
     {
         if (currentActiveQuest == null) return;
+
+        string activeTitle = currentActiveQuest.QuestTitle;
+        string activeDesc = currentActiveQuest.Description;
+
+        if (currentActiveQuest.Objectives != null && currentActiveQuest.Objectives.Count > 0)
+        {
+            for (int i = 0; i < currentActiveQuest.Objectives.Count; i++)
+            {
+                var obj = currentActiveQuest.Objectives[i];
+                if (obj != null && !obj.IsComplete)
+                {
+                    string objText = !string.IsNullOrEmpty(obj.ObjectiveTitle) ? obj.ObjectiveTitle : obj.Description;
+
+                    // Jika sudah di tahap berikutnya (misal setelah dapat barang, sekarang antar ke NPC),
+                    // tampilkan judul/deskripsi tahap aktif di HUD dan Journal!
+                    if (i > 0 && !string.IsNullOrEmpty(objText))
+                    {
+                        activeTitle = objText;
+                    }
+                    else if (string.IsNullOrEmpty(activeTitle) && !string.IsNullOrEmpty(objText))
+                    {
+                        activeTitle = objText;
+                    }
+
+                    if (!string.IsNullOrEmpty(obj.Description))
+                    {
+                        activeDesc = obj.Description;
+                    }
+
+                    if (obj.RequiredAmount > 1)
+                    {
+                        activeTitle = $"{activeTitle} ({obj.CurrentAmount}/{obj.RequiredAmount})";
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (hudQuestTitle != null) hudQuestTitle.text = activeTitle;
+        if (hudQuestDescription != null) hudQuestDescription.text = "";
+        if (objectiveListText != null) objectiveListText.text = "";
+
+        SyncToJournal(activeTitle);
     }
 
     public void ClearQuest()
@@ -50,15 +89,11 @@ public class QuestUI : MonoBehaviour
 
         if (QuestJournalManager.Instance != null)
         {
-            QuestJournalManager.Instance.lastCompletedQuest = QuestJournalManager.Instance.currentOngoingQuest;
             QuestJournalManager.Instance.currentOngoingQuest = "Tidak ada misi aktif.";
             QuestJournalManager.Instance.RefreshQuestTabText();
-
             QuestJournalManager.Instance.AddCompletedQuest();
-
             QuestJournalManager.Instance.UnlockPianemoAward();
         }
-
     }
 
     private void SyncToJournal(string title)

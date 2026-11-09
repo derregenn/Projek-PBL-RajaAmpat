@@ -60,6 +60,30 @@ public class StoryManager : MonoBehaviour
         UpdateJournalUI();
     }
 
+    public static int IslandNameToStoryIndex(IslandName island)
+    {
+        switch (island)
+        {
+            case IslandName.Waisai: return 0;
+            case IslandName.Piaynemo: return 1;
+            case IslandName.Misool: return 2;
+            case IslandName.Arborek: return 3;
+            case IslandName.Sawinggrai: return 4;
+            case IslandName.Friwen: return 5;
+            case IslandName.Gag: return 6;
+            default: return -1;
+        }
+    }
+
+    public void CompleteIsland(IslandName island)
+    {
+        int idx = IslandNameToStoryIndex(island);
+        if (idx >= 0)
+        {
+            CompleteIsland(idx);
+        }
+    }
+
     public void CompleteIsland(int islandIndex)
     {
         if (islandIndex >= 0 && islandIndex < islandsCompleted.Length)
@@ -88,6 +112,10 @@ public class StoryManager : MonoBehaviour
     {
         if (progressPercentageText != null)
         {
+            if (progressPercentageText.transform.parent != null && progressPercentageText.transform.parent.name.Contains("ProgressUI"))
+            {
+                progressPercentageText.transform.parent.gameObject.SetActive(false);
+            }
             progressPercentageText.text = CalculateProgressPercentage() + "%";
         }
     }
@@ -98,7 +126,14 @@ public class StoryManager : MonoBehaviour
         
         for (int i = 0; i < islandsCompleted.Length; i++)
         {
-            PlayerPrefs.SetInt("Island_" + i, islandsCompleted[i] ? 1 : 0);
+            if (islandsCompleted[i])
+            {
+                PlayerPrefs.SetInt("Story_Island_" + i, 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Story_Island_" + i, 0);
+            }
         }
         PlayerPrefs.Save();
     }
@@ -112,7 +147,7 @@ public class StoryManager : MonoBehaviour
 
         for (int i = 0; i < islandsCompleted.Length; i++)
         {
-            islandsCompleted[i] = PlayerPrefs.GetInt("Island_" + i, 0) == 1; 
+            islandsCompleted[i] = PlayerPrefs.GetInt("Story_Island_" + i, 0) == 1; 
         }
     }
     
@@ -121,6 +156,7 @@ public class StoryManager : MonoBehaviour
         for (int i = 0; i < islandsCompleted.Length; i++)
         {
             islandsCompleted[i] = false;
+            PlayerPrefs.DeleteKey("Story_Island_" + i);
         }
         currentPhase = StoryPhase.Arrival_Airstrip;
         SaveProgress();

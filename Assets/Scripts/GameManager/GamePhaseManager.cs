@@ -269,12 +269,18 @@ public class GamePhaseManager : MonoBehaviour
     public void CompleteIsland(IslandName island)
     {
         Debug.Log($"[GamePhaseManager] CompleteIsland({island}) diproses.");
+        PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
         PlayerPrefs.SetInt("Island_" + (int)island, 1);
         PlayerPrefs.Save();
 
         if (StoryManager.Instance != null)
         {
-            StoryManager.Instance.CompleteIsland((int)island);
+            StoryManager.Instance.CompleteIsland(island);
+        }
+
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.UnlockIslandAward(island);
         }
 
         OnIslandCompleted?.Invoke(island);

@@ -43,6 +43,19 @@ public class QuestObjectiveTrigger : MonoBehaviour
 
         if (!isPlayer) return;
 
+        // Jangan picu otomatis saat sekadar lewat jika objek ini adalah item interaksi (TrashInteractable),
+        // titik Sasi/QTE (SasiInteractable), atau NPC yang harus diajak bicara dulu (Dialogue)!
+        if (GetComponent<TrashInteractable>() != null || GetComponent<SasiInteractable>() != null)
+        {
+            return;
+        }
+
+        Dialogue dlg = GetComponent<Dialogue>();
+        if (dlg != null && dlg.enabled)
+        {
+            return;
+        }
+
         // Cari apakah objective ini aktif di quest yang sedang berjalan
         Quest targetQuest = null;
         QuestObjective targetObj = null;
@@ -120,6 +133,48 @@ public class QuestObjectiveTrigger : MonoBehaviour
         OnObjectiveTriggered?.Invoke();
 
         if (progressObjectiveOnTrigger && QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        {
+            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+        }
+
+        OnObjectiveCompleted?.Invoke();
+    }
+
+    /// <summary>
+    /// Dipanggil saat dialog dengan NPC selesai untuk menyelesaikan objective penyerahan barang / bicara dengan NPC.
+    /// </summary>
+    public void CompleteFromDialogue()
+    {
+        if (hasTriggered && triggerOnce) return;
+
+        QuestObjective targetObj = null;
+        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        {
+            foreach (var q in QuestController.Instance.ActiveQuests)
+            {
+                if (q == null) continue;
+                var obj = q.GetObjective(objectiveID);
+                if (obj != null)
+                {
+                    targetObj = obj;
+                    break;
+                }
+            }
+        }
+
+        if (requireObjectiveActive && targetObj == null)
+        {
+            return;
+        }
+
+        if (triggerOnce)
+        {
+            hasTriggered = true;
+        }
+
+        OnObjectiveTriggered?.Invoke();
+
+        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
         }

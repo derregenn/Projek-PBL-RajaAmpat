@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenuUI;
     private bool isPaused = false;
 
+    // GameManager duplikat (bawaan prefab System_PauseAudio di scene baru) tidak di-destroy,
+    // melainkan menjadi proxy, karena tombol Resume/Save/MainMenu di Canvas_Pause scene tersebut
+    // menargetkan komponen ini. Proxy meneruskan panggilan ke instance persistent.
+    private bool isProxy = false;
+
     private void Awake()
     {
         if (_instance == null)
@@ -31,13 +36,14 @@ public class GameManager : MonoBehaviour
         }
         else if (_instance != this)
         {
-            Destroy(gameObject);
+            isProxy = true;
             return;
         }
     }
 
     private void OnEnable()
     {
+        if (isProxy) return;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -48,18 +54,52 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        RemoveStrayPersistentPauseCanvases();
         pauseMenuUI = FindPauseMenuUI();
         ResumeGame();
     }
 
     private void Start()
     {
+        if (isProxy) return;
+        if (pauseMenuUI == null) pauseMenuUI = FindPauseMenuUI();
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
     }
 
+    /// <summary>
+    /// Pengaman: hapus Canvas_Pause / System_PauseAudio yang "nyangkut" di DontDestroyOnLoad
+    /// (penyebab pause menu terduplikasi saat teleport pulau).
+    /// </summary>
+    private void RemoveStrayPersistentPauseCanvases()
+    {
+        Scene ddol = gameObject.scene; // scene DontDestroyOnLoad
+        foreach (GameObject root in ddol.GetRootGameObjects())
+        {
+            if (root == null || root == gameObject) continue;
+            if (root.name == "System_PauseAudio" || root.name == "Canvas_Pause")
+            {
+                Debug.Log($"[GameManager] Menghapus pause canvas duplikat yang terbawa antar scene: {root.name}");
+                Destroy(root);
+            }
+        }
+    }
+
     private GameObject FindPauseMenuUI()
     {
+        // Utamakan Canvas_Pause milik scene aktif (bukan yang di DontDestroyOnLoad)
+        Scene active = SceneManager.GetActiveScene();
+        foreach (GameObject root in active.GetRootGameObjects())
+        {
+            foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+            {
+                if ((child.name == "PauseMenuUI" || child.name == "PauseMenuPanel") &&
+                    child.GetComponentInParent<Canvas>(true) != null &&
+                    child.GetComponentInParent<Canvas>(true).name == "Canvas_Pause")
+                    return child.gameObject;
+            }
+        }
+
         GameObject pauseCanvas = GameObject.Find("Canvas_Pause");
         if (pauseCanvas != null)
         {
@@ -87,6 +127,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (isProxy) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused) ResumeGame();
@@ -96,6 +138,9 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        if (isProxy && _instance != null && _instance != this) { _instance.PauseGame(); return; }
+
+        if (pauseMenuUI == null) pauseMenuUI = FindPauseMenuUI();
         isPaused = true;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
@@ -103,6 +148,8 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        if (isProxy && _instance != null && _instance != this) { _instance.ResumeGame(); return; }
+
         isPaused = false;
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -110,6 +157,9 @@ public class GameManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        if (isProxy && _instance != null && _instance != this) { _instance.BackToMainMenu(); return; }
+
+        isPaused = false;
         Time.timeScale = 1f;
         SceneManager.LoadScene("01_MainMenu");
     }
@@ -117,6 +167,8 @@ public class GameManager : MonoBehaviour
     // FUNGSI SAVE
     public void SaveGame()
     {
+        if (isProxy && _instance != null && _instance != this) { _instance.SaveGame(); return; }
+
         string currentScene = SceneManager.GetActiveScene().name;
 
         // Jangan simpan scene transisi atau menu sebagai checkpoint

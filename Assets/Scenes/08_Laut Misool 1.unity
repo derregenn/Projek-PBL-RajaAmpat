@@ -414,6 +414,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  customPrompt: 
 --- !u!212 &105710993
 SpriteRenderer:
   serializedVersion: 2
@@ -830,7 +831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1429,12 +1430,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1205617454}
   NextPrompt: {fileID: 1328651845}
   PlayerNextPrompt: {fileID: 1328651845}
-  playerMovementController: {fileID: 0}
   DialogueLines: []
   DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -1447,9 +1446,6 @@ MonoBehaviour:
   dialogueCamera: {fileID: 211287076}
   npcLensSize: 10
   onDialogueEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &332949506
@@ -2406,7 +2402,7 @@ SpriteRenderer:
   m_Size: {x: 5.31, y: 12.55}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &689252501
 PrefabInstance:
@@ -2482,7 +2478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -310
+      value: -145
       objectReference: {fileID: 0}
     - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2502,7 +2498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4317507852779840424, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5595993701789874979, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2511,6 +2507,18 @@ PrefabInstance:
     - target: {fileID: 8970813950671777200, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.28682628
+      objectReference: {fileID: 0}
+    - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.28682628
+      objectReference: {fileID: 0}
+    - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.28682628
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2828,7 +2836,7 @@ SpriteRenderer:
   m_Size: {x: 4.49, y: 12.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &815675450
 GameObject:
@@ -2882,6 +2890,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  customPrompt: 
 --- !u!212 &815675452
 SpriteRenderer:
   serializedVersion: 2
@@ -3410,7 +3419,7 @@ SpriteRenderer:
   m_Size: {x: 3.92, y: 12.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &854278293 stripped
 GameObject:
@@ -3501,6 +3510,7 @@ MonoBehaviour:
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &879914735
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3928,7 +3938,7 @@ SpriteRenderer:
   m_Size: {x: 3.96, y: 12.9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &961899625
 GameObject:
@@ -4165,6 +4175,7 @@ MonoBehaviour:
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &975075857
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5147,6 +5158,7 @@ MonoBehaviour:
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &1498169100
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5502,6 +5514,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  customPrompt: 
 --- !u!212 &1552194312
 SpriteRenderer:
   serializedVersion: 2
@@ -5786,6 +5799,18 @@ PrefabInstance:
       propertyPath: onSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8747327865009218307, guid: 962830dd94e60114690e1e128e386d21, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8747327865009218307, guid: 962830dd94e60114690e1e128e386d21, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8747327865009218307, guid: 962830dd94e60114690e1e128e386d21, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.65
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3571213798644004892, guid: 962830dd94e60114690e1e128e386d21, type: 3}
     m_RemovedGameObjects: []
@@ -5895,7 +5920,6 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 1328651845}
   PlayerNextPrompt: {fileID: 0}
-  playerMovementController: {fileID: 0}
   DialogueLines:
   - "Indahnya pesona bawah laut disini\u2026"
   - '?'
@@ -5904,7 +5928,6 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.02
-  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -5927,21 +5950,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onInteractComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 162352378}
-        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
-        m_MethodName: AdvanceStageTo
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6438,7 +6446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8753645296360491278, guid: a84d7211e1f1d974a9a9fa6a3ee97dca, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

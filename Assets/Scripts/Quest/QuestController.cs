@@ -120,6 +120,30 @@ public class QuestController : MonoBehaviour
             return;
         }
 
+        // Pastikan quest sebelumnya yang masih menggantung diselesaikan terlebih dahulu
+        // agar tidak sekadar tertimpa (ketimpa doang) dan tetap tercatat di Completed Quests!
+        if (ActiveQuests.Count > 0)
+        {
+            List<Quest> previousQuests = new List<Quest>(ActiveQuests);
+            foreach (Quest prev in previousQuests)
+            {
+                if (prev != null && prev.QuestID != quest.QuestID)
+                {
+                    if (prev.Objectives != null)
+                    {
+                        foreach (var obj in prev.Objectives)
+                        {
+                            if (obj != null && !obj.IsComplete)
+                            {
+                                obj.AddProgress(obj.RequiredAmount);
+                            }
+                        }
+                    }
+                    CompleteQuest(prev);
+                }
+            }
+        }
+
         quest.ResetProgress();
         ActiveQuests.Add(quest);
 
@@ -185,13 +209,30 @@ public class QuestController : MonoBehaviour
             return;
         }
 
-        // Cari objective di quest aktif
+        // Cari objective di quest aktif (dukung alias ID bila nama objective di scene berbeda dengan asset)
+        string[] candidateIDs = GetCandidateObjectiveIDs(objectiveID);
+
         foreach (Quest quest in ActiveQuests)
         {
             if (quest == null)
                 continue;
 
-            QuestObjective objective = quest.GetObjective(objectiveID);
+            QuestObjective objective = null;
+            foreach (string cid in candidateIDs)
+            {
+                objective = quest.GetObjective(cid);
+                if (objective != null && !objective.IsComplete)
+                    break;
+            }
+            if (objective == null)
+            {
+                foreach (string cid in candidateIDs)
+                {
+                    objective = quest.GetObjective(cid);
+                    if (objective != null)
+                        break;
+                }
+            }
 
             if (objective == null)
                 continue;
@@ -207,7 +248,7 @@ public class QuestController : MonoBehaviour
             objective.AddProgress(amount);
 
             Debug.Log(
-                $"Objective Progress: {objectiveID} {objective.CurrentAmount}/{objective.RequiredAmount}"
+                $"Objective Progress: {objective.ObjectiveID} {objective.CurrentAmount}/{objective.RequiredAmount}"
             );
 
             // Update UI
@@ -284,6 +325,47 @@ public class QuestController : MonoBehaviour
         return true;
     }
 
+    private string[] GetCandidateObjectiveIDs(string objectiveID)
+    {
+        switch (objectiveID)
+        {
+            case "ambil_sagu":
+            case "Berikan sagu":
+            case "minta_air":
+                return new string[] { objectiveID, "ambil_air" };
+            case "Antarkan Air":
+                return new string[] { objectiveID, "Bicara", "ambil_air" };
+            case "trivia_piaynemo":
+            case "tangga_piaynemo":
+                return new string[] { objectiveID, "temui_tourguide" };
+            case "serahkan_foto_pembisnis":
+                return new string[] { objectiveID, "foto_sawinggrai" };
+            case "foto_arborek":
+                return new string[] { objectiveID, "Kembali" };
+            default:
+                return new string[] { objectiveID };
+        }
+    }
+
+    public void CompleteAllActiveQuests()
+    {
+        if (ActiveQuests == null || ActiveQuests.Count == 0) return;
+        List<Quest> copy = new List<Quest>(ActiveQuests);
+        foreach (Quest q in copy)
+        {
+            if (q == null) continue;
+            if (q.Objectives != null)
+            {
+                foreach (var obj in q.Objectives)
+                {
+                    if (obj != null && !obj.IsComplete)
+                        obj.AddProgress(obj.RequiredAmount);
+                }
+            }
+            CompleteQuest(q);
+        }
+    }
+
     // ========================================
     // COMPLETE QUEST
     // ========================================
@@ -297,10 +379,17 @@ public class QuestController : MonoBehaviour
             return;
 
         string completedQuestID = quest.QuestID;
+        string completedQuestTitle = quest.QuestTitle;
 
         Debug.Log("================================");
-        Debug.Log("QUEST COMPLETE: " + quest.QuestTitle);
+        Debug.Log("QUEST COMPLETE: " + completedQuestTitle);
         Debug.Log("================================");
+
+        // Catat quest selesai ke QuestJournalManager SEBELUM ClearQuest mengosongkan teks!
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.RecordCompletedQuest(completedQuestID, completedQuestTitle);
+        }
 
         ActiveQuests.Remove(quest);
 

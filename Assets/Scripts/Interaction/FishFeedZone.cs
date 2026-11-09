@@ -99,6 +99,10 @@ public class FishFeedZone : MonoBehaviour
         {
             allFishFedEventInvoked = true;
             Debug.Log("[FishFeedZone] All fish fed. Invoking onAllFishFed event.");
+            if (QuestController.Instance != null)
+            {
+                QuestController.Instance.ProgressObjective("makan_ikan", 1);
+            }
             onAllFishFed?.Invoke();
         }
     }

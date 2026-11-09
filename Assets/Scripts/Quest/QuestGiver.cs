@@ -14,7 +14,7 @@ public class QuestGiver : MonoBehaviour
     [SerializeField] private string requiredPrerequisiteQuestID = "";
 
     [Header("Physical Collision (2D)")]
-    [SerializeField] private bool giveQuestOnPlayerCollision = false;
+    public bool giveQuestOnPlayerCollision = false;
 
     private bool hasGivenQuest = false;
 

@@ -48,14 +48,206 @@ MonoBehaviour:
   polaroidPopup: {fileID: 0}
   popupPhotoDisplay: {fileID: 0}
   questTabPanel: {fileID: 0}
+  btnCloseJournal: {fileID: 0}
+  progressPercentageText: {fileID: 0}
+  folderImage: {fileID: 0}
+  tabSwitchButton: {fileID: 0}
   ongoingQuestText: {fileID: 0}
-  journalTitleText: {fileID: 0}
-  journalTriviaText: {fileID: 0}
+  tabOngoingSprite: {fileID: 7789624239003450597, guid: a1ab3c5c52e22634daf4ffa1e444b08b, type: 3}
+  tabCompletedSprite: {fileID: -7132958609066624175, guid: 909e188a56197774694e9355415c811b, type: 3}
+  islandAwards:
+  - island: 3
+    displayName: Arborek
+    awardImage: {fileID: 0}
+    lockedSprite: {fileID: -8613367630442771526, guid: 9988230c2946a1e43920f9be83d4c96b, type: 3}
+    unlockedSprite: {fileID: -4398837354957196708, guid: 914cbb1a4cc7d464984475dcebd370e3, type: 3}
+  - island: 6
+    displayName: Friwen
+    awardImage: {fileID: 0}
+    lockedSprite: {fileID: -995005413004762526, guid: fb6124ca0108b9848813377deb7cce4e, type: 3}
+    unlockedSprite: {fileID: -6145665114924994841, guid: 6846022c3f3123740a593aa5ef217595, type: 3}
+  - island: 7
+    displayName: Gag
+    awardImage: {fileID: 0}
+    lockedSprite: {fileID: 7391758085261460800, guid: 273e36de6de370243a0b99608341ad17, type: 3}
+    unlockedSprite: {fileID: -7293308754579974607, guid: b501af9c4d80af64387e98e0d5f38c46, type: 3}
+  - island: 4
+    displayName: Misool
+    awardImage: {fileID: 0}
+    lockedSprite: {fileID: -150739508606616068, guid: 58961c3053b7a8e46a7a3eb938a24276, type: 3}
+    unlockedSprite: {fileID: 8692476301317953335, guid: d90d7ec40cbf21c47831021cf1f5fa11, type: 3}
+  - island: 2
+    displayName: Piaynemo
+    awardImage: {fileID: 0}
+    lockedSprite: {fileID: 2324220281866680864, guid: ff1c3dd9b736ae24d83dbe239e2310b3, type: 3}
+    unlockedSprite: {fileID: -8239909532055490550, guid: 31d91edfe100eaa4eacf57e689f4de4b, type: 3}
+  - island: 5
+    displayName: Sawinggrai
+    awardImage: {fileID: 0}
+    lockedSprite: {fileID: -6400610598127741663, guid: 6fe6efb5027d0ef4c9417023abc2e856, type: 3}
+    unlockedSprite: {fileID: 6177849792723021166, guid: db94f1f31f40f724e8ea11c873295af7, type: 3}
+  journalPageImage: {fileID: 0}
   journalPhotoImage: {fileID: 0}
   noPhotoWarning: {fileID: 0}
+  pageNumberText: {fileID: 0}
+  btnPrevPage: {fileID: 0}
+  btnNextPage: {fileID: 0}
+  lockedPageSprite: {fileID: -8707635310871411703, guid: 5b528a233cc228a41946d3fa0874340c, type: 3}
   allJournalDatabase:
-  - photoID: 1
-    title: LAUT ARBOREK
-    triviaDescription: Borr bor
-    photoIllustration: {fileID: -3829476234814501412, guid: db79fa90f42dd264aac1e813ffa7a378, type: 3}
-  unlockedPhotoIDs: 
+  - pageID: 1
+    title: Tiba di Waisai & PIN Turis
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -2645050474553366069, guid: b3a5900f7e2e066469649418c1085ec3, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: ''
+    unlockOnIslandComplete: 0
+    unlockIsland: 1
+  - pageID: 2
+    title: Aturan Ekowisata Waisai
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -6535061216159887078, guid: 1d82c477b67ea0040b429411765e355e, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '02_Waisai'
+    unlockOnIslandComplete: 1
+    unlockIsland: 1
+  - pageID: 3
+    title: Jalur Tangga & Konservasi Karst Piaynemo
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 4204284292704615366, guid: 2d4e805097fdf464f93606df8fe3abc0, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '01_Piaynemo'
+    unlockOnIslandComplete: 0
+    unlockIsland: 2
+  - pageID: 4
+    title: Viewpoint Piaynemo!
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -491630882708088005, guid: d395eb8663a2c6b40ba8b897873481d2, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '05_Piaynemo'
+    unlockOnIslandComplete: 1
+    unlockIsland: 2
+  - pageID: 5
+    title: Kearifan Adat Sasi Arborek
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -5666996480505812442, guid: c355e2bec8a4e694590fdf3204978044, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '03_Arborek'
+    unlockOnIslandComplete: 0
+    unlockIsland: 3
+  - pageID: 6
+    title: Penyelamatan Biota & Pari Manta Misool
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 6934233696673383967, guid: 6cc00b15cd44e734c8bed0bcbdad637b, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '07_Misool'
+    unlockOnIslandComplete: 1
+    unlockIsland: 4
+  - pageID: 7
+    title: Kehidupan Pesisir Sawinggrai
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 1790191627928547123, guid: 436d648f36c01964a8cb9151e4d858f0, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '04_Sawinggrai'
+    unlockOnIslandComplete: 1
+    unlockIsland: 5
+  - pageID: 8
+    title: Navigasi Pesisir & Friwen Wall
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -3568461051725686113, guid: cc9fe480cdbf6f4408215080f506bae8, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '10'
+    unlockOnIslandComplete: 0
+    unlockIsland: 6
+  - pageID: 9
+    title: Pasir Timbul Friwen
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -8180718427656014925, guid: b84177d194188ca44bf727e76090c05a, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '09'
+    unlockOnIslandComplete: 1
+    unlockIsland: 6
+  - pageID: 10
+    title: Tiba di Pulau Gag & Analisis Sampel
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 1957650772432202415, guid: f175946196e085b43b00fde264bb7ace, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '01'
+    unlockOnIslandComplete: 0
+    unlockIsland: 7
+  - pageID: 11
+    title: Jeritan Tanah Asli & Bukit Tambang Gag
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 8217271962119270399, guid: 94c1d3c7e257e8147ab1716b71b14a7a, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '06'
+    unlockOnIslandComplete: 0
+    unlockIsland: 7
+  - pageID: 12
+    title: Pulang dengan Sudut Pandang Baru (100%)
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -4615616152862767646, guid: 85eafb0fbed212a4d93ce176e17a8835, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '08'
+    unlockOnIslandComplete: 1
+    unlockIsland: 7
+  - pageID: 13
+    title: Selesai Arborek & Desa Wisata
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 2444109019265409417, guid: ea09fdc53482e034580b175a2e15d104, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '05_Arborek'
+    unlockOnIslandComplete: 1
+    unlockIsland: 3
+  - pageID: 14
+    title: Burung Cendrawasih Sawinggrai
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -621359431677433727, guid: 0879915929bf964498b0af6986a3a4da, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '04_Sawinggrai'
+    unlockOnIslandComplete: 0
+    unlockIsland: 5
+  - pageID: 15
+    title: Laut Misool & Karst
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 7184469537686222111, guid: 30b68aad1cca8ec488a3b45072d69ae9, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '05_Misool'
+    unlockOnIslandComplete: 0
+    unlockIsland: 4
+  - pageID: 16
+    title: Poster Edukasi Goa Keramat Misool
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: -5695994057939535623, guid: fd793fd74f31c3749a96884d2a9ed499, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '01_Misool'
+    unlockOnIslandComplete: 0
+    unlockIsland: 4
+  - pageID: 17
+    title: Sertifikat ECO-HERO (100%)
+    triviaDescription: 
+    pageBackgroundSprite: {fileID: 5098412988093724724, guid: 852b35ddf8e9f714eabde253eafc2da7, type: 3}
+    requiresPhoto: 0
+    photoIDToDisplay: 0
+    unlockOnQuestID: '08'
+    unlockOnIslandComplete: 1
+    unlockIsland: 7
+  unlockedPages:
+  - 1
+  allPhotoSpritesDatabase:
+  - {fileID: -7593715392477326211, guid: c9d94f3148781af41846b139bd2a454a, type: 3}

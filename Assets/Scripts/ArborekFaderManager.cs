@@ -35,22 +35,91 @@ public class ArborekFaderManager : MonoBehaviour
 
     public void PlayTransition1()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi1, npcHidupTransisi1, true));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi1, npcHidupTransisi1, true, 1));
     }
 
     public void PlayTransitionSasi()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true));
+        ResolveSasiNPCReferences();
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2));
+    }
+
+    public void CompleteSasiImmediateAndTransition()
+    {
+        ResolveSasiNPCReferences();
+
+        // Langsung matikan NPC_TetuaAdat_Sasi_Before dan aktifkan NPC_TetuaAdat_Sasi_After begitu titik sasi kedua selesai
+        if (npcSasiBefore != null && !npcSasiBefore.name.Contains("TitikSasi"))
+        {
+            ResetNPCCamera(npcSasiBefore);
+            npcSasiBefore.SetActive(false);
+        }
+        if (npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
+        {
+            ResetNPCCamera(npcHidupTransisi1);
+            npcHidupTransisi1.SetActive(false);
+        }
+        if (npcSasiAfter != null)
+        {
+            QuestGiver enableGiver = npcSasiAfter.GetComponent<QuestGiver>();
+            if (enableGiver != null)
+            {
+                enableGiver.enabled = true;
+                enableGiver.giveQuestOnPlayerCollision = false;
+            }
+            npcSasiAfter.SetActive(true);
+        }
+
+        if (!isTransitioning)
+        {
+            StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2));
+        }
+    }
+
+    private void ResolveSasiNPCReferences()
+    {
+        if (npcSasiBefore == null || npcSasiBefore.name.Contains("TitikSasi"))
+        {
+            if (npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
+            {
+                npcSasiBefore = npcHidupTransisi1;
+            }
+            else
+            {
+                GameObject[] allObjs = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (var go in allObjs)
+                {
+                    if (go != null && go.name == "NPC_TetuaAdat_Sasi_Before")
+                    {
+                        npcSasiBefore = go;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (npcSasiAfter == null)
+        {
+            GameObject[] allObjs = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var go in allObjs)
+            {
+                if (go != null && go.name == "NPC_TetuaAdat_Sasi_After")
+                {
+                    npcSasiAfter = go;
+                    break;
+                }
+            }
+        }
     }
 
     public void PlayTransition2()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi2, npcHidupTransisi2, true));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi2, npcHidupTransisi2, true, 3));
     }
 
     public void PlayTransition3()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcFotografi, npcTourGuide, false));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcFotografi, npcTourGuide, false, 4));
     }
 
     // PANGGIL METHOD INI SETELAH QUEST FOTO / DIALOG TOUR GUIDE SELESAI
@@ -61,7 +130,7 @@ public class ArborekFaderManager : MonoBehaviour
 
     // --- COROUTINES UTAMA ---
 
-    private IEnumerator FadeAndSwap(GameObject npcToDisable, GameObject npcToEnable, bool disableOldNpc)
+    private IEnumerator FadeAndSwap(GameObject npcToDisable, GameObject npcToEnable, bool disableOldNpc, int transitionType = 0)
     {
         isTransitioning = true; 
 
@@ -74,7 +143,7 @@ public class ArborekFaderManager : MonoBehaviour
 
         CloseDialogueUI();
 
-        if (npcToDisable != null)
+        if (npcToDisable != null && !npcToDisable.name.Contains("TitikSasi"))
         {
             ResetNPCCamera(npcToDisable);
 
@@ -92,9 +161,60 @@ public class ArborekFaderManager : MonoBehaviour
             }
         }
 
+        // Pada Transisi Sasi, pastikan NPC_TetuaAdat_Sasi_Before juga ikut disembunyikan
+        if (transitionType == 2 && npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
+        {
+            ResetNPCCamera(npcHidupTransisi1);
+            npcHidupTransisi1.SetActive(false);
+        }
+
         if (npcToEnable != null)
         {
+            // Pastikan QuestGiver pada NPC yang baru diaktifkan tidak langsung menimpa quest saat tersentuh collider
+            QuestGiver enableGiver = npcToEnable.GetComponent<QuestGiver>();
+            if (enableGiver != null)
+            {
+                enableGiver.enabled = true;
+                enableGiver.giveQuestOnPlayerCollision = false;
+            }
+
             npcToEnable.SetActive(true);
+        }
+
+        // Penanganan alur quest spesifik per transisi Arborek:
+        if (transitionType == 1)
+        {
+            // Setelah serahkan karang -> arahkan pemain ke Tetua Adat di area Sasi
+            SetTrackerHint("Temui Tetua Adat di pantai untuk ritual Sasi");
+        }
+        else if (transitionType == 2)
+        {
+            // Setelah kedua Titik Sasi dipasang -> berikan Quest06_Arborek ("Bicara dengan Tetua Adat")
+            if (npcSasiBefore != null)
+            {
+                QuestGiver sasiDoneGiver = npcSasiBefore.GetComponent<QuestGiver>();
+                if (sasiDoneGiver != null)
+                {
+                    sasiDoneGiver.GiveQuest();
+                }
+            }
+        }
+        else if (transitionType == 3)
+        {
+            // Setelah bicara dengan NPC_TetuaAdat_Sasi_After -> berikan Quest04_Arborek ("Bicara dengan Tetua Adat di Pohon Kelapa")
+            if (npcMatiTransisi2 != null)
+            {
+                QuestGiver quizPrepGiver = npcMatiTransisi2.GetComponent<QuestGiver>();
+                if (quizPrepGiver != null)
+                {
+                    quizPrepGiver.GiveQuest();
+                }
+            }
+        }
+        else if (transitionType == 4)
+        {
+            // Setelah kuis Tetua Adat Fotografi selesai -> TourGuide muncul untuk mengarahkan foto Sasi
+            SetTrackerHint("Bicara dengan Tour Guide");
         }
 
         yield return new WaitForSecondsRealtime(0.5f); 
@@ -135,6 +255,12 @@ public class ArborekFaderManager : MonoBehaviour
             npc2.SetActive(false);
         }
 
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.UnlockIslandAward(IslandName.Arborek);
+        }
+        SetTrackerHint("Kembali ke Dermaga Arborek");
+
         yield return new WaitForSecondsRealtime(0.5f);
 
         // 3. Fade kembali terang
@@ -145,6 +271,20 @@ public class ArborekFaderManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(durasiMenujuTerang);
         isTransitioning = false;
+    }
+
+    private void SetTrackerHint(string hintText)
+    {
+        QuestUI ui = FindFirstObjectByType<QuestUI>();
+        if (ui != null && ui.hudQuestTitle != null)
+        {
+            ui.hudQuestTitle.text = hintText;
+        }
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.currentOngoingQuest = hintText;
+            QuestJournalManager.Instance.RefreshQuestTabText();
+        }
     }
 
     private void ResetNPCCamera(GameObject npcObj)

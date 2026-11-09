@@ -73,6 +73,11 @@ public class IslandSceneTransition : MonoBehaviour
 
         SetFadeAlpha(1f);
 
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.CompleteAllActiveQuests();
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.SaveGame();

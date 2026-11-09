@@ -87,6 +87,10 @@ public class FriwenEventManager : MonoBehaviour
 
     public void QTESelesai()
     {
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ProgressObjective("perahu_friwen", 1);
+        }
         StartCoroutine(RoutineQTESelesai());
     }
 
