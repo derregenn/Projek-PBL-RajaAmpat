@@ -14,6 +14,11 @@ public class QuestController : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindFirstObjectByType<QuestController>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("QuestController");
+                    _instance = go.AddComponent<QuestController>();
+                }
             }
             return _instance;
         }

@@ -21,33 +21,32 @@ public class SeaToLandTeleporter : MonoBehaviour
 
         int currentStage = mqm.CurrentStage;
         int count = mqm.CollectibleCount;
+        string exitPoint = "SEA_MAIN";
 
         // 1. EVALUASI STAGE & SIMPAN PROGRES SEBELUM PINDAH
         if (currentStage == 2)
         {
             // Selesai Monolog Laut -> Lanjut Stage 3 (Bulu Seribu)
             mqm.AdvanceStageTo(3);
-            mqm.SetLastExitPoint("SEA_MAIN");
         }
-        else if (count >= 3 || currentStage == 4 || currentStage == 5)
+        else if ((currentStage >= 3 && currentStage <= 4 && count >= 3) || currentStage == 5)
         {
             // Selesai Ambil 3 Bulu Seribu -> Lanjut Stage 5 (Serahkan ke Petugas)
             mqm.AdvanceStageTo(5);
-            mqm.SetLastExitPoint("SEA_MAIN");
         }
-        else if (currentStage == 7 || currentStage == 8)
+        else if (currentStage == 7)
+        {
+            // Kembali sebelum Pari Manta diselamatkan; pertahankan stage 7.
+            exitPoint = "SEA_MANTA";
+        }
+        else if (currentStage == 8)
         {
             // Selesai Rescue Pari Manta -> Lanjut Stage 8 (Lapor Ibu-Ibu)
-            mqm.AdvanceStageTo(8);
-            mqm.SetLastExitPoint("SEA_MANTA");
-        }
-        else
-        {
-            // Jika kembali ke darat sebelum quest laut selesai
-            mqm.SetLastExitPoint("SEA_MAIN");
+            exitPoint = "SEA_MANTA";
         }
 
-        Debug.Log($"[SeaToLandTeleporter] Data transisi disiapkan. Stage: {mqm.CurrentStage}, ExitPoint: SEA_MAIN");
+        mqm.SetLastExitPoint(exitPoint);
+        Debug.Log($"[SeaToLandTeleporter] Data transisi disiapkan. Stage: {mqm.CurrentStage}, ExitPoint: {exitPoint}");
     }
 
     /// <summary>

@@ -691,7 +691,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 7
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2245,7 +2245,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1832740822449295551, guid: 84974a88534fd734ebb8122dca666463, type: 3}
   m_PrefabInstance: {fileID: 1999226701}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411509805}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 129cc11615ee7254c95d11b3c1e20b0f, type: 3}
@@ -2696,7 +2696,7 @@ MonoBehaviour:
   talkingSprite2: {fileID: 0}
   idleSprite: {fileID: -975930112060938365, guid: 3139694329864ee448d3317d8a72d58c, type: 3}
   spriteToggleInterval: 3
-  dialogueCamera: {fileID: 0}
+  dialogueCamera: {fileID: 916379636}
   npcLensSize: 3
   onDialogueEnd:
     m_PersistentCalls:
@@ -2827,7 +2827,7 @@ Transform:
   m_GameObject: {fileID: 438320358}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.301174, y: 1.1218101, z: 0}
+  m_LocalPosition: {x: 18.81, y: 1.1218101, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3488,13 +3488,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 582948189}
+  - component: {fileID: 582948190}
   m_Layer: 0
   m_Name: Ibu-ibu Stage 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &582948189
 Transform:
   m_ObjectHideFlags: 0
@@ -3512,6 +3513,23 @@ Transform:
   - {fileID: 1446603228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &582948190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582948188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
+  onMidFade:
+    m_PersistentCalls:
+      m_Calls: []
+  triggerOnEnter: 0
+  activatorTag: Player
 --- !u!114 &590674048 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7036582998240112714, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
@@ -3968,7 +3986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &685218634
 Transform:
   m_ObjectHideFlags: 0
@@ -4046,7 +4064,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -36.345}
-  m_SizeDelta: {x: 280, y: 0}
+  m_SizeDelta: {x: 280, y: 52.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &688853828
 MonoBehaviour:
@@ -5908,7 +5926,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0013113, y: -140}
-  m_SizeDelta: {x: 300, y: 0}
+  m_SizeDelta: {x: 300, y: 82.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &928693075
 MonoBehaviour:
@@ -7590,7 +7608,7 @@ Transform:
   m_GameObject: {fileID: 1174263397}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.171177, y: 1.1218101, z: 0}
+  m_LocalPosition: {x: 16.639996, y: 1.1218101, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7671,7 +7689,7 @@ MonoBehaviour:
   talkingSprite2: {fileID: 0}
   idleSprite: {fileID: 6492824109202151321, guid: 2f89ad1d9013c624fa3299fdf55a01d8, type: 3}
   spriteToggleInterval: 3
-  dialogueCamera: {fileID: 0}
+  dialogueCamera: {fileID: 916379636}
   npcLensSize: 3
   onDialogueEnd:
     m_PersistentCalls:
@@ -9135,38 +9153,39 @@ PrefabInstance:
       objectReference: {fileID: 1021186074}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLines.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[0]'
-      value: Wahhh, tingkat kepedulian mu sangat tinggi!
+      value: "Astaga\u2026.kamu itu wisatawan atau petugas penyelamat sih?"
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[1]'
-      value: Kasihan sekali penyu itu... Jaringnya melilit lehernya lumayan kencang
+      value: Udah disuruh basmi hama, udah gitu disuruh lagi sama ibu-ibu tadi
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[2]'
-      value: Penyu itu terlilit oleh jaring nelayan bekas yang dibuang sembarangan
-        dan hanyut terbawa arus.
+      value: Masa kamu mau disuruh sana sini?
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[3]'
-      value: Kalau kamu tidak menolongnya tadi, penyu itu bisa mati kehabisan napas
+      value: "Duhh\u2026kamu itu terlalu baik ya"
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[4]'
-      value: Aku benar-benar bangga membawamu ke sini. Kamu terbukti wisatawan yang
-        betul-betul menjaga alam.
+      value: "Meski begitu, kamu sudah menyelamatkan ekosistem laut di pulau ini\u2026"
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[5]'
-      value: Kalau kamu siap melihat keindahan bawah laut Misool yang sebenarnya,
-        temui Petugas Konservasi di dekat dermaga untuk memakai alat selam ya
+      value: Aku apresiasi deh kalau soal itu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLines.Array.data[6]'
+      value: Ayo kita kembali ke perahu sebelum kamu disuruh lagi sama warga sini
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
@@ -10268,108 +10287,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 962830dd94e60114690e1e128e386d21, type: 3}
---- !u!1 &1411509805 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4317507852779840424, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-  m_PrefabInstance: {fileID: 1999226701}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1411509808
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411509805}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1428451159
 GameObject:
   m_ObjectHideFlags: 0
@@ -10537,7 +10454,7 @@ Transform:
   m_GameObject: {fileID: 1446603227}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.301174, y: 1.1218101, z: 0}
+  m_LocalPosition: {x: 18.810001, y: 1.1218101, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10617,11 +10534,23 @@ MonoBehaviour:
   talkingSprite2: {fileID: 0}
   idleSprite: {fileID: -975930112060938365, guid: 3139694329864ee448d3317d8a72d58c, type: 3}
   spriteToggleInterval: 3
-  dialogueCamera: {fileID: 0}
+  dialogueCamera: {fileID: 916379636}
   npcLensSize: 3
   onDialogueEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 582948190}
+        m_TargetAssemblyTypeName: FaderTrigger, Assembly-CSharp
+        m_MethodName: TriggerFadeAndDoAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &1446603232
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10826,7 +10755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1482452493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11484,7 +11413,7 @@ MonoBehaviour:
   talkingSprite2: {fileID: 0}
   idleSprite: {fileID: 6492824109202151321, guid: 2f89ad1d9013c624fa3299fdf55a01d8, type: 3}
   spriteToggleInterval: 3
-  dialogueCamera: {fileID: 0}
+  dialogueCamera: {fileID: 916379636}
   npcLensSize: 3
   onDialogueEnd:
     m_PersistentCalls:
@@ -11603,7 +11532,7 @@ Transform:
   m_GameObject: {fileID: 1599505554}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.171177, y: 1.1218101, z: 0}
+  m_LocalPosition: {x: 16.64, y: 1.1218101, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13168,10 +13097,10 @@ RectTransform:
   - {fileID: 535163555}
   m_Father: {fileID: 928693074}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -67.69}
+  m_SizeDelta: {x: 280, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1724944623
 GameObject:
@@ -15109,26 +15038,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1684323941}
     m_Modifications:
-    - target: {fileID: 158359098592768683, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: m_text
-      value: Z
-      objectReference: {fileID: 0}
-    - target: {fileID: 1832740822449295551, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: timerSfx
-      value: 
-      objectReference: {fileID: 8300000, guid: 52cef828fa0610c41aa578a243921838, type: 3}
-    - target: {fileID: 1832740822449295551, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: successSfx
-      value: 
-      objectReference: {fileID: 8300000, guid: 638382076d23c1b44b66fc984534f999, type: 3}
-    - target: {fileID: 1832740822449295551, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: tappingSfx
-      value: 
-      objectReference: {fileID: 8300000, guid: 3bc954e8b31a6e64292f1815ee46f170, type: 3}
-    - target: {fileID: 1832740822449295551, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: qteAudioSource
-      value: 
-      objectReference: {fileID: 1411509808}
     - target: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -15213,26 +15122,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: QTE3
       objectReference: {fileID: 0}
-    - target: {fileID: 4317507852779840424, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5595993701789874979, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7073308145424374447, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: m_text
-      value: D
-      objectReference: {fileID: 0}
-    - target: {fileID: 7476153438529268749, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: m_text
-      value: S
-      objectReference: {fileID: 0}
-    - target: {fileID: 8630505600987535925, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      propertyPath: m_text
-      value: D
-      objectReference: {fileID: 0}
     - target: {fileID: 8970813950671777200, guid: 84974a88534fd734ebb8122dca666463, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -15240,10 +15129,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4317507852779840424, guid: 84974a88534fd734ebb8122dca666463, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1411509808}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84974a88534fd734ebb8122dca666463, type: 3}
 --- !u!1 &2001680365 stripped
 GameObject:

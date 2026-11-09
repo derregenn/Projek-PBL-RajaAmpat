@@ -260,8 +260,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: kerang_arborek
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &17665923
@@ -277,8 +282,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &17665924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +303,9 @@ MonoBehaviour:
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &17665925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -528,6 +537,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 22965169}
   m_CullTransparentMesh: 1
+--- !u!1001 &39827444
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2969053353881573139, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: currentIsland
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2969053353881573139, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: onStageChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2969053353881573139, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: onStageChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358522999148655461, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_Name
+      value: MasterQuestManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 75.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
 --- !u!1 &50060925
 GameObject:
   m_ObjectHideFlags: 0
@@ -8598,8 +8676,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 0}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &1313240534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8618,6 +8697,9 @@ MonoBehaviour:
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8752,8 +8834,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: umpan_arborek
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1320963924 stripped
@@ -9648,11 +9735,21 @@ MonoBehaviour:
   - {fileID: 1619692034}
   - {fileID: 1619692032}
   - {fileID: 1619692030}
+  audioSource: {fileID: 0}
+  startQuizSFX: {fileID: 0}
+  buttonHoverSFX: {fileID: 0}
+  correctAnswerSFX: {fileID: 0}
+  wrongAnswerSFX: {fileID: 0}
+  sfxVolume: 1
+  enableButtonHover: 1
+  hoverScale: 1.06
+  hoverTransitionSpeed: 14
   correctFeedbackMessages:
   - Benar sekali, Pemahamanmu luar biasa!
   wrongFeedbackMessages:
   - Bukan begitu, kawan. Sasi bukan untuk menutup wisata atau membagi wilayah, coba
     pilih jawaban yang bijak!
+  closeKey: 101
 --- !u!1 &1461069729
 GameObject:
   m_ObjectHideFlags: 0
@@ -11156,8 +11253,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 01aed0042a5d75d4d949b0f64f8c75b4, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &1668667927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13446,8 +13544,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
   questToGive: {fileID: 11400000, guid: 1addc822055b85643b1bdf2473017a10, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 0
-  requireBoxCollider2D: 0
 --- !u!114 &2022872704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13643,6 +13742,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: ' '
   amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -13659,6 +13760,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2030199242 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4868419481339390064, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
@@ -13996,3 +14100,4 @@ SceneRoots:
   - {fileID: 498934448}
   - {fileID: 1332313117}
   - {fileID: 192280451}
+  - {fileID: 39827444}
