@@ -458,10 +458,11 @@ MonoBehaviour:
   collectSound: {fileID: 0}
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
-  unlockJournalID: 1
+  unlockJournalID: -1
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &17665925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4978,7 +4979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310179073834670815, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.27452
+      value: 27.97
       objectReference: {fileID: 0}
     - target: {fileID: 7310179073834670815, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7034,7 +7035,7 @@ Transform:
   m_GameObject: {fileID: 761659798}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.574, y: -5.07, z: 0}
+  m_LocalPosition: {x: 28.53, y: -5.07, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10527,6 +10528,7 @@ MonoBehaviour:
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18470,7 +18472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 11400000, guid: b31d09039ac335944a8e6ec42b927677, type: 2}
+  questToGive: {fileID: 0}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
   giveQuestOnPlayerCollision: 1

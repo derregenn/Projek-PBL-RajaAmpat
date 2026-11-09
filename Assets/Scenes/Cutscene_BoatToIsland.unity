@@ -1221,7 +1221,7 @@ Transform:
   m_GameObject: {fileID: 299534929}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -7.16, z: 0}
+  m_LocalPosition: {x: 0.01, y: -7.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4463,12 +4463,22 @@ MonoBehaviour:
   - {fileID: 481757284}
   - {fileID: 481757282}
   - {fileID: 481757280}
+  audioSource: {fileID: 0}
+  startQuizSFX: {fileID: 0}
+  buttonHoverSFX: {fileID: 0}
+  correctAnswerSFX: {fileID: 0}
+  wrongAnswerSFX: {fileID: 0}
+  sfxVolume: 1
+  enableButtonHover: 1
+  hoverScale: 1.06
+  hoverTransitionSpeed: 14
   correctFeedbackMessages:
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
   - BENAR SEKALI!
   wrongFeedbackMessages:
   - Bukan dong! Tangga kayu itu dibuat sebagai pembatas konservasi
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
+  closeKey: 101
 --- !u!1 &1401348742
 GameObject:
   m_ObjectHideFlags: 0
