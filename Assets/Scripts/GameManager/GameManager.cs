@@ -54,7 +54,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        pauseMenuUI = FindPauseMenuUI();
         if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        isPaused = false;
         Time.timeScale = 1f;
     }
 

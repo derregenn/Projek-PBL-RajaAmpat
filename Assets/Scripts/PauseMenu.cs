@@ -3,19 +3,22 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject container;
-void Update()
-{
-    // Ubah dari KeyCode.F menjadi KeyCode.Escape
-    if (Input.GetKeyDown(KeyCode.Escape))
+    private void Update()
     {
-        container.SetActive(true);
-        Time.timeScale = 0; // Menghentikan waktu saat pause[cite: 2]
+        if (GameManager.Instance != null || PauseManager.Instance != null)
+            return;
+
+        if (container != null && Input.GetKeyDown(KeyCode.Escape))
+        {
+            bool shouldPause = !container.activeSelf;
+            container.SetActive(shouldPause);
+            Time.timeScale = shouldPause ? 0f : 1f;
+        }
     }
-}
 
     public void ResumeButton()
     {
-        container.SetActive(false);
+        if (container != null) container.SetActive(false);
         Time.timeScale = 1;
     }
 

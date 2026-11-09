@@ -141,19 +141,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
-      propertyPath: m_AnchorMin.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
-      propertyPath: m_AnchorMin.y
+      propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_SizeDelta.x
@@ -193,11 +193,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -150
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -1080
       objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -306,6 +306,7 @@ MonoBehaviour:
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &17665925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8700,6 +8701,7 @@ MonoBehaviour:
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
+  customPrompt: 
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14072,9 +14074,9 @@ SceneRoots:
   - {fileID: 685560934}
   - {fileID: 847063623}
   - {fileID: 1491334918}
+  - {fileID: 752712728}
   - {fileID: 349254782}
   - {fileID: 1778422158}
-  - {fileID: 752712728}
   - {fileID: 1122863885}
   - {fileID: 2022872707}
   - {fileID: 1668667930}

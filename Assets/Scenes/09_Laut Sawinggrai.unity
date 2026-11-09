@@ -5895,7 +5895,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -2.570549, y: -13.63802}
+  m_Offset: {x: -2.570549, y: -8.83068}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5905,7 +5905,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 70.27409, y: 67.90126}
+  m_Size: {x: 70.27409, y: 55.2343}
   m_EdgeRadius: 0
 --- !u!4 &1408034732
 Transform:
@@ -5916,7 +5916,7 @@ Transform:
   m_GameObject: {fileID: 1408034729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.1, y: -22.78461, z: 0}
+  m_LocalPosition: {x: -4.1, y: -32.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6052,19 +6052,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 208.1434
+      value: 1083
       objectReference: {fileID: 0}
     - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 49.3756
+      value: 939
       objectReference: {fileID: 0}
     - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6117,14 +6121,14 @@ PrefabInstance:
     - target: {fileID: 5404310318564527884, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 4233384755633241074, guid: 6b79e3f0a15b72a44bf15bc147522f3d, type: 3}
+      objectReference: {fileID: 6026581098678758716, guid: a75c88255c0e55f498180fdec181c8da, type: 3}
     - target: {fileID: 7347093790615255095, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_Name
       value: PolaroidPopup
       objectReference: {fileID: 0}
     - target: {fileID: 7347093790615255095, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8641,126 +8645,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892033026}
   m_CullTransparentMesh: 1
---- !u!1 &1931851759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1931851762}
-  - component: {fileID: 1931851761}
-  - component: {fileID: 1931851760}
-  m_Layer: 0
-  m_Name: Trigger_MonologKarang
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1931851760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931851759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
-  InteractPrompt: {fileID: 1618637140}
-  DialogueBox: {fileID: 1618637143}
-  DialogueText: {fileID: 1618637142}
-  PlayerDialogueBox: {fileID: 0}
-  PlayerDialogueText: {fileID: 0}
-  NextPrompt: {fileID: 1618637141}
-  PlayerNextPrompt: {fileID: 0}
-  DialogueLines:
-  - "Indahnya pesona bawah laut disini\u2026"
-  - '?'
-  - Apa itu yang menempel di atas terumbu karang?
-  - Aku harus lapor ini ke petugas tadi!
-  DialogueLineSpeakers: 000000000000000000000000
-  triviaQuestionText: 
-  TypeSpeed: 0.02
-  typingAudioSource: {fileID: 0}
-  typingAudioClip: {fileID: 0}
-  typingAudioVolume: 1
-  typingAudioInterval: 0.06
-  npcSpriteRenderer: {fileID: 1618637144}
-  talkingSprite1: {fileID: 0}
-  talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
-  spriteToggleInterval: 3
-  dialogueCamera: {fileID: 0}
-  npcLensSize: 4.5
-  onDialogueEnd:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!61 &1931851761
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931851759}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 4.5798492, y: -4.558674}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 114.71367, y: 27.316963}
-  m_EdgeRadius: 0
---- !u!4 &1931851762
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931851759}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.49122, y: -51.6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1954612385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8921,7 +8805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7734646542533196003, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.5
+      value: -31
       objectReference: {fileID: 0}
     - target: {fileID: 7734646542533196003, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8958,32 +8842,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7128179589020074671, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1969992513}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
 --- !u!1 &1969992512 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7128179589020074671, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
   m_PrefabInstance: {fileID: 1969992511}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1969992513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1969992512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 11400000, guid: 4a3d10a13dc416c49bfde4034f72dda1, type: 2}
-  waitForCurrentQuestToFinish: 0
-  requiredPrerequisiteQuestID: 
-  giveQuestOnPlayerCollision: 1
 --- !u!1001 &1972549890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10057,7 +9922,6 @@ SceneRoots:
   - {fileID: 2113295047}
   - {fileID: 2022832609}
   - {fileID: 664493666}
-  - {fileID: 1931851762}
   - {fileID: 765173855}
   - {fileID: 1320801436}
   - {fileID: 2061349616}
