@@ -453,7 +453,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
   targetSceneName: 08_Laut Misool
   fadeDuration: 1
+<<<<<<< Updated upstream
   fadeBlackScreen: {fileID: 0}
+=======
+  warningUI: {fileID: 1754165466}
+  interactKey: 101
+  fadeBlackScreen: {fileID: 94105055}
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
+>>>>>>> Stashed changes
 --- !u!61 &48946278
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1308,6 +1317,251 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5224546264670277698, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
   m_PrefabInstance: {fileID: 1955230233}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
+=======
+--- !u!1 &438320358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 438320365}
+  - component: {fileID: 438320364}
+  - component: {fileID: 438320363}
+  - component: {fileID: 438320362}
+  - component: {fileID: 438320361}
+  - component: {fileID: 438320360}
+  - component: {fileID: 438320366}
+  m_Layer: 0
+  m_Name: Ibu2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &438320360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
+  objectiveID: petugas_konservasi
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 1
+  OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &438320361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  questToGive: {fileID: 0}
+  giveQuestOnPlayerCollision: 1
+  requireBoxCollider2D: 0
+--- !u!114 &438320362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
+  InteractPrompt: {fileID: 1702156766}
+  DialogueBox: {fileID: 1695990688}
+  DialogueText: {fileID: 1360574304}
+  PlayerDialogueBox: {fileID: 698352860}
+  PlayerDialogueText: {fileID: 1021186074}
+  NextPrompt: {fileID: 732993963}
+  PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
+  DialogueLines:
+  - Sama, saya juga cuma berani berenang di pinggiran dangkal!
+  - Tapi itu Pari Mantanya kasihan sekali, sayapnya tersangkut jaring
+  - Iya! Sepertinya sayapnya terikat jaring bekas yang terbawa arus laut.
+  - Tolong ya, Nak! Pari Manta itu kan kebanggaan laut pulau kita.
+  - Kalau kamu berhasil membebaskannya, kamu juga bisa ambil foto yang sangat bagus
+    dari dekat!
+  - Baik bu
+  DialogueLineSpeakers: 000000000000000000000000000000000000000001000000
+  triviaQuestionText: 
+  TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
+  typingAudioSource: {fileID: 0}
+  typingAudioClip: {fileID: 0}
+  typingAudioVolume: 1
+  typingAudioInterval: 0.06
+  npcSpriteRenderer: {fileID: 438320364}
+  talkingSprite1: {fileID: 0}
+  talkingSprite2: {fileID: 0}
+  idleSprite: {fileID: -975930112060938365, guid: 3139694329864ee448d3317d8a72d58c, type: 3}
+  spriteToggleInterval: 3
+  dialogueCamera: {fileID: 0}
+  npcLensSize: 3
+  onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!61 &438320363
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.17296565, y: 0.07667065}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.75, y: 4.51}
+    newSize: {x: 3.12, y: 8.15}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 4.914485, y: 7.7981186}
+  m_EdgeRadius: 0
+--- !u!212 &438320364
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: -72866051
+  m_SortingLayer: 5
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -975930112060938365, guid: 3139694329864ee448d3317d8a72d58c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 1
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.12, y: 8.15}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!4 &438320365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.301174, y: 1.1218101, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 969356457}
+  m_Father: {fileID: 685218634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &438320366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438320358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16385d411fdb2ee42931af6e27909c3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IbuIbuMisool
+  dialogueSystem: {fileID: 438320362}
+  dialogPoint7_MintaTolong: []
+  speakerPoint7_MintaTolong: 
+  dialogPoint9_TerimaKasih: []
+  speakerPoint9_TerimaKasih: 
+>>>>>>> Stashed changes
 --- !u!1 &462170290 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5927749788939344978, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
@@ -1355,6 +1609,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+<<<<<<< Updated upstream
+=======
+      propertyPath: bgmVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: bgmSource1
+      value: 
+      objectReference: {fileID: 519727228}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: bgmSource2
+      value: 
+      objectReference: {fileID: 519727228}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+>>>>>>> Stashed changes
       propertyPath: defaultBGM
       value: 
       objectReference: {fileID: 8300000, guid: 0ba4df2feec2c0b4195fa9c4d3a84a18, type: 3}
@@ -1403,6 +1672,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+--- !u!82 &519727228 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2801731490644397447, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+  m_PrefabInstance: {fileID: 519727227}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &535163554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2366,6 +2640,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1684323941}
     m_Modifications:
+<<<<<<< Updated upstream
     - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
       propertyPath: panelHUD
       value: 
@@ -2379,6 +2654,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1659133382}
     - target: {fileID: 4984205897230106387, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+=======
+    - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_Name
+      value: QuestHUDPanel 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371388737094505655, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+>>>>>>> Stashed changes
       propertyPath: m_Pivot.x
       value: 0.5
       objectReference: {fileID: 0}
@@ -2458,6 +2752,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
     - target: {fileID: 5109931629480500363, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
       propertyPath: m_Name
       value: QuestHUDPanel
@@ -2474,6 +2769,20 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 25.21
       objectReference: {fileID: 0}
+=======
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: panelHUD
+      value: 
+      objectReference: {fileID: 1073081708}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: hudQuestTitle
+      value: 
+      objectReference: {fileID: 491292135}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: hudQuestDescription
+      value: 
+      objectReference: {fileID: 1659133382}
+>>>>>>> Stashed changes
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2813,7 +3122,94 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
+<<<<<<< Updated upstream
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+=======
+  m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
+  targetSceneName: 08_Laut Misool 1
+  fadeDuration: 1
+  warningUI: {fileID: 1754165466}
+  interactKey: 101
+  fadeBlackScreen: {fileID: 94105055}
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!61 &836280603
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836280601}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.55212784, y: 0.15498233}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.1042557, y: 4.642096}
+  m_EdgeRadius: 0
+--- !u!4 &836280604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836280601}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -23.56, y: -1.48, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &836280605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836280601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa3f58ebcd375b40abe783d3aa4ae50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DivingSceneTeleporter
+  sceneLautUtama: 08_Laut Misool 1
+  sceneLautManta: 08_Laut Misool 2
+>>>>>>> Stashed changes
 --- !u!114 &837644286 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4626086682805859954, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
@@ -5280,11 +5676,18 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1021186074}
   NextPrompt: {fileID: 1719262658}
   PlayerNextPrompt: {fileID: 976487319}
+<<<<<<< Updated upstream
   DialogueLines:
   - 'Selamat datang. '
   DialogueLineSpeakers: 00000000
+=======
+  playerMovementController: {fileID: 0}
+  DialogueLines: []
+  DialogueLineSpeakers: 
+>>>>>>> Stashed changes
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -5297,6 +5700,7 @@ MonoBehaviour:
   npcLensSize: 3.5
   onDialogueEnd:
     m_PersistentCalls:
+<<<<<<< Updated upstream
       m_Calls:
       - m_Target: {fileID: 81851319}
         m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
@@ -5310,6 +5714,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+=======
+      m_Calls: []
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
+>>>>>>> Stashed changes
 --- !u!212 &1482452494
 SpriteRenderer:
   serializedVersion: 2
@@ -5682,6 +6092,7 @@ MonoBehaviour:
   objectiveID: hold_interact
   onObjectiveTriggered:
     m_PersistentCalls:
+<<<<<<< Updated upstream
       m_Calls:
       - m_Target: {fileID: 291565656}
         m_TargetAssemblyTypeName: SequenceQTE, Assembly-CSharp
@@ -5696,6 +6107,75 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!61 &1599696236
+=======
+      m_Calls: []
+--- !u!114 &1599505557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599505554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  questToGive: {fileID: 0}
+  giveQuestOnPlayerCollision: 1
+  requireBoxCollider2D: 0
+--- !u!114 &1599505558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599505554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
+  InteractPrompt: {fileID: 195851128}
+  DialogueBox: {fileID: 1376259512}
+  DialogueText: {fileID: 285213613}
+  PlayerDialogueBox: {fileID: 698352860}
+  PlayerDialogueText: {fileID: 1021186074}
+  NextPrompt: {fileID: 1813550121}
+  PlayerNextPrompt: {fileID: 976487319}
+  playerMovementController: {fileID: 0}
+  DialogueLines:
+  - Aduh, kasihan sekali itu... Bagaimana ini, Kakak?
+  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
+  - Permisi bu, ada apa ya?
+  - Eh, aduh! Kebetulan sekali kamu lewat sini
+  - Itu lho nak, di perairan agak dalam sana ada Pari Manta besar yang terjebak
+  - Kami berdua ini tidak jago menyelam ke perairan dalam, Nak.
+  - Kalau kamu punya perlengkapan selam lengkap begitu, bisa tolong bantu bebaskan
+    Pari Mantanya?
+  DialogueLineSpeakers: 00000000000000000100000000000000000000000000000000000000
+  triviaQuestionText: 
+  TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
+  typingAudioSource: {fileID: 0}
+  typingAudioClip: {fileID: 0}
+  typingAudioVolume: 1
+  typingAudioInterval: 0.06
+  npcSpriteRenderer: {fileID: 1599505560}
+  talkingSprite1: {fileID: 0}
+  talkingSprite2: {fileID: 0}
+  idleSprite: {fileID: 6492824109202151321, guid: 2f89ad1d9013c624fa3299fdf55a01d8, type: 3}
+  spriteToggleInterval: 3
+  dialogueCamera: {fileID: 0}
+  npcLensSize: 3
+  onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!61 &1599505559
+>>>>>>> Stashed changes
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5795,6 +6275,209 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
+<<<<<<< Updated upstream
+=======
+  m_Size: {x: 3.12, y: 8.15}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!4 &1599505561
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599505554}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.171177, y: 1.1218101, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1395739017}
+  m_Father: {fileID: 685218634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1599505562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599505554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16385d411fdb2ee42931af6e27909c3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IbuIbuMisool
+  dialogueSystem: {fileID: 1599505558}
+  dialogPoint7_MintaTolong: []
+  speakerPoint7_MintaTolong: 
+  dialogPoint9_TerimaKasih: []
+  speakerPoint9_TerimaKasih: 
+--- !u!1 &1599696233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1599696238}
+  - component: {fileID: 1599696237}
+  - component: {fileID: 1599696236}
+  - component: {fileID: 1599696234}
+  - component: {fileID: 1599696239}
+  - component: {fileID: 1599696240}
+  m_Layer: 0
+  m_Name: Penyu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1599696234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599696233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7b4f8ee7a7d6247bb3e3a08f83f434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BiotaInteractable
+  biotaName: Penyu Laut
+  qteToTrigger: {fileID: 291565656}
+  objectiveID: penyu_misool
+  startAnimator: {fileID: 0}
+  animator: {fileID: 1599696239}
+  animationTrigger: SelesaiInteraksi
+  dialogueCamera: {fileID: 360329404}
+  activePriority: 20
+  defaultPriority: 0
+  delayBeforeAnim: 2
+  delayAfterAnim: 2
+  onSequenceComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7296318}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!61 &1599696236
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599696233}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.047208786, y: 0.504959}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.88, y: 0.99}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 3.2913094, y: 2.009918}
+  m_EdgeRadius: 0
+--- !u!212 &1599696237
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599696233}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 992077337
+  m_SortingLayer: 6
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -2075236732554384335, guid: 2274e5c4ea4da164da346f0c7e62de0c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 1
+  m_FlipY: 0
+  m_DrawMode: 0
+>>>>>>> Stashed changes
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -6787,6 +7470,30 @@ MonoBehaviour:
   correctFeedbackMessages: []
   wrongFeedbackMessages: []
   closeKey: 101
+<<<<<<< Updated upstream
+=======
+--- !u!114 &1868452218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868452216}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 881351035272d3c4293a1ff806de9548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MisoolLandSceneManager
+  penyuInteractive: {fileID: 1599696233}
+  tourGuideStart: {fileID: 7296318}
+  petugasStage1: {fileID: 0}
+  petugasStage3: {fileID: 0}
+  petugasStage5: {fileID: 0}
+  ibuIbuStage6: {fileID: 0}
+  ibuIbuStage8: {fileID: 0}
+  tourGuideEnd: {fileID: 1302061347}
+  tourGuideEndSpot: {fileID: 1302061345}
+>>>>>>> Stashed changes
 --- !u!1 &1878169943
 GameObject:
   m_ObjectHideFlags: 0

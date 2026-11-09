@@ -315,6 +315,9 @@ MonoBehaviour:
   collectSound: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &17665925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1558,6 +1561,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 527795846}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Nah kawan, sekarang mari kita lakukan sesuatu yang benar-benar berguna untuk
     desa kami
@@ -1576,6 +1580,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000000000000000000000000000000000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -1625,6 +1630,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &153149760
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3055,6 +3063,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 313320534}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Luar biasa! Patoknya tertancap sangat kuat dan kokoh
   - Lumayan keras juga pasirnya
@@ -3064,6 +3073,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000100000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -3089,6 +3099,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &292704874
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3428,6 +3441,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 154416928}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Wah, luar biasa sekali tradisi Sasi ini! Kearifan lokal seperti inilah yang bikin
     Raja Ampat tetap lestari
@@ -3436,6 +3450,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -3447,6 +3462,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!224 &356332903
@@ -4043,11 +4061,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86119c59c15d31b47adffeced0278380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SasiInteractable
-  qteToTrigger: {fileID: 752712733}
-  uiPromptGroup: {fileID: 1210739596}
-  patokSasiObject: {fileID: 2078435497}
+  uiPrompt: {fileID: 0}
+  qtePanel: {fileID: 0}
   playerAnimator: {fileID: 1122863887}
+<<<<<<< Updated upstream
   crouchAnimParameter: isCrouching
+=======
+  crouchBoolName: isCrouching
+  OnSasiCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+>>>>>>> Stashed changes
 --- !u!61 &519875270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4604,9 +4628,23 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+<<<<<<< Updated upstream
       propertyPath: defaultBGM
       value: 
       objectReference: {fileID: 8300000, guid: eb00ba242fb95fc4d9656a28d3f8afe1, type: 3}
+=======
+      propertyPath: bgmSource1
+      value: 
+      objectReference: {fileID: 1462841367}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: bgmSource2
+      value: 
+      objectReference: {fileID: 1462841367}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: defaultBGM
+      value: 
+      objectReference: {fileID: 8300000, guid: e15624dee0783f649b510986bd7f58d6, type: 3}
+>>>>>>> Stashed changes
     - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_LocalPosition.x
       value: 109.79999
@@ -5983,6 +6021,119 @@ Transform:
   m_Children: []
   m_Father: {fileID: 223153826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream
+=======
+--- !u!1001 &1020136737
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 652837306979531891, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_Name
+      value: PauseManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 652837306979531891, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 915820975218988395, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771174258988992055, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: bgmVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: bgmSource1
+      value: 
+      objectReference: {fileID: 1462841367}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: bgmSource2
+      value: 
+      objectReference: {fileID: 1462841367}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: defaultBGM
+      value: 
+      objectReference: {fileID: 8300000, guid: e15624dee0783f649b510986bd7f58d6, type: 3}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: audioLayers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: audioLayers.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: audioLayers.Array.data[0].source
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: audioLayers.Array.data[0].volume
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: audioLayers.Array.data[0].layerName
+      value: Laut
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: audioLayers.Array.data[0].playOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 25.88412
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12.97369
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 3771174258988992055, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+>>>>>>> Stashed changes
 --- !u!114 &1071030257 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 264202627538831299, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
@@ -7098,6 +7249,9 @@ MonoBehaviour:
   collectSound: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7632,11 +7786,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86119c59c15d31b47adffeced0278380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SasiInteractable
-  qteToTrigger: {fileID: 752712733}
-  uiPromptGroup: {fileID: 1210739596}
-  patokSasiObject: {fileID: 1279433045}
+  uiPrompt: {fileID: 0}
+  qtePanel: {fileID: 0}
   playerAnimator: {fileID: 1122863887}
+<<<<<<< Updated upstream
   crouchAnimParameter: isCrouching
+=======
+  crouchBoolName: isCrouching
+  OnSasiCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+>>>>>>> Stashed changes
 --- !u!114 &1454387972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7653,6 +7813,11 @@ MonoBehaviour:
   onObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
+--- !u!82 &1462841367 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2801731490644397447, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+  m_PrefabInstance: {fileID: 620357395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1485901274
 GameObject:
   m_ObjectHideFlags: 0
@@ -8181,6 +8346,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 1941977467}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Oke bagus, terima kasih banyak kawan, dan-
   - WADUHHH, KERANG TEROMPET PEMANGGIL WARGA SAYA TIDAK ADA!
@@ -8193,6 +8359,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000000000000010000000000000000000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -8218,6 +8385,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1665425516
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8395,6 +8565,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 1956556753}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Patok yang baru saja kamu tancapkan ini bukan sekadar kayu biasa, kawan
   - Di pulau kami, tradisi Sasi ini adalah janji suci antara manusia dan alam. Selama
@@ -8407,6 +8578,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000000000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -8432,6 +8604,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1668667928
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10182,6 +10357,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 1325304278}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - 'Aduh, bantu sebentar saja lah! Kasihan saya ini sudah tua tapi harus nyari sana-sini '
   - Katanya sebentar lagi rombongan pejabat kementerian mau mampir ke pulau kita!
@@ -10194,6 +10370,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000000000000100000000000000010000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10219,6 +10396,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &2022872705
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10952,6 +11132,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 91436593}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Ini pak udah ketemu
   - ' PUJI TUHAN!'
@@ -10971,6 +11152,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 01000000000000000000000000000000010000000000000001000000000000000000000001000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -10982,6 +11164,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &2143221579
