@@ -875,7 +875,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &182984017
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1221,7 +1221,7 @@ Transform:
   m_GameObject: {fileID: 299534929}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -7.16, z: 0}
+  m_LocalPosition: {x: 0.01, y: -7.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1861,7 +1861,7 @@ Transform:
   m_GameObject: {fileID: 494410498}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -7.16, z: 0}
+  m_LocalPosition: {x: 0, y: -6.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3467,9 +3467,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011ccf82e94beee4fb54fe48d985bd74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
+  scrollSpeed: 1
   manualWidth: 4
-  targetCamera: {fileID: 0}
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
 --- !u!1 &1067226685
 GameObject:
@@ -4034,9 +4034,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011ccf82e94beee4fb54fe48d985bd74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
+  scrollSpeed: 1
   manualWidth: 4
-  targetCamera: {fileID: 0}
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
 --- !u!1 &1296444819
 GameObject:
@@ -4463,12 +4463,22 @@ MonoBehaviour:
   - {fileID: 481757284}
   - {fileID: 481757282}
   - {fileID: 481757280}
+  audioSource: {fileID: 0}
+  startQuizSFX: {fileID: 0}
+  buttonHoverSFX: {fileID: 0}
+  correctAnswerSFX: {fileID: 0}
+  wrongAnswerSFX: {fileID: 0}
+  sfxVolume: 1
+  enableButtonHover: 1
+  hoverScale: 1.06
+  hoverTransitionSpeed: 14
   correctFeedbackMessages:
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
   - BENAR SEKALI!
   wrongFeedbackMessages:
   - Bukan dong! Tangga kayu itu dibuat sebagai pembatas konservasi
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
+  closeKey: 101
 --- !u!1 &1401348742
 GameObject:
   m_ObjectHideFlags: 0

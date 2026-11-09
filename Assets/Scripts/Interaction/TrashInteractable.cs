@@ -115,6 +115,13 @@ public class TrashInteractable : MonoBehaviour, IInteractable
         // 6. Panggil Event Inspector jika ada
         onInteractComplete?.Invoke();
 
+        // Panggil QuestObjectiveTrigger jika ada pada GameObject ini agar objective ter-update sebelum hancur
+        QuestObjectiveTrigger objectiveTrigger = GetComponent<QuestObjectiveTrigger>();
+        if (objectiveTrigger != null)
+        {
+            objectiveTrigger.ForceTrigger();
+        }
+
         // 7. Hapus sampah/hama dari layar
         Destroy(gameObject);
     }
@@ -125,5 +132,9 @@ public class TrashInteractable : MonoBehaviour, IInteractable
         onInteractComplete?.Invoke();
     }
 
-    public string GetPromptText() => "Ambil Sampah";
+    [Header("Prompt Settings")]
+    [Tooltip("Teks prompt saat didekati pemain. Biarkan kosong jika ingin default 'Ambil Sampah'")]
+    [SerializeField] private string customPrompt = "";
+
+    public string GetPromptText() => string.IsNullOrEmpty(customPrompt) ? "Ambil Sampah" : customPrompt;
 }

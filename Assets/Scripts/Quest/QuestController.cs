@@ -125,6 +125,7 @@ public class QuestController : MonoBehaviour
             return;
         }
 
+        quest.ResetProgress();
         ActiveQuests.Add(quest);
 
         Debug.Log("QUEST ACCEPTED: " + quest.QuestTitle);

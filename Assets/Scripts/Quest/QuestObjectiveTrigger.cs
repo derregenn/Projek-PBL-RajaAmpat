@@ -53,7 +53,7 @@ public class QuestObjectiveTrigger : MonoBehaviour
             {
                 if (q == null) continue;
                 var obj = q.GetObjective(objectiveID);
-                if (obj != null && !obj.IsComplete)
+                if (obj != null)
                 {
                     targetQuest = q;
                     targetObj = obj;
@@ -67,7 +67,7 @@ public class QuestObjectiveTrigger : MonoBehaviour
         // Jika requireObjectiveActive aktif dan quest/objective belum berjalan, jangan eksekusi trigger
         if (requireObjectiveActive && !isObjectiveActive)
         {
-            Debug.Log($"[QuestObjectiveTrigger] Player menyentuh '{gameObject.name}', tetapi objective '{objectiveID}' belum aktif. Trigger diabaikan.");
+            Debug.Log($"[QuestObjectiveTrigger] Player menyentuh '{gameObject.name}', tetapi objective '{objectiveID}' belum aktif di quest yang berjalan. Trigger diabaikan.");
             return;
         }
 
@@ -78,13 +78,16 @@ public class QuestObjectiveTrigger : MonoBehaviour
             hasTriggered = true;
         }
 
-        // Jalankan event sentuhan awal (misal untuk QTE)
+        // Jalankan event sentuhan awal (misal untuk QTE atau pergantian NPC)
         OnObjectiveTriggered?.Invoke();
 
         // Tambah progress jika mode progress on trigger aktif
         if (isObjectiveActive && progressObjectiveOnTrigger && QuestController.Instance != null)
         {
-            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            if (!targetObj.IsComplete)
+            {
+                QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            }
 
             // Cek apakah objective telah tuntas setelah ditambahkan
             if (targetObj.IsComplete)
@@ -93,6 +96,35 @@ public class QuestObjectiveTrigger : MonoBehaviour
                 OnObjectiveCompleted?.Invoke();
             }
         }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (hasTriggered && triggerOnce) return;
+        OnTriggerEnter2D(other);
+    }
+
+    /// <summary>
+    /// Panggil trigger secara paksa dari script interaksi (misal saat item diambil oleh TrashInteractable).
+    /// </summary>
+    public void ForceTrigger()
+    {
+        if (hasTriggered && triggerOnce) return;
+
+        if (triggerOnce)
+        {
+            hasTriggered = true;
+        }
+
+        Debug.Log($"[QuestObjectiveTrigger] ForceTrigger dipanggil pada '{gameObject.name}' untuk objective '{objectiveID}'.");
+        OnObjectiveTriggered?.Invoke();
+
+        if (progressObjectiveOnTrigger && QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        {
+            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+        }
+
+        OnObjectiveCompleted?.Invoke();
     }
 
     /// <summary>
