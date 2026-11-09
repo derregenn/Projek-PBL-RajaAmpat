@@ -66,14 +66,14 @@ public class SawinggraiSeaManager : MonoBehaviour
         // Hanya aktif di Stage 3 (Pemain baru saja disuruh Warlok 2 untuk menyelam)
         if (fishFeedTrigger != null)
         {
-            fishFeedTrigger.SetActive(stage == 0 || stage == 3);
+            fishFeedTrigger.SetActive(stage == 3);
         }
 
         // 2. LOGIKA INTERAKSI FOTO IKAN
         // Hanya aktif di Stage 4 (Setelah umpan ditebar, ikan berkumpul)
         if (fishPhotoTrigger != null)
         {
-            fishPhotoTrigger.SetActive(stage == 1 || stage == 4);
+            fishPhotoTrigger.SetActive(stage == 4);
         }
 
         // 3. LOGIKA TELEPORTER KEMBALI KE DARAT (RULE: TIDAK BISA KEMBALI SEBELUM FOTO)
