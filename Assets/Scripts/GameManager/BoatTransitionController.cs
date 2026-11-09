@@ -82,11 +82,14 @@ public class BoatTransitionController : MonoBehaviour
     {
         if (currentData.islandBackgroundPrefab != null && environmentParent != null)
         {
+            // Simpan posisi lokal asli dari prefab sebelum di-clone
+            Vector3 originalLocalPos = currentData.islandBackgroundPrefab.transform.localPosition;
+
             // Spawn background dan simpan ke variabel
             GameObject spawnedBG = Instantiate(currentData.islandBackgroundPrefab, environmentParent);
             
-            // PAKSA posisi lokalnya ke titik tengah (0,0,0) agar pasti masuk kamera
-            spawnedBG.transform.localPosition = Vector3.zero;
+            // Kembalikan posisi lokal ke posisi asli prefab agar air laut tetap sejajar dengan perahu
+            spawnedBG.transform.localPosition = originalLocalPos;
             
             // Jaga-jaga jika prefab tersimpan dalam keadaan mati, kita paksa hidupkan
             spawnedBG.SetActive(true);
