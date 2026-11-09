@@ -211,10 +211,17 @@ public class StepClimbing : MonoBehaviour
             topPlatformCollider.enabled = true;
         }
 
-        // 3. Laporkan Progres Quest 2 (Cliff Hiking)
-        if (!isClimbingDown && QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
+        // 3. Laporkan Progres Quest 2 (Cliff Hiking) atau Quest 4 (Turun Bukit)
+        if (QuestController.Instance != null)
         {
-            QuestController.Instance.ProgressObjective(questObjectiveID);
+            if (!isClimbingDown && !string.IsNullOrEmpty(questObjectiveID))
+            {
+                QuestController.Instance.ProgressObjective(questObjectiveID);
+            }
+            else if (isClimbingDown)
+            {
+                QuestController.Instance.ProgressObjective("turun_bukit", 1);
+            }
         }
 
         // 4. Kembalikan fisik & gravitasi ke normal

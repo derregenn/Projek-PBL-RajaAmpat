@@ -129,6 +129,15 @@ public class SeaSceneTransition : MonoBehaviour
             fadeBlackScreen.color = c;
         }
 
+        if (QuestController.Instance != null)
+        {
+            if (!string.IsNullOrEmpty(targetSceneName) && targetSceneName.Contains("Misool"))
+            {
+                QuestController.Instance.ProgressObjective("laut_misool", 1);
+            }
+            QuestController.Instance.CompleteAllActiveQuests();
+        }
+
         // 2. Simpan Progres Otomatis sebelum Pindah Scene (hindari koordinat tepat di trigger exit)
         PlayerPrefs.SetString("SavedScene", targetSceneName);
         PlayerPrefs.DeleteKey("PlayerX");

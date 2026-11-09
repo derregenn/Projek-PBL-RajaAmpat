@@ -34,6 +34,20 @@ public class NPCTourGuide : MonoBehaviour
     public void StartQuizAfterDialogue()
     {
         if (isQuizFinished) return;
+
+        // Jika quest memiliki sub-objective pertama "temui/bicara dengan NPC" sebelum trivia, selesaikan sub-objective pertama
+        if (QuestController.Instance != null)
+        {
+            if (objectiveID == "tour_guide_quest" && QuestController.Instance.IsQuestActive("02_Waisai"))
+            {
+                QuestController.Instance.ProgressObjective("tour_guide", 1);
+            }
+            else if (objectiveID == "trivia_arborek" && QuestController.Instance.IsQuestActive("04_Arborek"))
+            {
+                QuestController.Instance.ProgressObjective("tetua_adat", 1);
+            }
+        }
+
         StartCoroutine(RoutineStartQuiz());
     }
 

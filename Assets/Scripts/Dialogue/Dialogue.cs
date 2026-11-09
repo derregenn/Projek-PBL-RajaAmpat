@@ -92,7 +92,7 @@ public class Dialogue : MonoBehaviour
             dialogueCamera.Priority.Value = 0;
         }
 
-        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+        if (!isPlayerInCollider && InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(false);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
@@ -299,6 +299,20 @@ public class Dialogue : MonoBehaviour
             if (InteractPrompt != null) InteractPrompt.SetActive(true);
         }
 
+        // Selesaikan QuestObjectiveTrigger yang menempel pada NPC ini (misal serahkan barang / bicara dengan NPC)
+        // SEBELUM onDialogueEnd memicu QuestGiver untuk quest berikutnya!
+        QuestObjectiveTrigger[] triggers = GetComponents<QuestObjectiveTrigger>();
+        if (triggers != null)
+        {
+            foreach (var trig in triggers)
+            {
+                if (trig != null && trig.enabled)
+                {
+                    trig.CompleteFromDialogue();
+                }
+            }
+        }
+
         onDialogueEnd?.Invoke();
 
         onDialogueCompleteCallback?.Invoke();
@@ -316,6 +330,20 @@ public class Dialogue : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
+        {
+            isPlayerInCollider = true;
+            canInteract = true;
+
+            if (!isInteracting && InteractPrompt != null)
+            {
+                InteractPrompt.SetActive(true);
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!isPlayerInCollider && collision.CompareTag("Player"))
         {
             isPlayerInCollider = true;
             canInteract = true;

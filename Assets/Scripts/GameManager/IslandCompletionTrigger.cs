@@ -10,6 +10,11 @@ public class IslandCompletionTrigger : MonoBehaviour
     /// </summary>
     public void CompleteThisIsland()
     {
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.CompleteAllActiveQuests();
+        }
+
         if (GamePhaseManager.Instance != null)
         {
             GamePhaseManager.Instance.CompleteIsland(islandToComplete);
@@ -23,7 +28,7 @@ public class IslandCompletionTrigger : MonoBehaviour
 
         if (StoryManager.Instance != null)
         {
-            StoryManager.Instance.CompleteIsland((int)islandToComplete);
+            StoryManager.Instance.CompleteIsland(islandToComplete);
         }
     }
 

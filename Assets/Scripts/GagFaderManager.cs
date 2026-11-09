@@ -77,6 +77,11 @@ public class GagFaderManager : MonoBehaviour
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
         isTransitioning = false;
 
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ProgressObjective("serahkan_sampel", 1);
+        }
+
         OnPenelitiPulangFadeCompleted?.Invoke();
     }
 
@@ -118,6 +123,12 @@ public class GagFaderManager : MonoBehaviour
 
     private void RecordGagCompletion()
     {
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ProgressObjective("Kembali", 1);
+            QuestController.Instance.CompleteAllActiveQuests();
+        }
+
         if (GamePhaseManager.Instance != null)
         {
             GamePhaseManager.Instance.CompleteIsland(IslandName.Gag);
