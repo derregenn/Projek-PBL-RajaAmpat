@@ -60,13 +60,24 @@ public class QuestJournalManager : MonoBehaviour
     public Button tabSwitchButton;
     [Tooltip("Teks quest di panel kiri (akan diisi quest ongoing atau list quest completed)")]
     public TextMeshProUGUI ongoingQuestText;
+    public Image questIconImage;
     public Sprite tabOngoingSprite;
     public Sprite tabCompletedSprite;
+
+    [Header("Quest Cards (Ongoing & Completed Multi-Panel)")]
+    public GameObject questBoxPanel; // Card 1 (top)
+    public GameObject completedCard2; // Card 2 (middle)
+    public GameObject completedCard3; // Card 3 (bottom)
+    public TextMeshProUGUI completedText2;
+    public TextMeshProUGUI completedText3;
 
     private bool isOngoingTabActive = true;
 
     [Header("Island Awards Bar")]
     public List<IslandAwardData> islandAwards = new List<IslandAwardData>();
+    public Image awardRajaAmpat;
+    public Image awardSecretEnding;
+    public TextMeshProUGUI trashStatusText;
 
     [Header("Halaman Jurnal (Kanan)")]
     public Image journalPageImage;
@@ -191,6 +202,16 @@ public class QuestJournalManager : MonoBehaviour
 
     private void InitializeUI()
     {
+        if (questTabPanel == null)
+        {
+            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
+            if (tabUI != null)
+            {
+                tabUI.RegisterToJournalManager();
+                questTabPanel = tabUI.gameObject;
+            }
+        }
+
         if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 0);
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
         if (questTabPanel != null) questTabPanel.SetActive(false);
@@ -252,6 +273,15 @@ public class QuestJournalManager : MonoBehaviour
         if (sceneManager.folderImage != null) this.folderImage = sceneManager.folderImage;
         if (sceneManager.tabSwitchButton != null) this.tabSwitchButton = sceneManager.tabSwitchButton;
         if (sceneManager.ongoingQuestText != null) this.ongoingQuestText = sceneManager.ongoingQuestText;
+        if (sceneManager.questIconImage != null) this.questIconImage = sceneManager.questIconImage;
+        if (sceneManager.questBoxPanel != null) this.questBoxPanel = sceneManager.questBoxPanel;
+        if (sceneManager.completedCard2 != null) this.completedCard2 = sceneManager.completedCard2;
+        if (sceneManager.completedCard3 != null) this.completedCard3 = sceneManager.completedCard3;
+        if (sceneManager.completedText2 != null) this.completedText2 = sceneManager.completedText2;
+        if (sceneManager.completedText3 != null) this.completedText3 = sceneManager.completedText3;
+        if (sceneManager.awardRajaAmpat != null) this.awardRajaAmpat = sceneManager.awardRajaAmpat;
+        if (sceneManager.awardSecretEnding != null) this.awardSecretEnding = sceneManager.awardSecretEnding;
+        if (sceneManager.trashStatusText != null) this.trashStatusText = sceneManager.trashStatusText;
         if (sceneManager.tabOngoingSprite != null) this.tabOngoingSprite = sceneManager.tabOngoingSprite;
         if (sceneManager.tabCompletedSprite != null) this.tabCompletedSprite = sceneManager.tabCompletedSprite;
 
@@ -483,9 +513,10 @@ public class QuestJournalManager : MonoBehaviour
         if (questTabPanel == null)
         {
             // Coba auto-find QuestTabUI jika belum terhubung
-            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>();
+            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
             if (tabUI != null)
             {
+                tabUI.RegisterToJournalManager();
                 questTabPanel = tabUI.gameObject;
             }
             else
@@ -536,6 +567,25 @@ public class QuestJournalManager : MonoBehaviour
         {
             progressPercentageText.text = $"Progress: {displayPct}%";
         }
+
+        if (trashStatusText != null)
+        {
+            int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
+            trashStatusText.text = $"{trashCount}/20";
+        }
+    }
+
+    public string GetCurrentIslandDisplayName()
+    {
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (sceneName.Contains("Waisai") || sceneName.Contains("Airstrip")) return "Pulau Waisai";
+        if (sceneName.Contains("Pianemo")) return "Pulau Piaynemo";
+        if (sceneName.Contains("Misool")) return "Pulau Misool";
+        if (sceneName.Contains("Arborek")) return "Pulau Arborek";
+        if (sceneName.Contains("Sawinggrai")) return "Pulau Sawinggrai";
+        if (sceneName.Contains("Friwen")) return "Pulau Friwen";
+        if (sceneName.Contains("Gag")) return "Pulau Gag";
+        return "Raja Ampat";
     }
 
     // =========================================================
@@ -566,32 +616,310 @@ public class QuestJournalManager : MonoBehaviour
 
     public void RefreshQuestTabText()
     {
-        if (ongoingQuestText == null) return;
-
-        ongoingQuestText.overflowMode = TextOverflowModes.Truncate;
+        EnsureQuestCardsInitialized();
 
         if (isOngoingTabActive)
         {
-            ongoingQuestText.fontSize = 72f;
-            ongoingQuestText.text = $"<b>Objective Aktif:</b>\n{currentOngoingQuest}";
+            // === ONGOING TAB ===
+            if (questBoxPanel != null) questBoxPanel.SetActive(true);
+            if (completedCard2 != null) completedCard2.SetActive(false);
+            if (completedCard3 != null) completedCard3.SetActive(false);
+
+            if (questIconImage != null) questIconImage.gameObject.SetActive(true);
+
+            if (ongoingQuestText != null)
+            {
+                ongoingQuestText.gameObject.SetActive(true);
+                RectTransform rtText = ongoingQuestText.GetComponent<RectTransform>();
+                if (rtText != null)
+                {
+                    rtText.anchoredPosition = new Vector2(-28f, 70f);
+                    rtText.sizeDelta = new Vector2(285f, 58f);
+                }
+                ongoingQuestText.alignment = TextAlignmentOptions.MidlineLeft;
+                ongoingQuestText.enableAutoSizing = true;
+                ongoingQuestText.fontSizeMin = 12f;
+                ongoingQuestText.fontSizeMax = 20f;
+                ongoingQuestText.fontSize = 20f;
+                ongoingQuestText.overflowMode = TextOverflowModes.Ellipsis;
+
+                string islandTitle = GetCurrentIslandDisplayName();
+                ongoingQuestText.text = $"<size=20><color=#555555>{islandTitle}</color></size>\n<size=16><color=#111111><b>{currentOngoingQuest}</b></color></size>";
+            }
         }
         else
         {
-            ongoingQuestText.fontSize = 52f;
-            if (completedQuestTitles.Count == 0)
+            // === COMPLETED TAB ===
+            if (questIconImage != null) questIconImage.gameObject.SetActive(false);
+
+            if (completedQuestTitles == null || completedQuestTitles.Count == 0)
             {
-                ongoingQuestText.text = $"<b>Misi Selesai:</b>\n<i>Belum ada misi selesai.</i>";
+                // Belum ada misi selesai -> Tampilkan 1 card pesan kosong
+                if (questBoxPanel != null) questBoxPanel.SetActive(true);
+                if (ongoingQuestText != null)
+                {
+                    ongoingQuestText.gameObject.SetActive(true);
+                    RectTransform rtText = ongoingQuestText.GetComponent<RectTransform>();
+                    if (rtText != null)
+                    {
+                        rtText.anchoredPosition = new Vector2(-10f, 70f);
+                        rtText.sizeDelta = new Vector2(314f, 53f);
+                    }
+                    ongoingQuestText.alignment = TextAlignmentOptions.MidlineLeft;
+                    ongoingQuestText.enableAutoSizing = true;
+                    ongoingQuestText.fontSizeMin = 12f;
+                    ongoingQuestText.fontSizeMax = 18f;
+                    ongoingQuestText.fontSize = 16f;
+                    ongoingQuestText.text = "<size=16><color=#555555><i>Belum ada misi selesai.</i></color></size>";
+                }
+                if (completedCard2 != null) completedCard2.SetActive(false);
+                if (completedCard3 != null) completedCard3.SetActive(false);
             }
             else
             {
-                int maxVisible = 6;
-                int startIdx = Mathf.Max(0, completedQuestTitles.Count - maxVisible);
-                string list = $"<b>Misi Selesai ({completedQuestTitles.Count}):</b>\n";
-                for (int i = startIdx; i < completedQuestTitles.Count; i++)
+                int count = completedQuestTitles.Count;
+                int startIdx = Mathf.Max(0, count - 3);
+
+                // Card 1
+                if (questBoxPanel != null) questBoxPanel.SetActive(true);
+                if (ongoingQuestText != null)
                 {
-                    list += $"- {completedQuestTitles[i]}\n";
+                    ongoingQuestText.gameObject.SetActive(true);
+                    RectTransform rtText = ongoingQuestText.GetComponent<RectTransform>();
+                    if (rtText != null)
+                    {
+                        rtText.anchoredPosition = new Vector2(-10f, 70f);
+                        rtText.sizeDelta = new Vector2(314f, 53f);
+                    }
+                    ongoingQuestText.alignment = TextAlignmentOptions.MidlineLeft;
+                    ongoingQuestText.enableAutoSizing = true;
+                    ongoingQuestText.fontSizeMin = 12f;
+                    ongoingQuestText.fontSizeMax = 20f;
+                    ongoingQuestText.fontSize = 18f;
+                    ongoingQuestText.text = $"<size=18><color=#111111><b>{completedQuestTitles[startIdx]}</b></color></size>";
                 }
-                ongoingQuestText.text = list.TrimEnd();
+
+                // Card 2
+                if (count >= 2)
+                {
+                    if (completedCard2 != null)
+                    {
+                        completedCard2.SetActive(true);
+                        if (completedText2 != null)
+                        {
+                            completedText2.enableAutoSizing = true;
+                            completedText2.fontSizeMin = 12f;
+                            completedText2.fontSizeMax = 20f;
+                            completedText2.fontSize = 18f;
+                            completedText2.text = $"<size=18><color=#111111><b>{completedQuestTitles[startIdx + 1]}</b></color></size>";
+                        }
+                    }
+                }
+                else
+                {
+                    if (completedCard2 != null) completedCard2.SetActive(false);
+                }
+
+                // Card 3
+                if (count >= 3)
+                {
+                    if (completedCard3 != null)
+                    {
+                        completedCard3.SetActive(true);
+                        if (completedText3 != null)
+                        {
+                            completedText3.enableAutoSizing = true;
+                            completedText3.fontSizeMin = 12f;
+                            completedText3.fontSizeMax = 20f;
+                            completedText3.fontSize = 18f;
+                            completedText3.text = $"<size=18><color=#111111><b>{completedQuestTitles[startIdx + 2]}</b></color></size>";
+                        }
+                    }
+                }
+                else
+                {
+                    if (completedCard3 != null) completedCard3.SetActive(false);
+                }
+            }
+        }
+    }
+
+    private void EnsureQuestCardsInitialized()
+    {
+        if (folderImage == null) return;
+        Transform leftPanel = folderImage.transform; // LeftPanel
+
+        // Find or setup questBoxPanel (Card 1)
+        if (questBoxPanel == null)
+        {
+            Transform panelT = leftPanel.Find("Panel");
+            if (panelT != null) questBoxPanel = panelT.gameObject;
+        }
+
+        if (questBoxPanel != null)
+        {
+            RectTransform rt1 = questBoxPanel.GetComponent<RectTransform>();
+            if (rt1 != null)
+            {
+                rt1.anchorMin = new Vector2(0.5f, 0.5f);
+                rt1.anchorMax = new Vector2(0.5f, 0.5f);
+                rt1.pivot = new Vector2(0.5f, 0.5f);
+                rt1.anchoredPosition = new Vector2(-10f, 70f);
+                rt1.sizeDelta = new Vector2(350f, 65f);
+                rt1.localScale = Vector3.one;
+            }
+        }
+
+        // Setup ongoingQuestText inside Card 1 / LeftPanel
+        if (ongoingQuestText != null)
+        {
+            RectTransform rtText = ongoingQuestText.GetComponent<RectTransform>();
+            if (rtText != null)
+            {
+                if (rtText.parent != leftPanel && rtText.parent != questBoxPanel.transform)
+                {
+                    rtText.SetParent(leftPanel, false);
+                }
+                rtText.anchorMin = new Vector2(0.5f, 0.5f);
+                rtText.anchorMax = new Vector2(0.5f, 0.5f);
+                rtText.pivot = new Vector2(0.5f, 0.5f);
+                rtText.anchoredPosition = new Vector2(-28f, 70f);
+                rtText.sizeDelta = new Vector2(285f, 58f);
+                rtText.localScale = Vector3.one;
+            }
+            ongoingQuestText.margin = Vector4.zero;
+        }
+
+        // Setup questIconImage
+        if (questIconImage != null)
+        {
+            RectTransform rtIcon = questIconImage.GetComponent<RectTransform>();
+            if (rtIcon != null)
+            {
+                if (rtIcon.parent != leftPanel) rtIcon.SetParent(leftPanel, false);
+                rtIcon.anchorMin = new Vector2(0.5f, 0.5f);
+                rtIcon.anchorMax = new Vector2(0.5f, 0.5f);
+                rtIcon.pivot = new Vector2(0.5f, 0.5f);
+                rtIcon.anchoredPosition = new Vector2(138f, 70f);
+                rtIcon.sizeDelta = new Vector2(36f, 36f);
+                rtIcon.localScale = Vector3.one;
+            }
+        }
+
+        // Setup Card 2 (Completed Card 2)
+        if (completedCard2 == null || completedCard2.transform.parent != leftPanel)
+        {
+            Transform t2 = leftPanel.Find("CompletedCard2");
+            if (t2 != null) completedCard2 = t2.gameObject;
+        }
+        if (completedCard2 == null && questBoxPanel != null)
+        {
+            completedCard2 = Instantiate(questBoxPanel, leftPanel);
+            completedCard2.name = "CompletedCard2";
+            // Hapus QuestIcon jika terbawa clone
+            Transform iconClone = completedCard2.transform.Find("QuestIcon");
+            if (iconClone != null) Destroy(iconClone.gameObject);
+        }
+        if (completedCard2 != null)
+        {
+            RectTransform rt2 = completedCard2.GetComponent<RectTransform>();
+            if (rt2 != null)
+            {
+                rt2.anchorMin = new Vector2(0.5f, 0.5f);
+                rt2.anchorMax = new Vector2(0.5f, 0.5f);
+                rt2.pivot = new Vector2(0.5f, 0.5f);
+                rt2.anchoredPosition = new Vector2(-10f, -2f);
+                rt2.sizeDelta = new Vector2(350f, 65f);
+                rt2.localScale = Vector3.one;
+            }
+            if (completedText2 == null || completedText2.transform.parent != completedCard2.transform)
+            {
+                completedText2 = completedCard2.GetComponentInChildren<TextMeshProUGUI>();
+            }
+            if (completedText2 == null)
+            {
+                GameObject tObj = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+                tObj.transform.SetParent(completedCard2.transform, false);
+                completedText2 = tObj.GetComponent<TextMeshProUGUI>();
+                if (ongoingQuestText != null)
+                {
+                    completedText2.font = ongoingQuestText.font;
+                    completedText2.fontSharedMaterial = ongoingQuestText.fontSharedMaterial;
+                }
+            }
+            if (completedText2 != null)
+            {
+                RectTransform rtT2 = completedText2.GetComponent<RectTransform>();
+                rtT2.anchorMin = new Vector2(0f, 0f);
+                rtT2.anchorMax = new Vector2(1f, 1f);
+                rtT2.pivot = new Vector2(0.5f, 0.5f);
+                rtT2.offsetMin = new Vector2(18f, 6f);
+                rtT2.offsetMax = new Vector2(-18f, -6f);
+                rtT2.localScale = Vector3.one;
+                completedText2.margin = Vector4.zero;
+                completedText2.alignment = TextAlignmentOptions.MidlineLeft;
+                completedText2.enableAutoSizing = true;
+                completedText2.fontSizeMin = 12f;
+                completedText2.fontSizeMax = 20f;
+                completedText2.fontSize = 18f;
+            }
+        }
+
+        // Setup Card 3 (Completed Card 3)
+        if (completedCard3 == null || completedCard3.transform.parent != leftPanel)
+        {
+            Transform t3 = leftPanel.Find("CompletedCard3");
+            if (t3 != null) completedCard3 = t3.gameObject;
+        }
+        if (completedCard3 == null && questBoxPanel != null)
+        {
+            completedCard3 = Instantiate(questBoxPanel, leftPanel);
+            completedCard3.name = "CompletedCard3";
+            Transform iconClone = completedCard3.transform.Find("QuestIcon");
+            if (iconClone != null) Destroy(iconClone.gameObject);
+        }
+        if (completedCard3 != null)
+        {
+            RectTransform rt3 = completedCard3.GetComponent<RectTransform>();
+            if (rt3 != null)
+            {
+                rt3.anchorMin = new Vector2(0.5f, 0.5f);
+                rt3.anchorMax = new Vector2(0.5f, 0.5f);
+                rt3.pivot = new Vector2(0.5f, 0.5f);
+                rt3.anchoredPosition = new Vector2(-10f, -74f);
+                rt3.sizeDelta = new Vector2(350f, 65f);
+                rt3.localScale = Vector3.one;
+            }
+            if (completedText3 == null || completedText3.transform.parent != completedCard3.transform)
+            {
+                completedText3 = completedCard3.GetComponentInChildren<TextMeshProUGUI>();
+            }
+            if (completedText3 == null)
+            {
+                GameObject tObj = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+                tObj.transform.SetParent(completedCard3.transform, false);
+                completedText3 = tObj.GetComponent<TextMeshProUGUI>();
+                if (ongoingQuestText != null)
+                {
+                    completedText3.font = ongoingQuestText.font;
+                    completedText3.fontSharedMaterial = ongoingQuestText.fontSharedMaterial;
+                }
+            }
+            if (completedText3 != null)
+            {
+                RectTransform rtT3 = completedText3.GetComponent<RectTransform>();
+                rtT3.anchorMin = new Vector2(0f, 0f);
+                rtT3.anchorMax = new Vector2(1f, 1f);
+                rtT3.pivot = new Vector2(0.5f, 0.5f);
+                rtT3.offsetMin = new Vector2(18f, 6f);
+                rtT3.offsetMax = new Vector2(-18f, -6f);
+                rtT3.localScale = Vector3.one;
+                completedText3.margin = Vector4.zero;
+                completedText3.alignment = TextAlignmentOptions.MidlineLeft;
+                completedText3.enableAutoSizing = true;
+                completedText3.fontSizeMin = 12f;
+                completedText3.fontSizeMax = 20f;
+                completedText3.fontSize = 18f;
             }
         }
     }
@@ -602,37 +930,55 @@ public class QuestJournalManager : MonoBehaviour
 
     public void UpdateAwardsUI()
     {
-        if (islandAwards == null) return;
-
-        foreach (var award in islandAwards)
+        if (islandAwards != null)
         {
-            if (award == null || award.awardImage == null) continue;
-
-            bool isUnlocked = IsIslandUnlocked(award.island);
-
-            if (isUnlocked)
+            foreach (var award in islandAwards)
             {
-                if (award.unlockedSprite != null)
+                if (award == null || award.awardImage == null) continue;
+
+                bool isUnlocked = IsIslandUnlocked(award.island);
+
+                if (isUnlocked)
                 {
-                    award.awardImage.sprite = award.unlockedSprite;
-                    award.awardImage.color = Color.white;
-                }
-            }
-            else
-            {
-                if (award.lockedSprite != null)
-                {
-                    award.awardImage.sprite = award.lockedSprite;
-                    award.awardImage.color = Color.white;
+                    if (award.unlockedSprite != null)
+                    {
+                        award.awardImage.sprite = award.unlockedSprite;
+                        award.awardImage.color = Color.white;
+                    }
                 }
                 else
                 {
-                    // Fallback jika belum ada locked sprite: buat agak gelap transparan
-                    if (award.unlockedSprite != null)
-                        award.awardImage.sprite = award.unlockedSprite;
-                    award.awardImage.color = new Color(0.25f, 0.25f, 0.25f, 0.85f);
+                    if (award.lockedSprite != null)
+                    {
+                        award.awardImage.sprite = award.lockedSprite;
+                        award.awardImage.color = Color.white;
+                    }
+                    else
+                    {
+                        if (award.unlockedSprite != null)
+                            award.awardImage.sprite = award.unlockedSprite;
+                        award.awardImage.color = new Color(0.25f, 0.25f, 0.25f, 0.85f);
+                    }
                 }
             }
+        }
+
+        // Update Award Raja Ampat & Secret Ending
+        bool allIslandsDone = false;
+        if (GamePhaseManager.Instance != null)
+        {
+            allIslandsDone = GamePhaseManager.Instance.GetCurrentPercentage() >= 99f;
+        }
+
+        if (awardRajaAmpat != null)
+        {
+            awardRajaAmpat.color = allIslandsDone ? Color.white : new Color(0.25f, 0.25f, 0.25f, 0.85f);
+        }
+
+        if (awardSecretEnding != null)
+        {
+            int sasiCount = PlayerPrefs.GetInt("Sasi_Count", 0);
+            awardSecretEnding.color = (allIslandsDone && sasiCount >= 2) ? Color.white : new Color(0.25f, 0.25f, 0.25f, 0.85f);
         }
     }
 

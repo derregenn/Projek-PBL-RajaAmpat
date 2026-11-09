@@ -19,11 +19,19 @@ public class QuestTabUI : MonoBehaviour
     public Image folderImage;
     public Button tabSwitchButton;
     public TMPro.TextMeshProUGUI ongoingQuestText;
+    public Image questIconImage;
+    public GameObject questBoxPanel;
+    public GameObject completedCard2;
+    public GameObject completedCard3;
+    public TMPro.TextMeshProUGUI completedText2;
+    public TMPro.TextMeshProUGUI completedText3;
 
     [Header("Halaman Jurnal")]
     public Image journalPageImage;
     public Image journalPhotoImage;
     public TMPro.TextMeshProUGUI pageNumberText;
+    public Image pageStatusBg;
+    public Image journalLabel;
     public Button prevPageButton;
     public Button nextPageButton;
 
@@ -34,6 +42,9 @@ public class QuestTabUI : MonoBehaviour
     public Image awardMisool;
     public Image awardPiaynemo;
     public Image awardSawinggrai;
+    public Image awardRajaAmpat;
+    public Image awardSecretEnding;
+    public TMPro.TextMeshProUGUI trashStatusText;
 
     private void Awake()
     {
@@ -65,6 +76,15 @@ public class QuestTabUI : MonoBehaviour
             if (folderImage != null) manager.folderImage = folderImage;
             if (tabSwitchButton != null) manager.tabSwitchButton = tabSwitchButton;
             if (ongoingQuestText != null) manager.ongoingQuestText = ongoingQuestText;
+            if (questIconImage != null) manager.questIconImage = questIconImage;
+            if (questBoxPanel != null) manager.questBoxPanel = questBoxPanel;
+            if (completedCard2 != null) manager.completedCard2 = completedCard2;
+            if (completedCard3 != null) manager.completedCard3 = completedCard3;
+            if (completedText2 != null) manager.completedText2 = completedText2;
+            if (completedText3 != null) manager.completedText3 = completedText3;
+            if (awardRajaAmpat != null) manager.awardRajaAmpat = awardRajaAmpat;
+            if (awardSecretEnding != null) manager.awardSecretEnding = awardSecretEnding;
+            if (trashStatusText != null) manager.trashStatusText = trashStatusText;
             if (journalPageImage != null) manager.journalPageImage = journalPageImage;
             if (journalPhotoImage != null) manager.journalPhotoImage = journalPhotoImage;
             if (pageNumberText != null) manager.pageNumberText = pageNumberText;

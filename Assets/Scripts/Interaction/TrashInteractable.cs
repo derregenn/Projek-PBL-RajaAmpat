@@ -30,6 +30,11 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     private bool collectionInProgress;
     public UnityEvent onInteractComplete; // Akan muncul di Inspector
 
+    private void Awake()
+    {
+        totalCollected = PlayerPrefs.GetInt("TotalTrashCollected", 0);
+    }
+
     public void Interact()
     {
         if (collectionInProgress) return;
@@ -100,6 +105,14 @@ public class TrashInteractable : MonoBehaviour, IInteractable
 
         // 4. Update UI Progress Bar
         totalCollected += amountToAdd;
+        PlayerPrefs.SetInt("TotalTrashCollected", totalCollected);
+        PlayerPrefs.Save();
+
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.UpdateAwardsUI();
+        }
+
         if (collectibleUIText != null)
         {
             float persentase = ((float)totalCollected / maxTrash) * 100f;
