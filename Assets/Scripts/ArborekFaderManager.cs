@@ -48,28 +48,6 @@ public class ArborekFaderManager : MonoBehaviour
     {
         ResolveSasiNPCReferences();
 
-        // Langsung matikan NPC_TetuaAdat_Sasi_Before dan aktifkan NPC_TetuaAdat_Sasi_After begitu titik sasi kedua selesai
-        if (npcSasiBefore != null && !npcSasiBefore.name.Contains("TitikSasi"))
-        {
-            ResetNPCCamera(npcSasiBefore);
-            npcSasiBefore.SetActive(false);
-        }
-        if (npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
-        {
-            ResetNPCCamera(npcHidupTransisi1);
-            npcHidupTransisi1.SetActive(false);
-        }
-        if (npcSasiAfter != null)
-        {
-            QuestGiver enableGiver = npcSasiAfter.GetComponent<QuestGiver>();
-            if (enableGiver != null)
-            {
-                enableGiver.enabled = true;
-                enableGiver.giveQuestOnPlayerCollision = false;
-            }
-            npcSasiAfter.SetActive(true);
-        }
-
         if (!isTransitioning)
         {
             StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2));

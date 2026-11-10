@@ -49,6 +49,11 @@ public class Dialogue2 : MonoBehaviour
     [Header("Dialogue Events")]
     [SerializeField] private UnityEvent onDialogueEnd;
 
+    [Header("Post Quest / Free Roam Loop Dialogue")]
+    [Tooltip("Dialog berulang yang dimainkan terus saat berinteraksi setelah quest selesai atau di mode free roam")]
+    [SerializeField] private string[] postQuestLoopLines;
+    [SerializeField] private bool isPostQuestLoop = false;
+
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
@@ -85,6 +90,15 @@ public class Dialogue2 : MonoBehaviour
             dialogueCamera.Priority.Value = 0;
         }
 
+        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        {
+            bool isFreeRoam = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
+            if (isFreeRoam)
+            {
+                SwitchToLoopDialogue();
+            }
+        }
+
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(false);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
@@ -119,6 +133,9 @@ public class Dialogue2 : MonoBehaviour
             dialogueCamera.Target.TrackingTarget = this.transform;
             dialogueCamera.Lens.OrthographicSize = npcLensSize;
             dialogueCamera.Priority.Value = 20;
+
+            CinemachineConfiner2D confiner = dialogueCamera.GetComponent<CinemachineConfiner2D>();
+            if (confiner != null) confiner.InvalidateBoundingShapeCache();
         }
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
@@ -286,10 +303,37 @@ public class Dialogue2 : MonoBehaviour
 
         if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
 
-        onDialogueEnd?.Invoke();
+        if (!isPostQuestLoop)
+        {
+            onDialogueEnd?.Invoke();
+            if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+            {
+                SwitchToLoopDialogue();
+            }
+        }
 
         onDialogueCompleteCallback?.Invoke();
         onDialogueCompleteCallback = null;
+    }
+
+    public void SwitchToLoopDialogue()
+    {
+        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        {
+            DialogueLines = postQuestLoopLines;
+            DialogueLineSpeakers = new DialogueSpeaker[postQuestLoopLines.Length];
+            for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+            {
+                DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+            }
+            isPostQuestLoop = true;
+        }
+    }
+
+    public void SetPostQuestLoopLines(string[] loopLines)
+    {
+        postQuestLoopLines = loopLines;
+        SwitchToLoopDialogue();
     }
 
     private void ResetNPCSprite()

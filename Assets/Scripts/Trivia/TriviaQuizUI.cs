@@ -111,14 +111,23 @@ public class TriviaQuizUI : MonoBehaviour
         // Mainkan SFX setiap kali pertanyaan ditampilkan.
         PlaySFX(startQuizSFX);
 
-        // 1. Tampilkan teks pertanyaan di kotak dialog NPC
+        // 1. Tampilkan teks pertanyaan di kotak dialog NPC dengan format standout dua baris
         if (dialogueSystem != null)
         {
-            dialogueSystem.ShowTriviaQuestion(q.questionText);
+            string standoutQuestion = FormatStandoutQuestion(q.questionText, currentQuestionIndex);
+            dialogueSystem.ShowTriviaQuestion(standoutQuestion);
         }
 
-        // 2. Tampilkan panel tombol opsi jawaban
-        if (choicesPanel != null) choicesPanel.SetActive(true);
+        // 2. Tampilkan panel tombol opsi jawaban (pastikan posisinya sedikit ke bawah agar tidak menutupi karakter / dialog)
+        if (choicesPanel != null)
+        {
+            RectTransform rt = choicesPanel.GetComponent<RectTransform>();
+            if (rt != null && rt.anchoredPosition.y > -20f)
+            {
+                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -45f);
+            }
+            choicesPanel.SetActive(true);
+        }
 
         // 3. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
         for (int i = 0; i < optionButtons.Length; i++)
@@ -178,6 +187,38 @@ public class TriviaQuizUI : MonoBehaviour
         }
 
         return defaultMessage;
+    }
+
+    private string FormatStandoutQuestion(string rawQuestion, int index)
+    {
+        if (string.IsNullOrEmpty(rawQuestion)) return "";
+
+        string numberWord;
+        switch (index)
+        {
+            case 0: numberWord = "pertama"; break;
+            case 1: numberWord = "kedua"; break;
+            case 2: numberWord = "ketiga"; break;
+            case 3: numberWord = "keempat"; break;
+            case 4: numberWord = "kelima"; break;
+            default: numberWord = $"ke-{index + 1}"; break;
+        }
+
+        string header = $"Pertanyaan {numberWord}:";
+
+        string body = rawQuestion.Trim();
+        // Bersihkan jika pertanyaan aslinya sudah memiliki awalan "Pertanyaan pertama," dsb
+        System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(
+            @"^Pertanyaan\s*(pertama|kedua|ketiga|keempat|kelima|terakhir|ke-\d+|\d+)\s*[,:]?\s*",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        body = regex.Replace(body, "").Trim();
+
+        if (!string.IsNullOrEmpty(body))
+        {
+            body = char.ToUpper(body[0]) + body.Substring(1);
+        }
+
+        return $"<b><color=#FFD700>{header}</color></b>\n{body}";
     }
 
     private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect)

@@ -594,6 +594,22 @@ public class QuestJournalManager : MonoBehaviour
 
     public void ToggleQuestTab()
     {
+        if (questTabPanel == null)
+        {
+            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
+            if (tabUI != null)
+            {
+                tabUI.RegisterToJournalManager();
+                questTabPanel = tabUI.gameObject;
+            }
+        }
+
+        if (questTabPanel != null && !questTabPanel.activeSelf)
+        {
+            ToggleJournalPanel();
+            return;
+        }
+
         isOngoingTabActive = !isOngoingTabActive;
         RefreshTabVisual();
         RefreshQuestTabText();
