@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
-=======
 using System.Collections;
 using System.Collections.Generic;
->>>>>>> Stashed changes
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -18,15 +15,12 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Clips")]
     public AudioClip defaultBGM;
-<<<<<<< Updated upstream
-=======
     [Range(0f, 1f)] public float bgmVolume = 1f;
     [Tooltip("Durasi fade-out/fade-in untuk looping BGM agar transisi halus.")]
     [Range(0.5f, 5f)] public float fadeDurationForLoop = 2f; 
 
     [Header("Additional Audio Layers")]
     public List<AudioLayer> audioLayers = new List<AudioLayer>();
->>>>>>> Stashed changes
 
     private bool isMuted = false;
     private Coroutine crossfadeCoroutine;
@@ -39,41 +33,31 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            
+            // Inisialisasi status BGM source
+            activeBGMSource = bgmSource1;
+            backgroundBGMSource = bgmSource2;
+            
+            // Pastikan kedua BGM sources tidak looping by default dan memiliki volume 0
+            if (bgmSource1 != null) {
+                bgmSource1.loop = false;
+                bgmSource1.volume = 0f;
+            }
+            if (bgmSource2 != null) {
+                bgmSource2.loop = false;
+                bgmSource2.volume = 0f;
+            }
         }
         else
         {
             Destroy(gameObject);
         }
-<<<<<<< Updated upstream
-=======
-
-        Instance = this;
-        
-        // Inisialisasi status BGM source
-        activeBGMSource = bgmSource1;
-        backgroundBGMSource = bgmSource2;
-        
-        // Pastikan kedua BGM sources tidak looping by default dan memiliki volume 0
-        if (bgmSource1 != null) {
-            bgmSource1.loop = false;
-            bgmSource1.volume = 0f;
-        }
-        if (bgmSource2 != null) {
-            bgmSource2.loop = false;
-            bgmSource2.volume = 0f;
-        }
->>>>>>> Stashed changes
     }
 
     private void Start()
     {
         if (defaultBGM != null)
         {
-<<<<<<< Updated upstream
-            bgmSource.clip = defaultBGM;
-            bgmSource.Play();
-        }
-=======
             // Panggil metode baru untuk BGM looping dengan fade
             PlayBGMWithLoopFade(defaultBGM, bgmVolume, fadeDurationForLoop);
         }
@@ -219,7 +203,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Coroutine untuk crossfade volume antar dua AudioSource
     private IEnumerator FadeVolume(AudioSource fadeInSource, AudioSource fadeOutSource, float duration)
     {
         float startFadeOutVolume = fadeOutSource.volume;
@@ -253,7 +236,7 @@ public class AudioManager : MonoBehaviour
     {
         bgmVolume = Mathf.Clamp01(volume);
         if (activeBGMSource != null)
-            activeBGMSource.volume = bgmVolume; // Update volume for active BGM source
+            activeBGMSource.volume = bgmVolume; 
     }
 
     public void PlayLayer(string layerName)
@@ -283,14 +266,8 @@ public class AudioManager : MonoBehaviour
 
     private void ApplyBGMVolume()
     {
-        // This function is no longer directly used for setting BGM volume because
-        // PlayBGMWithLoopFade and FadeVolume handle it.
-        // It's kept for compatibility if other parts of the code still call it,
-        // but its direct effect on activeBGMSource.volume is now handled elsewhere.
-        // For individual volume changes, use SetBGMVolume(float volume)
         if (activeBGMSource != null)
             activeBGMSource.volume = Mathf.Clamp01(bgmVolume);
->>>>>>> Stashed changes
     }
 
     public void ToggleAudio()
@@ -298,4 +275,15 @@ public class AudioManager : MonoBehaviour
         isMuted = !isMuted;
         AudioListener.volume = isMuted ? 0f : 1f;
     }
+}
+
+// DEFINISI KELAS AUDIOLAYER YANG HILANG DITAMBAHKAN DI SINI
+[System.Serializable]
+public class AudioLayer
+{
+    public string layerName;
+    public AudioSource source;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+    public bool playOnStart = false;
 }
