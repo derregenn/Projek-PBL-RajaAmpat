@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ProgressUI
       objectReference: {fileID: 0}
+    - target: {fileID: 4868144055707617291, guid: c98ed7015d93436479e124a8d6940286, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6224255564528010481, guid: c98ed7015d93436479e124a8d6940286, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4165,6 +4169,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403880502}
   m_CullTransparentMesh: 1
+--- !u!1 &404066202 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 915820975218988395, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+  m_PrefabInstance: {fileID: 1965858059}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &405927868
 GameObject:
   m_ObjectHideFlags: 0
@@ -14394,6 +14403,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8786893707811612753}
     m_Modifications:
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: panelHUD
+      value: 
+      objectReference: {fileID: 207574586}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: hudQuestTitle
+      value: 
+      objectReference: {fileID: 119549038}
+    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
+      propertyPath: hudQuestDescription
+      value: 
+      objectReference: {fileID: 618227029}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -14526,18 +14547,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: panelHUD
-      value: 
-      objectReference: {fileID: 207574586}
-    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: hudQuestTitle
-      value: 
-      objectReference: {fileID: 119549038}
-    - target: {fileID: 3553133103049573021, guid: 729ec06b9c7edf541a230382a5148f20, type: 3}
-      propertyPath: hudQuestDescription
-      value: 
-      objectReference: {fileID: 618227029}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3885563739840116965, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
@@ -16804,7 +16813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d074e9a81462c243acd94e9e8991a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
-  pauseMenuUI: {fileID: 3757804527782977755}
+  pauseMenuUI: {fileID: 404066202}
 --- !u!1 &1978286729
 GameObject:
   m_ObjectHideFlags: 0

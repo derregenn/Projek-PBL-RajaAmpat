@@ -68,7 +68,7 @@ public class SawinggraiLandSceneManager : MonoBehaviour
 
         if (burungCendrawasih != null)
         {
-            burungCendrawasih.SetActive(stage == 6);
+            burungCendrawasih.SetActive(stage >= 0 && stage <= 6); // Cendrawasih aktif saat pemain free roam, mati saat sudah disuruh Warlok 2
         }
     }
 }
