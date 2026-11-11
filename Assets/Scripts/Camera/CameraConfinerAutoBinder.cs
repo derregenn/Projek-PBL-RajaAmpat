@@ -55,6 +55,29 @@ public class CameraConfinerAutoBinder : MonoBehaviour
 
     public void BindAllCamerasInCurrentScene()
     {
+        // 1. Cari Player transform secara robust
+        GameObject player = FindPlayerGameObject();
+
+        // 2. Snap Main Camera ke posisi Player secara instan agar tidak melayang di langit / (0,0)
+        if (Camera.main != null && player != null)
+        {
+            Vector3 playerTargetPos = new Vector3(player.transform.position.x, player.transform.position.y, -10f);
+            Camera.main.transform.position = playerTargetPos;
+
+            CinemachineBrain brain = Camera.main.GetComponent<CinemachineBrain>();
+            if (brain != null)
+            {
+                // Nonaktifkan blend di frame awal agar langsung snap ke player
+                var origBlend = brain.DefaultBlend;
+                if (origBlend.Time <= 0f)
+                {
+                    origBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut, 1.0f);
+                }
+                brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0f);
+                StartCoroutine(RestoreDefaultBlend(brain, origBlend, 0.25f));
+            }
+        }
+
         Collider2D boundsShape = FindOrCreateBoundsCollider();
         if (boundsShape == null) return;
 
@@ -62,6 +85,29 @@ public class CameraConfinerAutoBinder : MonoBehaviour
         foreach (var cam in allCameras)
         {
             if (cam == null) continue;
+
+            // Jika kamera gameplay utama belum punya tracking target atau prioritas 0, bind ke player
+            bool isGameplayCam = cam.name.Equals("CinemachineCamera", System.StringComparison.OrdinalIgnoreCase) ||
+                                 (!cam.name.Contains("Dialogue") && !cam.name.Contains("Objective"));
+
+            if (isGameplayCam && player != null)
+            {
+                if (cam.Target.TrackingTarget == null)
+                {
+                    cam.Target.TrackingTarget = player.transform;
+                }
+                if (cam.Priority.Value <= 0)
+                {
+                    cam.Priority.Value = 10;
+                }
+                cam.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10f);
+                cam.PreviousStateIsValid = false; // Memaksa Cinemachine 3 untuk langsung snap tanpa damping di frame awal
+            }
+            else if (cam.name.IndexOf("Dialogue", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                // Kamera dialog selalu mulai standby dengan prioritas 0
+                cam.Priority.Value = 0;
+            }
 
             CinemachineConfiner2D confiner = cam.GetComponent<CinemachineConfiner2D>();
             if (confiner == null)
@@ -73,9 +119,47 @@ public class CameraConfinerAutoBinder : MonoBehaviour
             {
                 confiner.BoundingShape2D = boundsShape;
                 confiner.Damping = 0.5f;
+                confiner.SlowingDistance = 0f; // 0 agar tidak mendorong kamera menjauh sebelum batas
                 confiner.enabled = true;
                 confiner.InvalidateBoundingShapeCache();
             }
+        }
+    }
+
+    private GameObject FindPlayerGameObject()
+    {
+        try
+        {
+            GameObject pTag = GameObject.FindGameObjectWithTag("Player");
+            if (pTag != null) return pTag;
+        }
+        catch { }
+
+        Player playerScript = FindFirstObjectByType<Player>(FindObjectsInactive.Include);
+        if (playerScript != null) return playerScript.gameObject;
+
+        GameObject pName = GameObject.Find("Player");
+        if (pName != null) return pName;
+
+        GameObject[] allObjs = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var go in allObjs)
+        {
+            if (go != null && go.name.IndexOf("Player", System.StringComparison.OrdinalIgnoreCase) >= 0 &&
+                !go.name.Contains("Dialogue") && !go.name.Contains("Canvas") && !go.name.Contains("Camera"))
+            {
+                return go;
+            }
+        }
+
+        return null;
+    }
+
+    private IEnumerator RestoreDefaultBlend(CinemachineBrain brain, CinemachineBlendDefinition blend, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        if (brain != null)
+        {
+            brain.DefaultBlend = blend;
         }
     }
 
@@ -117,7 +201,6 @@ public class CameraConfinerAutoBinder : MonoBehaviour
         Bounds sceneBounds = CalculateSceneEnvironmentBounds();
         if (sceneBounds.size == Vector3.zero)
         {
-            // Fallback default jika scene sangat kecil / belum ada environment
             sceneBounds = new Bounds(Vector3.zero, new Vector3(120f, 60f, 0f));
         }
 
@@ -128,14 +211,15 @@ public class CameraConfinerAutoBinder : MonoBehaviour
         Vector2 min = sceneBounds.min;
         Vector2 max = sceneBounds.max;
 
-        // Beri sedikit margin agar kamera tidak terjepit di tepi absolut
-        float margin = 0.5f;
+        float marginX = 8f;
+        float marginTop = 8f;
+        float marginBottom = 12f;
         Vector2[] points = new Vector2[]
         {
-            new Vector2(min.x - margin, min.y - margin),
-            new Vector2(max.x + margin, min.y - margin),
-            new Vector2(max.x + margin, max.y + margin),
-            new Vector2(min.x - margin, max.y + margin)
+            new Vector2(min.x - marginX, min.y - marginBottom),
+            new Vector2(max.x + marginX, min.y - marginBottom),
+            new Vector2(max.x + marginX, max.y + marginTop),
+            new Vector2(min.x - marginX, max.y + marginTop)
         };
 
         poly.SetPath(0, points);
@@ -155,7 +239,6 @@ public class CameraConfinerAutoBinder : MonoBehaviour
             foreach (var sr in renderers)
             {
                 if (sr == null || !sr.enabled) continue;
-                // Lewatkan preview setup yang tersembunyi
                 if (sr.gameObject.name.Contains("Preview")) continue;
 
                 if (!hasBounds)
@@ -185,7 +268,6 @@ public class CameraConfinerAutoBinder : MonoBehaviour
             }
         }
 
-        // Jika Environment tidak memiliki sprite, hitung dari seluruh SpriteRenderer di scene
         if (!hasBounds)
         {
             SpriteRenderer[] allRenderers = FindObjectsByType<SpriteRenderer>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -207,4 +289,3 @@ public class CameraConfinerAutoBinder : MonoBehaviour
         return combinedBounds;
     }
 }
-

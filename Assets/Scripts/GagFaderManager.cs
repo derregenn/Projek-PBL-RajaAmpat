@@ -87,10 +87,8 @@ public class GagFaderManager : MonoBehaviour
     private IEnumerator RoutinePenelitiPulang()
     {
         isTransitioning = true;
-        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
-
-        // Fade out ke hitam
-        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
+        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -105,7 +103,8 @@ public class GagFaderManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         // Fade in kembali ke game
-        if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeInRoutine(durasiFade));
+        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeInRoutine());
         isTransitioning = false;
 
         if (QuestController.Instance != null)
@@ -119,9 +118,8 @@ public class GagFaderManager : MonoBehaviour
     private IEnumerator RoutinePindahScene(string sceneName)
     {
         isTransitioning = true;
-        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
-
-        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
+        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -135,9 +133,8 @@ public class GagFaderManager : MonoBehaviour
     private IEnumerator RoutineTamatGame()
     {
         isTransitioning = true;
-        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
-
-        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
+        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();

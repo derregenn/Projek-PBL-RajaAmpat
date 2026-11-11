@@ -118,13 +118,13 @@ public class TriviaQuizUI : MonoBehaviour
             dialogueSystem.ShowTriviaQuestion(standoutQuestion);
         }
 
-        // 2. Tampilkan panel tombol opsi jawaban (pastikan posisinya sedikit ke bawah agar tidak menutupi karakter / dialog)
+        // 2. Tampilkan panel tombol opsi jawaban (pastikan posisinya cukup ke bawah agar tidak menutupi karakter / dialog)
         if (choicesPanel != null)
         {
             RectTransform rt = choicesPanel.GetComponent<RectTransform>();
-            if (rt != null && rt.anchoredPosition.y > -20f)
+            if (rt != null && rt.anchoredPosition.y > -60f)
             {
-                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -45f);
+                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -85f);
             }
             choicesPanel.SetActive(true);
         }

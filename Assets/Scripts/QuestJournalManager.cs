@@ -538,6 +538,11 @@ public class QuestJournalManager : MonoBehaviour
 
         if (willOpen)
         {
+            QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
+            if (tabUI != null)
+            {
+                tabUI.EnsureCanvasSortingOrder();
+            }
             UpdateAllJournalSystems();
         }
     }

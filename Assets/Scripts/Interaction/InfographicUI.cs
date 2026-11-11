@@ -113,6 +113,40 @@ public class InfographicUI : MonoBehaviour
         }
     }
 
+    private void EnsureDarkBackdrop()
+    {
+        if (infographicPanel == null) return;
+
+        Transform existingBackdrop = infographicPanel.transform.Find("BlackBackdrop");
+        if (existingBackdrop == null && infographicPanel.transform.parent != null)
+        {
+            existingBackdrop = infographicPanel.transform.parent.Find("BlackBackdrop");
+        }
+
+        if (existingBackdrop == null)
+        {
+            UnityEngine.UI.Image img = infographicPanel.GetComponent<UnityEngine.UI.Image>();
+            if (img != null && img.color.a > 0.5f && img.color.r < 0.1f && img.color.g < 0.1f && img.color.b < 0.1f)
+            {
+                return;
+            }
+
+            GameObject backdrop = new GameObject("BlackBackdrop");
+            backdrop.transform.SetParent(infographicPanel.transform, false);
+            backdrop.transform.SetAsFirstSibling();
+
+            RectTransform rt = backdrop.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(-2f, -2f);
+            rt.anchorMax = new Vector2(3f, 3f);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            UnityEngine.UI.Image bgImg = backdrop.AddComponent<UnityEngine.UI.Image>();
+            bgImg.color = new Color(0f, 0f, 0f, 0.7843f);
+            bgImg.raycastTarget = false;
+        }
+    }
+
     /// <summary>
     /// Panggil fungsi ini dari On Dialogue End () Petugas Hub
     /// </summary>
@@ -123,6 +157,7 @@ public class InfographicUI : MonoBehaviour
             return;
         }
 
+        EnsureDarkBackdrop();
         CachePanelComponents();
         infographicPanel.SetActive(true);
 

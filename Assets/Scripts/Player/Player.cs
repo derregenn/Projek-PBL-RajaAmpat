@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         {
             if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
             {
-                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                rb.linearVelocity = Vector2.zero;
             }
             SetAnimation(0f);
             UpdateMovementAudio(0f);
