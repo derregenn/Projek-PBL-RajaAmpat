@@ -17,7 +17,7 @@ public class NPCTourGuide : MonoBehaviour
     [SerializeField] private QuestGiver questGiver;         // Script QuestGiver (Quest Foto)
 
     [Header("Events")]
-    public UnityEvent onQuizSuccessEvent; 
+    public UnityEvent onQuizSuccessEvent;
     public UnityEvent onDialogueEndEvent;
 
     private bool isQuizFinished = false;
@@ -69,7 +69,7 @@ public class NPCTourGuide : MonoBehaviour
     public void Interact()
     {
         if (isQuizFinished) return;
-        
+
         if (dialogueSystem != null)
         {
             dialogueSystem.StartDialogue();

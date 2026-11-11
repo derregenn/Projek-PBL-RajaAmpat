@@ -8,8 +8,8 @@ public class TriviaQuizUI : MonoBehaviour
     public static TriviaQuizUI Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private Dialogue dialogueSystem;     // Drag NPC/Dialogue ke sini
     [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol di bawah
+    [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
 
@@ -55,6 +55,14 @@ public class TriviaQuizUI : MonoBehaviour
         Instance = this;
 
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText == null && choicesPanel != null)
+        {
+            Transform questionTransform = choicesPanel.transform.Find("QuestionText");
+            if (questionTransform != null)
+            {
+                questionText = questionTransform.GetComponent<TextMeshProUGUI>();
+            }
+        }
 
         // Setup audio source otomatis jika belum diset di inspector
         if (audioSource == null)
@@ -111,16 +119,11 @@ public class TriviaQuizUI : MonoBehaviour
         // Mainkan SFX setiap kali pertanyaan ditampilkan.
         PlaySFX(startQuizSFX);
 
-        // 1. Tampilkan teks pertanyaan di kotak dialog NPC
-        if (dialogueSystem != null)
-        {
-            dialogueSystem.ShowTriviaQuestion(q.questionText);
-        }
+        if (questionText != null) questionText.text = q.questionText;
 
-        // 2. Tampilkan panel tombol opsi jawaban
+        // Tampilkan panel soal dan opsi jawaban.
         if (choicesPanel != null) choicesPanel.SetActive(true);
 
-        // 3. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
         for (int i = 0; i < optionButtons.Length; i++)
         {
             if (i < q.options.Length)
@@ -155,7 +158,7 @@ public class TriviaQuizUI : MonoBehaviour
             // SFX Jawaban Benar
             PlaySFX(correctAnswerSFX);
 
-            // Jawaban Benar -> Tampilkan feedback di dialogue NPC lalu lanjut ke pertanyaan berikutnya
+            // Jawaban benar menampilkan feedback sebelum lanjut ke soal berikutnya.
             string successMsg = GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
             StartCoroutine(ShowFeedbackRoutine(successMsg, true));
         }
@@ -164,7 +167,7 @@ public class TriviaQuizUI : MonoBehaviour
             // SFX Jawaban Salah
             PlaySFX(wrongAnswerSFX);
 
-            // Jawaban Salah -> Tampilkan feedback di dialogue NPC lalu ulangi pertanyaan
+            // Jawaban salah menampilkan feedback sebelum mengulang soal.
             string wrongMsg = GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
             StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
         }
@@ -184,13 +187,13 @@ public class TriviaQuizUI : MonoBehaviour
     {
         isShowingFeedback = true;
 
-        // Sembunyikan panel pilihan jawaban saat feedback ditampilkan di kotak dialog
-        if (choicesPanel != null) choicesPanel.SetActive(false);
-
-        // Kirim teks feedback langsung ke dialogue box NPC
-        if (dialogueSystem != null)
+        if (questionText != null) questionText.text = feedbackMessage;
+        if (optionButtons != null)
         {
-            dialogueSystem.ShowTriviaQuestion(feedbackMessage);
+            foreach (Button button in optionButtons)
+            {
+                if (button != null) button.gameObject.SetActive(false);
+            }
         }
 
         // Tunggu sebentar agar player sempat membaca feedback
@@ -217,6 +220,7 @@ public class TriviaQuizUI : MonoBehaviour
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText != null) questionText.text = string.Empty;
     }
 
     private void EndQuiz()
@@ -227,6 +231,7 @@ public class TriviaQuizUI : MonoBehaviour
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText != null) questionText.text = string.Empty;
 
         System.Action completed = onQuizCompleted;
         onQuizCompleted = null;

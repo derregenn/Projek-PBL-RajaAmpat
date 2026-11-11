@@ -18,41 +18,28 @@ public class ParallaxBackground : MonoBehaviour
 
     private float lengthX;
     private Vector3 startPosition;
-
-    // Variabel baru untuk melacak jarak absolut
     private float currentDistance;
+    private SpriteRenderer[] backgroundRenderers;
 
     private void Start()
     {
         startPosition = transform.position;
+        backgroundRenderers = GetComponentsInChildren<SpriteRenderer>();
 
         if (targetCamera == null)
         {
             targetCamera = Camera.main;
         }
 
-        // 1. Coba ambil dari SpriteRenderer di objek ini
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        if (TryGetSpriteBounds(out Bounds spriteBounds))
         {
-            lengthX = spriteRenderer.bounds.size.x;
+            lengthX = spriteBounds.size.x;
         }
-        // 2. Jika tidak ada, coba ambil dari RectTransform (UI)
         else if (TryGetComponent<RectTransform>(out RectTransform rectTransform))
         {
-            lengthX = rectTransform.rect.width * transform.lossyScale.x;
-        }
-        // 3. Jika masih tidak ketemu, coba cari SpriteRenderer di child object
-        else
-        {
-            SpriteRenderer childSprite = GetComponentInChildren<SpriteRenderer>();
-            if (childSprite != null)
-            {
-                lengthX = childSprite.bounds.size.x;
-            }
+            lengthX = rectTransform.rect.width * Mathf.Abs(transform.lossyScale.x);
         }
 
-        // 4. Fallback ke Manual Width
         if (lengthX <= 0f && manualWidth > 0f)
         {
             lengthX = manualWidth;
@@ -92,15 +79,48 @@ public class ParallaxBackground : MonoBehaviour
         position.x -= scrollSpeed * Time.deltaTime;
         transform.position = position;
 
+        if (!TryGetSpriteBounds(out Bounds spriteBounds))
+        {
+            spriteBounds = new Bounds(
+                transform.position,
+                new Vector3(lengthX, 0f, 0f));
+        }
+
         float depth = targetCamera.WorldToScreenPoint(transform.position).z;
         float cameraLeft = targetCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f, depth)).x;
         float cameraRight = targetCamera.ViewportToWorldPoint(new Vector3(1f, 0.5f, depth)).x;
 
-        if (transform.position.x + lengthX * 0.5f < cameraLeft)
+        if (spriteBounds.max.x < cameraLeft)
         {
             position = transform.position;
-            position.x = cameraRight + lengthX * 0.5f;
+            position.x += cameraRight - spriteBounds.min.x;
             transform.position = position;
         }
+    }
+
+    private bool TryGetSpriteBounds(out Bounds bounds)
+    {
+        bounds = default;
+        bool hasBounds = false;
+
+        foreach (SpriteRenderer spriteRenderer in backgroundRenderers)
+        {
+            if (!spriteRenderer.enabled || !spriteRenderer.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+
+            if (hasBounds)
+            {
+                bounds.Encapsulate(spriteRenderer.bounds);
+            }
+            else
+            {
+                bounds = spriteRenderer.bounds;
+                hasBounds = true;
+            }
+        }
+
+        return hasBounds;
     }
 }
