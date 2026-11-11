@@ -37,11 +37,6 @@ public class MainMenu : MonoBehaviour
             StoryManager.Instance.ResetProgress();
         }
 
-        if (MasterQuestManager.Instance != null)
-        {
-            MasterQuestManager.Instance.ResetAllProgress();
-        }
-
         if (QuestController.Instance != null)
         {
             QuestController.Instance.ActiveQuests.Clear();

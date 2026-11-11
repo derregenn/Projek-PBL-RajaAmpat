@@ -48,14 +48,22 @@ public class MasterQuestManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(_instance.gameObject);
         }
+
         _instance = this;
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         DetectIslandFromActiveScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+        }
     }
 
     private void OnEnable()

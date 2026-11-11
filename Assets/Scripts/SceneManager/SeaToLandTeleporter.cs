@@ -42,10 +42,6 @@ public class SeaToLandTeleporter : MonoBehaviour
         {
             mqm.AdvanceStageTo(5);
         }
-        else if (currentStage == 7)
-        {
-            exitPoint = "SEA_MANTA";
-        }
         else if (currentStage == 8)
         {
             exitPoint = "SEA_MANTA";
