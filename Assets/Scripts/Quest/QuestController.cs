@@ -74,19 +74,15 @@ public class QuestController : MonoBehaviour
     {
         yield return null; // tunggu satu frame
 
-        if (questUI == null)
+        questUI = FindFirstObjectByType<QuestUI>();
+        if (questUI != null)
         {
-            questUI = FindFirstObjectByType<QuestUI>();
-            if (questUI != null)
-                Debug.Log($"[QuestController] QuestUI ditemukan di scene '{SceneManager.GetActiveScene().name}'.");
+            Debug.Log($"[QuestController] QuestUI ditemukan di scene '{SceneManager.GetActiveScene().name}'.");
         }
 
-        if (questSliderAnim == null)
-        {
-            questSliderAnim = FindFirstObjectByType<QuestSlider>();
-        }
+        questSliderAnim = FindFirstObjectByType<QuestSlider>();
 
-        // Jika ada quest aktif saat scene dimuat (misal Continue Game), perbarui HUD
+        // Jika ada quest aktif saat scene dimuat (misal Continue Game / pindah scene), perbarui HUD
         if (questUI != null && ActiveQuests.Count > 0)
         {
             Quest lastActive = ActiveQuests[ActiveQuests.Count - 1];

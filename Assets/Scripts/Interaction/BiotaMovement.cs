@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BiotaMovement : MonoBehaviour
 {
     [Header("Pengaturan Pergerakan")]
     public float moveSpeed = 1.5f;          // Kecepatan renang
-    public float wanderRadius = 4f;         // Jangkauan area bergerak dari titik awal
+    public float wanderRadius = 6f;         // Jangkauan area bergerak dari titik awal
     public float minWaitTime = 1f;          // Waktu diam minimal saat sampai tujuan
     public float maxWaitTime = 3f;          // Waktu diam maksimal
     public float eatDuration = 3f;          // Lama waktu ikan makan di titik umpan
@@ -20,49 +21,109 @@ public class BiotaMovement : MonoBehaviour
 
     private Vector2 originPosition;
     private Vector2 targetPosition;
-    private bool movingRight = true;
-
     private Coroutine currentRoutine;
     private bool isFeeding = false;
+    private float seedOffset;
+
+    // Untuk menggerakkan anak-anak ikan di dalam kelompok/kawanan
+    private struct ChildFishData
+    {
+        public Transform transform;
+        public Vector3 baseLocalPos;
+        public float animOffset;
+    }
+    private readonly List<ChildFishData> childFishes = new List<ChildFishData>();
+
+    private void Awake()
+    {
+        seedOffset = UnityEngine.Random.Range(0f, 100f);
+    }
 
     private void Start()
     {
         originPosition = transform.position;
 
         if (animator == null) animator = GetComponent<Animator>();
-        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        if (spriteRenderers == null || spriteRenderers.Length == 0)
+        {
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        }
+
+        // Daftarkan child-child ikan (jika ada seperti pada KawananIkan)
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<SpriteRenderer>() != null)
+            {
+                childFishes.Add(new ChildFishData
+                {
+                    transform = child,
+                    baseLocalPos = child.localPosition,
+                    animOffset = UnityEngine.Random.Range(0f, Mathf.PI * 2f)
+                });
+            }
+        }
 
         currentRoutine = StartCoroutine(WanderRoutine());
+    }
+
+    private void Update()
+    {
+        // Berikan gerakan renang meliuk halus untuk anak-anak ikan di dalam kawanan
+        if (childFishes.Count > 0)
+        {
+            float t = Time.time * 2.5f;
+            for (int i = 0; i < childFishes.Count; i++)
+            {
+                var cf = childFishes[i];
+                if (cf.transform != null)
+                {
+                    float offsetY = Mathf.Sin(t + cf.animOffset) * 0.15f;
+                    float offsetX = Mathf.Cos(t * 0.7f + cf.animOffset) * 0.1f;
+                    cf.transform.localPosition = cf.baseLocalPos + new Vector3(offsetX, offsetY, 0f);
+                }
+            }
+        }
     }
 
     private IEnumerator WanderRoutine()
     {
         while (!isFeeding)
         {
-            targetPosition = originPosition + new Vector2(movingRight ? wanderRadius : -wanderRadius, 0f);
+            // Pilih waypoint tujuan secara acak 2D (horizontal dan vertikal) di sekitar habitat
+            float randX = UnityEngine.Random.Range(-wanderRadius, wanderRadius);
+            float randY = UnityEngine.Random.Range(-wanderRadius * 0.45f, wanderRadius * 0.45f);
+            targetPosition = originPosition + new Vector2(randX, randY);
+
             FlipSprite(targetPosition.x - transform.position.x);
 
-            while (Vector2.Distance(transform.position, targetPosition) > 0.05f)
+            float currentSpeed = UnityEngine.Random.Range(moveSpeed * 0.8f, moveSpeed * 1.2f);
+
+            while (Vector2.Distance(transform.position, targetPosition) > 0.1f)
             {
                 if (isFeeding) yield break;
 
-                transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                // Gerakan renang sinusoidal alami
+                float wave = Mathf.Sin(Time.time * 3f + seedOffset) * 0.008f;
+                Vector2 nextStep = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
+                nextStep.y += wave;
 
-                if (animator != null)
+                transform.position = nextStep;
+
+                if (animator != null && !string.IsNullOrEmpty(speedAnimParameter))
                 {
-                    animator.SetFloat(speedAnimParameter, moveSpeed);
+                    animator.SetFloat(speedAnimParameter, currentSpeed);
                 }
 
                 yield return null;
             }
 
-            if (animator != null)
+            if (animator != null && !string.IsNullOrEmpty(speedAnimParameter))
             {
                 animator.SetFloat(speedAnimParameter, 0f);
             }
 
-            yield return new WaitForSeconds((minWaitTime + maxWaitTime) * 0.5f);
-            movingRight = !movingRight;
+            float wait = UnityEngine.Random.Range(Mathf.Max(0.5f, minWaitTime), Mathf.Max(1.5f, maxWaitTime));
+            yield return new WaitForSeconds(wait);
         }
     }
 
@@ -73,7 +134,6 @@ public class BiotaMovement : MonoBehaviour
     {
         isFeeding = true;
 
-        // Hentikan pergerakan wander biasa
         if (currentRoutine != null)
         {
             StopCoroutine(currentRoutine);
@@ -85,17 +145,17 @@ public class BiotaMovement : MonoBehaviour
     private IEnumerator FeedRoutine(Vector3 baitPosition, Action onComplete)
     {
         // Berikan offset acak kecil agar ikan tidak menumpuk tepat di 1 titik
-        Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * 0.6f;
+        Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * 0.8f;
         Vector2 finalBaitTarget = (Vector2)baitPosition + randomOffset;
 
         // 1. Gerakkan ikan menuju umpan
         FlipSprite(finalBaitTarget.x - transform.position.x);
 
-        while (Vector2.Distance(transform.position, finalBaitTarget) > 0.05f)
+        while (Vector2.Distance(transform.position, finalBaitTarget) > 0.1f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, finalBaitTarget, moveSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, finalBaitTarget, (moveSpeed * 1.3f) * Time.deltaTime);
 
-            if (animator != null)
+            if (animator != null && !string.IsNullOrEmpty(speedAnimParameter))
             {
                 animator.SetFloat(speedAnimParameter, moveSpeed);
             }
@@ -104,7 +164,7 @@ public class BiotaMovement : MonoBehaviour
         }
 
         // 2. Sampai di lokasi umpan: Set animasi ke Idle untuk memakan umpan
-        if (animator != null)
+        if (animator != null && !string.IsNullOrEmpty(speedAnimParameter))
         {
             animator.SetFloat(speedAnimParameter, 0f);
         }
@@ -113,17 +173,25 @@ public class BiotaMovement : MonoBehaviour
 
         // 3. Kabarkan ke FishFeedZone bahwa ikan ini selesai makan
         onComplete?.Invoke();
+
+        // 4. Kembali berenang bebas santai
+        isFeeding = false;
+        currentRoutine = StartCoroutine(WanderRoutine());
     }
 
     private void FlipSprite(float directionX)
     {
+        if (spriteRenderers == null) return;
+
         foreach (SpriteRenderer renderer in spriteRenderers)
         {
-            if (directionX > 0.01f)
+            if (renderer == null) continue;
+
+            if (directionX > 0.05f)
             {
                 renderer.flipX = true;
             }
-            else if (directionX < -0.01f)
+            else if (directionX < -0.05f)
             {
                 renderer.flipX = false;
             }

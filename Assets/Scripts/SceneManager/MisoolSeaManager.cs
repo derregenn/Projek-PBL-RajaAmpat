@@ -29,14 +29,12 @@ public class MisoolSeaManager : MonoBehaviour
 
     public void RefreshSeaState()
     {
-        if (MasterQuestManager.Instance == null)
+        int stage = 7; // Default agar Manta dan Biota laut tetap muncul saat eksplorasi / playtesting langsung
+        if (MasterQuestManager.Instance != null)
         {
-            Debug.LogWarning("[MisoolSeaManager] MasterQuestManager tidak ditemukan di scene ini!");
-            return;
+            stage = MasterQuestManager.Instance.CurrentStage;
+            lastStage = stage;
         }
-
-        int stage = MasterQuestManager.Instance.CurrentStage;
-        lastStage = stage;
 
         // Poin 3: Trigger Monolog MC HANYA aktif saat Stage 2 (Menyelam Pertama)
         if (monologueTrigger != null)
@@ -54,10 +52,11 @@ public class MisoolSeaManager : MonoBehaviour
             }
         }
 
-        // Manta yang sama aktif sejak Stage 7 hingga quest selesai.
+        // Manta aktif agar pemain selalu bisa menemukan dan menolongnya
         if (pariManta != null)
         {
-            pariManta.SetActive(stage >= 7);
+            bool shouldActive = (stage >= 5) || (MasterQuestManager.Instance == null) || (PlayerPrefs.GetInt("Visited_04_Misool", 0) == 1);
+            pariManta.SetActive(shouldActive);
         }
     }
 }

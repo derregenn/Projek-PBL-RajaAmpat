@@ -118,7 +118,7 @@ public class Dialogue : MonoBehaviour
                 InteractPrompt.transform.SetParent(canvasTransform, false);
             }
 
-            // Pastikan posisi & scale InteractPrompt sesuai standar Waisai
+            // Pastikan posisi & scale InteractPrompt sesuai standar Waisai (identik dengan TourGuide)
             RectTransform promptRt = InteractPrompt.GetComponent<RectTransform>();
             if (promptRt != null)
             {
@@ -127,20 +127,16 @@ public class Dialogue : MonoBehaviour
                 promptRt.pivot = new Vector2(0.5f, 0.5f);
                 promptRt.sizeDelta = new Vector2(200f, 50f);
                 promptRt.localScale = Vector3.one;
-
-                // Jika posisinya melenceng jauh dari tengah NPC (seperti Pos X = 500 atau Pos Y terlalu ke bawah),
-                // reset ke posisi default standar Waisai: (0, -73.5f)
-                if (Mathf.Abs(promptRt.anchoredPosition.x) > 50f || promptRt.anchoredPosition.y < -150f || promptRt.anchoredPosition.y > 150f)
-                {
-                    promptRt.anchoredPosition = new Vector2(0f, -73.5f);
-                }
+                promptRt.anchoredPosition = new Vector2(0f, -73.5f);
             }
         }
     }
 
     private void EnsureWaisaiDialogueStandard()
     {
-        // 1. Standar Canvas (Ukuran 1000 x 600, Scale 0.051)
+        // 1. Standar Canvas (Normalisasi World Scale & Offset agar identik di SEMUA NPC di SEMUA SCENE)
+        // Standar golden: TourGuide scale = 0.2434f, canvas localScale = 0.05109428f -> worldScale = 0.01243635f
+        // Offset Y golden: 11.06f * 0.2434f = 2.692f world units di atas posisi pivot NPC
         Canvas dialogueCanvas = GetComponentInChildren<Canvas>(true);
         if (dialogueCanvas != null)
         {
@@ -148,7 +144,25 @@ public class Dialogue : MonoBehaviour
             if (cRt != null)
             {
                 cRt.sizeDelta = new Vector2(1000f, 600f);
-                cRt.localScale = new Vector3(0.05109428f, 0.05109428f, 1f);
+
+                float pScaleX = Mathf.Abs(transform.lossyScale.x);
+                float pScaleY = Mathf.Abs(transform.lossyScale.y);
+
+                const float targetWorldScale = 0.01243635f;
+                const float targetWorldOffsetY = 2.692f;
+
+                if (pScaleX > 0.0001f && pScaleY > 0.0001f)
+                {
+                    float sX = targetWorldScale / pScaleX;
+                    float sY = targetWorldScale / pScaleY;
+                    cRt.localScale = new Vector3(sX, sY, 1f);
+                    cRt.anchoredPosition = new Vector2(0f, targetWorldOffsetY / pScaleY);
+                }
+                else
+                {
+                    cRt.localScale = new Vector3(0.05109428f, 0.05109428f, 1f);
+                    cRt.anchoredPosition = new Vector2(0f, 11.06f);
+                }
             }
         }
 
@@ -363,7 +377,8 @@ public class Dialogue : MonoBehaviour
             dialogueCamera.Priority.Value = 0;
         }
 
-        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        bool isMapNPC = GetComponent<NPCMapTrigger>() != null || gameObject.name.IndexOf("Map", StringComparison.OrdinalIgnoreCase) >= 0;
+        if (!isMapNPC && postQuestLoopLines != null && postQuestLoopLines.Length > 0)
         {
             bool isFreeRoam = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
             if (isFreeRoam)
@@ -571,7 +586,13 @@ public class Dialogue : MonoBehaviour
             }
         }
 
-        if (!isPostQuestLoop)
+        bool isMapNPC = GetComponent<NPCMapTrigger>() != null || gameObject.name.IndexOf("Map", StringComparison.OrdinalIgnoreCase) >= 0;
+        if (isMapNPC)
+        {
+            // NPC Peta / Sopir Kapal selalu memanggil event untuk membuka Map dan tidak boleh terkunci ke dialog loop
+            onDialogueEnd?.Invoke();
+        }
+        else if (!isPostQuestLoop)
         {
             onDialogueEnd?.Invoke();
             SwitchToLoopDialogue();
