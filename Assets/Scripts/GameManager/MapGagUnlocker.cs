@@ -5,15 +5,39 @@ using UnityEngine.UI;
 public class MapGagUnlocker : MonoBehaviour
 {
     private Button gagButton;
+    private Image buttonImage;
+
+    [Header("Referensi Teleport")]
+    [Tooltip("Opsional: Drag objek yang punya komponen MapTeleport ke sini (otomatis dicari jika kosong)")]
+    public MapTeleport mapTeleport;
+
+    [Header("Sprites Peta Gag")]
+    public Sprite unlockedSprite;
+    public Sprite lockedSprite;
 
     private void Awake()
     {
         gagButton = GetComponent<Button>();
+        buttonImage = GetComponent<Image>();
+        CariReferensiMapTeleport();
+    }
+
+    private void CariReferensiMapTeleport()
+    {
+        // 1. Cek jika MapTeleport menempel di tombol ini sendiri
+        if (mapTeleport == null)
+            mapTeleport = GetComponent<MapTeleport>();
+
+        // 2. Jika tidak ada di tombol ini, cari di dalam scene (misal di MapManager / Canvas)
+        if (mapTeleport == null)
+            mapTeleport = FindFirstObjectByType<MapTeleport>();
     }
 
     private void OnEnable()
     {
         if (gagButton == null) gagButton = GetComponent<Button>();
+        if (buttonImage == null) buttonImage = GetComponent<Image>();
+        if (mapTeleport == null) CariReferensiMapTeleport();
 
         bool isUnlocked = false;
 
@@ -48,6 +72,33 @@ public class MapGagUnlocker : MonoBehaviour
         if (gagButton != null)
         {
             gagButton.interactable = isUnlocked;
+            gagButton.onClick.RemoveAllListeners();
+            if (isUnlocked)
+            {
+                gagButton.onClick.AddListener(() =>
+                {
+                    if (mapTeleport != null)
+                    {
+                        mapTeleport.PindahKePulau("10_Gag");
+                    }
+                    else
+                    {
+                        Debug.LogError("[MapGagUnlocker] Komponen MapTeleport tidak ditemukan di tombol maupun di scene!");
+                    }
+                });
+            }
+        }
+
+        if (buttonImage != null)
+        {
+            if (isUnlocked && unlockedSprite != null)
+            {
+                buttonImage.sprite = unlockedSprite;
+            }
+            else if (!isUnlocked && lockedSprite != null)
+            {
+                buttonImage.sprite = lockedSprite;
+            }
         }
     }
 }

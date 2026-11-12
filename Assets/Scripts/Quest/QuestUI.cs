@@ -99,7 +99,7 @@ public class QuestUI : MonoBehaviour
         }
 
         if (hudQuestTitle != null) hudQuestTitle.text = activeTitle;
-        if (hudQuestDescription != null) hudQuestDescription.text = "";
+        if (hudQuestDescription != null) hudQuestDescription.text = activeDesc;
         if (objectiveListText != null) objectiveListText.text = "";
 
         SyncToJournal(activeTitle);

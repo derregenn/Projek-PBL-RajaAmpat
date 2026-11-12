@@ -47,6 +47,16 @@ public class CutsceneTransitionManager : MonoBehaviour
         answerFeedbackText.gameObject.SetActive(true);
     }
 
+    void OnValidate()
+    {
+        EnsureDialogueBoxLayout();
+    }
+
+    void OnEnable()
+    {
+        EnsureDialogueBoxLayout();
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -70,6 +80,7 @@ public class CutsceneTransitionManager : MonoBehaviour
                 Instance.dialogueBox = dialogueBox;
                 Instance.dialogueText = dialogueText;
                 Instance.fadeBlackScreen = fadeBlackScreen;
+                Instance.EnsureDialogueBoxLayout();
             }
             Destroy(gameObject);
             return;
@@ -90,7 +101,7 @@ public class CutsceneTransitionManager : MonoBehaviour
                 boxRt.anchorMax = new Vector2(0.5f, 0f);
                 boxRt.pivot = new Vector2(0.5f, 0f);
                 boxRt.anchoredPosition = new Vector2(0f, 40f);
-                boxRt.sizeDelta = new Vector2(1300f, 180f);
+                boxRt.sizeDelta = new Vector2(1400f, 160f);
             }
         }
 
@@ -107,7 +118,7 @@ public class CutsceneTransitionManager : MonoBehaviour
             }
             dialogueText.enableWordWrapping = true;
             dialogueText.alignment = TextAlignmentOptions.MidlineLeft;
-            dialogueText.fontSize = 28f;
+            dialogueText.fontSize = 24f;
         }
     }
 
@@ -171,6 +182,7 @@ public class CutsceneTransitionManager : MonoBehaviour
 
     private void ShowNextPortrait()
     {
+        EnsureDialogueBoxLayout();
         nextAllowedActionTime = Time.unscaledTime + 0.35f;
 
         if (currentPortraits != null && portraitIndex < currentPortraits.Length)
@@ -203,8 +215,10 @@ public class CutsceneTransitionManager : MonoBehaviour
         if (portraitDisplay != null) portraitDisplay.sprite = nextSprite;
         if (dialogueText != null) dialogueText.text = "";
 
+        EnsureDialogueBoxLayout();
+
         // Fade in gambar baru
-        if (portraitDisplay != null)
+        if (portraitDisplay != null && nextSprite != null)
         {
             yield return StartCoroutine(FadeAlpha(portraitDisplay, 0f, 1f, 0.25f));
         }

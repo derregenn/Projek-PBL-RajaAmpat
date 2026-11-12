@@ -53,6 +53,10 @@ public class QuestSlider : MonoBehaviour
         QuestUI qUi = FindFirstObjectByType<QuestUI>();
         if (qUi != null)
         {
+            if (qUi.currentActiveQuest == null && QuestController.Instance != null && QuestController.Instance.ActiveQuests.Count > 0)
+            {
+                qUi.SetQuest(QuestController.Instance.ActiveQuests[QuestController.Instance.ActiveQuests.Count - 1]);
+            }
             qUi.UpdateQuestUI();
             if (qUi.hudQuestTitle != null && string.IsNullOrWhiteSpace(qUi.hudQuestTitle.text))
             {

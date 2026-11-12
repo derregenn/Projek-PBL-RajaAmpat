@@ -28,6 +28,16 @@ public class BoatTransitionController : MonoBehaviour
 
         SetupCamera();
 
+        // Nonaktifkan semua InteractPrompt di scene agar tidak melayang di langit selama cutscene perahu
+        var prompts = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var p in prompts)
+        {
+            if (p != null && p.name == "InteractPrompt")
+            {
+                p.gameObject.SetActive(false);
+            }
+        }
+
         if (triviaSystem == null) triviaSystem = TriviaQuizUI.Instance;
         if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
 
@@ -53,6 +63,16 @@ public class BoatTransitionController : MonoBehaviour
         LoadIslandDataAndStart();
     }
 
+    private string ExtractBaseIslandName(string raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return "";
+        string clean = raw.ToLower().Trim();
+        // Hapus prefix angka seperti "05_", "06_", "10_" jika ada
+        clean = System.Text.RegularExpressions.Regex.Replace(clean, @"^\d+_", "");
+        clean = clean.Replace("quests", "").Replace("quest", "").Replace("desa", "").Trim();
+        return clean;
+    }
+
     private void SetupCamera()
     {
         var vcams = FindObjectsByType<Unity.Cinemachine.CinemachineCamera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -68,20 +88,43 @@ public class BoatTransitionController : MonoBehaviour
                     vcam.Target.TrackingTarget = targetFollow;
                 }
                 
-                // Pastikan kamera gameplay tidak memotong perahu di bawah layar
-                if (vcam.name.IndexOf("Dialogue", System.StringComparison.OrdinalIgnoreCase) < 0)
-                {
-                    var lens = vcam.Lens;
-                    lens.OrthographicSize = 4.2f;
-                    vcam.Lens = lens;
+                // Pastikan SEMUA kamera (termasuk CinemachineCameraDialogue) menyorot perahu dengan tepat dan tidak melayang di langit
+                var lens = vcam.Lens;
+                lens.OrthographicSize = 3.6f;
+                vcam.Lens = lens;
 
-                    var follow = vcam.GetComponent<Unity.Cinemachine.CinemachineFollow>();
-                    if (follow != null)
-                    {
-                        // Berikan sedikit offset vertikal agar perahu tampak seimbang di sepertiga bawah layar
-                        follow.FollowOffset = new Vector3(0f, 1.2f, -10f);
-                    }
+                var follow = vcam.GetComponent<Unity.Cinemachine.CinemachineFollow>();
+                if (follow != null)
+                {
+                    // Berikan offset vertikal agar perahu, air laut di bawahnya, dan dialog box tampak seimbang di layar
+                    follow.FollowOffset = new Vector3(0f, 1.4f, -10f);
                 }
+
+                // Nonaktifkan confiner agar tidak menarik atau membatasi pergerakan kamera di scene perahu
+                var confiner = vcam.GetComponent<Unity.Cinemachine.CinemachineConfiner2D>();
+                if (confiner != null)
+                {
+                    confiner.enabled = false;
+                }
+            }
+        }
+
+        // Sinkronkan DialogueCameraZoom jika ada di Main Camera
+        if (DialogueCameraZoom.Instance != null)
+        {
+            DialogueCameraZoom.Instance.SwitchToGameplay();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        // Pastikan tidak ada InteractPrompt yang muncul selama cutscene boat
+        var prompts = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var p in prompts)
+        {
+            if (p != null && p.name == "InteractPrompt" && p.gameObject.activeSelf)
+            {
+                p.gameObject.SetActive(false);
             }
         }
     }
@@ -90,15 +133,20 @@ public class BoatTransitionController : MonoBehaviour
     {
         if (islandData != null)
         {
+            string targetBase = ExtractBaseIslandName(currentTarget);
+
             foreach (var data in islandData)
             {
                 if (data != null && !string.IsNullOrEmpty(data.islandName))
                 {
                     string targetClean = currentTarget.ToLower().Trim();
                     string dataClean = data.islandName.ToLower().Trim();
+                    string dataBase = ExtractBaseIslandName(data.islandName);
 
-                    // Pencocokan fleksibel (misal "06_Sawinggrai" cocok dengan "Sawinggrai")
-                    if (targetClean == dataClean || targetClean.Contains(dataClean) || dataClean.Contains(targetClean))
+                    // Pencocokan fleksibel (misal "05_Sawinggrai" cocok dengan "06_Sawinggrai" atau "Sawinggrai")
+                    if (targetClean == dataClean || 
+                        targetClean.Contains(dataClean) || dataClean.Contains(targetClean) ||
+                        (!string.IsNullOrEmpty(targetBase) && !string.IsNullOrEmpty(dataBase) && (targetBase == dataBase || targetBase.Contains(dataBase) || dataBase.Contains(targetBase))))
                     {
                         currentData = data;
                         Debug.Log($"[BoatTransition] Menggunakan data dialog untuk: '{data.islandName}'");
@@ -119,31 +167,51 @@ public class BoatTransitionController : MonoBehaviour
         }
     }
 
-    // <-- Method baru untuk Spawn Background
+    // <-- Method untuk Spawn / Aktifkan Background
     private void SpawnParallaxBackground()
     {
-        if (currentData.islandBackgroundPrefab != null && environmentParent != null)
+        if (environmentParent == null) return;
+
+        // 1. Cari apakah background untuk pulau ini sudah ada di bawah environmentParent
+        string targetBase = ExtractBaseIslandName(currentTarget);
+        Transform matchedChild = null;
+
+        foreach (Transform child in environmentParent)
         {
-            // Matikan semua background lain di environment agar tidak menumpuk
-            foreach (Transform child in environmentParent)
+            if (child.name.StartsWith("BG") || child.name.StartsWith("Background"))
             {
-                if (child.name.StartsWith("BG") || child.name.StartsWith("Background"))
+                string childBase = ExtractBaseIslandName(child.name);
+                if (!string.IsNullOrEmpty(targetBase) && !string.IsNullOrEmpty(childBase) &&
+                    (childBase.Contains(targetBase) || targetBase.Contains(childBase)))
                 {
-                    child.gameObject.SetActive(false);
+                    matchedChild = child;
                 }
+                child.gameObject.SetActive(false);
             }
+        }
 
-            // Simpan posisi lokal asli dari prefab sebelum di-clone
-            Vector3 originalLocalPos = currentData.islandBackgroundPrefab.transform.localPosition;
+        if (matchedChild != null)
+        {
+            matchedChild.gameObject.SetActive(true);
+            Debug.Log($"[BoatTransition] Mengaktifkan background yang sudah ada: '{matchedChild.name}'");
+            return;
+        }
 
-            // Spawn background dan simpan ke variabel
-            GameObject spawnedBG = Instantiate(currentData.islandBackgroundPrefab, environmentParent);
-            
-            // Posisikan tepat di depan kamera (X = 0f) dan ketinggian sejajar perahu
-            spawnedBG.transform.localPosition = new Vector3(0f, originalLocalPos.y, 0f);
-            
-            // Jaga-jaga jika prefab tersimpan dalam keadaan mati, kita paksa hidupkan
-            spawnedBG.SetActive(true);
+        // 2. Jika tidak ditemukan sebagai child, clone dari prefab yang di-assign
+        if (currentData != null && currentData.islandBackgroundPrefab != null)
+        {
+            GameObject bgObj = currentData.islandBackgroundPrefab;
+            if (bgObj.transform.IsChildOf(environmentParent))
+            {
+                bgObj.SetActive(true);
+            }
+            else
+            {
+                Vector3 originalLocalPos = bgObj.transform.localPosition;
+                GameObject spawnedBG = Instantiate(bgObj, environmentParent);
+                spawnedBG.transform.localPosition = new Vector3(0f, originalLocalPos.y, 0f);
+                spawnedBG.SetActive(true);
+            }
         }
         else
         {
@@ -206,6 +274,9 @@ public class BoatTransitionController : MonoBehaviour
         if (targetName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
             targetName = targetName.Substring(0, targetName.Length - 6);
 
+        string targetBase = ExtractBaseIslandName(targetName);
+        int fallbackIndex = -1;
+
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
@@ -214,11 +285,20 @@ public class BoatTransitionController : MonoBehaviour
             if (sceneName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
                 sceneName = sceneName.Substring(0, sceneName.Length - 6);
 
+            // 1. Exact match
             if (string.Equals(sceneName, targetName, System.StringComparison.OrdinalIgnoreCase))
                 return i;
+
+            // 2. Base name match (misal "05_Sawinggrai" mencari scene "06_Sawinggrai")
+            string sceneBase = ExtractBaseIslandName(sceneName);
+            if (fallbackIndex < 0 && !string.IsNullOrEmpty(targetBase) && !string.IsNullOrEmpty(sceneBase) &&
+                (targetBase == sceneBase || targetBase.Contains(sceneBase) || sceneBase.Contains(targetBase)))
+            {
+                fallbackIndex = i;
+            }
         }
 
-        return -1;
+        return fallbackIndex;
     }
 }
 

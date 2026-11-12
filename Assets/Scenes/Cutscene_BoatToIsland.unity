@@ -651,9 +651,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 2
-  manualWidth: 2
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 0
 --- !u!1001 &154263647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -802,9 +803,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
-  targetCamera: {fileID: 0}
+  manualWidth: 0
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
 --- !u!1 &252886753
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,9 +856,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 2
-  manualWidth: 2
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 0
 --- !u!1 &288438328 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3551916076822611479, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
@@ -1745,10 +1748,22 @@ PrefabInstance:
     - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: objectiveCamera
       value: 
-      objectReference: {fileID: 2058772416}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: normalSize
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: zoomSize
+      value: 3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: zoomDuration
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: orthographic size
-      value: 4
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_BackGroundColor.b
@@ -1764,11 +1779,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.86
+      value: -1.11
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.84
+      value: -2.61
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2343,9 +2358,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
-  targetCamera: {fileID: 0}
+  manualWidth: 0
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
 --- !u!1001 &1008870063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2364,7 +2380,7 @@ PrefabInstance:
       objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: npcLensSize
-      value: 4
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: InteractPrompt
@@ -2516,18 +2532,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4026320033234950906, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
-      propertyPath: m_Colors.m_NormalColor.b
-      value: 0.23269677
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
-      propertyPath: m_Colors.m_NormalColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
-      propertyPath: m_Colors.m_NormalColor.r
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5073732478923337293, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
@@ -2805,9 +2809,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
 --- !u!1 &1067226685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3211,9 +3216,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
-  targetCamera: {fileID: 0}
+  manualWidth: 0
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
 --- !u!1 &1198570710
 GameObject:
   m_ObjectHideFlags: 0
@@ -3372,9 +3378,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
 --- !u!1 &1296444819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3492,7 +3499,7 @@ RectTransform:
   m_GameObject: {fileID: 1364128970}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.3603952, y: 2.3603952, z: 2.3603952}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 310731365}
@@ -3502,7 +3509,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16.3, y: 1.01}
+  m_AnchoredPosition: {x: 0, y: 7.49}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1364128972
@@ -3518,9 +3525,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
-  loopAtCameraBoundary: 0
+  loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
 --- !u!1001 &1399827310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4916,11 +4924,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.86
+      value: -1.11
       objectReference: {fileID: 0}
     - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.84
+      value: -2.61
       objectReference: {fileID: 0}
     - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4958,22 +4966,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinemachineCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 7804147975020256817, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7804147975020256817, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: BoundingShape2D
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Lens.OrthographicSize
-      value: 4
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
-      objectReference: {fileID: 841745479}
+      objectReference: {fileID: 1017193343}
+    - target: {fileID: 4240124796684014005, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: FollowOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4240124796684014005, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: FollowOffset.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4240124796684014005, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: FollowOffset.z
+      value: -10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5120,23 +5132,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Lens.OrthographicSize
-      value: 4
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
-      objectReference: {fileID: 841745479}
+      objectReference: {fileID: 1017193343}
     - target: {fileID: 4686589836079735778, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_Name
       value: CinemachineCameraDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.86
+      value: -1.11
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.84
+      value: -2.61
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5169,6 +5181,18 @@ PrefabInstance:
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738539907792113228, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: FollowOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738539907792113228, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: FollowOffset.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738539907792113228, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: FollowOffset.z
+      value: -10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

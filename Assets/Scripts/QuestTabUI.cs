@@ -52,20 +52,37 @@ public class QuestTabUI : MonoBehaviour
 
     private void Awake()
     {
+        EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
     }
 
     private void Start()
     {
+        EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
     }
 
     private void OnEnable()
     {
+        EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
+    }
+
+    public void EnsureStandardTransform()
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(1197.1f, 566.82f);
+            rt.localScale = new Vector3(0.63567f, 0.66664f, 0.97687f);
+            rt.anchoredPosition = new Vector2(0.45939f, 7f);
+        }
     }
 
     public void EnsureCanvasSortingOrder()

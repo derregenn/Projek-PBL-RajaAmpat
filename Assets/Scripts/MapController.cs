@@ -63,6 +63,12 @@ public class MapController : MonoBehaviour
 
     public void CloseWorldMap()
     {
+        NPCMapTrigger[] triggers = FindObjectsByType<NPCMapTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var trig in triggers)
+        {
+            if (trig != null) trig.ResetMapState();
+        }
+
         StartCoroutine(FadeGroup(worldMapCanvasGroup, false, true));
     }
 

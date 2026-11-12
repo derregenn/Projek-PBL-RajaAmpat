@@ -55,6 +55,14 @@ public class CameraConfinerAutoBinder : MonoBehaviour
 
     public void BindAllCamerasInCurrentScene()
     {
+        // Jangan jalankan binding kamera otomatis pada scene cutscene atau perahu transisi
+        string activeSceneName = SceneManager.GetActiveScene().name;
+        if (activeSceneName.IndexOf("Cutscene", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+            activeSceneName.IndexOf("Boat", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return;
+        }
+
         // 1. Cari Player transform secara robust
         GameObject player = FindPlayerGameObject();
 
@@ -69,7 +77,7 @@ public class CameraConfinerAutoBinder : MonoBehaviour
             {
                 // Nonaktifkan blend di frame awal agar langsung snap ke player
                 var origBlend = brain.DefaultBlend;
-                if (origBlend.Time <= 0f)
+                if (origBlend.Time <= 0f || origBlend.Time > 1.0f)
                 {
                     origBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut, 1.0f);
                 }
@@ -86,9 +94,8 @@ public class CameraConfinerAutoBinder : MonoBehaviour
         {
             if (cam == null) continue;
 
-            // Jika kamera gameplay utama belum punya tracking target atau prioritas 0, bind ke player
-            bool isGameplayCam = cam.name.Equals("CinemachineCamera", System.StringComparison.OrdinalIgnoreCase) ||
-                                 (!cam.name.Contains("Dialogue") && !cam.name.Contains("Objective"));
+            // Kamera gameplay utama: HANYA kamera yang bernama persis "CinemachineCamera"
+            bool isGameplayCam = cam.name.Equals("CinemachineCamera", System.StringComparison.OrdinalIgnoreCase);
 
             if (isGameplayCam && player != null)
             {
@@ -96,32 +103,34 @@ public class CameraConfinerAutoBinder : MonoBehaviour
                 {
                     cam.Target.TrackingTarget = player.transform;
                 }
-                if (cam.Priority.Value <= 0)
-                {
-                    cam.Priority.Value = 10;
-                }
+                cam.Priority.Value = 10;
                 cam.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10f);
                 cam.PreviousStateIsValid = false; // Memaksa Cinemachine 3 untuk langsung snap tanpa damping di frame awal
             }
-            else if (cam.name.IndexOf("Dialogue", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            else
             {
-                // Kamera dialog selalu mulai standby dengan prioritas 0
+                // Kamera non-gameplay (Dialogue, Objective, Cam_View, dsb): SELALU mulai dalam mode Standby (Priority = 0)
+                // JANGAN timpa target tracking mereka dengan player!
                 cam.Priority.Value = 0;
             }
 
-            CinemachineConfiner2D confiner = cam.GetComponent<CinemachineConfiner2D>();
-            if (confiner == null)
+            // Confiner: pasang hanya untuk gameplay camera dan dialogue camera agar tidak membatasi kamera objektif
+            if (isGameplayCam || cam.name.IndexOf("Dialogue", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                confiner = cam.gameObject.AddComponent<CinemachineConfiner2D>();
-            }
+                CinemachineConfiner2D confiner = cam.GetComponent<CinemachineConfiner2D>();
+                if (confiner == null)
+                {
+                    confiner = cam.gameObject.AddComponent<CinemachineConfiner2D>();
+                }
 
-            if (confiner != null)
-            {
-                confiner.BoundingShape2D = boundsShape;
-                confiner.Damping = 0.5f;
-                confiner.SlowingDistance = 0f; // 0 agar tidak mendorong kamera menjauh sebelum batas
-                confiner.enabled = true;
-                confiner.InvalidateBoundingShapeCache();
+                if (confiner != null)
+                {
+                    confiner.BoundingShape2D = boundsShape;
+                    confiner.Damping = 0.5f;
+                    confiner.SlowingDistance = 0f; // 0 agar tidak mendorong kamera menjauh sebelum batas
+                    confiner.enabled = true;
+                    confiner.InvalidateBoundingShapeCache();
+                }
             }
         }
     }

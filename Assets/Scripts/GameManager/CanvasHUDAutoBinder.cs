@@ -104,10 +104,40 @@ public class CanvasHUDAutoBinder : MonoBehaviour
     {
         bool isUnderwater = sceneName.Contains("Laut");
 
-        // Hubungkan Journal Button
+        // 1. Pastikan Canvas_HUD menggunakan Screen Space - Overlay persis acuan 10_Gag
+        Canvas canvas = hudCanvas.GetComponent<Canvas>();
+        if (canvas != null)
+        {
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 0;
+        }
+
+        // 2. Pastikan CanvasScaler Scale With Screen Size 1920x1080 (Match 0.5) persis acuan 10_Gag
+        CanvasScaler scaler = hudCanvas.GetComponent<CanvasScaler>();
+        if (scaler != null)
+        {
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
+            scaler.referencePixelsPerUnit = 100f;
+        }
+
+        // 3. Hubungkan Journal Button & tata letak persis acuan 10_Gag (633, 405, size 126x139)
         Transform btnJournalTr = hudCanvas.transform.Find("Button");
         if (btnJournalTr != null)
         {
+            RectTransform rt = btnJournalTr.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = new Vector2(633f, 405f);
+                rt.sizeDelta = new Vector2(126f, 139f);
+                rt.localScale = Vector3.one;
+            }
+
             Button btn = btnJournalTr.GetComponent<Button>();
             if (btn != null)
             {
@@ -121,10 +151,21 @@ public class CanvasHUDAutoBinder : MonoBehaviour
             }
         }
 
-        // Hubungkan Pause Button
+        // 4. Hubungkan Pause Button & tata letak persis acuan 10_Gag (841.4, 405, size 127x139)
         Transform btnPauseTr = hudCanvas.transform.Find("Button (1)");
         if (btnPauseTr != null)
         {
+            RectTransform rt = btnPauseTr.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = new Vector2(841.4f, 405f);
+                rt.sizeDelta = new Vector2(127f, 139f);
+                rt.localScale = Vector3.one;
+            }
+
             Button btn = btnPauseTr.GetComponent<Button>();
             if (btn != null)
             {
@@ -138,12 +179,21 @@ public class CanvasHUDAutoBinder : MonoBehaviour
             }
         }
 
-        // Atur Control HUD (Land vs Underwater)
+        // 5. Atur Control HUD (Land vs Underwater) persis acuan 10_Gag (519, -490)
         Transform ctrlTr = hudCanvas.transform.Find("Control Hud_All Pulau");
         if (ctrlTr == null) ctrlTr = hudCanvas.transform.Find("Control Hud_Underwater");
 
         if (ctrlTr != null)
         {
+            RectTransform rt = ctrlTr.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = new Vector2(519f, -490f);
+            }
+
             Image img = ctrlTr.GetComponent<Image>();
             if (img != null)
             {

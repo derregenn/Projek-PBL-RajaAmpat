@@ -165,6 +165,7 @@ public class QuestJournalManager : MonoBehaviour
             Instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            CheckFreshTestPlayReset();
             LoadJournalSaveData();
         }
         else if (Instance != this)
@@ -173,6 +174,18 @@ public class QuestJournalManager : MonoBehaviour
             Instance.AdoptUIReferences(this);
             Destroy(gameObject);
             return;
+        }
+    }
+
+    private void CheckFreshTestPlayReset()
+    {
+        const string FreshTestPlayKey = "FreshTestPlay_Reset_v2";
+        if (PlayerPrefs.GetInt(FreshTestPlayKey, 0) == 0)
+        {
+            Debug.Log("<color=cyan>[QuestJournalManager] Menginisialisasi Fresh Test Play: Mereset seluruh save data ke 0%.</color>");
+            ResetAllProgress(false);
+            PlayerPrefs.SetInt(FreshTestPlayKey, 1);
+            PlayerPrefs.Save();
         }
     }
 
@@ -359,6 +372,7 @@ public class QuestJournalManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(questID) && completedQuestIDs.Contains(questID))
         {
+            UpdateProgressUI();
             RefreshQuestTabText();
             return;
         }
@@ -392,6 +406,7 @@ public class QuestJournalManager : MonoBehaviour
             }
         }
 
+        UpdateProgressUI();
         RefreshQuestTabText();
     }
 
@@ -541,6 +556,7 @@ public class QuestJournalManager : MonoBehaviour
             QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
             if (tabUI != null)
             {
+                tabUI.EnsureStandardTransform();
                 tabUI.EnsureCanvasSortingOrder();
             }
             UpdateAllJournalSystems();
@@ -1551,5 +1567,59 @@ public class QuestJournalManager : MonoBehaviour
                 lastCompletedQuest = completedQuestTitles[completedQuestTitles.Count - 1];
             }
         }
+    }
+
+    [ContextMenu("Reset All Progress To 0")]
+    public void ResetAllProgress(bool keepFreshFlag = true)
+    {
+        unlockedPages.Clear();
+        if (allJournalDatabase != null && allJournalDatabase.Length > 0)
+        {
+            unlockedPages.Add(allJournalDatabase[0].pageID);
+        }
+        else
+        {
+            unlockedPages.Add(1);
+        }
+
+        collectedPhotos.Clear();
+        completedQuestIDs.Clear();
+        unlockedAwardIslands.Clear();
+        completedQuestTitles.Clear();
+        currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
+        lastCompletedQuest = "Belum ada misi selesai.";
+        currentJournalIndex = 0;
+
+        TrashInteractable.totalCollected = 0;
+
+        PlayerPrefs.DeleteAll();
+        if (keepFreshFlag)
+        {
+            PlayerPrefs.SetInt("FreshTestPlay_Reset_v2", 1);
+        }
+        PlayerPrefs.Save();
+
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.ResetAllProgress();
+        }
+
+        if (StoryManager.Instance != null)
+        {
+            StoryManager.Instance.ResetProgress();
+        }
+
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.ResetAllProgress();
+        }
+
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ActiveQuests.Clear();
+        }
+
+        UpdateAllJournalSystems();
+        Debug.Log("<color=green>[QuestJournalManager] Seluruh progres jurnal, award, dan trivia berhasil direset ke 0!</color>");
     }
 }
