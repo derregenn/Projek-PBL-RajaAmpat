@@ -538,6 +538,11 @@ public class QuestJournalManager : MonoBehaviour
 
         if (willOpen)
         {
+            QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
+            if (tabUI != null)
+            {
+                tabUI.EnsureCanvasSortingOrder();
+            }
             UpdateAllJournalSystems();
         }
     }
@@ -559,7 +564,38 @@ public class QuestJournalManager : MonoBehaviour
             percentage = GamePhaseManager.Instance.GetCurrentPercentage();
         }
 
-        if (percentage < 0f) percentage = 0f;
+        // Jika persentase masih 0 atau GamePhaseManager belum menghitung, hitung secara mandiri dari aktivitas player
+        if (percentage <= 0f)
+        {
+            int completedCount = completedQuestTitles != null ? completedQuestTitles.Count : 0;
+            if (completedQuestIDs != null && completedQuestIDs.Count > completedCount)
+            {
+                completedCount = completedQuestIDs.Count;
+            }
+
+            int islandCount = unlockedAwardIslands != null ? unlockedAwardIslands.Count : 0;
+            int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
+
+            // Perhitungan progres proporsional:
+            // Misi selesai (bobot ~3.5% per misi), Award pulau (3% per pulau), dan Sampah (hingga 10%)
+            float calculated = (completedCount * 3.5f) + (islandCount * 3f) + Mathf.Min(10f, (trashCount / 20f * 10f));
+            percentage = Mathf.Clamp(calculated, 0f, 100f);
+
+            // Buka pulau Gag jika quest selesai sudah cukup atau persentase mencapai target
+            if (percentage >= 25f || completedCount >= 3)
+            {
+                if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.GetIsGagUnlocked())
+                {
+                    GamePhaseManager.Instance.UnlockGag(true);
+                }
+                PlayerPrefs.SetInt("GPM_GagUnlocked", 1);
+            }
+
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.SetPercentageDirectly(percentage);
+            }
+        }
 
         int displayPct = Mathf.FloorToInt(percentage);
 
@@ -594,6 +630,22 @@ public class QuestJournalManager : MonoBehaviour
 
     public void ToggleQuestTab()
     {
+        if (questTabPanel == null)
+        {
+            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
+            if (tabUI != null)
+            {
+                tabUI.RegisterToJournalManager();
+                questTabPanel = tabUI.gameObject;
+            }
+        }
+
+        if (questTabPanel != null && !questTabPanel.activeSelf)
+        {
+            ToggleJournalPanel();
+            return;
+        }
+
         isOngoingTabActive = !isOngoingTabActive;
         RefreshTabVisual();
         RefreshQuestTabText();

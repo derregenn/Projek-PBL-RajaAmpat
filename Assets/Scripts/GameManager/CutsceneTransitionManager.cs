@@ -19,7 +19,7 @@ public class CutsceneTransitionManager : MonoBehaviour
 
     [Header("Typewriter Settings")]
     [Tooltip("Kecepatan munculnya huruf (semakin kecil nilainya, semakin cepat)")]
-    public float typingSpeed = 0.03f;   // 🔴 Kecepatan ketikan per huruf
+    public float typingSpeed = 0.03f;   // Kecepatan ketikan per huruf
 
     [Header("Fade Settings")]
     public Image fadeBlackScreen;
@@ -34,6 +34,8 @@ public class CutsceneTransitionManager : MonoBehaviour
     // Status Efek Ketikan
     private bool isTyping = false;
     private string currentFullText = "";
+    private float nextAllowedActionTime = 0f;
+    private int lastActionFrame = -1;
     private Coroutine typingCoroutine;
 
     public void ShowAnswerFeedback(bool isCorrect)
@@ -58,14 +60,60 @@ public class CutsceneTransitionManager : MonoBehaviour
                 DontDestroyOnLoad(cutsceneCanvas);
             }
         }
-        else
+        else if (Instance != this)
         {
+            // Jika instance sudah ada dari Main Menu, sinkronkan referensi UI lokal dari scene ini
+            if (cutsceneCanvas != null)
+            {
+                Instance.cutsceneCanvas = cutsceneCanvas;
+                Instance.portraitDisplay = portraitDisplay;
+                Instance.dialogueBox = dialogueBox;
+                Instance.dialogueText = dialogueText;
+                Instance.fadeBlackScreen = fadeBlackScreen;
+            }
             Destroy(gameObject);
+            return;
+        }
+
+        EnsureDialogueBoxLayout();
+    }
+
+    public void EnsureDialogueBoxLayout()
+    {
+        if (dialogueBox != null)
+        {
+            RectTransform boxRt = dialogueBox.GetComponent<RectTransform>();
+            if (boxRt != null)
+            {
+                // Bikin dialogbox memanjang horizontal di bagian bawah tengah layar
+                boxRt.anchorMin = new Vector2(0.5f, 0f);
+                boxRt.anchorMax = new Vector2(0.5f, 0f);
+                boxRt.pivot = new Vector2(0.5f, 0f);
+                boxRt.anchoredPosition = new Vector2(0f, 40f);
+                boxRt.sizeDelta = new Vector2(1300f, 180f);
+            }
+        }
+
+        if (dialogueText != null)
+        {
+            RectTransform textRt = dialogueText.GetComponent<RectTransform>();
+            if (textRt != null)
+            {
+                textRt.anchorMin = new Vector2(0f, 0f);
+                textRt.anchorMax = new Vector2(1f, 1f);
+                textRt.pivot = new Vector2(0.5f, 0.5f);
+                textRt.offsetMin = new Vector2(40f, 20f);
+                textRt.offsetMax = new Vector2(-40f, -20f);
+            }
+            dialogueText.enableWordWrapping = true;
+            dialogueText.alignment = TextAlignmentOptions.MidlineLeft;
+            dialogueText.fontSize = 28f;
         }
     }
 
     public void StartPortraitCutscene(Sprite[] portraits, string[] dialogues, string sceneToLoad)
     {
+        EnsureDialogueBoxLayout();
         currentPortraits = portraits;
         currentDialogues = dialogues;
         nextSceneName = sceneToLoad;
@@ -74,37 +122,58 @@ public class CutsceneTransitionManager : MonoBehaviour
 
         SetFadeAlpha(0f);
 
-        portraitDisplay.gameObject.SetActive(true);
+        if (portraitDisplay != null) portraitDisplay.gameObject.SetActive(true);
         if (dialogueBox != null) dialogueBox.SetActive(true);
 
-        cutsceneCanvas.SetActive(true);
+        if (cutsceneCanvas != null) cutsceneCanvas.SetActive(true);
         ShowNextPortrait();
+    }
+
+    public void OnNextButtonClicked()
+    {
+        if (isTransitioning) return;
+        if (Time.unscaledTime < nextAllowedActionTime) return;
+        if (Time.frameCount == lastActionFrame) return; // Mencegah double-fire di frame yang sama antara Button OnClick dan Update()
+        lastActionFrame = Time.frameCount;
+
+        // Jika teks SEDANG diketik -> Selesaikan teks seketika
+        // Jika teks SUDAH selesai -> Lanjut ke portrait berikutnya
+        if (isTyping)
+        {
+            CompleteTyping();
+        }
+        else
+        {
+            ShowNextPortrait();
+        }
     }
 
     void Update()
     {
         if (isTransitioning) return;
+        if (Time.unscaledTime < nextAllowedActionTime) return;
 
-        // BISA KLIK KIRI / SPACE / ENTER
-        if (cutsceneCanvas.activeSelf && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
+        // BISA KLIK KIRI / SPACE / ENTER / TOMBOL E
+        if (cutsceneCanvas != null && cutsceneCanvas.activeSelf)
         {
-            // 🔴 Logika Pintar: 
-            // Jika teks SEDANG diketik -> Selesaikan teks seketika
-            // Jika teks SUDAH selesai -> Lanjut ke portrait berikutnya
-            if (isTyping)
+            bool pointerOverUi = UnityEngine.EventSystems.EventSystem.current != null && 
+                                 UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+
+            if (Input.GetKeyDown(KeyCode.E) || 
+                Input.GetKeyDown(KeyCode.Space) || 
+                Input.GetKeyDown(KeyCode.Return) || 
+                (Input.GetMouseButtonDown(0) && !pointerOverUi))
             {
-                CompleteTyping();
-            }
-            else
-            {
-                ShowNextPortrait();
+                OnNextButtonClicked();
             }
         }
     }
 
     private void ShowNextPortrait()
     {
-        if (portraitIndex < currentPortraits.Length)
+        nextAllowedActionTime = Time.unscaledTime + 0.35f;
+
+        if (currentPortraits != null && portraitIndex < currentPortraits.Length)
         {
             string txt = (currentDialogues != null && portraitIndex < currentDialogues.Length) ? currentDialogues[portraitIndex] : "";
             StartCoroutine(FadeToNextPortrait(currentPortraits[portraitIndex], txt));
@@ -125,21 +194,25 @@ public class CutsceneTransitionManager : MonoBehaviour
         isTyping = false;
 
         // Fade out gambar lama
-        if (portraitDisplay.sprite != null && portraitDisplay.color.a > 0)
+        if (portraitDisplay != null && portraitDisplay.sprite != null && portraitDisplay.color.a > 0)
         {
-            yield return StartCoroutine(FadeAlpha(portraitDisplay, 1f, 0f, 0.3f));
+            yield return StartCoroutine(FadeAlpha(portraitDisplay, 1f, 0f, 0.25f));
         }
 
         // Reset teks dan pasang gambar baru
-        portraitDisplay.sprite = nextSprite;
+        if (portraitDisplay != null) portraitDisplay.sprite = nextSprite;
         if (dialogueText != null) dialogueText.text = "";
 
         // Fade in gambar baru
-        yield return StartCoroutine(FadeAlpha(portraitDisplay, 0f, 1f, 0.3f));
+        if (portraitDisplay != null)
+        {
+            yield return StartCoroutine(FadeAlpha(portraitDisplay, 0f, 1f, 0.25f));
+        }
 
         isTransitioning = false;
+        nextAllowedActionTime = Time.unscaledTime + 0.2f;
 
-        // 🔴 Mulai Efek Ketikan setelah Gambar Selesai Fade In
+        // Mulai Efek Ketikan setelah Gambar Selesai Fade In
         if (dialogueText != null && !string.IsNullOrEmpty(nextText))
         {
             currentFullText = nextText;
@@ -147,27 +220,29 @@ public class CutsceneTransitionManager : MonoBehaviour
         }
     }
 
-    // 🔴 Coroutine untuk Mengetik Teks Karakter per Karakter
+    // Coroutine untuk Mengetik Teks Karakter per Karakter
     private IEnumerator TypewriterText(string textToType)
     {
         isTyping = true;
-        dialogueText.text = "";
+        if (dialogueText != null) dialogueText.text = "";
 
         foreach (char letter in textToType.ToCharArray())
         {
-            dialogueText.text += letter;
+            if (dialogueText != null) dialogueText.text += letter;
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
 
         isTyping = false;
+        nextAllowedActionTime = Time.unscaledTime + 0.2f;
     }
 
-    // 🔴 Fungsi Instan untuk Memunculkan Seluruh Teks saat Pemain Mengklik Cepat
+    // Fungsi Instan untuk Memunculkan Seluruh Teks saat Pemain Mengklik Cepat
     private void CompleteTyping()
     {
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         if (dialogueText != null) dialogueText.text = currentFullText;
         isTyping = false;
+        nextAllowedActionTime = Time.unscaledTime + 0.3f;
     }
 
     private IEnumerator EndCutsceneAndLoadScene()
@@ -178,10 +253,16 @@ public class CutsceneTransitionManager : MonoBehaviour
         isTyping = false;
 
         // Fade In Layar Hitam
-        yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 0f, 1f, fadeDuration));
+        if (fadeBlackScreen != null)
+        {
+            yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 0f, 1f, fadeDuration));
+        }
 
-        portraitDisplay.gameObject.SetActive(false);
-        portraitDisplay.sprite = null;
+        if (portraitDisplay != null)
+        {
+            portraitDisplay.gameObject.SetActive(false);
+            portraitDisplay.sprite = null;
+        }
         if (dialogueBox != null) dialogueBox.SetActive(false);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextSceneName);
@@ -191,23 +272,27 @@ public class CutsceneTransitionManager : MonoBehaviour
         }
 
         // Fade Out Layar Hitam
-        yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 1f, 0f, fadeDuration));
+        if (fadeBlackScreen != null)
+        {
+            yield return StartCoroutine(FadeAlpha(fadeBlackScreen, 1f, 0f, fadeDuration));
+        }
 
-        portraitDisplay.gameObject.SetActive(true);
+        if (portraitDisplay != null) portraitDisplay.gameObject.SetActive(true);
         if (dialogueBox != null) dialogueBox.SetActive(true);
-        cutsceneCanvas.SetActive(false);
+        if (cutsceneCanvas != null) cutsceneCanvas.SetActive(false);
         isTransitioning = false;
     }
 
     private IEnumerator FadeAlpha(Image img, float startAlpha, float targetAlpha, float duration)
     {
+        if (img == null) yield break;
         float time = 0;
         Color c = img.color;
 
         while (time < duration)
         {
-            time += Time.deltaTime;
-            c.a = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
+            time += Time.unscaledDeltaTime;
+            c.a = Mathf.Lerp(startAlpha, targetAlpha, Mathf.Clamp01(time / duration));
             img.color = c;
             yield return null;
         }

@@ -37,6 +37,10 @@ public class FriwenEventManager : MonoBehaviour
         fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
         playerScript = FindFirstObjectByType<Player>();
 
+        // Pastikan kamera perahu tidak membajak kamera pemain di awal permainan
+        if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
+        if (playerCamera != null) playerCamera.Priority.Value = 10;
+
         if (perahuLepas) perahuLepas.SetActive(true);
         if (perahuKeikat) perahuKeikat.SetActive(false);
         if (perahuMenjauh) perahuMenjauh.SetActive(false);

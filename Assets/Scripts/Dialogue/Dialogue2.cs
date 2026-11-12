@@ -49,6 +49,11 @@ public class Dialogue2 : MonoBehaviour
     [Header("Dialogue Events")]
     [SerializeField] private UnityEvent onDialogueEnd;
 
+    [Header("Post Quest / Free Roam Loop Dialogue")]
+    [Tooltip("Dialog berulang yang dimainkan terus saat berinteraksi setelah quest selesai atau di mode free roam")]
+    [SerializeField] private string[] postQuestLoopLines;
+    [SerializeField] private bool isPostQuestLoop = false;
+
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
@@ -61,9 +66,138 @@ public class Dialogue2 : MonoBehaviour
 
 
 
+    [Header("Interaction Settings")]
+    [SerializeField] private float interactDistance = 2.5f;
+
+    private GameObject cachedPlayerObj;
+
+    private void EnsureInteractPrompt()
+    {
+        if (InteractPrompt == null)
+        {
+            Transform[] all = GetComponentsInChildren<Transform>(true);
+            foreach (Transform t in all)
+            {
+                if (t.name == "InteractPrompt")
+                {
+                    InteractPrompt = t.gameObject;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void EnsureDialogueCanvasSorting()
+    {
+        Canvas[] canvases = GetComponentsInChildren<Canvas>(true);
+        foreach (Canvas c in canvases)
+        {
+            if (c.renderMode == RenderMode.WorldSpace)
+            {
+                c.overrideSorting = true;
+                c.sortingLayerName = "Foreground";
+                c.sortingOrder = 100;
+                if (c.worldCamera == null)
+                {
+                    c.worldCamera = Camera.main;
+                }
+            }
+        }
+
+        if (InteractPrompt != null)
+        {
+            Canvas promptCanvas = InteractPrompt.GetComponent<Canvas>();
+            if (promptCanvas == null)
+            {
+                promptCanvas = InteractPrompt.AddComponent<Canvas>();
+            }
+            promptCanvas.overrideSorting = true;
+            promptCanvas.sortingLayerName = "Foreground";
+            promptCanvas.sortingOrder = 110;
+        }
+    }
+
+    private void CheckProximity()
+    {
+        if (isInteracting) return;
+
+        if (cachedPlayerObj == null)
+        {
+            cachedPlayerObj = GameObject.FindGameObjectWithTag("Player");
+            if (cachedPlayerObj == null) cachedPlayerObj = GameObject.Find("Player");
+        }
+
+        if (cachedPlayerObj != null)
+        {
+            float dist = Vector2.Distance(transform.position, cachedPlayerObj.transform.position);
+            bool inProximity = dist <= interactDistance;
+
+            if (inProximity)
+            {
+                canInteract = true;
+                if (hasBeenTriggered && InteractPrompt != null && !InteractPrompt.activeSelf)
+                {
+                    InteractPrompt.SetActive(true);
+                }
+            }
+            else
+            {
+                if (canInteract)
+                {
+                    canInteract = false;
+                    if (InteractPrompt != null && InteractPrompt.activeSelf)
+                    {
+                        InteractPrompt.SetActive(false);
+                    }
+                }
+            }
+        }
+    }
+
+    private void SetPlayerMovementLock(bool isLocked)
+    {
+        GameObject pObj = cachedPlayerObj != null ? cachedPlayerObj : GameObject.FindGameObjectWithTag("Player");
+        if (pObj == null) pObj = GameObject.Find("Player");
+        if (pObj != null)
+        {
+            cachedPlayerObj = pObj;
+
+            Player player = pObj.GetComponent<Player>();
+            if (player != null)
+            {
+                player.isMovementLocked = isLocked;
+                player.enabled = true;
+            }
+
+            PlayerSwim swim = pObj.GetComponent<PlayerSwim>();
+            if (swim != null)
+            {
+                swim.isMovementLocked = isLocked;
+            }
+
+            Rigidbody2D rb = pObj.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+
+            Animator anim = pObj.GetComponent<Animator>();
+            if (anim != null && isLocked)
+            {
+                if (player != null && player.isSwimming)
+                    anim.Play("Player_swim");
+                else
+                    anim.Play("Player_Idle");
+            }
+        }
+    }
+
     private void Awake()
     {
         questGiver = GetComponent<QuestGiver>();
+
+        EnsureInteractPrompt();
+        EnsureDialogueCanvasSorting();
 
         // Auto-assign SpriteRenderer jika belum diisi di Inspector
         if (npcSpriteRenderer == null)
@@ -80,9 +214,21 @@ public class Dialogue2 : MonoBehaviour
 
     private void Start()
     {
+        EnsureInteractPrompt();
+        EnsureDialogueCanvasSorting();
+
         if (dialogueCamera != null)
         {
             dialogueCamera.Priority.Value = 0;
+        }
+
+        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        {
+            bool isFreeRoam = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
+            if (isFreeRoam)
+            {
+                SwitchToLoopDialogue();
+            }
         }
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
@@ -94,6 +240,8 @@ public class Dialogue2 : MonoBehaviour
 
     private void Update()
     {
+        CheckProximity();
+
         if (canInteract && !isInteracting && hasBeenTriggered && Input.GetKeyDown(KeyCode.E))
         {
             StartDialogue();
@@ -119,12 +267,17 @@ public class Dialogue2 : MonoBehaviour
             dialogueCamera.Target.TrackingTarget = this.transform;
             dialogueCamera.Lens.OrthographicSize = npcLensSize;
             dialogueCamera.Priority.Value = 20;
+
+            CinemachineConfiner2D confiner = dialogueCamera.GetComponent<CinemachineConfiner2D>();
+            if (confiner != null) confiner.InvalidateBoundingShapeCache();
         }
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        SetPlayerMovementLock(true);
 
         StartTyping();
     }
@@ -272,6 +425,8 @@ public class Dialogue2 : MonoBehaviour
         isTyping = false;
         isInteracting = false;
 
+        SetPlayerMovementLock(false);
+
         ResetNPCSprite();
 
         if (DialogueBox != null) DialogueBox.SetActive(false);
@@ -284,12 +439,39 @@ public class Dialogue2 : MonoBehaviour
             dialogueCamera.Priority.Value = 0;
         }
 
-        if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
+        CheckProximity();
 
-        onDialogueEnd?.Invoke();
+        if (!isPostQuestLoop)
+        {
+            onDialogueEnd?.Invoke();
+            if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+            {
+                SwitchToLoopDialogue();
+            }
+        }
 
         onDialogueCompleteCallback?.Invoke();
         onDialogueCompleteCallback = null;
+    }
+
+    public void SwitchToLoopDialogue()
+    {
+        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        {
+            DialogueLines = postQuestLoopLines;
+            DialogueLineSpeakers = new DialogueSpeaker[postQuestLoopLines.Length];
+            for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+            {
+                DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+            }
+            isPostQuestLoop = true;
+        }
+    }
+
+    public void SetPostQuestLoopLines(string[] loopLines)
+    {
+        postQuestLoopLines = loopLines;
+        SwitchToLoopDialogue();
     }
 
     private void ResetNPCSprite()
@@ -313,7 +495,22 @@ public class Dialogue2 : MonoBehaviour
                     hasBeenTriggered = true;
                     StartDialogue();
                 }
-                else if (InteractPrompt != null)
+                else if (InteractPrompt != null && !InteractPrompt.activeSelf)
+                {
+                    InteractPrompt.SetActive(true);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            if (!isInteracting)
+            {
+                canInteract = true;
+                if (hasBeenTriggered && InteractPrompt != null && !InteractPrompt.activeSelf)
                 {
                     InteractPrompt.SetActive(true);
                 }

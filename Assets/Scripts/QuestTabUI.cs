@@ -46,23 +46,48 @@ public class QuestTabUI : MonoBehaviour
     public Image awardSecretEnding;
     public TMPro.TextMeshProUGUI trashStatusText;
 
+    [Header("Canvas Sorting")]
+    [Tooltip("Sorting order to ensure QuestTabUI renders above Canvas_HUD (order 0)")]
+    public int journalSortingOrder = 30;
+
     private void Awake()
     {
+        EnsureCanvasSortingOrder();
         RegisterToJournalManager();
     }
 
     private void Start()
     {
+        EnsureCanvasSortingOrder();
         RegisterToJournalManager();
     }
 
     private void OnEnable()
     {
+        EnsureCanvasSortingOrder();
         RegisterToJournalManager();
+    }
+
+    public void EnsureCanvasSortingOrder()
+    {
+        Canvas canvas = GetComponent<Canvas>();
+        if (canvas == null)
+        {
+            canvas = gameObject.AddComponent<Canvas>();
+        }
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = journalSortingOrder;
+
+        GraphicRaycaster raycaster = GetComponent<GraphicRaycaster>();
+        if (raycaster == null)
+        {
+            raycaster = gameObject.AddComponent<GraphicRaycaster>();
+        }
     }
 
     public void RegisterToJournalManager()
     {
+        EnsureCanvasSortingOrder();
         QuestJournalManager manager = QuestJournalManager.Instance;
         if (manager == null)
         {
