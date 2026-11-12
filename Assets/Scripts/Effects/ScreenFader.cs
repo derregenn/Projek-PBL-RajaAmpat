@@ -4,19 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class ScreenFader : MonoBehaviour
 {
-    private static ScreenFader _instance;
-    public static ScreenFader Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindFirstObjectByType<ScreenFader>();
-            }
-            return _instance;
-        }
-        set { _instance = value; }
-    }
+    public static ScreenFader Instance;
 
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private float fadeDuration = 1.0f;
@@ -26,13 +14,11 @@ public class ScreenFader : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = this;
-            transform.SetParent(null);
-            DontDestroyOnLoad(gameObject);
+            Instance = this;
         }
-        else if (_instance != this)
+        else
         {
             Destroy(gameObject);
             return;
@@ -56,42 +42,22 @@ public class ScreenFader : MonoBehaviour
 
     public void FadeOut()
     {
-        if (UniversalFader.Instance != null)
-        {
-            StartCoroutine(UniversalFader.Instance.FadeOutRoutine(fadeDuration));
-        }
-        else
-        {
-            StartFade(1f);
-        }
+        StartFade(1f);
     }
 
     public void FadeIn()
     {
-        if (UniversalFader.Instance != null)
-        {
-            StartCoroutine(UniversalFader.Instance.FadeInRoutine(fadeDuration));
-        }
-        else
-        {
-            StartFade(0f);
-        }
+        StartFade(0f);
     }
 
     public void FadeOutAndLoadScene(string sceneName)
     {
-        if (UniversalFader.Instance != null)
+        if (currentFadeCoroutine != null)
         {
-            UniversalFader.Instance.FadeToScene(sceneName, fadeDuration);
+            StopCoroutine(currentFadeCoroutine);
         }
-        else
-        {
-            if (currentFadeCoroutine != null)
-            {
-                StopCoroutine(currentFadeCoroutine);
-            }
-            currentFadeCoroutine = StartCoroutine(FadeOutAndLoadSceneRoutine(sceneName));
-        }
+
+        currentFadeCoroutine = StartCoroutine(FadeOutAndLoadSceneRoutine(sceneName));
     }
 
     private IEnumerator FadeOutAndLoadSceneRoutine(string sceneName)
@@ -103,26 +69,12 @@ public class ScreenFader : MonoBehaviour
     // --- TAMBAHAN METHOD UNTUK COROUTINE INTERAL/EXTERNAL ---
     public IEnumerator FadeOutRoutine()
     {
-        if (UniversalFader.Instance != null)
-        {
-            yield return UniversalFader.Instance.FadeOutRoutine(fadeDuration);
-        }
-        else
-        {
-            yield return FadeRoutine(1f);
-        }
+        yield return FadeRoutine(1f);
     }
 
     public IEnumerator FadeInRoutine()
     {
-        if (UniversalFader.Instance != null)
-        {
-            yield return UniversalFader.Instance.FadeInRoutine(fadeDuration);
-        }
-        else
-        {
-            yield return FadeRoutine(0f);
-        }
+        yield return FadeRoutine(0f);
     }
 
     private void StartFade(float targetAlpha)

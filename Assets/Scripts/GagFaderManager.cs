@@ -19,12 +19,6 @@ public class GagFaderManager : MonoBehaviour
     [Header("Transisi 2: Ending Pulau Gag (Pindah Scene)")]
     public string sceneTujuanEnding = "02_Waisai";
 
-    [Header("Cutscene Sunset Pulau Gag")]
-    public CutsceneTransitionManager cutsceneManager;
-    public Sprite[] sunsetPortraits;
-    [TextArea(2, 5)]
-    public string[] sunsetDialogues;
-
     [Header("Event Tamat Game")]
     public UnityEvent OnGameFinished;
 
@@ -41,38 +35,13 @@ public class GagFaderManager : MonoBehaviour
     // 2. Panggil ini di On Dialogue End TourGuide di Dermaga
     public void PindahKeWaisai()
     {
-        RecordGagCompletion();
-
-        CutsceneTransitionManager ctm = cutsceneManager != null ? cutsceneManager : CutsceneTransitionManager.Instance;
-        if (ctm == null) ctm = FindFirstObjectByType<CutsceneTransitionManager>(FindObjectsInactive.Include);
-
-        if (ctm != null && sunsetPortraits != null && sunsetPortraits.Length > 0)
-        {
-            ctm.StartPortraitCutscene(sunsetPortraits, sunsetDialogues, sceneTujuanEnding);
-        }
-        else if (!isTransitioning)
-        {
-            StartCoroutine(RoutinePindahScene(sceneTujuanEnding));
-        }
+        if (!isTransitioning) StartCoroutine(RoutinePindahScene(sceneTujuanEnding));
     }
 
     // 3. Panggil ini saat cerita Pulau Gag dan seluruh quest tamat
     public void TamatGame()
     {
-        RecordGagCompletion();
-
-        CutsceneTransitionManager ctm = cutsceneManager != null ? cutsceneManager : CutsceneTransitionManager.Instance;
-        if (ctm == null) ctm = FindFirstObjectByType<CutsceneTransitionManager>(FindObjectsInactive.Include);
-
-        string nextScene = !string.IsNullOrEmpty(sceneTujuanEnding) ? sceneTujuanEnding : "02_Waisai";
-        if (ctm != null && sunsetPortraits != null && sunsetPortraits.Length > 0)
-        {
-            ctm.StartPortraitCutscene(sunsetPortraits, sunsetDialogues, nextScene);
-        }
-        else if (!isTransitioning)
-        {
-            StartCoroutine(RoutineTamatGame());
-        }
+        if (!isTransitioning) StartCoroutine(RoutineTamatGame());
     }
 
     public void PindahKeScene(string sceneName)
@@ -87,8 +56,10 @@ public class GagFaderManager : MonoBehaviour
     private IEnumerator RoutinePenelitiPulang()
     {
         isTransitioning = true;
-        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
-        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
+        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
+
+        // Fade out ke hitam
+        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -103,8 +74,7 @@ public class GagFaderManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         // Fade in kembali ke game
-        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeInRoutine(durasiFade));
-        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeInRoutine());
+        if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
         isTransitioning = false;
 
         if (QuestController.Instance != null)
@@ -118,8 +88,9 @@ public class GagFaderManager : MonoBehaviour
     private IEnumerator RoutinePindahScene(string sceneName)
     {
         isTransitioning = true;
-        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
-        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
+        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
+
+        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -133,8 +104,9 @@ public class GagFaderManager : MonoBehaviour
     private IEnumerator RoutineTamatGame()
     {
         isTransitioning = true;
-        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
-        else if (ScreenFader.Instance != null) yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
+        ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
+
+        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();

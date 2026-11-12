@@ -21,13 +21,6 @@ public class LandscapeViewInteractable : MonoBehaviour
     private bool isViewing = false;
     private bool isPlayerInArea = false;
 
-    private void Start()
-    {
-        // Pastikan kamera tebing tambang tidak membajak kamera MC di awal game
-        if (camViewTambang != null) camViewTambang.Priority.Value = 0;
-        if (playerCamera != null) playerCamera.Priority.Value = 10;
-    }
-
     private void Update()
     {
         if (isPlayerInArea && !isViewing && Input.GetKeyDown(KeyCode.F))

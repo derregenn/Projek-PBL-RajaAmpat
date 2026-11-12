@@ -19,7 +19,7 @@ public class BoatBobbing : MonoBehaviour
     private class AnchoredPassenger
     {
         public Transform transform;
-        public Vector3 offsetFromBoat;
+        public Vector3 localPosition;
         public Quaternion localRotation;
         public Rigidbody2D rb;
         public RigidbodyType2D originalBodyType;
@@ -36,13 +36,6 @@ public class BoatBobbing : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(RoutineInitialize());
-    }
-
-    private System.Collections.IEnumerator RoutineInitialize()
-    {
-        // Tunggu 1 frame agar hierarki dan siklus aktivasi scene stabil
-        yield return null;
         InitializeAnchoring();
     }
 
@@ -106,22 +99,13 @@ public class BoatBobbing : MonoBehaviour
                 rb.bodyType = RigidbodyType2D.Kinematic;
             }
 
-            // 5. Coba reparent aman dengan try-catch
-            try
-            {
-                playerObj.transform.SetParent(this.transform, true);
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning("[BoatBobbing] Reparent player ditangani via offset: " + ex.Message);
-            }
-
-            Vector3 offset = playerObj.transform.position - transform.position;
+            // 5. Parent ke kapal (pertahankan world position saat ini)
+            playerObj.transform.SetParent(this.transform, true);
 
             anchoredPassengers.Add(new AnchoredPassenger
             {
                 transform = playerObj.transform,
-                offsetFromBoat = offset,
+                localPosition = playerObj.transform.localPosition,
                 localRotation = playerObj.transform.localRotation,
                 rb = rb,
                 originalBodyType = origType,
@@ -137,7 +121,7 @@ public class BoatBobbing : MonoBehaviour
         NPCTourGuide npcGuide = FindFirstObjectByType<NPCTourGuide>();
         GameObject npcObj = npcGuide != null ? npcGuide.gameObject : GameObject.Find("NPCTourGuide");
 
-        if (npcObj != null)
+        if (npcObj != null && npcObj.transform.parent != this.transform)
         {
             Rigidbody2D rb = npcObj.GetComponent<Rigidbody2D>();
             RigidbodyType2D origType = RigidbodyType2D.Dynamic;
@@ -149,25 +133,12 @@ public class BoatBobbing : MonoBehaviour
                 rb.bodyType = RigidbodyType2D.Kinematic;
             }
 
-            // Coba reparent aman dengan try-catch agar tidak melempar error Unity jika sedang aktivasi
-            try
-            {
-                if (npcObj.transform.parent != this.transform)
-                {
-                    npcObj.transform.SetParent(this.transform, true);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning("[BoatBobbing] Reparent NPC ditangani via offset: " + ex.Message);
-            }
-
-            Vector3 offset = npcObj.transform.position - transform.position;
+            npcObj.transform.SetParent(this.transform, true);
 
             anchoredPassengers.Add(new AnchoredPassenger
             {
                 transform = npcObj.transform,
-                offsetFromBoat = offset,
+                localPosition = npcObj.transform.localPosition,
                 localRotation = npcObj.transform.localRotation,
                 rb = rb,
                 originalBodyType = origType,
@@ -191,21 +162,14 @@ public class BoatBobbing : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Pastikan setiap penumpang tetap terkunci presisi di koordinat dek kapal
+        // Pastikan setiap penumpang tetap terkunci presisi di koordinat dek lokalnya
         for (int i = 0; i < anchoredPassengers.Count; i++)
         {
             var p = anchoredPassengers[i];
             if (p != null && p.transform != null)
             {
-                if (p.transform.parent == this.transform)
-                {
-                    p.transform.localRotation = p.localRotation;
-                }
-                else
-                {
-                    // Jika tidak diparent, kunci posisi mengikuti posisi dan rotasi perahu
-                    p.transform.position = transform.position + (transform.rotation * p.offsetFromBoat);
-                }
+                p.transform.localPosition = p.localPosition;
+                p.transform.localRotation = p.localRotation;
 
                 if (p.playerComponent != null)
                 {
@@ -235,12 +199,7 @@ public class BoatBobbing : MonoBehaviour
         {
             if (p != null && p.transform != null && p.transform.parent == this.transform)
             {
-                try
-                {
-                    p.transform.SetParent(null, true);
-                }
-                catch { }
-
+                p.transform.SetParent(null, true);
                 if (p.rb != null)
                 {
                     p.rb.bodyType = p.originalBodyType;

@@ -26,8 +26,6 @@ public class BoatTransitionController : MonoBehaviour
             bobbing.InitializeAnchoring();
         }
 
-        SetupCamera();
-
         if (triviaSystem == null) triviaSystem = TriviaQuizUI.Instance;
         if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
 
@@ -51,39 +49,6 @@ public class BoatTransitionController : MonoBehaviour
         }
 
         LoadIslandDataAndStart();
-    }
-
-    private void SetupCamera()
-    {
-        var vcams = FindObjectsByType<Unity.Cinemachine.CinemachineCamera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        BoatBobbing boat = FindFirstObjectByType<BoatBobbing>();
-        Transform targetFollow = boat != null ? boat.transform : null;
-
-        foreach (var vcam in vcams)
-        {
-            if (vcam != null)
-            {
-                if (targetFollow != null)
-                {
-                    vcam.Target.TrackingTarget = targetFollow;
-                }
-                
-                // Pastikan kamera gameplay tidak memotong perahu di bawah layar
-                if (vcam.name.IndexOf("Dialogue", System.StringComparison.OrdinalIgnoreCase) < 0)
-                {
-                    var lens = vcam.Lens;
-                    lens.OrthographicSize = 4.2f;
-                    vcam.Lens = lens;
-
-                    var follow = vcam.GetComponent<Unity.Cinemachine.CinemachineFollow>();
-                    if (follow != null)
-                    {
-                        // Berikan sedikit offset vertikal agar perahu tampak seimbang di sepertiga bawah layar
-                        follow.FollowOffset = new Vector3(0f, 1.2f, -10f);
-                    }
-                }
-            }
-        }
     }
 
     private void LoadIslandDataAndStart()
@@ -124,23 +89,14 @@ public class BoatTransitionController : MonoBehaviour
     {
         if (currentData.islandBackgroundPrefab != null && environmentParent != null)
         {
-            // Matikan semua background lain di environment agar tidak menumpuk
-            foreach (Transform child in environmentParent)
-            {
-                if (child.name.StartsWith("BG") || child.name.StartsWith("Background"))
-                {
-                    child.gameObject.SetActive(false);
-                }
-            }
-
             // Simpan posisi lokal asli dari prefab sebelum di-clone
             Vector3 originalLocalPos = currentData.islandBackgroundPrefab.transform.localPosition;
 
             // Spawn background dan simpan ke variabel
             GameObject spawnedBG = Instantiate(currentData.islandBackgroundPrefab, environmentParent);
             
-            // Posisikan tepat di depan kamera (X = 0f) dan ketinggian sejajar perahu
-            spawnedBG.transform.localPosition = new Vector3(0f, originalLocalPos.y, 0f);
+            // Kembalikan posisi lokal ke posisi asli prefab agar air laut tetap sejajar dengan perahu
+            spawnedBG.transform.localPosition = originalLocalPos;
             
             // Jaga-jaga jika prefab tersimpan dalam keadaan mati, kita paksa hidupkan
             spawnedBG.SetActive(true);

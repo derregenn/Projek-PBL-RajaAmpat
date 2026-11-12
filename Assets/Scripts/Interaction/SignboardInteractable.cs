@@ -94,11 +94,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
 
         if (animationCoroutine != null) StopCoroutine(animationCoroutine);
 
-        if (opening)
-        {
-            EnsureDarkBackdrop();
-            infoPanel.SetActive(true);
-        }
+        if (opening) infoPanel.SetActive(true);
 
         if (panelRect == null)
         {
@@ -107,42 +103,6 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         }
 
         animationCoroutine = StartCoroutine(AnimatePanelRoutine(opening));
-    }
-
-    private void EnsureDarkBackdrop()
-    {
-        if (infoPanel == null) return;
-
-        // Cari apakah sudah ada backdrop hitam
-        Transform existingBackdrop = infoPanel.transform.Find("BlackBackdrop");
-        if (existingBackdrop == null && infoPanel.transform.parent != null)
-        {
-            existingBackdrop = infoPanel.transform.parent.Find("BlackBackdrop");
-        }
-
-        if (existingBackdrop == null)
-        {
-            // Periksa jika infoPanel sendiri sudah memiliki warna latar hitam
-            UnityEngine.UI.Image img = infoPanel.GetComponent<UnityEngine.UI.Image>();
-            if (img != null && img.color.a > 0.5f && img.color.r < 0.1f && img.color.g < 0.1f && img.color.b < 0.1f)
-            {
-                return;
-            }
-
-            GameObject backdrop = new GameObject("BlackBackdrop");
-            backdrop.transform.SetParent(infoPanel.transform, false);
-            backdrop.transform.SetAsFirstSibling();
-
-            RectTransform rt = backdrop.AddComponent<RectTransform>();
-            rt.anchorMin = new Vector2(-2f, -2f);
-            rt.anchorMax = new Vector2(3f, 3f);
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = Vector2.zero;
-
-            UnityEngine.UI.Image bgImg = backdrop.AddComponent<UnityEngine.UI.Image>();
-            bgImg.color = new Color(0f, 0f, 0f, 0.7843f);
-            bgImg.raycastTarget = false;
-        }
     }
 
     private IEnumerator AnimatePanelRoutine(bool opening)

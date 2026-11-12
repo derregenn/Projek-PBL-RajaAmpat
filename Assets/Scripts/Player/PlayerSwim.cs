@@ -14,7 +14,6 @@ public class PlayerSwim : MonoBehaviour
 
     [Header("Zero-G Movement")]
     public float moveSpeed = 7f;
-    public bool isMovementLocked = false;
 
     [Header("Diving / Dash Mechanic")]
     public float diveSpeed = 20f;
@@ -59,13 +58,6 @@ public class PlayerSwim : MonoBehaviour
 
     void Update()
     {
-        if (isMovementLocked)
-        {
-            moveInput = Vector2.zero;
-            if (rb != null) rb.linearVelocity = Vector2.zero;
-            return;
-        }
-
         // 1. Lock normal input during dive burst
         if (isDiving) return;
 
@@ -110,7 +102,7 @@ public class PlayerSwim : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDiving || rb == null || isMovementLocked) return;
+        if (isDiving || rb == null) return;
 
         // Apply smooth velocity based on 2D input
         rb.linearVelocity = moveInput * moveSpeed;

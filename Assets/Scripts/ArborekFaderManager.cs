@@ -48,6 +48,28 @@ public class ArborekFaderManager : MonoBehaviour
     {
         ResolveSasiNPCReferences();
 
+        // Langsung matikan NPC_TetuaAdat_Sasi_Before dan aktifkan NPC_TetuaAdat_Sasi_After begitu titik sasi kedua selesai
+        if (npcSasiBefore != null && !npcSasiBefore.name.Contains("TitikSasi"))
+        {
+            ResetNPCCamera(npcSasiBefore);
+            npcSasiBefore.SetActive(false);
+        }
+        if (npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
+        {
+            ResetNPCCamera(npcHidupTransisi1);
+            npcHidupTransisi1.SetActive(false);
+        }
+        if (npcSasiAfter != null)
+        {
+            QuestGiver enableGiver = npcSasiAfter.GetComponent<QuestGiver>();
+            if (enableGiver != null)
+            {
+                enableGiver.enabled = true;
+                enableGiver.giveQuestOnPlayerCollision = false;
+            }
+            npcSasiAfter.SetActive(true);
+        }
+
         if (!isTransitioning)
         {
             StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2));
@@ -112,21 +134,13 @@ public class ArborekFaderManager : MonoBehaviour
     {
         isTransitioning = true; 
 
-        // 1. Fade ke layar hitam penuh terlebih dahulu
-        if (UniversalFader.Instance != null)
+        if (ScreenFader.Instance != null)
         {
-            yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(0.8f));
-        }
-        else if (ScreenFader.Instance != null)
-        {
-            yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
-        }
-        else
-        {
-            yield return new WaitForSecondsRealtime(durasiMenujuHitam);
+            StartCoroutine(ScreenFader.Instance.FadeOutRoutine()); 
         }
 
-        // 2. Saat layar GELAP TOTAL: lakukan swap status NPC (agar NPC baru tidak muncul sebelum fade)
+        yield return new WaitForSecondsRealtime(durasiMenujuHitam);
+
         CloseDialogueUI();
 
         if (npcToDisable != null && !npcToDisable.name.Contains("TitikSasi"))
@@ -203,22 +217,14 @@ public class ArborekFaderManager : MonoBehaviour
             SetTrackerHint("Bicara dengan Tour Guide");
         }
 
-        yield return new WaitForSecondsRealtime(0.3f); 
+        yield return new WaitForSecondsRealtime(0.5f); 
 
-        // 3. Fade in kembali ke terang (NPC baru kini sudah siap dan berdiri di tempatnya)
-        if (UniversalFader.Instance != null)
+        if (ScreenFader.Instance != null)
         {
-            yield return StartCoroutine(UniversalFader.Instance.FadeInRoutine(0.8f));
-        }
-        else if (ScreenFader.Instance != null)
-        {
-            yield return StartCoroutine(ScreenFader.Instance.FadeInRoutine());
-        }
-        else
-        {
-            yield return new WaitForSecondsRealtime(durasiMenujuTerang);
+            StartCoroutine(ScreenFader.Instance.FadeInRoutine());
         }
 
+        yield return new WaitForSecondsRealtime(durasiMenujuTerang);
         isTransitioning = false; 
     }
 
@@ -227,18 +233,12 @@ public class ArborekFaderManager : MonoBehaviour
         isTransitioning = true;
 
         // 1. Fade ke hitam
-        if (UniversalFader.Instance != null)
+        if (ScreenFader.Instance != null)
         {
-            yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(0.8f));
+            StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
         }
-        else if (ScreenFader.Instance != null)
-        {
-            yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
-        }
-        else
-        {
-            yield return new WaitForSecondsRealtime(durasiMenujuHitam);
-        }
+
+        yield return new WaitForSecondsRealtime(durasiMenujuHitam);
 
         // 2. Hilangkan kedua NPC & reset kamera saat layar hitam pekat
         CloseDialogueUI();
@@ -261,22 +261,15 @@ public class ArborekFaderManager : MonoBehaviour
         }
         SetTrackerHint("Kembali ke Dermaga Arborek");
 
-        yield return new WaitForSecondsRealtime(0.3f);
+        yield return new WaitForSecondsRealtime(0.5f);
 
         // 3. Fade kembali terang
-        if (UniversalFader.Instance != null)
+        if (ScreenFader.Instance != null)
         {
-            yield return StartCoroutine(UniversalFader.Instance.FadeInRoutine(0.8f));
-        }
-        else if (ScreenFader.Instance != null)
-        {
-            yield return StartCoroutine(ScreenFader.Instance.FadeInRoutine());
-        }
-        else
-        {
-            yield return new WaitForSecondsRealtime(durasiMenujuTerang);
+            StartCoroutine(ScreenFader.Instance.FadeInRoutine());
         }
 
+        yield return new WaitForSecondsRealtime(durasiMenujuTerang);
         isTransitioning = false;
     }
 

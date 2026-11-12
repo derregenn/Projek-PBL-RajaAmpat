@@ -15,40 +15,14 @@ public class QuestUI : MonoBehaviour
 
     void Awake()
     {
-        EnsureReferences();
+        // QuestUI TIDAK boleh DontDestroyOnLoad — ia harus menjadi bagian dari
+        // Canvas di masing-masing scene gameplay. QuestController akan
+        // mencarinya secara otomatis setiap kali scene baru dimuat.
     }
 
     void Start()
     {
-        EnsureReferences();
-        if (currentActiveQuest == null && QuestController.Instance != null && QuestController.Instance.ActiveQuests.Count > 0)
-        {
-            SetQuest(QuestController.Instance.ActiveQuests[QuestController.Instance.ActiveQuests.Count - 1]);
-        }
-    }
 
-    private void EnsureReferences()
-    {
-        if (hudQuestTitle == null)
-        {
-            Transform searchRoot = panelHUD != null ? panelHUD.transform : transform;
-            TextMeshProUGUI[] tmps = searchRoot.GetComponentsInChildren<TextMeshProUGUI>(true);
-            foreach (var t in tmps)
-            {
-                if (t.name.IndexOf("Title", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    t.name.IndexOf("Quest", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    t.name.IndexOf("Text", System.StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    hudQuestTitle = t;
-                    break;
-                }
-            }
-
-            if (hudQuestTitle == null && tmps.Length > 0)
-            {
-                hudQuestTitle = tmps[0];
-            }
-        }
     }
 
     public void SetQuest(Quest quest)
