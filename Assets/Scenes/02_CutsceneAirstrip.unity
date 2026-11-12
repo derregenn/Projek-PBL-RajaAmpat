@@ -1887,7 +1887,7 @@ PrefabInstance:
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: a7828899b0dbb6744aaf4661336d4221, type: 3}
+      objectReference: {fileID: 8300000, guid: d88281bb30dd3d44e9042436c1993f75, type: 3}
     - target: {fileID: 7224101884623970056, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_SizeDelta.x
       value: 346.127
@@ -2595,7 +2595,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SeaSceneTransition
   targetSceneName: 02_Waisai
   fadeDuration: 1
+  warningUI: {fileID: 0}
+  interactKey: 101
   fadeBlackScreen: {fileID: 794046555}
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &549680058
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4406,7 +4411,7 @@ PrefabInstance:
     - target: {fileID: 1521833777153546415, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: promptText
       value: 
-      objectReference: {fileID: 1826260229}
+      objectReference: {fileID: 0}
     - target: {fileID: 1521833777153546415, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: promptPanel
       value: 
@@ -4961,7 +4966,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: hold_interact
-  onObjectiveTriggered:
+  amountToAdd: 1
+  progressObjectiveOnTrigger: 0
+  OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1248542702
@@ -4998,14 +5005,17 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 627569139}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - ini quest ya
   DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
+  typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 1248542705}
   talkingSprite1: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
   talkingSprite2: {fileID: -7049961335842751518, guid: e6b7acc4b028a174aa45f7b2d2cbd49e, type: 3}
@@ -5014,6 +5024,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1786935145}
   npcLensSize: 2
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!61 &1248542704
@@ -7340,17 +7353,6 @@ MonoBehaviour:
     MaxWindowSize: 0
     Padding: 0
   m_LegacyMaxWindowSize: -2
---- !u!114 &1826260229 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 149411856518601209, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
-  m_PrefabInstance: {fileID: 1510999671}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &1852360873 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5224546264670277698, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
