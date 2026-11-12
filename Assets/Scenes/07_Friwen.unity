@@ -363,7 +363,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: kerang_arborek
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -398,8 +397,12 @@ MonoBehaviour:
   objectiveID: kerang_arborek
   amountToAdd: 1
   collectSound: {fileID: 0}
+  holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &17665925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1126,7 +1129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: perahu_friwen
   amountToAdd: 3
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -1240,13 +1242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
-  customScreenFader: {fileID: 0}
-  perahuLepas: {fileID: 1609396276}
-  perahuKeiket: {fileID: 553906469}
-  startingPoint: {fileID: 1778422158}
-  qteUI: {fileID: 449758184}
-  triggerQTEPerahu: {fileID: 298898321}
-  npcWarlok: {fileID: 2022872702}
+  onMidFade:
+    m_PersistentCalls:
+      m_Calls: []
+  triggerOnEnter: 1
+  activatorTag: Player
 --- !u!1 &356332901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1286,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 154416928}
   PlayerNextPrompt: {fileID: 0}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - 'Betul sekali! Menjaga kelestarian karang itu memang mulai dari hal-hal kecil
     seperti tidak asal menyenggol '
@@ -1298,6 +1299,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000000000000000000000000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -1310,6 +1312,9 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 3
   onDialogueEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!224 &356332903
@@ -4765,8 +4770,12 @@ MonoBehaviour:
   objectiveID: umpan_arborek
   amountToAdd: 1
   collectSound: {fileID: 0}
+  holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4901,7 +4910,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: umpan_arborek
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
@@ -5946,6 +5954,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 1956556753}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - Halo, Kawan! Sudah dibaca papan informasinya ?
   - Sudah Pak
@@ -5954,6 +5963,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 000000000100000000000000
   triviaQuestionText: ' '
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -5994,6 +6004,9 @@ MonoBehaviour:
             dinding karang saat berada di sekitar perairan Friwen Wall ?
           m_BoolArgument: 1
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1668667928
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6723,6 +6736,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 1786951827}
   defaultBGM: {fileID: 8300000, guid: ba5bbb00f069de74c8d535f962fd7e00, type: 3}
+  bgmVolume: 1
+  audioLayers: []
 --- !u!82 &1786951827
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7279,6 +7294,7 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 478356976}
   NextPrompt: {fileID: 1325304278}
   PlayerNextPrompt: {fileID: 285270843}
+  playerMovementController: {fileID: 0}
   DialogueLines:
   - 'Puji Tuhan! Terima kasih banyak! Kalau kamu tidak cepat menahan talinya tadi,
     perahu saya pasti sudah hanyut terbawa arus '
@@ -7291,6 +7307,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000001000000000000000000000001000000
   triviaQuestionText: 
   TypeSpeed: 0.01
+  lineAdvanceCooldown: 0.35
   typingAudioSource: {fileID: 0}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
@@ -7317,6 +7334,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInteractComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &2022872705
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7452,7 +7472,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: ' '
   amountToAdd: 1
-  requireActiveQuest: 0
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
     m_PersistentCalls:
