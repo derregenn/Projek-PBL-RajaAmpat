@@ -655,6 +655,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 0
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1001 &154263647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -807,6 +810,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &252886753
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,6 +866,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 0
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &288438328 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3551916076822611479, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
@@ -1738,6 +1747,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: zoomSize
+      value: 3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: normalSize
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
+      propertyPath: zoomDuration
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: dialogueCamera
       value: 
       objectReference: {fileID: 2058772416}
@@ -1748,18 +1769,6 @@ PrefabInstance:
     - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: objectiveCamera
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: normalSize
-      value: 3.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: zoomSize
-      value: 3.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1945381265278869399, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
-      propertyPath: zoomDuration
-      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: orthographic size
@@ -2205,7 +2214,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7503586766139968832, guid: dd7a7dde6a55434459ff2880e9c74f7b, type: 3}
+  m_Sprite: {fileID: 4432567049115313064, guid: d76f80900484cc846b1f6c2aa290d4cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2362,6 +2371,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1001 &1008870063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2406,6 +2418,10 @@ PrefabInstance:
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Interact
       objectReference: {fileID: 0}
+    - target: {fileID: 2515850637544761682, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2635934312981052917, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2432,7 +2448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2714829142977015304, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 12.17
+      value: 4.316696
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2444,7 +2460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 276
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2452,11 +2468,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 190
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60.6725
+      value: -38.345
       objectReference: {fileID: 0}
     - target: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: quizQuestions.Array.size
@@ -2538,10 +2554,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
+    - target: {fileID: 5904806727785641501, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -775914872777148130, guid: 3e3f538be0f06a14abd630a27c1224ee, type: 2}
     - target: {fileID: 7099015682886790851, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_overflowMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7099015682886790851, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -775914872777148130, guid: 3e3f538be0f06a14abd630a27c1224ee, type: 2}
     - target: {fileID: 8257977044528296014, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Name
       value: NPCTourGuide
@@ -2813,6 +2837,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &1067226685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3072,7 +3099,7 @@ SpriteRenderer:
   m_Size: {x: 0.61, y: 0.18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1184007091
 GameObject:
@@ -3181,7 +3208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1185722715
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3195,12 +3222,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 908711889}
+  - {fileID: 2046813048}
   - {fileID: 947780686}
   m_Father: {fileID: 326412525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 7.49}
+  m_AnchoredPosition: {x: 52.4, y: 7.49}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1185722716
@@ -3220,6 +3248,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &1198570710
 GameObject:
   m_ObjectHideFlags: 0
@@ -3309,7 +3340,7 @@ SpriteRenderer:
   m_Size: {x: 0.61, y: 0.18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1212516355 stripped
 MonoBehaviour:
@@ -3382,6 +3413,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &1296444819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3471,7 +3505,7 @@ SpriteRenderer:
   m_Size: {x: 0.61, y: 0.18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1364128970
 GameObject:
@@ -3529,6 +3563,9 @@ MonoBehaviour:
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
   isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1001 &1399827310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3955,7 +3992,7 @@ SpriteRenderer:
   m_Size: {x: 0.61, y: 0.18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1502983322
 GameObject:
@@ -4691,182 +4728,239 @@ MonoBehaviour:
   - islandName: 03_Pianemo
     islandBackgroundPrefab: {fileID: 1056791526}
     npcDialogueLines:
-    - 'Sebentar lagi kita akan sampai di destinasi ikonik Piaynemo, kawan.'
-    - 'Dalam bahasa lokal Waigeo Barat, nama ''Piaynemo'' berarti ''sambungan'' atau ''ujung tombak''.'
-    - 'Gugusan bukit unik ini asalnya dari fosil terumbu karang laut purba.'
-    - 'Fosil itu terangkat ke permukaan akibat pergeseran kerak bumi jutaan tahun lalu.'
-    - 'Karena batu karst purba itu tajam tapi rapuh, kita harus jalan di atas tangga kayu.'
-    - 'Tapi hati-hati, uap garam laut sering bikin anak tangga kayunya mudah lapuk.'
-    - 'Dan ingat, ancaman terbesar di sini adalah sampah plastik yang tertiup angin ke laut!'
-    - 'Nah, sebelum kita mendarat, coba aku tes daya ingatmu lewat 3 pertanyaan ini!'
+    - Sebentar lagi kita akan sampai di destinasi ikonik Piaynemo, kawan.
+    - Dalam bahasa lokal Waigeo Barat, nama 'Piaynemo' berarti 'sambungan' atau 'ujung
+      tombak'.
+    - Gugusan bukit unik ini asalnya dari fosil terumbu karang laut purba.
+    - Fosil itu terangkat ke permukaan akibat pergeseran kerak bumi jutaan tahun
+      lalu.
+    - Karena batu karst purba itu tajam tapi rapuh, kita harus jalan di atas tangga
+      kayu.
+    - Tapi hati-hati, uap garam laut sering bikin anak tangga kayunya mudah lapuk.
+    - Dan ingat, ancaman terbesar di sini adalah sampah plastik yang tertiup angin
+      ke laut!
+    - Nah, sebelum kita mendarat, coba aku tes daya ingatmu lewat 3 pertanyaan ini!
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, Menurut bahasa lokal warga Waigeo Barat, apa arti dari nama Piaynemo?'
+    - questionText: Pertanyaan pertama, Menurut bahasa lokal warga Waigeo Barat,
+        apa arti dari nama Piaynemo?
       options:
       - '''Air Jernih'' atau ''Laut Toska'''
       - '''Sambungan'' atau ''Ujung tombak'''
       - '''Gugusan Batu'' atau ''Puncak Hijau'''
       correctAnswerIndex: 1
-    - questionText: 'Pertanyaan Kedua, Bukit-bukit batu yang menjulang cantik di Piaynemo itu sebenarnya terbentuk dari apa?'
+    - questionText: Pertanyaan Kedua, Bukit-bukit batu yang menjulang cantik di Piaynemo
+        itu sebenarnya terbentuk dari apa?
       options:
-      - 'Tumpukan batu gunung berapi dari endapan lava purba'
-      - 'Gumpalan tanah pasir murni yang memadat'
-      - 'Endapan fosil terumbu karang dan gamping yang terangkat jutaan tahun lalu'
+      - Tumpukan batu gunung berapi dari endapan lava purba
+      - Gumpalan tanah pasir murni yang memadat
+      - Endapan fosil terumbu karang dan gamping yang terangkat jutaan tahun lalu
       correctAnswerIndex: 2
-    - questionText: 'Pertanyaan Ketiga, Sampah plastik yang tersangkut di tebing bukit Piaynemo dianggap sebagai ancaman ekologis yang sangat serius. Mengapa begitu?'
+    - questionText: Pertanyaan Ketiga, Sampah plastik yang tersangkut di tebing bukit
+        Piaynemo dianggap sebagai ancaman ekologis yang sangat serius. Mengapa begitu?
       options:
-      - 'Karena sampah di tebing sangat mudah tertiup angin ke laut di bawahnya, mencemari air dan tertelan oleh biota laut'
-      - 'Karena struktur pori batuan karst akan menyerap racun plastik dan mengubah kandungan kimia tanah bukit'
-      - 'Karena sampah plastik memantulkan sinar matahari yang memicu peningkatan suhu mikro dan mengeringkan vegetasi tebing'
+      - Karena sampah di tebing sangat mudah tertiup angin ke laut di bawahnya, mencemari
+        air dan tertelan oleh biota laut
+      - Karena struktur pori batuan karst akan menyerap racun plastik dan mengubah
+        kandungan kimia tanah bukit
+      - Karena sampah plastik memantulkan sinar matahari yang memicu peningkatan
+        suhu mikro dan mengeringkan vegetasi tebing
       correctAnswerIndex: 0
   - islandName: 05_Arborek
     islandBackgroundPrefab: {fileID: 991987988}
     npcDialogueLines:
-    - 'Sebentar lagi perahu kita akan sampai di Desa Wisata Arborek.'
-    - 'Arborek ini adalah pionir desa wisata pesisir di Raja Ampat yang terkenal sangat bersih dan asri.'
-    - 'Menurut sejarah Suku Maya setempat, nama Arborek itu asalnya dari kata ''duri''.'
-    - 'Dulunya, pulau ini memang penuh semak berduri sebelum disulap jadi desa seindah sekarang.'
-    - 'Rahasia kebersihan desa ini bukanlah tenaga kebersihan dari luar pulau, lho.'
-    - 'Melainkan dari kesadaran adat dan budaya gotong royong warga lokal sejak dini.'
-    - 'Bahkan sampah plastik kecil dari laut pun pasti langsung mereka pungut.'
-    - 'Yuk, tes pemahamanmu lewat 3 pertanyaan singkat ini sebelum kita turun!'
+    - Sebentar lagi perahu kita akan sampai di Desa Wisata Arborek.
+    - Arborek ini adalah pionir desa wisata pesisir di Raja Ampat yang terkenal sangat
+      bersih dan asri.
+    - Menurut sejarah Suku Maya setempat, nama Arborek itu asalnya dari kata 'duri'.
+    - Dulunya, pulau ini memang penuh semak berduri sebelum disulap jadi desa seindah
+      sekarang.
+    - Rahasia kebersihan desa ini bukanlah tenaga kebersihan dari luar pulau, lho.
+    - Melainkan dari kesadaran adat dan budaya gotong royong warga lokal sejak dini.
+    - Bahkan sampah plastik kecil dari laut pun pasti langsung mereka pungut.
+    - Yuk, tes pemahamanmu lewat 3 pertanyaan singkat ini sebelum kita turun!
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, menurut cerita warga Suku Maya di sini, nama ''Arborek'' itu asalnya dari kata yang artinya apa?'
+    - questionText: Pertanyaan pertama, menurut cerita warga Suku Maya di sini, nama
+        'Arborek' itu asalnya dari kata yang artinya apa?
       options:
       - '''Duri'', karena dulu pulau ini dipenuhi semak berduri'
       - '''Pasir Putih'', karena pantainya yang mengelilingi pulau'
       - '''Tepi Laut'', karena lokasinya di perairan dangkal'
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan kedua, apa sih rahasia utama yang bikin Desa Arborek ini jadi salah satu desa paling bersih di Raja Ampat?'
+    - questionText: Pertanyaan kedua, apa sih rahasia utama yang bikin Desa Arborek
+        ini jadi salah satu desa paling bersih di Raja Ampat?
       options:
-      - 'Karena pemerintah mengirim petugas kebersihan setiap hari'
-      - 'Karena kesadaran adat warga lokal tentang tradisi kebersihan sejak kecil'
-      - 'Karena turis dilarang keras membawa barang apapun ke pulau'
+      - Karena pemerintah mengirim petugas kebersihan setiap hari
+      - Karena kesadaran adat warga lokal tentang tradisi kebersihan sejak kecil
+      - Karena turis dilarang keras membawa barang apapun ke pulau
       correctAnswerIndex: 1
-    - questionText: 'Pertanyaan terakhir, Kalau kamu lagi jalan di pantai Arborek dan lihat sampah plastik kecil, apa yang harus kamu lakukan?'
+    - questionText: Pertanyaan terakhir, Kalau kamu lagi jalan di pantai Arborek
+        dan lihat sampah plastik kecil, apa yang harus kamu lakukan?
       options:
-      - 'Biarkan saja, toh itu bukan sampah kita dan asalnya dari laut lepas'
-      - 'Langsung pungut dan buang ke tempat sampah terdekat untuk bantu jaga desa'
-      - 'Tendang kembali ke laut supaya pemandangan pantai tetap bersih'
+      - Biarkan saja, toh itu bukan sampah kita dan asalnya dari laut lepas
+      - Langsung pungut dan buang ke tempat sampah terdekat untuk bantu jaga desa
+      - Tendang kembali ke laut supaya pemandangan pantai tetap bersih
       correctAnswerIndex: 1
   - islandName: 04_Misool
     islandBackgroundPrefab: {fileID: 1286824540}
     npcDialogueLines:
-    - 'Coba lihat tebing batu hitam curam di depan! Kita sudah dekat dengan Pulau Misool.'
-    - 'Di bagian bawah tebingnya ada ceruk melengkung karena tergerus ombak ribuan tahun.'
-    - 'Perairan Misool ini istimewa karena berstatus sebagai kawasan konservasi laut.'
-    - 'Banyak megafauna berharga yang hidup di sini, seperti Penyu Sisik dan Pari Manta.'
-    - 'Bahkan di Danau Lenmakana, ada spesies ubur-ubur langka yang tidak menyengat.'
-    - 'Namun, ekosistem indah ini sangat terancam oleh sampah plastik dan jaring hantu nelayan.'
-    - 'Selain itu, ledakan populasi hama Bulu Seribu yang memakan karang juga sangat berbahaya.'
-    - 'Mari kita tes pengetahuanmu dengan 3 pertanyaan ini sebelum kita sampai!'
+    - Coba lihat tebing batu hitam curam di depan! Kita sudah dekat dengan Pulau
+      Misool.
+    - Di bagian bawah tebingnya ada ceruk melengkung karena tergerus ombak ribuan
+      tahun.
+    - Perairan Misool ini istimewa karena berstatus sebagai kawasan konservasi laut.
+    - Banyak megafauna berharga yang hidup di sini, seperti Penyu Sisik dan Pari
+      Manta.
+    - Bahkan di Danau Lenmakana, ada spesies ubur-ubur langka yang tidak menyengat.
+    - Namun, ekosistem indah ini sangat terancam oleh sampah plastik dan jaring hantu
+      nelayan.
+    - Selain itu, ledakan populasi hama Bulu Seribu yang memakan karang juga sangat
+      berbahaya.
+    - Mari kita tes pengetahuanmu dengan 3 pertanyaan ini sebelum kita sampai!
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, Apa ciri khas geografis utama yang membedakan lanskap tebing batu di Misool dengan bukit karst di pulau lain?'
+    - questionText: Pertanyaan pertama, Apa ciri khas geografis utama yang membedakan
+        lanskap tebing batu di Misool dengan bukit karst di pulau lain?
       options:
-      - 'Dinding batu gamping tegak lurus dengan cerukan ombak di bawahnya'
-      - 'Gundukan pasir pantai yang selalu pindah terbawa arah angin'
-      - 'Seluruh bukitnya tertutup oleh rumput hijau tanpa ada struktur batu keras'
+      - Dinding batu gamping tegak lurus dengan cerukan ombak di bawahnya
+      - Gundukan pasir pantai yang selalu pindah terbawa arah angin
+      - Seluruh bukitnya tertutup oleh rumput hijau tanpa ada struktur batu keras
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan Kedua, Di pedalaman Misool terdapat Danau Lenmakana. Apa keunikan fenomena alam yang ada di danau tersebut?'
+    - questionText: Pertanyaan Kedua, Di pedalaman Misool terdapat Danau Lenmakana.
+        Apa keunikan fenomena alam yang ada di danau tersebut?
       options:
-      - 'Menjadi habitat alami bagi spesies ubur-ubur tanpa sengat'
-      - 'Airnya mengandung garam sangat tinggi sehingga semua benda bisa mengapung'
-      - 'Air danau bisa berganti warna menjadi merah setiap kali pasang surut'
+      - Menjadi habitat alami bagi spesies ubur-ubur tanpa sengat
+      - Airnya mengandung garam sangat tinggi sehingga semua benda bisa mengapung
+      - Air danau bisa berganti warna menjadi merah setiap kali pasang surut
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan Ketiga, Apa ancaman biologis alami yang bisa merusak ekosistem karang di Misool jika populasinya tidak terkendali?'
+    - questionText: Pertanyaan Ketiga, Apa ancaman biologis alami yang bisa merusak
+        ekosistem karang di Misool jika populasinya tidak terkendali?
       options:
-      - 'Ledakan populasi hama Bulu Seribu yang memangsa jaringan terumbu karang'
-      - 'Gesekan dari kawanan Pari Manta yang terlalu sering bersentuhan dengan dasar karang'
-      - 'Pertumbuhan berlebih rumput laut yang menutup masuknya sinar matahari'
+      - Ledakan populasi hama Bulu Seribu yang memangsa jaringan terumbu karang
+      - Gesekan dari kawanan Pari Manta yang terlalu sering bersentuhan dengan dasar
+        karang
+      - Pertumbuhan berlebih rumput laut yang menutup masuknya sinar matahari
       correctAnswerIndex: 0
   - islandName: 06_Sawinggrai
     islandBackgroundPrefab: {fileID: 1185722714}
     npcDialogueLines:
-    - 'Sebentar lagi perahu kita akan sampai di Desa Sawinggrai.'
-    - 'Pulau ini adalah suaka terbaik untuk mengamati fauna endemik kebanggaan Papua.'
-    - 'Di hutan atas sana, hidup satwa langka Burung Cenderawasih Merah atau Paradisaea rubra.'
-    - 'Mereka suka berkumpul dan menari di tajuk pohon saat pagi atau sore hari.'
-    - 'Tapi ingat, burung ini sangat sensitif terhadap suara bising dan kilatan cahaya kamera.'
-    - 'Selain hutannya, hubungan warga desa dengan laut di sini juga sangat harmonis.'
-    - 'Tiang-tiang rumah panggung mereka dibiarkan menjadi rumah alami bagi ikan karang.'
-    - 'Nah, coba jawab 3 pertanyaan ini dulu sebelum kita masuk ke desa mereka!'
+    - Sebentar lagi perahu kita akan sampai di Desa Sawinggrai.
+    - Pulau ini adalah suaka terbaik untuk mengamati fauna endemik kebanggaan Papua.
+    - Di hutan atas sana, hidup satwa langka Burung Cenderawasih Merah atau Paradisaea
+      rubra.
+    - Mereka suka berkumpul dan menari di tajuk pohon saat pagi atau sore hari.
+    - Tapi ingat, burung ini sangat sensitif terhadap suara bising dan kilatan cahaya
+      kamera.
+    - Selain hutannya, hubungan warga desa dengan laut di sini juga sangat harmonis.
+    - Tiang-tiang rumah panggung mereka dibiarkan menjadi rumah alami bagi ikan karang.
+    - Nah, coba jawab 3 pertanyaan ini dulu sebelum kita masuk ke desa mereka!
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, Apa nama latin dari spesies Burung Cenderawasih Merah yang menjadi kebanggaan alami Pulau Sawinggrai ini?'
+    - questionText: Pertanyaan pertama, Apa nama latin dari spesies Burung Cenderawasih
+        Merah yang menjadi kebanggaan alami Pulau Sawinggrai ini?
       options:
-      - 'Paradisaea rubra'
-      - 'Chelonia mydas'
-      - 'Acanthaster planci'
+      - Paradisaea rubra
+      - Chelonia mydas
+      - Acanthaster planci
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan Kedua, Ketika kita masuk ke dalam hutan untuk mengamati Burung Cenderawasih, aturan paling utama yang wajib kita patuhi adalah?'
+    - questionText: Pertanyaan Kedua, Ketika kita masuk ke dalam hutan untuk mengamati
+        Burung Cenderawasih, aturan paling utama yang wajib kita patuhi adalah?
       options:
-      - 'Memberi makan burung dengan roti manis agar mau mendekat ke tanah'
-      - 'Menjaga ketenangan, tidak berisik, dan mematikan lampu kilat kamera agar burung tidak stres'
-      - 'Menggunakan pakaian berwarna terang mencolok agar burung mengenali keberadaan kita'
+      - Memberi makan burung dengan roti manis agar mau mendekat ke tanah
+      - Menjaga ketenangan, tidak berisik, dan mematikan lampu kilat kamera agar
+        burung tidak stres
+      - Menggunakan pakaian berwarna terang mencolok agar burung mengenali keberadaan
+        kita
       correctAnswerIndex: 1
-    - questionText: 'Pertanyaan Ketiga, Tiang-tiang kayu rumah panggung warga di bawah air ternyata memiliki fungsi ekologis penting, yaitu?'
+    - questionText: Pertanyaan Ketiga, Tiang-tiang kayu rumah panggung warga di bawah
+        air ternyata memiliki fungsi ekologis penting, yaitu?
       options:
-      - 'Menghalangi pergerakan hiu agar tidak masuk ke perairan dangkal desa'
-      - 'Sebagai tempat perlindungan alami dan rumah bermukim bagi terumbu karang serta kawanan ikan kecil'
-      - 'Menyaring arus laut kencang agar pasang surut di pesisir tetap stabil'
+      - Menghalangi pergerakan hiu agar tidak masuk ke perairan dangkal desa
+      - Sebagai tempat perlindungan alami dan rumah bermukim bagi terumbu karang
+        serta kawanan ikan kecil
+      - Menyaring arus laut kencang agar pasang surut di pesisir tetap stabil
       correctAnswerIndex: 1
   - islandName: 07_Friwen
     islandBackgroundPrefab: {fileID: 182984016}
     npcDialogueLines:
-    - 'Destinasi kita berikutnya adalah Pulau Friwen yang sangat tenang.'
-    - 'Daratannya punya pantai rindang yang teduh, pas sekali untuk bersantai.'
-    - 'Tapi di bawah airnya, ada dinding karang vertikal sangat curam bernama Friwen Wall!'
-    - 'Dinding karang itu menjadi jalur arus nutrisi tempat ratusan spesies ikan bermukim.'
-    - 'Di dekat pulau ini juga ada keajaiban geologis bernama Pasir Timbul.'
-    - 'Daratan pasir putih itu hanya muncul di tengah laut saat air sedang surut.'
-    - 'Hati-hati saat melangkah di sana, karena perairannya dangkal dan banyak bibit karang rapuh.'
-    - 'Sebelum turun, ayo kita tes wawasanmu dengan 3 pertanyaan berikut ini!'
+    - Destinasi kita berikutnya adalah Pulau Friwen yang sangat tenang.
+    - Daratannya punya pantai rindang yang teduh, pas sekali untuk bersantai.
+    - Tapi di bawah airnya, ada dinding karang vertikal sangat curam bernama Friwen
+      Wall!
+    - Dinding karang itu menjadi jalur arus nutrisi tempat ratusan spesies ikan bermukim.
+    - Di dekat pulau ini juga ada keajaiban geologis bernama Pasir Timbul.
+    - Daratan pasir putih itu hanya muncul di tengah laut saat air sedang surut.
+    - Hati-hati saat melangkah di sana, karena perairannya dangkal dan banyak bibit
+      karang rapuh.
+    - Sebelum turun, ayo kita tes wawasanmu dengan 3 pertanyaan berikut ini!
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, Apa yang dimaksud dengan fenomena alam Pasir Timbul yang sangat terkenal di sekitar Pulau Friwen ini?'
+    - questionText: Pertanyaan pertama, Apa yang dimaksud dengan fenomena alam Pasir
+        Timbul yang sangat terkenal di sekitar Pulau Friwen ini?
       options:
-      - 'Tumpukan batu karang mati yang sengaja dikumpulkan oleh warga setempat'
-      - 'Daratan pasir di tengah laut yang hanya muncul ke permukaan saat air laut sedang surut'
-      - 'Pulau buatan yang dibangun khusus untuk area pendaratan perahu wisata'
+      - Tumpukan batu karang mati yang sengaja dikumpulkan oleh warga setempat
+      - Daratan pasir di tengah laut yang hanya muncul ke permukaan saat air laut
+        sedang surut
+      - Pulau buatan yang dibangun khusus untuk area pendaratan perahu wisata
       correctAnswerIndex: 1
-    - questionText: 'Pertanyaan Kedua, Apa nama situs konservasi dan patahan dinding karang bawah air yang ikonik di perairan pulau ini?'
+    - questionText: Pertanyaan Kedua, Apa nama situs konservasi dan patahan dinding
+        karang bawah air yang ikonik di perairan pulau ini?
       options:
-      - 'Friwen Wall'
-      - 'Piaynemo Cliff'
-      - 'Wayag Lagoon'
+      - Friwen Wall
+      - Piaynemo Cliff
+      - Wayag Lagoon
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan Ketiga, Waktu berjalan di daratan Pasir Timbul saat air surut, mengapa kita harus berhati-hati dan memperhatikan pijakan kaki?'
+    - questionText: Pertanyaan Ketiga, Waktu berjalan di daratan Pasir Timbul saat
+        air surut, mengapa kita harus berhati-hati dan memperhatikan pijakan kaki?
       options:
-      - 'Karena pasir timbul bisa tenggelam secara mendadak jika diinjak terlalu keras'
-      - 'Karena di perairan dangkal sekitarnya sering terdapat biota kecil dan bibit karang yang rentan rusak jika terinjak'
-      - 'Karena berjalan di pasir timbul dapat memicu abrasi pantai secara permanen'
+      - Karena pasir timbul bisa tenggelam secara mendadak jika diinjak terlalu keras
+      - Karena di perairan dangkal sekitarnya sering terdapat biota kecil dan bibit
+        karang yang rentan rusak jika terinjak
+      - Karena berjalan di pasir timbul dapat memicu abrasi pantai secara permanen
       correctAnswerIndex: 1
   - islandName: 10_Gag
     islandBackgroundPrefab: {fileID: 1364128970}
     npcDialogueLines:
-    - 'Perahu kita sekarang menuju pulau terakhir di perjalanan ini… yaitu Pulau Gag.'
-    - 'Pulaunya mungkin tidak populer, tapi ada realita penting yang harus kita pelajari di sini.'
-    - 'Secara geografis, daratan di pulau kecil ini sangat kaya akan mineral nikel.'
-    - 'Aktivitas pembukaan lahan tambang di pulau sekecil ini risikonya sangat tinggi.'
-    - 'Saat hujan turun, tanah laterit merah dari bukit tergerus dan mengalir ke laut pesisir.'
-    - 'Lumpur merah itu mengendap, menghalangi cahaya matahari, dan membuat karang mati tercekik.'
-    - 'Ekowisata sejati berarti kita juga harus mau peduli pada krisis lingkungan yang sedang terjadi.'
-    - 'Sebelum mendarat di pantainya, mari jawab 3 pertanyaan terakhir ini.'
+    - "Perahu kita sekarang menuju pulau terakhir di perjalanan ini\u2026 yaitu Pulau
+      Gag."
+    - Pulaunya mungkin tidak populer, tapi ada realita penting yang harus kita pelajari
+      di sini.
+    - Secara geografis, daratan di pulau kecil ini sangat kaya akan mineral nikel.
+    - Aktivitas pembukaan lahan tambang di pulau sekecil ini risikonya sangat tinggi.
+    - Saat hujan turun, tanah laterit merah dari bukit tergerus dan mengalir ke laut
+      pesisir.
+    - Lumpur merah itu mengendap, menghalangi cahaya matahari, dan membuat karang
+      mati tercekik.
+    - Ekowisata sejati berarti kita juga harus mau peduli pada krisis lingkungan
+      yang sedang terjadi.
+    - Sebelum mendarat di pantainya, mari jawab 3 pertanyaan terakhir ini.
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, Mengapa aliran lumpur tanah merah akibat kikisan lahan ini sangat berbahaya bagi terumbu karang di pesisir pantai?'
+    - questionText: Pertanyaan pertama, Mengapa aliran lumpur tanah merah akibat
+        kikisan lahan ini sangat berbahaya bagi terumbu karang di pesisir pantai?
       options:
-      - 'Karena lumpur mengendap menutupi karang, menghalangi cahaya matahari, dan membuat jaringan karang mati tercekik'
-      - 'Karena aliran lumpur secara otomatis menaikkan suhu permukaan air laut menjadi sangat mendidih'
-      - 'Karena tanah laterit mengandung zat pewarna yang mengubah pigmen warna alami koral laut'
+      - Karena lumpur mengendap menutupi karang, menghalangi cahaya matahari, dan
+        membuat jaringan karang mati tercekik
+      - Karena aliran lumpur secara otomatis menaikkan suhu permukaan air laut menjadi
+        sangat mendidih
+      - Karena tanah laterit mengandung zat pewarna yang mengubah pigmen warna alami
+        koral laut
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan Kedua, Secara ekologis, mengapa pulau-pulau kecil jauh lebih rentan terhadap dampak perubahan lingkungan dibanding daratan pulau besar?'
+    - questionText: Pertanyaan Kedua, Secara ekologis, mengapa pulau-pulau kecil
+        jauh lebih rentan terhadap dampak perubahan lingkungan dibanding daratan
+        pulau besar?
       options:
-      - 'Karena pulau kecil selalu diterjang oleh ombak laut yang jauh lebih tinggi'
-      - 'Karena pulau kecil memiliki daya tampung terbatas, sehingga polusi darat bisa langsung mencemari perairan pesisirnya'
-      - 'Karena tanah di pulau kecil tidak memiliki daya serap air sama sekali saat hujan'
+      - Karena pulau kecil selalu diterjang oleh ombak laut yang jauh lebih tinggi
+      - Karena pulau kecil memiliki daya tampung terbatas, sehingga polusi darat
+        bisa langsung mencemari perairan pesisirnya
+      - Karena tanah di pulau kecil tidak memiliki daya serap air sama sekali saat
+        hujan
       correctAnswerIndex: 1
-    - questionText: 'Pertanyaan Ketiga, Sebagai wisatawan, apa sikap ekowisatawan paling bijak yang bisa kita lakukan saat menyaksikan kondisi krisis lingkungan seperti ini?'
+    - questionText: Pertanyaan Ketiga, Sebagai wisatawan, apa sikap ekowisatawan
+        paling bijak yang bisa kita lakukan saat menyaksikan kondisi krisis lingkungan
+        seperti ini?
       options:
-      - 'Mengabaikan kondisinya dan pindah mencari tempat wisata lain yang pemandangannya masih bersih'
-      - 'Mendengarkan cerita warga lokal, memahami faktanya, dan ikut menyuarakan pentingnya pelestarian alam secara bijak'
-      - 'Mengambil sampel tanah dan air diam-diam untuk dibawa pulang sebagai kenang-kenangan liburan'
+      - Mengabaikan kondisinya dan pindah mencari tempat wisata lain yang pemandangannya
+        masih bersih
+      - Mendengarkan cerita warga lokal, memahami faktanya, dan ikut menyuarakan
+        pentingnya pelestarian alam secara bijak
+      - Mengambil sampel tanah dan air diam-diam untuk dibawa pulang sebagai kenang-kenangan
+        liburan
       correctAnswerIndex: 1
 --- !u!4 &1898465148
 Transform:
@@ -4962,18 +5056,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4833609709971146027, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: m_Name
-      value: CinemachineCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: Lens.OrthographicSize
-      value: 3.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: Target.TrackingTarget
-      value: 
-      objectReference: {fileID: 1017193343}
     - target: {fileID: 4240124796684014005, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: FollowOffset.x
       value: 0
@@ -4986,6 +5068,18 @@ PrefabInstance:
       propertyPath: FollowOffset.z
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 4833609709971146027, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_Name
+      value: CinemachineCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 1017193343}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4996,6 +5090,97 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2762556305239945296, guid: aefe9c0683837c84699b580b1281489b, type: 3}
   m_PrefabInstance: {fileID: 1882628477868907636}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2046813047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2046813048}
+  - component: {fileID: 2046813049}
+  m_Layer: 0
+  m_Name: Sky Background_Boat Trivia_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2046813048
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046813047}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.22, y: -3.03, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1185722715}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2046813049
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046813047}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: b01097cabedfe6b44a5a2e615aa7a34f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 52.91483, y: 10.799999}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &2050492411
 GameObject:
   m_ObjectHideFlags: 0
@@ -5848,12 +6033,40 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -82.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.033607233
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.033607233
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.382419
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: hasMap
@@ -5875,9 +6088,13 @@ PrefabInstance:
       propertyPath: healthImage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6909095479283830814, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1575786837}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 112.69
+      value: 102.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
