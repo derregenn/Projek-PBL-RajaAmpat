@@ -2390,6 +2390,14 @@ PrefabInstance:
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Interact
       objectReference: {fileID: 0}
+    - target: {fileID: 2515850637544761682, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2515850637544761682, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2635934312981052917, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2436,11 +2444,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 190
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60.6725
+      value: -46.345
       objectReference: {fileID: 0}
     - target: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: quizQuestions.Array.size
@@ -2449,6 +2457,10 @@ PrefabInstance:
     - target: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: quizQuestions.Array.data[0].options.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Spacing
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Padding.m_Top
@@ -2460,6 +2472,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Padding.m_Right
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_ChildScaleHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_Padding.m_Bottom
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3961536190152486966, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
@@ -2520,11 +2540,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
-      value: 0.23269677
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Colors.m_NormalColor.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4764451974515275903, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_Colors.m_NormalColor.r
@@ -2559,6 +2579,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3979835675472087360, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1008870066}
+    - targetCorrespondingSourceObject: {fileID: 3979835675472087360, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008870075}
+    - targetCorrespondingSourceObject: {fileID: 3979835675472087360, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008870074}
   m_SourcePrefab: {fileID: 100100000, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
 --- !u!114 &1008870064 stripped
 MonoBehaviour:
@@ -2598,6 +2624,36 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+--- !u!114 &1008870074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008870065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
+--- !u!111 &1008870075
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008870065}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &1017193342
 GameObject:
   m_ObjectHideFlags: 0
@@ -3621,6 +3677,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1399827312}
+    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1399827313}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &1399827311 stripped
 GameObject:
@@ -3639,8 +3698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90951f3c7e444745a756eeef8064177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriviaQuizUI
-  dialogueSystem: {fileID: 1008870064}
   choicesPanel: {fileID: 481757286}
+  questionText: {fileID: 0}
   optionButtons:
   - {fileID: 481757285}
   - {fileID: 481757283}
@@ -3649,11 +3708,13 @@ MonoBehaviour:
   - {fileID: 481757284}
   - {fileID: 481757282}
   - {fileID: 481757280}
-  audioSource: {fileID: 0}
-  startQuizSFX: {fileID: 0}
-  buttonHoverSFX: {fileID: 0}
-  correctAnswerSFX: {fileID: 0}
-  wrongAnswerSFX: {fileID: 0}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
+  audioSource: {fileID: 1399827313}
+  startQuizSFX: {fileID: 8300000, guid: 60c07e7e94f39a34db0b9a6a77bc8548, type: 3}
+  buttonHoverSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
+  correctAnswerSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
+  wrongAnswerSFX: {fileID: 8300000, guid: d2f2246e6cab3c24faede3fbdf6ec116, type: 3}
   sfxVolume: 1
   enableButtonHover: 1
   hoverScale: 1.06
@@ -3665,6 +3726,103 @@ MonoBehaviour:
   - Bukan dong! Tangga kayu itu dibuat sebagai pembatas konservasi
   - Tepat sekali! Tangga ini pembatas antara kaki kita dan kelestarian fosil karang
   closeKey: 101
+--- !u!82 &1399827313
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399827311}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1401348742
 GameObject:
   m_ObjectHideFlags: 0
@@ -4154,7 +4312,7 @@ PrefabInstance:
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: dc69dfa7f415ad44fa362311b50aeeb3, type: 3}
+      objectReference: {fileID: 8300000, guid: 385e228f2011b6d4e88279ed3778f3f9, type: 3}
     - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.88412

@@ -14,6 +14,7 @@ public class SeaSceneTransition : MonoBehaviour
     public GameObject warningUI; // Objek Teks Warning / Prompt "Tekan E untuk Masuk Laut"
     public KeyCode interactKey = KeyCode.E;
     public Image fadeBlackScreen; // Objek Image Hitam
+    public AudioClip seaTransitionSfx;
 
     private bool isPlayerInRange = false;
     private bool isTransitioning = false;
@@ -146,6 +147,12 @@ public class SeaSceneTransition : MonoBehaviour
         PlayerPrefs.Save();
 
         // 3. Pindah ke Scene Tujuan
+        if (seaTransitionSfx != null)
+        {
+            AudioSource.PlayClipAtPoint(seaTransitionSfx, transform.position);
+            yield return new WaitForSecondsRealtime(seaTransitionSfx.length);
+        }
+
         Debug.Log($"[SeaSceneTransition] Memuat scene tujuan: {targetSceneName}");
         SceneManager.LoadScene(targetSceneName);
     }

@@ -224,7 +224,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 35373072}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_Enabled
@@ -1113,6 +1137,7 @@ MonoBehaviour:
   warningUI: {fileID: 1754165466}
   interactKey: 101
   fadeBlackScreen: {fileID: 94105055}
+  seaTransitionSfx: {fileID: 8300000, guid: 9857c85fa061db7498ceb77552324f1f, type: 3}
   onInteractComplete:
     m_PersistentCalls:
       m_Calls:
@@ -5051,6 +5076,7 @@ MonoBehaviour:
   warningUI: {fileID: 1754165466}
   interactKey: 101
   fadeBlackScreen: {fileID: 94105055}
+  seaTransitionSfx: {fileID: 8300000, guid: 9857c85fa061db7498ceb77552324f1f, type: 3}
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -7723,7 +7749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: orthographic size
-      value: 0.7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13519,6 +13545,8 @@ MonoBehaviour:
   - {fileID: 2119566194}
   - {fileID: 1666773238}
   - {fileID: 590674048}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
   audioSource: {fileID: 0}
   startQuizSFX: {fileID: 0}
   buttonHoverSFX: {fileID: 0}

@@ -213,7 +213,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 8
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -4750,6 +4750,8 @@ MonoBehaviour:
   - {fileID: 451820382836099662}
   - {fileID: 777074498324778078}
   - {fileID: 7036582999254525673}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
   audioSource: {fileID: 5549832305340053200}
   startQuizSFX: {fileID: 8300000, guid: 60c07e7e94f39a34db0b9a6a77bc8548, type: 3}
   buttonHoverSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
@@ -9147,6 +9149,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 770722083021497633, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466189735316824345, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3361306983544386111, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -150
+      objectReference: {fileID: 0}
     - target: {fileID: 4626086682805859954, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
       propertyPath: m_TargetGraphic
       value: 
@@ -9166,6 +9180,10 @@ PrefabInstance:
     - target: {fileID: 6755832183196517962, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
       propertyPath: m_TargetGraphic
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456011234500000002, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8456011234500000011, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
       propertyPath: m_Name
@@ -13305,8 +13323,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2387, y: 3.7159}
-  m_SizeDelta: {x: 1596.2646, y: 897.6775}
+  m_AnchoredPosition: {x: 0, y: 0.5285}
+  m_SizeDelta: {x: 1596.2646, y: 900.3413}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2055811343
 MonoBehaviour:

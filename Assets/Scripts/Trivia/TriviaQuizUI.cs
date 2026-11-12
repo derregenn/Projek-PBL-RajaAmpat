@@ -12,6 +12,8 @@ public class TriviaQuizUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
+    [SerializeField] private Color correctBorderColor = new Color(0.2f, 0.82f, 0.48f);
+    [SerializeField] private Color wrongBorderColor = new Color(0.94f, 0.22f, 0.25f);
 
     [Header("Audio Settings (Pattern Recognition & Feedback)")]
     [SerializeField] private AudioSource audioSource;
@@ -43,6 +45,7 @@ public class TriviaQuizUI : MonoBehaviour
     private bool isQuizActive = false;
     private bool canPressEToClose = false;
     private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
+    private Outline feedbackOutline;
 
     private void Awake()
     {
@@ -63,6 +66,8 @@ public class TriviaQuizUI : MonoBehaviour
                 questionText = questionTransform.GetComponent<TextMeshProUGUI>();
             }
         }
+
+        SetupFeedbackOutline();
 
         // Setup audio source otomatis jika belum diset di inspector
         if (audioSource == null)
@@ -108,6 +113,8 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void ShowQuestion()
     {
+        SetFeedbackOutline(false, false);
+
         if (currentQuestionIndex >= currentQuestions.Length)
         {
             EndQuiz();
@@ -186,6 +193,7 @@ public class TriviaQuizUI : MonoBehaviour
     private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect)
     {
         isShowingFeedback = true;
+        SetFeedbackOutline(true, isCorrect);
 
         if (questionText != null) questionText.text = feedbackMessage;
         if (optionButtons != null)
@@ -216,6 +224,7 @@ public class TriviaQuizUI : MonoBehaviour
     public void CloseQuiz()
     {
         ResetButtonScales();
+        SetFeedbackOutline(false, false);
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
@@ -227,6 +236,7 @@ public class TriviaQuizUI : MonoBehaviour
     {
         StopAllCoroutines();
         ResetButtonScales();
+        SetFeedbackOutline(false, false);
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
@@ -265,6 +275,32 @@ public class TriviaQuizUI : MonoBehaviour
             var hoverComp = btn.GetComponent<TriviaButtonHover>();
             if (hoverComp != null) hoverComp.ResetScaleInstant();
         }
+    }
+
+    private void SetupFeedbackOutline()
+    {
+        if (questionText == null || questionText.transform.parent == null) return;
+
+        Graphic borderGraphic = questionText.transform.parent.GetComponent<Graphic>();
+        if (borderGraphic == null) return;
+
+        feedbackOutline = borderGraphic.GetComponent<Outline>();
+        if (feedbackOutline == null)
+        {
+            feedbackOutline = borderGraphic.gameObject.AddComponent<Outline>();
+        }
+
+        feedbackOutline.effectDistance = new Vector2(6f, 6f);
+        feedbackOutline.useGraphicAlpha = false;
+        feedbackOutline.enabled = false;
+    }
+
+    private void SetFeedbackOutline(bool visible, bool isCorrect)
+    {
+        if (feedbackOutline == null) return;
+
+        feedbackOutline.effectColor = isCorrect ? correctBorderColor : wrongBorderColor;
+        feedbackOutline.enabled = visible;
     }
 
     public void PlaySFX(AudioClip clip)
