@@ -907,6 +907,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150
+      objectReference: {fileID: 0}
     - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: hiddenPosition.x
       value: -600
@@ -922,6 +926,10 @@ PrefabInstance:
     - target: {fileID: 8371388737094505655, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371388737094505655, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_Pivot.x
@@ -997,7 +1005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 530
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4479,6 +4487,9 @@ MonoBehaviour:
   - {fileID: 2132683312}
   - {fileID: 2132683311}
   - {fileID: 2132683310}
+  neutralKeySprites: []
+  correctKeySprites: []
+  incorrectKeySprites: []
   qteAudioSource: {fileID: 0}
   tappingSfx: {fileID: 0}
   timerSfx: {fileID: 0}
@@ -5885,6 +5896,9 @@ MonoBehaviour:
   - {fileID: 2132683312}
   - {fileID: 2132683311}
   - {fileID: 2132683310}
+  neutralKeySprites: []
+  correctKeySprites: []
+  incorrectKeySprites: []
   qteAudioSource: {fileID: 0}
   tappingSfx: {fileID: 0}
   timerSfx: {fileID: 0}
@@ -9659,6 +9673,9 @@ MonoBehaviour:
   - {fileID: 2132683312}
   - {fileID: 2132683311}
   - {fileID: 2132683310}
+  neutralKeySprites: []
+  correctKeySprites: []
+  incorrectKeySprites: []
   qteAudioSource: {fileID: 0}
   tappingSfx: {fileID: 0}
   timerSfx: {fileID: 0}
@@ -10900,6 +10917,7 @@ MonoBehaviour:
   warningUI: {fileID: 1916842769}
   interactKey: 101
   fadeBlackScreen: {fileID: 1981070006}
+  seaTransitionSfx: {fileID: 0}
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -11777,8 +11795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90951f3c7e444745a756eeef8064177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriviaQuizUI
-  dialogueSystem: {fileID: 1268348064}
   choicesPanel: {fileID: 1440111976}
+  questionText: {fileID: 0}
   optionButtons:
   - {fileID: 1048148561}
   - {fileID: 1819071978}
@@ -11787,6 +11805,8 @@ MonoBehaviour:
   - {fileID: 914815316}
   - {fileID: 1264849950}
   - {fileID: 398045496}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
   audioSource: {fileID: 0}
   startQuizSFX: {fileID: 0}
   buttonHoverSFX: {fileID: 0}
