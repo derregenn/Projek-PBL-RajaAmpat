@@ -76,6 +76,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private float interactDistance = 1.8f;
 
     private GameObject cachedPlayerObj;
+    private bool isBoatCutsceneScene;
 
     private void EnsureInteractPrompt()
     {
@@ -230,9 +231,7 @@ public class Dialogue : MonoBehaviour
 
     private bool CheckIsCutscene()
     {
-        string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        return currentSceneName.IndexOf("cutscene", StringComparison.OrdinalIgnoreCase) >= 0
-            || currentSceneName.IndexOf("boat", StringComparison.OrdinalIgnoreCase) >= 0
+        return isBoatCutsceneScene
             || gameObject.name.IndexOf("cutscene", StringComparison.OrdinalIgnoreCase) >= 0
             || (transform.parent != null && transform.parent.name.IndexOf("cutscene", StringComparison.OrdinalIgnoreCase) >= 0);
     }
@@ -668,6 +667,10 @@ public class Dialogue : MonoBehaviour
 
     private void Awake()
     {
+        string activeSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        isBoatCutsceneScene = activeSceneName.IndexOf("boat", StringComparison.OrdinalIgnoreCase) >= 0
+            || FindFirstObjectByType<BoatTransitionController>() != null;
+
         questGiver = GetComponent<QuestGiver>();
 
         if (npcSpriteRenderer == null)
@@ -714,15 +717,7 @@ public class Dialogue : MonoBehaviour
             dialogueCamera.Priority.Value = 0;
         }
 
-        bool isMapNPC = GetComponent<NPCMapTrigger>() != null || gameObject.name.IndexOf("Map", StringComparison.OrdinalIgnoreCase) >= 0;
-        if (!isMapNPC && postQuestLoopLines != null && postQuestLoopLines.Length > 0)
-        {
-            bool isFreeRoam = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
-            if (isFreeRoam)
-            {
-                SwitchToLoopDialogue();
-            }
-        }
+        RefreshPostQuestLoopState();
 
         if (!isPlayerInCollider && InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(false);
@@ -754,6 +749,7 @@ public class Dialogue : MonoBehaviour
         if (isInteracting) return;
 
         EnsureWaisaiDialogueStandard();
+        RefreshPostQuestLoopState();
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
@@ -930,20 +926,22 @@ public class Dialogue : MonoBehaviour
 
         // Selesaikan QuestObjectiveTrigger yang menempel pada NPC ini (misal serahkan barang / bicara dengan NPC)
         // SEBELUM onDialogueEnd memicu QuestGiver untuk quest berikutnya!
-        QuestObjectiveTrigger[] triggers = GetComponents<QuestObjectiveTrigger>();
-        if (triggers != null)
+        if (!isPostQuestLoop)
         {
-            foreach (var trig in triggers)
+            QuestObjectiveTrigger[] triggers = GetComponents<QuestObjectiveTrigger>();
+            if (triggers != null)
             {
-                if (trig != null && trig.enabled)
+                foreach (var trig in triggers)
                 {
-                    trig.CompleteFromDialogue();
+                    if (trig != null && trig.enabled)
+                    {
+                        trig.CompleteFromDialogue();
+                    }
                 }
             }
         }
 
-        bool isMapNPC = GetComponent<NPCMapTrigger>() != null || gameObject.name.IndexOf("Map", StringComparison.OrdinalIgnoreCase) >= 0;
-        if (isMapNPC)
+        if (IsMapNPC())
         {
             // NPC Peta / Sopir Kapal selalu memanggil event untuk membuka Map dan tidak boleh terkunci ke dialog loop
             lineIndex = 0;
@@ -958,6 +956,23 @@ public class Dialogue : MonoBehaviour
 
         onDialogueCompleteCallback?.Invoke();
         onDialogueCompleteCallback = null;
+    }
+
+    private bool IsMapNPC()
+    {
+        return GetComponent<NPCMapTrigger>() != null ||
+               gameObject.name.IndexOf("Map", StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    public void RefreshPostQuestLoopState()
+    {
+        if (isPostQuestLoop || IsMapNPC()) return;
+
+        if (QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        {
+            SwitchToLoopDialogue();
+            lineIndex = 0;
+        }
     }
 
     public void SwitchToLoopDialogue()

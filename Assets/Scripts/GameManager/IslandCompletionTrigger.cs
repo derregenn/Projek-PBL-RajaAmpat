@@ -10,6 +10,12 @@ public class IslandCompletionTrigger : MonoBehaviour
     /// </summary>
     public void CompleteThisIsland()
     {
+        if (!QuestJournalManager.CanCompleteIslandOrOpenMap(islandToComplete))
+        {
+            Debug.Log($"[IslandCompletionTrigger] Pulau {islandToComplete} belum menyelesaikan semua quest-nya; penyelesaian pulau ditahan.");
+            return;
+        }
+
         if (QuestController.Instance != null)
         {
             QuestController.Instance.CompleteAllActiveQuests();

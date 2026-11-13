@@ -52,11 +52,54 @@ public class FriwenEventManager : MonoBehaviour
         if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
         if (playerCamera != null) playerCamera.Priority.Value = 10;
 
+        if (QuestJournalManager.IsIslandCompletedPersistent(IslandName.Friwen))
+        {
+            ApplyCompletedState();
+            return;
+        }
+
         if (perahuLepas) perahuLepas.SetActive(true);
         if (perahuKeikat) perahuKeikat.SetActive(false);
         if (perahuMenjauh) perahuMenjauh.SetActive(false);
         if (npcWarlok1) npcWarlok1.SetActive(false);
         if (tourGuide) tourGuide.SetActive(false);
+    }
+
+    /// <summary>
+    /// Memulihkan state akhir Pulau Friwen ketika pulau sudah diselesaikan sebelumnya.
+    /// </summary>
+    public void ApplyCompletedState()
+    {
+        hasTriggeredPerahu = true;
+
+        if (perahuLepas != null) perahuLepas.SetActive(false);
+        if (perahuKeikat != null) perahuKeikat.SetActive(true);
+        if (perahuMenjauh != null) perahuMenjauh.SetActive(false);
+        if (npcWarlok1 != null)
+        {
+            npcWarlok1.SetActive(true);
+            Dialogue warlokDialogue = npcWarlok1.GetComponentInChildren<Dialogue>(true);
+            warlokDialogue?.RefreshPostQuestLoopState();
+        }
+
+        if (tourGuide != null)
+        {
+            if (spotTourGuideSpawn != null)
+            {
+                tourGuide.transform.position = spotTourGuideSpawn.position;
+                tourGuide.transform.rotation = spotTourGuideSpawn.rotation;
+            }
+            tourGuide.SetActive(true);
+
+            Dialogue guideDialogue = tourGuide.GetComponentInChildren<Dialogue>(true);
+            guideDialogue?.RefreshPostQuestLoopState();
+        }
+
+        if (areaFotoPasirTimbul != null) areaFotoPasirTimbul.SetActive(false);
+        if (qtePanel != null) qtePanel.SetActive(false);
+
+        UnityEngine.SceneManagement.Scene activeScene = gameObject.scene;
+        IslandCompletedStateRestorer.SetObjectsActive(activeScene, false, "Kerang", "AreaFoto_Sasi");
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -40,6 +40,15 @@ public class NPCMapTrigger : MonoBehaviour
             isMapOpen = false;
         }
 
+        if (!QuestJournalManager.CanLeaveCurrentIslandForMap())
+        {
+            isMapOpen = false;
+            MapController.HideCanvasGroupImmediate(mapController.worldMapCanvasGroup);
+            Time.timeScale = 1f;
+            Debug.Log("[NPCMapTrigger] Dialog NPCMap selesai, namun MapMenuPanel disembunyikan karena semua quest pulau ini belum selesai.");
+            return;
+        }
+
         if (isMapOpen) return;
 
         // Buka peta dunia tanpa menyelesaikan quest atau membuka award secara prematur

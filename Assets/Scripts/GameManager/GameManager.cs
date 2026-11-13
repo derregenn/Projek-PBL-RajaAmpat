@@ -57,6 +57,14 @@ public class GameManager : MonoBehaviour
         RemoveStrayPersistentPauseCanvases();
         pauseMenuUI = FindPauseMenuUI();
         ResumeGame();
+
+        if (PlayerPrefs.GetInt("ShouldRestoreSavedPosition", 0) == 1 &&
+            PlayerPrefs.GetString("SavedScene", "") == scene.name)
+        {
+            PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 0);
+            PlayerPrefs.Save();
+            LoadGame();
+        }
     }
 
     private void Start()

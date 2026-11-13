@@ -110,7 +110,11 @@ public class GameplayDebugManager : MonoBehaviour
 
         float progress = GamePhaseManager.Instance != null ? GamePhaseManager.Instance.GetCurrentPercentage() : 0f;
         bool gagUnlocked = GamePhaseManager.Instance != null && GamePhaseManager.Instance.GetIsGagUnlocked();
-        GUILayout.Label($"Progress Total: <b>{progress:F1}%</b> | Gag Unlocked: <b>{(gagUnlocked ? "<color=green>YES</color>" : "<color=red>NO</color>")}</b>");
+        IslandName? activeIsland = QuestJournalManager.GetIslandFromSceneName(currentScene);
+        bool activeIslandDone = activeIsland.HasValue && QuestJournalManager.IsIslandCompletedPersistent(activeIsland.Value);
+        bool gameCompleted = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
+        GUILayout.Label($"Progress Total: <b>{progress:F1}%</b> | Gag: <b>{(gagUnlocked ? "<color=green>YES</color>" : "<color=red>NO</color>")}</b> | Tamat: <b>{(gameCompleted ? "<color=green>YES</color>" : "<color=red>NO</color>")}</b>");
+        GUILayout.Label($"Pulau Scene: <b>{(activeIsland.HasValue ? activeIsland.Value.ToString() : "-")}</b> | State Selesai: <b>{(activeIslandDone ? "<color=green>YES</color>" : "<color=yellow>NO</color>")}</b>");
 
         if (MasterQuestManager.Instance != null)
         {
@@ -177,35 +181,52 @@ public class GameplayDebugManager : MonoBehaviour
 
         GUILayout.Space(8);
 
-        // --- 3. PROGRES CERITA & CHEATS ---
-        GUILayout.Label("<b>[ STORY PROGRESS & CHEATS ]</b>", GUI.skin.box);
+        // --- 3. PROGRES CERITA, PULAU & JURNAL ---
+        GUILayout.Label("<b>[ PROGRES PULAU & JURNAL 100% ]</b>", GUI.skin.box);
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Buka Gag (85%)"))
         {
             GamePhaseManager.Instance?.SetPercentageDirectly(85f);
             GamePhaseManager.Instance?.UnlockGag(true);
         }
-        if (GUILayout.Button("Tamat 100%"))
+        if (GUILayout.Button("Full Jurnal & Semua Pulau 100%"))
         {
-            GamePhaseManager.Instance?.SetPercentageDirectly(100f);
-            GamePhaseManager.Instance?.UnlockGag(true);
-            StoryManager.Instance?.CompleteIsland(6);
+            CompleteAllWorldAndJournal100();
         }
         GUILayout.EndHorizontal();
 
+        if (GUILayout.Button("Selesaikan Pulau Scene Ini (100% + Loop)"))
+        {
+            if (activeIsland.HasValue)
+            {
+                CompleteSingleIsland(activeIsland.Value);
+            }
+            else
+            {
+                Debug.LogWarning($"[GameplayDebugManager] Scene '{currentScene}' bukan scene pulau yang memiliki progres pulau.");
+            }
+        }
+
+        GUILayout.Label("Selesaikan Per Pulau:");
+        DrawIslandQuickCompleteRow(IslandName.Waisai, IslandName.Piaynemo, IslandName.Arborek, IslandName.Misool);
+        DrawIslandQuickCompleteRow(IslandName.Sawinggrai, IslandName.Friwen, IslandName.Gag);
+
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Refresh Scene State"))
+        if (GUILayout.Button("Refresh Scene State & Loop"))
         {
             MasterQuestManager.Instance?.RefreshCurrentLandState();
+            IslandCompletedStateRestorer.RestoreActiveSceneState();
         }
         if (GUILayout.Button("<color=red>Reset All Progress</color>"))
         {
             PlayerPrefs.DeleteAll();
+            TrashInteractable.totalCollected = 0;
             QuestJournalManager.Instance?.ResetAllProgress(true);
             GamePhaseManager.Instance?.ResetAllProgress();
             StoryManager.Instance?.ResetProgress();
             MasterQuestManager.Instance?.ResetAllProgress();
             QuestController.Instance?.ActiveQuests.Clear();
+            PlayerPrefs.Save();
             Debug.LogWarning("[GameplayDebugManager] Seluruh data save telah direset!");
         }
         GUILayout.EndHorizontal();
@@ -229,5 +250,85 @@ public class GameplayDebugManager : MonoBehaviour
 
         GUILayout.EndScrollView();
         GUI.DragWindow(new Rect(0, 0, 10000, 30));
+    }
+
+    private void DrawIslandQuickCompleteRow(params IslandName[] islands)
+    {
+        GUILayout.BeginHorizontal();
+        for (int i = 0; i < islands.Length; i++)
+        {
+            IslandName island = islands[i];
+            bool done = QuestJournalManager.IsIslandCompletedPersistent(island);
+            string label = done ? $"✓ {island}" : island.ToString();
+            if (GUILayout.Button(label))
+            {
+                CompleteSingleIsland(island);
+            }
+        }
+        GUILayout.EndHorizontal();
+    }
+
+    private void CompleteSingleIsland(IslandName island)
+    {
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.DebugCompleteIsland(island);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("QJM_Award_" + island.ToString(), 1);
+            PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
+            PlayerPrefs.SetInt("Island_" + (int)island, 1);
+            if (island == IslandName.Misool) PlayerPrefs.SetInt("Misool_QuestStage", 9);
+            if (island == IslandName.Gag)
+            {
+                PlayerPrefs.SetInt("Visited_10_Gag", 1);
+                PlayerPrefs.SetInt("GPM_GagUnlocked", 1);
+            }
+            PlayerPrefs.Save();
+
+            GamePhaseManager.Instance?.CompleteIsland(island);
+            StoryManager.Instance?.CompleteIsland(island);
+            IslandCompletedStateRestorer.RestoreActiveSceneState();
+        }
+
+        Debug.Log($"<color=green>[GameplayDebugManager] Pulau {island} diselesaikan 100%!</color>");
+    }
+
+    private void CompleteAllWorldAndJournal100()
+    {
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.DebugUnlockAllJournalContent();
+        }
+        else
+        {
+            foreach (IslandName island in System.Enum.GetValues(typeof(IslandName)))
+            {
+                PlayerPrefs.SetInt("QJM_Award_" + island.ToString(), 1);
+                PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
+                PlayerPrefs.SetInt("Island_" + (int)island, 1);
+                StoryManager.Instance?.CompleteIsland(island);
+            }
+
+            TrashInteractable.totalCollected = 20;
+            PlayerPrefs.SetInt("TotalTrashCollected", 20);
+            PlayerPrefs.SetInt("Misool_QuestStage", 9);
+            PlayerPrefs.SetInt("Visited_10_Gag", 1);
+            PlayerPrefs.SetInt("GPM_GagUnlocked", 1);
+            PlayerPrefs.SetInt("GameCompleted", 1);
+            PlayerPrefs.SetString("QJM_UnlockedPages", "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17");
+            PlayerPrefs.SetString("QJM_CollectedPhotos", "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16");
+            PlayerPrefs.SetString("QJM_UnlockedIslands", string.Join(",", System.Enum.GetNames(typeof(IslandName))));
+            PlayerPrefs.Save();
+
+            GamePhaseManager.Instance?.UnlockGag(true);
+            GamePhaseManager.Instance?.SetPercentageDirectly(100f);
+            QuestController.Instance?.CompleteAllActiveQuests();
+            IslandCompletedStateRestorer.RestoreActiveSceneState();
+        }
+
+        MasterQuestManager.Instance?.RefreshCurrentLandState();
+        Debug.Log("<color=gold>[GameplayDebugManager] Jurnal & seluruh pulau diselesaikan 100%!</color>");
     }
 }
