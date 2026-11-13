@@ -2912,8 +2912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90951f3c7e444745a756eeef8064177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriviaQuizUI
-  dialogueSystem: {fileID: 1008870064}
   choicesPanel: {fileID: 481757286}
+  questionText: {fileID: 0}
   optionButtons:
   - {fileID: 481757285}
   - {fileID: 481757283}
@@ -2922,6 +2922,17 @@ MonoBehaviour:
   - {fileID: 481757284}
   - {fileID: 481757282}
   - {fileID: 481757280}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
+  audioSource: {fileID: 0}
+  startQuizSFX: {fileID: 0}
+  buttonHoverSFX: {fileID: 0}
+  correctAnswerSFX: {fileID: 0}
+  wrongAnswerSFX: {fileID: 0}
+  sfxVolume: 1
+  enableButtonHover: 1
+  hoverScale: 1.06
+  hoverTransitionSpeed: 14
   correctFeedbackMessages:
   - 'Tepat sekali! '
   - BENAR SEKALI!
@@ -2959,7 +2970,7 @@ PrefabInstance:
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: f9c6850fa182a534fa2cd7983b5d095a, type: 3}
+      objectReference: {fileID: 8300000, guid: 385e228f2011b6d4e88279ed3778f3f9, type: 3}
     - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.88412
@@ -3339,7 +3350,6 @@ MonoBehaviour:
   environmentParent: {fileID: 326412525}
   islandData:
   - islandName: 03_Pianemo
-    targetSceneName: 03_Pianemo
     islandBackgroundPrefab: {fileID: 3441879172964019718, guid: c96d56e65fa6fdb499325f1f7b23e946, type: 3}
     npcDialogueLines:
     - Nah, sebentar lagi perahu kita akan sampai di destinasi paling ikonik di Waigeo
@@ -3399,7 +3409,6 @@ MonoBehaviour:
         suhu mikro dan mengeringkan vegetasi tebing
       correctAnswerIndex: 0
   - islandName: 04_Misool
-    targetSceneName: 04_Misool
     islandBackgroundPrefab: {fileID: 0}
     npcDialogueLines:
     - Coba lihat ke depan! Tebing-tebing batu hitam yang tegak lurus itu tandanya
@@ -3444,7 +3453,6 @@ MonoBehaviour:
       - 'Pertumbuhan berlebih rumput laut yang menutup masuknya sinar matahari '
       correctAnswerIndex: 0
   - islandName: 05_Arborek
-    targetSceneName: 05_Arborek
     islandBackgroundPrefab: {fileID: 4055535377771719000, guid: e5ecec0ff8f71134f889b33281ae8ed6, type: 3}
     npcDialogueLines:
     - Sebentar lagi perahu kita akan bersandar di Desa Wisata Arborek.
@@ -3487,7 +3495,6 @@ MonoBehaviour:
       - Tendang kembali ke laut supaya pemandangan pantai tetap bersih
       correctAnswerIndex: 1
   - islandName: 06_Sawinggrai
-    targetSceneName: 06_Sawinggrai
     islandBackgroundPrefab: {fileID: 0}
     npcDialogueLines:
     - 'Sebentar lagi perahu kita akan bersandar di Desa Sawinggrai. '
@@ -3530,7 +3537,6 @@ MonoBehaviour:
       - 'Menyaring arus laut kencang agar pasang surut di pesisir tetap stabil '
       correctAnswerIndex: 1
   - islandName: 07_Friwen
-    targetSceneName: 07_Friwen
     islandBackgroundPrefab: {fileID: 0}
     npcDialogueLines:
     - 'Destinasi kita berikutnya adalah Pulau Friwen yang sangat tenang  '
