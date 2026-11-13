@@ -48,13 +48,10 @@ public class QuestGiver : MonoBehaviour
             return;
         }
 
-        // 1. Cek apakah quest ini sendiri sudah aktif atau sudah pernah diselesaikan
-        if (controller.IsQuestActive(questToGive.QuestID) ||
-            QuestJournalManager.HasCompletedQuestIDPersistent(questToGive.QuestID) ||
-            QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        // 1. Cek apakah quest ini sendiri sudah aktif
+        if (controller.IsQuestActive(questToGive.QuestID))
         {
-            hasGivenQuest = true;
-            Debug.Log($"[QuestGiver] Quest '{questToGive.QuestID}' sudah aktif atau pulau/quest selesai, tidak diberikan lagi.");
+            Debug.Log($"[QuestGiver] Quest '{questToGive.QuestID}' sudah aktif, tidak diberikan lagi.");
             return;
         }
 

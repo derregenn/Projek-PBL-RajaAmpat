@@ -35,14 +35,6 @@ public class TrashInteractable : MonoBehaviour, IInteractable
         totalCollected = PlayerPrefs.GetInt("TotalTrashCollected", 0);
     }
 
-    private void Start()
-    {
-        if (QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
     public void Interact()
     {
         if (collectionInProgress) return;
