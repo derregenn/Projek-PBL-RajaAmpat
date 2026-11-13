@@ -1899,6 +1899,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 102.69
       objectReference: {fileID: 0}
+    - target: {fileID: 1394288971991545919, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 297274498}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: npcLensSize
       value: 3
@@ -2101,7 +2105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4651439676658771118, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -46.345
+      value: -38.345
       objectReference: {fileID: 0}
     - target: {fileID: 4731966941627738258, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalScale.x
@@ -2225,11 +2229,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 280
+      value: 276
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 10
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2237,7 +2241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9119113121285762037, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -77.69
+      value: -84.69
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -7171,7 +7175,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 110.69}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &665430388
 MonoBehaviour:
@@ -12614,10 +12618,10 @@ RectTransform:
   - {fileID: 305425635}
   m_Father: {fileID: 665430387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -84.69}
-  m_SizeDelta: {x: 276, y: 28}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1329722918
 MonoBehaviour:
@@ -14181,7 +14185,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -38.345}
-  m_SizeDelta: {x: 276, y: 52.69}
+  m_SizeDelta: {x: 276, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1487501439
 MonoBehaviour:
@@ -17628,19 +17632,10 @@ MonoBehaviour:
   sceneTujuanEnding: 02_Waisai
   cutsceneManager: {fileID: 59106293}
   sunsetPortraits:
-  - {fileID: 2764060178509671935, guid: 27fb286eff397c1429472011a3157d15, type: 3}
-  - {fileID: 7090955473756826269, guid: 0bd5fd0ed592aff41ba8bf43be5584af, type: 3}
-  - {fileID: -1209417691650309804, guid: 6809a420dfa17e64c8ce72ac3bd3b7a9, type: 3}
-  - {fileID: 8398902851279835560, guid: 3bd3015d125c1804d8fa90a7c0a42d06, type: 3}
+  - {fileID: 3888252877740673255, guid: 249c703ac0e32e34cb370593383c1648, type: 3}
   sunsetDialogues:
-  - Matahari mulai terbenam di ufuk barat Pulau Gag, memancarkan semburat jingga
-    di atas pantai berpasir merah...
-  - Melihat realita dampak lingkungan di pulau ini membuka mata kita... surga Raja
-    Ampat begitu memesona, namun sangat rapuh jika tak kita jaga bersama.
-  - Perjalanan panjang melintasi pulau demi pulau telah kita lewati, membawa pulang
-    pelajaran dan kepedulian mendalam bagi kelestarian alam.
-  - Perahu perlahan merapat kembali ke Pelabuhan Waisai untuk mengakhiri rangkaian
-    petualangan kita di surga terakhir di bumi...
+  - Matahari mulai terbenam di barat Pulau Gag, memancarkan semburat jingga di atas
+    pantai berpasir merah...
   OnGameFinished:
     m_PersistentCalls:
       m_Calls: []
