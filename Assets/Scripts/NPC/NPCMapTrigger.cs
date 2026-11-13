@@ -23,7 +23,24 @@ public class NPCMapTrigger : MonoBehaviour
     // Hanya dipanggil melalui UnityEvent atau script event lain.
     public void OpenWorldMap()
     {
-        if (mapController == null || isMapOpen) return;
+        if (mapController == null)
+        {
+            mapController = FindFirstObjectByType<MapController>(FindObjectsInactive.Include);
+        }
+
+        if (mapController == null)
+        {
+            Debug.LogWarning("[NPCMapTrigger] MapController tidak ditemukan di scene!");
+            return;
+        }
+
+        // Jika map sedang tertutup di hierarchy, reset status isMapOpen
+        if (mapController.worldMapCanvasGroup != null && !mapController.worldMapCanvasGroup.gameObject.activeInHierarchy)
+        {
+            isMapOpen = false;
+        }
+
+        if (isMapOpen) return;
 
         // Buka peta dunia tanpa menyelesaikan quest atau membuka award secara prematur
         mapController.OpenWorldMap();
@@ -36,12 +53,23 @@ public class NPCMapTrigger : MonoBehaviour
         PlayPopupAnimation(true);
     }
 
+    public void ResetMapState()
+    {
+        isMapOpen = false;
+    }
+
     public void CloseWorldMap()
     {
-        if (mapController == null || !isMapOpen) return;
+        if (mapController == null)
+        {
+            mapController = FindFirstObjectByType<MapController>(FindObjectsInactive.Include);
+        }
 
         isMapOpen = false;
-        PlayPopupAnimation(false);
+        if (mapController != null)
+        {
+            PlayPopupAnimation(false);
+        }
     }
 
     private void PlayPopupAnimation(bool opening)

@@ -37,6 +37,21 @@ public class FriwenEventManager : MonoBehaviour
         fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
         playerScript = FindFirstObjectByType<Player>();
 
+        if (camViewPerahu == null)
+        {
+            GameObject go = GameObject.Find("Cam_ViewPerahu");
+            if (go != null) camViewPerahu = go.GetComponent<CinemachineCamera>();
+        }
+        if (playerCamera == null)
+        {
+            GameObject go = GameObject.Find("CinemachineCamera");
+            if (go != null) playerCamera = go.GetComponent<CinemachineCamera>();
+        }
+
+        // Pastikan kamera perahu tidak membajak kamera pemain di awal permainan
+        if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
+        if (playerCamera != null) playerCamera.Priority.Value = 10;
+
         if (perahuLepas) perahuLepas.SetActive(true);
         if (perahuKeikat) perahuKeikat.SetActive(false);
         if (perahuMenjauh) perahuMenjauh.SetActive(false);
@@ -69,6 +84,11 @@ public class FriwenEventManager : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
 
         if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+
+        // Kembalikan prioritas kamera ke pemain sebelum fade in agar layar fokus ke pemain & warlok saat QTE
+        if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
+        if (playerCamera != null) playerCamera.Priority.Value = 10;
+
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
 
         SetPlayerCrouch(true);

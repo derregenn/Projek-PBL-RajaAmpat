@@ -21,6 +21,24 @@ public class LandscapeViewInteractable : MonoBehaviour
     private bool isViewing = false;
     private bool isPlayerInArea = false;
 
+    private void Start()
+    {
+        if (camViewTambang == null)
+        {
+            GameObject go = GameObject.Find("Cam_ViewTambang");
+            if (go != null) camViewTambang = go.GetComponent<CinemachineCamera>();
+        }
+        if (playerCamera == null)
+        {
+            GameObject go = GameObject.Find("CinemachineCamera");
+            if (go != null) playerCamera = go.GetComponent<CinemachineCamera>();
+        }
+
+        // Pastikan kamera tebing tambang tidak membajak kamera MC di awal game
+        if (camViewTambang != null) camViewTambang.Priority.Value = 0;
+        if (playerCamera != null) playerCamera.Priority.Value = 10;
+    }
+
     private void Update()
     {
         if (isPlayerInArea && !isViewing && Input.GetKeyDown(KeyCode.F))

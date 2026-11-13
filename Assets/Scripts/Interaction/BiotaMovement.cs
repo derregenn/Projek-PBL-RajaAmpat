@@ -29,6 +29,12 @@ public class BiotaMovement : MonoBehaviour
     {
         originPosition = transform.position;
 
+        // Pastikan parameter renang aktif dan dinamis di seluruh scene bawah laut
+        wanderRadius = Mathf.Max(wanderRadius, 4.5f);
+        moveSpeed = Mathf.Max(moveSpeed, 1.8f);
+        minWaitTime = 0.3f;
+        maxWaitTime = 1.2f;
+
         if (animator == null) animator = GetComponent<Animator>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 

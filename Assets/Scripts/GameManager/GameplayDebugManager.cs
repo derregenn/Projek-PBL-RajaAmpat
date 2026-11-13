@@ -201,6 +201,7 @@ public class GameplayDebugManager : MonoBehaviour
         if (GUILayout.Button("<color=red>Reset All Progress</color>"))
         {
             PlayerPrefs.DeleteAll();
+            QuestJournalManager.Instance?.ResetAllProgress(true);
             GamePhaseManager.Instance?.ResetAllProgress();
             StoryManager.Instance?.ResetProgress();
             MasterQuestManager.Instance?.ResetAllProgress();
