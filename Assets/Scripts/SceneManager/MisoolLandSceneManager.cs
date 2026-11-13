@@ -54,6 +54,10 @@ public class MisoolLandSceneManager : MonoBehaviour
             return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
+        if (stage < 9 && QuestJournalManager.IsIslandCompletedPersistent(IslandName.Misool))
+        {
+            stage = 9;
+        }
         lastObservedStage = stage;
 
         // Aktifkan NPC yang sesuai dengan stage saat ini
@@ -82,10 +86,15 @@ public class MisoolLandSceneManager : MonoBehaviour
             if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
             if (ibuIbuStage8 != null) ibuIbuStage8.SetActive(false);
 
-            if (tourGuideEnd != null && tourGuideEndSpot != null)
+            if (tourGuideEnd != null)
             {
-                tourGuideEnd.transform.position = tourGuideEndSpot.position;
+                if (tourGuideEndSpot != null)
+                {
+                    tourGuideEnd.transform.position = tourGuideEndSpot.position;
+                }
                 tourGuideEnd.SetActive(true);
+                Dialogue endDialogue = tourGuideEnd.GetComponentInChildren<Dialogue>(true);
+                endDialogue?.RefreshPostQuestLoopState();
             }
         }
     }
