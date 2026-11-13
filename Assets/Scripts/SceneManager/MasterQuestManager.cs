@@ -220,9 +220,6 @@ public class MasterQuestManager : MonoBehaviour
                 var seaManager = FindFirstObjectByType<MisoolSeaManager>();
                 seaManager?.RefreshSeaState();
                 break;
-            default:
-                IslandCompletedStateRestorer.RestoreActiveSceneState();
-                break;
         }
     }
 
