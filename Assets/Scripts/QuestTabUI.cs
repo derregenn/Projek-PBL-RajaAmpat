@@ -46,65 +46,23 @@ public class QuestTabUI : MonoBehaviour
     public Image awardSecretEnding;
     public TMPro.TextMeshProUGUI trashStatusText;
 
-    [Header("Canvas Sorting")]
-    [Tooltip("Sorting order to ensure QuestTabUI renders above Canvas_HUD (order 0)")]
-    public int journalSortingOrder = 30;
-
     private void Awake()
     {
-        EnsureStandardTransform();
-        EnsureCanvasSortingOrder();
         RegisterToJournalManager();
     }
 
     private void Start()
     {
-        EnsureStandardTransform();
-        EnsureCanvasSortingOrder();
         RegisterToJournalManager();
     }
 
     private void OnEnable()
     {
-        EnsureStandardTransform();
-        EnsureCanvasSortingOrder();
         RegisterToJournalManager();
-    }
-
-    public void EnsureStandardTransform()
-    {
-        RectTransform rt = GetComponent<RectTransform>();
-        if (rt != null)
-        {
-            rt.anchorMin = new Vector2(0.5f, 0.5f);
-            rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(1197.1f, 566.82f);
-            rt.localScale = new Vector3(0.63567f, 0.66664f, 0.97687f);
-            rt.anchoredPosition = new Vector2(0.45939f, 7f);
-        }
-    }
-
-    public void EnsureCanvasSortingOrder()
-    {
-        Canvas canvas = GetComponent<Canvas>();
-        if (canvas == null)
-        {
-            canvas = gameObject.AddComponent<Canvas>();
-        }
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = journalSortingOrder;
-
-        GraphicRaycaster raycaster = GetComponent<GraphicRaycaster>();
-        if (raycaster == null)
-        {
-            raycaster = gameObject.AddComponent<GraphicRaycaster>();
-        }
     }
 
     public void RegisterToJournalManager()
     {
-        EnsureCanvasSortingOrder();
         QuestJournalManager manager = QuestJournalManager.Instance;
         if (manager == null)
         {

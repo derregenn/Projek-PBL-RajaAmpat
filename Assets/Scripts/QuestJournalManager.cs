@@ -165,7 +165,6 @@ public class QuestJournalManager : MonoBehaviour
             Instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
-            CheckFreshTestPlayReset();
             LoadJournalSaveData();
         }
         else if (Instance != this)
@@ -174,18 +173,6 @@ public class QuestJournalManager : MonoBehaviour
             Instance.AdoptUIReferences(this);
             Destroy(gameObject);
             return;
-        }
-    }
-
-    private void CheckFreshTestPlayReset()
-    {
-        const string FreshTestPlayKey = "FreshTestPlay_Reset_v2";
-        if (PlayerPrefs.GetInt(FreshTestPlayKey, 0) == 0)
-        {
-            Debug.Log("<color=cyan>[QuestJournalManager] Menginisialisasi Fresh Test Play: Mereset seluruh save data ke 0%.</color>");
-            ResetAllProgress(false);
-            PlayerPrefs.SetInt(FreshTestPlayKey, 1);
-            PlayerPrefs.Save();
         }
     }
 
@@ -372,7 +359,6 @@ public class QuestJournalManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(questID) && completedQuestIDs.Contains(questID))
         {
-            UpdateProgressUI();
             RefreshQuestTabText();
             return;
         }
@@ -406,7 +392,6 @@ public class QuestJournalManager : MonoBehaviour
             }
         }
 
-        UpdateProgressUI();
         RefreshQuestTabText();
     }
 
@@ -553,12 +538,6 @@ public class QuestJournalManager : MonoBehaviour
 
         if (willOpen)
         {
-            QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
-            if (tabUI != null)
-            {
-                tabUI.EnsureStandardTransform();
-                tabUI.EnsureCanvasSortingOrder();
-            }
             UpdateAllJournalSystems();
         }
     }
@@ -580,38 +559,7 @@ public class QuestJournalManager : MonoBehaviour
             percentage = GamePhaseManager.Instance.GetCurrentPercentage();
         }
 
-        // Jika persentase masih 0 atau GamePhaseManager belum menghitung, hitung secara mandiri dari aktivitas player
-        if (percentage <= 0f)
-        {
-            int completedCount = completedQuestTitles != null ? completedQuestTitles.Count : 0;
-            if (completedQuestIDs != null && completedQuestIDs.Count > completedCount)
-            {
-                completedCount = completedQuestIDs.Count;
-            }
-
-            int islandCount = unlockedAwardIslands != null ? unlockedAwardIslands.Count : 0;
-            int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
-
-            // Perhitungan progres proporsional:
-            // Misi selesai (bobot ~3.5% per misi), Award pulau (3% per pulau), dan Sampah (hingga 10%)
-            float calculated = (completedCount * 3.5f) + (islandCount * 3f) + Mathf.Min(10f, (trashCount / 20f * 10f));
-            percentage = Mathf.Clamp(calculated, 0f, 100f);
-
-            // Buka pulau Gag jika quest selesai sudah cukup atau persentase mencapai target
-            if (percentage >= 25f || completedCount >= 3)
-            {
-                if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.GetIsGagUnlocked())
-                {
-                    GamePhaseManager.Instance.UnlockGag(true);
-                }
-                PlayerPrefs.SetInt("GPM_GagUnlocked", 1);
-            }
-
-            if (GamePhaseManager.Instance != null)
-            {
-                GamePhaseManager.Instance.SetPercentageDirectly(percentage);
-            }
-        }
+        if (percentage < 0f) percentage = 0f;
 
         int displayPct = Mathf.FloorToInt(percentage);
 
@@ -646,22 +594,6 @@ public class QuestJournalManager : MonoBehaviour
 
     public void ToggleQuestTab()
     {
-        if (questTabPanel == null)
-        {
-            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
-            if (tabUI != null)
-            {
-                tabUI.RegisterToJournalManager();
-                questTabPanel = tabUI.gameObject;
-            }
-        }
-
-        if (questTabPanel != null && !questTabPanel.activeSelf)
-        {
-            ToggleJournalPanel();
-            return;
-        }
-
         isOngoingTabActive = !isOngoingTabActive;
         RefreshTabVisual();
         RefreshQuestTabText();
@@ -1567,59 +1499,5 @@ public class QuestJournalManager : MonoBehaviour
                 lastCompletedQuest = completedQuestTitles[completedQuestTitles.Count - 1];
             }
         }
-    }
-
-    [ContextMenu("Reset All Progress To 0")]
-    public void ResetAllProgress(bool keepFreshFlag = true)
-    {
-        unlockedPages.Clear();
-        if (allJournalDatabase != null && allJournalDatabase.Length > 0)
-        {
-            unlockedPages.Add(allJournalDatabase[0].pageID);
-        }
-        else
-        {
-            unlockedPages.Add(1);
-        }
-
-        collectedPhotos.Clear();
-        completedQuestIDs.Clear();
-        unlockedAwardIslands.Clear();
-        completedQuestTitles.Clear();
-        currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
-        lastCompletedQuest = "Belum ada misi selesai.";
-        currentJournalIndex = 0;
-
-        TrashInteractable.totalCollected = 0;
-
-        PlayerPrefs.DeleteAll();
-        if (keepFreshFlag)
-        {
-            PlayerPrefs.SetInt("FreshTestPlay_Reset_v2", 1);
-        }
-        PlayerPrefs.Save();
-
-        if (GamePhaseManager.Instance != null)
-        {
-            GamePhaseManager.Instance.ResetAllProgress();
-        }
-
-        if (StoryManager.Instance != null)
-        {
-            StoryManager.Instance.ResetProgress();
-        }
-
-        if (MasterQuestManager.Instance != null)
-        {
-            MasterQuestManager.Instance.ResetAllProgress();
-        }
-
-        if (QuestController.Instance != null)
-        {
-            QuestController.Instance.ActiveQuests.Clear();
-        }
-
-        UpdateAllJournalSystems();
-        Debug.Log("<color=green>[QuestJournalManager] Seluruh progres jurnal, award, dan trivia berhasil direset ke 0!</color>");
     }
 }

@@ -85,7 +85,10 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void Update()
     {
-        // Trivia diselesaikan dengan memilih jawaban tombol (A, B, C / klik) agar pemain tidak sengaja membatalkan kuis saat menekan E dari dialog sebelumnya
+        if (isQuizActive && canPressEToClose && Input.GetKeyDown(closeKey) && !isShowingFeedback)
+        {
+            CloseQuiz();
+        }
     }
 
     public void StartQuiz(TriviaQuestion[] questions, System.Action onComplete)

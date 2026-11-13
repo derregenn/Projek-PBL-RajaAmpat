@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
-using Unity.Cinemachine;
 
 public class CameraPanner : MonoBehaviour
 {
@@ -21,16 +20,9 @@ public class CameraPanner : MonoBehaviour
 
     private void Start()
     {
-        if (objectiveCamera == null)
-        {
-            objectiveCamera = GameObject.Find("ObjectiveCamera");
-        }
-
         // Pastikan kamera objektif mati saat awal mulai
         if (objectiveCamera != null)
         {
-            CinemachineCamera cmCam = objectiveCamera.GetComponent<CinemachineCamera>();
-            if (cmCam != null) cmCam.Priority.Value = 0;
             objectiveCamera.SetActive(false);
         }
     }
@@ -58,25 +50,16 @@ public class CameraPanner : MonoBehaviour
 
     private IEnumerator PanCameraRoutine()
     {
-        if (objectiveCamera == null)
-        {
-            objectiveCamera = GameObject.Find("ObjectiveCamera");
-        }
-
-        CinemachineCamera cmCam = objectiveCamera != null ? objectiveCamera.GetComponent<CinemachineCamera>() : null;
-
-        // 1. Nyalakan kamera objektif dengan prioritas 30 (Cinemachine otomatis melakukan panning mulus ke sini)
+        // 1. Nyalakan kamera objektif (Cinemachine otomatis melakukan panning mulus ke sini)
         if (objectiveCamera != null)
         {
-            if (cmCam != null) cmCam.Priority.Value = 30;
             objectiveCamera.SetActive(true);
         }
 
         // 2. Tunggu pemain melihat objektif tersebut
         yield return new WaitForSeconds(viewDuration);
 
-        // 3. Matikan kamera objektif dan kembalikan prioritas ke 0 (Cinemachine otomatis panning balik ke Player)
-        if (cmCam != null) cmCam.Priority.Value = 0;
+        // 3. Matikan kamera objektif (Cinemachine otomatis panning balik ke Player)
         if (objectiveCamera != null)
         {
             objectiveCamera.SetActive(false);

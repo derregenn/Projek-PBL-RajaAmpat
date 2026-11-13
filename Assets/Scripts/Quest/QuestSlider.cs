@@ -43,28 +43,6 @@ public class QuestSlider : MonoBehaviour
     /// </summary>
     public void ShowQuestPopup()
     {
-        // Jangan tampilkan slider jika tidak ada quest aktif
-        if (QuestController.Instance != null && !QuestController.Instance.HasActiveQuest())
-        {
-            return;
-        }
-
-        // Pastikan teks QuestUI terisi sebelum slide in
-        QuestUI qUi = FindFirstObjectByType<QuestUI>();
-        if (qUi != null)
-        {
-            if (qUi.currentActiveQuest == null && QuestController.Instance != null && QuestController.Instance.ActiveQuests.Count > 0)
-            {
-                qUi.SetQuest(QuestController.Instance.ActiveQuests[QuestController.Instance.ActiveQuests.Count - 1]);
-            }
-            qUi.UpdateQuestUI();
-            if (qUi.hudQuestTitle != null && string.IsNullOrWhiteSpace(qUi.hudQuestTitle.text))
-            {
-                // Jika teks masih kosong, cegah munculnya kotak slider kosong
-                return;
-            }
-        }
-
         if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
