@@ -69,9 +69,12 @@ public class QuestGiver2 : MonoBehaviour
             return;
         }
 
-        if (controller.IsQuestActive(questToGive.QuestID))
+        if (controller.IsQuestActive(questToGive.QuestID) ||
+            QuestJournalManager.HasCompletedQuestIDPersistent(questToGive.QuestID) ||
+            QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
         {
-            Debug.Log($"[QuestGiver2] Quest '{questToGive.QuestID}' sudah aktif.");
+            hasGivenQuest = true;
+            Debug.Log($"[QuestGiver2] Quest '{questToGive.QuestID}' sudah aktif atau pulau/quest selesai.");
             return;
         }
 
