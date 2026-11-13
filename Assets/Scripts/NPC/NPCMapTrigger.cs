@@ -11,6 +11,32 @@ public class NPCMapTrigger : MonoBehaviour
     [SerializeField] private float popupDuration = 0.35f;
     [SerializeField] private Vector3 popupScaleMin = new Vector3(0.75f, 0.75f, 1f);
     [SerializeField] private AudioClip openMapSfx;
+    [SerializeField] private string[] requiredQuestIDs;
+    [SerializeField] private bool showWhenRequiredQuestsComplete = true;
+    [SerializeField] private GameObject alternateNPC;
+
+    private bool HasQuestRequirement => requiredQuestIDs != null && requiredQuestIDs.Length > 0;
+
+    private void OnEnable()
+    {
+        if (HasQuestRequirement)
+        {
+            QuestController.OnQuestCompleted += HandleQuestCompleted;
+        }
+    }
+
+    private void OnDisable()
+    {
+        QuestController.OnQuestCompleted -= HandleQuestCompleted;
+    }
+
+    private void Start()
+    {
+        if (HasQuestRequirement)
+        {
+            UpdateNPCVisibility(null);
+        }
+    }
 
     private void Update()
     {
@@ -20,9 +46,73 @@ public class NPCMapTrigger : MonoBehaviour
         }
     }
 
+    private void HandleQuestCompleted(string questID)
+    {
+        if (!HasQuestRequirement)
+        {
+            return;
+        }
+
+        foreach (string requiredQuestID in requiredQuestIDs)
+        {
+            if (requiredQuestID == questID)
+            {
+                UpdateNPCVisibility(questID);
+                return;
+            }
+        }
+    }
+
+    private void UpdateNPCVisibility(string justCompletedQuestID)
+    {
+        if (alternateNPC == null)
+        {
+            Debug.LogWarning($"[{nameof(NPCMapTrigger)}] Alternate NPC belum di-assign pada {name}.");
+            return;
+        }
+
+        bool shouldBeActive = AreRequiredQuestsComplete(justCompletedQuestID) == showWhenRequiredQuestsComplete;
+        alternateNPC.SetActive(!shouldBeActive);
+        if (gameObject.activeSelf != shouldBeActive)
+        {
+            gameObject.SetActive(shouldBeActive);
+        }
+    }
+
+    private bool AreRequiredQuestsComplete(string justCompletedQuestID)
+    {
+        GamePhaseManager gamePhaseManager = GamePhaseManager.Instance;
+        if (gamePhaseManager == null)
+        {
+            return false;
+        }
+
+        foreach (string requiredQuestID in requiredQuestIDs)
+        {
+            if (string.IsNullOrWhiteSpace(requiredQuestID))
+            {
+                Debug.LogWarning($"[{nameof(NPCMapTrigger)}] Required quest ID kosong pada {name}.");
+                return false;
+            }
+
+            if (!gamePhaseManager.IsQuestCompleted(requiredQuestID) && requiredQuestID != justCompletedQuestID)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // Hanya dipanggil melalui UnityEvent atau script event lain.
     public void OpenWorldMap()
     {
+        if (HasQuestRequirement
+            && (!showWhenRequiredQuestsComplete || !AreRequiredQuestsComplete(null)))
+        {
+            return;
+        }
+
         if (mapController == null || isMapOpen) return;
 
         // Buka peta dunia tanpa menyelesaikan quest atau membuka award secara prematur
