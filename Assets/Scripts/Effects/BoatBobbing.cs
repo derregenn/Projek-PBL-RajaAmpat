@@ -185,21 +185,15 @@ public class BoatBobbing : MonoBehaviour
 
     private void OnDisable()
     {
-        if (gameObject.activeInHierarchy)
-        {
-            ReleasePassengers();
-        }
+        ReleasePassengers();
     }
 
     private void OnDestroy()
     {
-        if (gameObject.activeInHierarchy)
-        {
-            ReleasePassengers();
-        }
+        ReleasePassengers();
     }
 
-    public void ReleasePassengers()
+    private void ReleasePassengers()
     {
         foreach (var p in anchoredPassengers)
         {
