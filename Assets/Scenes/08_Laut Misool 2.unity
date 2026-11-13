@@ -1492,6 +1492,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2566417206159887654, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3084285833909959657, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1517,6 +1521,14 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 150
       objectReference: {fileID: 0}
@@ -1524,21 +1536,49 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -72.69
       objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0027266666
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0027266666
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.071795
+      objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: isSwimming
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6909095479283830814, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 823169183}
+    - target: {fileID: 6909095479283830814, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_SortingOrder
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6909095479283830814, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SortingLayerID
-      value: -72866051
+      value: -1698487427
       objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 92.69
+      value: 102.69
       objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3100866956964956624, guid: d9eef132e72927948852f0a723f816bb, type: 3}
@@ -1580,6 +1620,11 @@ MonoBehaviour:
   swimSpeed: 8
   waterGravity: 0.5
   isDiving: 0
+--- !u!82 &319518436 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7162569541499175061, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+  m_PrefabInstance: {fileID: 319518432}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &319518443 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1686357090159600224, guid: d9eef132e72927948852f0a723f816bb, type: 3}
@@ -1608,7 +1653,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 
   triviaQuestionText: 
   TypeSpeed: 0.04
-  typingAudioSource: {fileID: 0}
+  typingAudioSource: {fileID: 319518436}
   typingAudioClip: {fileID: 0}
   typingAudioVolume: 1
   typingAudioInterval: 0.06
@@ -1619,9 +1664,13 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 211287076}
   npcLensSize: 10
+  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
+  interactDistance: 1.8
 --- !u!1 &320760825
 GameObject:
   m_ObjectHideFlags: 0
@@ -6631,7 +6680,7 @@ SpriteRenderer:
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1392372367973960694, guid: 4aa5c1e19b1d97a46af026419470fced, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}

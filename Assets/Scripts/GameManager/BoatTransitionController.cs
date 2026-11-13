@@ -149,6 +149,12 @@ public class BoatTransitionController : MonoBehaviour
         PlayerPrefs.SetInt("Visited_" + currentTarget, 1);
         PlayerPrefs.Save();
 
+        BoatBobbing bobbing = FindFirstObjectByType<BoatBobbing>();
+        if (bobbing != null)
+        {
+            bobbing.ReleasePassengers();
+        }
+
         // Pindah ke scene pulau tujuan yang sesungguhnya
         SceneManager.LoadScene(buildIndex);
     }
