@@ -14,6 +14,7 @@ public class PlayerSwim : MonoBehaviour
 
     [Header("Zero-G Movement")]
     public float moveSpeed = 7f;
+    public bool isMovementLocked = false;
 
     [Header("Diving / Dash Mechanic")]
     public float diveSpeed = 20f;
@@ -58,18 +59,23 @@ public class PlayerSwim : MonoBehaviour
 
     void Update()
     {
-        // 1. Lock normal input during dive burst
-        if (isDiving) return;
-
-        // 2. Read 8-Directional Input (WASD / Arrow Keys)
-        moveInput.x = Input.GetAxisRaw("Horizontal");
-        moveInput.y = Input.GetAxisRaw("Vertical");
-        moveInput = moveInput.normalized;
-
-        // 3. Trigger Diving (Spacebar)
-        if (Input.GetKeyDown(KeyCode.Space) && canDive)
+        if (isMovementLocked)
         {
-            StartCoroutine(PerformDive());
+            moveInput = Vector2.zero;
+            if (rb != null) rb.linearVelocity = Vector2.zero;
+        }
+        else
+        {
+            if (isDiving) return;
+
+            moveInput.x = Input.GetAxisRaw("Horizontal");
+            moveInput.y = Input.GetAxisRaw("Vertical");
+            moveInput = moveInput.normalized;
+
+            if (Input.GetKeyDown(KeyCode.Space) && canDive)
+            {
+                StartCoroutine(PerformDive());
+            }
         }
 
         // 4. Fall Check & Health UI
@@ -83,7 +89,8 @@ public class PlayerSwim : MonoBehaviour
             healthImage.fillAmount = health / 100f;
         }
 
-        // 5. Rotate Player Sprite & Keep Swimming Animation Active
+        if (isMovementLocked) return;
+
         RotateTowardsMovement();
         UpdateSwimAnimation();
     }
@@ -102,7 +109,13 @@ public class PlayerSwim : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDiving || rb == null) return;
+        if (rb == null) return;
+        if (isMovementLocked)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+        if (isDiving) return;
 
         // Apply smooth velocity based on 2D input
         rb.linearVelocity = moveInput * moveSpeed;
