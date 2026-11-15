@@ -220,6 +220,32 @@ public class MasterQuestManager : MonoBehaviour
                 var seaManager = FindFirstObjectByType<MisoolSeaManager>();
                 seaManager?.RefreshSeaState();
                 break;
+
+            case IslandType.Sawinggrai:
+                SawinggraiLandSceneManager.Instance?.RefreshLandState();
+                var sawSeaManager = FindFirstObjectByType<SawinggraiSeaManager>();
+                sawSeaManager?.RefreshSeaState();
+                break;
+
+            case IslandType.Waisai:
+                WaisaiLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Piaynemo:
+                PianemoLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Arborek:
+                ArborekLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Friwen:
+                FriwenLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Gag:
+                GagSceneManager.Instance?.RefreshSceneState();
+                break;
         }
     }
 

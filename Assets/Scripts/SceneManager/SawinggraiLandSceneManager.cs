@@ -16,6 +16,13 @@ public class SawinggraiLandSceneManager : MonoBehaviour
     [SerializeField] private GameObject penjualFotoQuest;  // NPC Penjual aktif di Stage 6
     [SerializeField] private GameObject burungCendrawasih; // Target QTE aktif di Stage 6
 
+    [Header("Referensi NPC Locked & Unlocked")]
+    [Tooltip("NPC saat quest masih terkunci")]
+    [SerializeField] private GameObject npcLocked;
+
+    [Tooltip("NPC saat quest sudah terbuka")]
+    [SerializeField] private GameObject npcUnlocked;
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -69,6 +76,14 @@ public class SawinggraiLandSceneManager : MonoBehaviour
         if (burungCendrawasih != null)
         {
             burungCendrawasih.SetActive(stage >= 0 && stage <= 6); // Cendrawasih aktif saat pemain free roam, mati saat sudah disuruh Warlok 2
+        }
+
+        // 3. PENGATURAN NPC LOCKED & UNLOCKED
+        if (npcLocked != null && npcUnlocked != null)
+        {
+            bool isUnlocked = stage >= 6; // Misal, NPC terbuka setelah stage
+            npcLocked.SetActive(!isUnlocked);
+            npcUnlocked.SetActive(isUnlocked);
         }
     }
 }

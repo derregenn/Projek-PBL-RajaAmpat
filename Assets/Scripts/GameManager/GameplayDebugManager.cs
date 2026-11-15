@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GameplayDebugManager : MonoBehaviour
 {
+    private const bool DebugMenuEnabled = true; // Set false untuk menonaktifkan menu debug di build final
+
     private static GameplayDebugManager _instance;
     public static GameplayDebugManager Instance
     {
@@ -50,12 +52,15 @@ public class GameplayDebugManager : MonoBehaviour
         "08_Laut Misool 2",
         "09_Laut Sawinggrai",
         "10_Gag",
+        "11_Waisai Ending",
         "Cutscene_BoatToIsland"
     };
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void AutoInitialize()
     {
+        if (!DebugMenuEnabled) return;
+
         // Pastikan Debug Manager selalu hadir otomatis di scene apa pun saat play di Unity
         if (_instance == null)
         {

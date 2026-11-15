@@ -16,6 +16,13 @@ public class MisoolLandSceneManager : MonoBehaviour
     [SerializeField] private GameObject tourGuideEnd;      // Point 9 (Di sebelah kanan MC)
     [SerializeField] private Transform tourGuideEndSpot;   // Titik koordinat sebelah kanan MC
 
+    [Header("Referensi NPC Locked & Unlocked")]
+    [Tooltip("NPC saat quest masih terkunci")]
+    [SerializeField] private GameObject npcLocked;
+
+    [Tooltip("NPC saat quest sudah terbuka")]
+    [SerializeField] private GameObject npcUnlocked;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -58,7 +65,7 @@ public class MisoolLandSceneManager : MonoBehaviour
 
         // Aktifkan NPC yang sesuai dengan stage saat ini
         if (petugasStage1 != null) petugasStage1.SetActive(stage == 1 || stage == 2);
-        if (petugasStage3 != null) petugasStage3.SetActive(stage == 3);
+        if (petugasStage3 != null) petugasStage3.SetActive(stage == 3 || stage == 4);
         if (petugasStage5 != null) petugasStage5.SetActive(stage == 5);
 
         // Point 1: Penyu Sisik
@@ -67,7 +74,7 @@ public class MisoolLandSceneManager : MonoBehaviour
 
         // Tour Guide Awal (Aktif dari Stage 1 sampai sebelum Stage 9)
         if (tourGuideStart != null)
-            tourGuideStart.SetActive(stage >= 1 && stage < 9);
+            tourGuideStart.SetActive(stage >= 1 && stage < 8);
 
         // Point 7 & 9: Ibu-Ibu Warga hanya aktif pada Stage 6, 7, dan 8
         if (ibuIbuStage6 != null)
@@ -87,6 +94,14 @@ public class MisoolLandSceneManager : MonoBehaviour
                 tourGuideEnd.transform.position = tourGuideEndSpot.position;
                 tourGuideEnd.SetActive(true);
             }
+        }
+
+        // NPC Locked & Unlocked
+        if (npcLocked != null && npcUnlocked != null)
+        {
+            bool isUnlocked = stage >= 9; // Misal, NPC terbuka setelah stage
+            npcLocked.SetActive(!isUnlocked);
+            npcUnlocked.SetActive(isUnlocked);
         }
     }
 

@@ -709,10 +709,10 @@ RectTransform:
   - {fileID: 433267984}
   m_Father: {fileID: 144092201}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -77.69}
-  m_SizeDelta: {x: 280, y: 10}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &67990211
 GameObject:
@@ -2232,7 +2232,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0013113, y: -47.4}
-  m_SizeDelta: {x: 300, y: 102.69}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &144092202
 MonoBehaviour:
@@ -6956,7 +6956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2858562430215136268, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: orthographic size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6964,7 +6964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11.96
+      value: -11.4
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9890,6 +9890,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1117254035}
+        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
+        m_MethodName: AdvanceStageTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!61 &1102240329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10108,6 +10120,78 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &1117254034
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2969053353881573139, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: currentIsland
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358522999148655461, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_Name
+      value: MasterQuestManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 49.742
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.76105
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283541636424462834, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+--- !u!114 &1117254035 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2969053353881573139, guid: 29ae47f98501eeb409005f29f264a0af, type: 3}
+  m_PrefabInstance: {fileID: 1117254034}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2977c87d74df271468b30849ee42ab67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MasterQuestManager
 --- !u!1001 &1122863885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10593,7 +10677,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -46.345}
-  m_SizeDelta: {x: 280, y: 52.69}
+  m_SizeDelta: {x: 280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1184931494
 MonoBehaviour:
@@ -10854,6 +10938,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1117254035}
+        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
+        m_MethodName: AdvanceStageTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -12892,6 +12988,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1418629230}
+    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1418629231}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &1418629229 stripped
 GameObject:
@@ -12910,8 +13009,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90951f3c7e444745a756eeef8064177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriviaQuizUI
-  dialogueSystem: {fileID: 0}
   choicesPanel: {fileID: 1619692036}
+  questionText: {fileID: 0}
   optionButtons:
   - {fileID: 1619692035}
   - {fileID: 1619692033}
@@ -12920,6 +13019,8 @@ MonoBehaviour:
   - {fileID: 1619692034}
   - {fileID: 1619692032}
   - {fileID: 1619692030}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
   audioSource: {fileID: 0}
   startQuizSFX: {fileID: 0}
   buttonHoverSFX: {fileID: 0}
@@ -12935,6 +13036,28 @@ MonoBehaviour:
   - Bukan begitu, kawan. Sasi bukan untuk menutup wisata atau membagi wilayah, coba
     pilih jawaban yang bijak!
   closeKey: 101
+--- !u!114 &1418629231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418629229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90b1b3c622376a44ebb91d0a01ce4c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GagSceneManager
+  penelitiAwal: {fileID: 2022872702}
+  penelitiQuest2: {fileID: 118326635}
+  penelitiQuest3: {fileID: 333385654}
+  tetuaLemas1: {fileID: 1665425512}
+  tetuaLemas2: {fileID: 1196625904}
+  tetuaLemas3: {fileID: 1102240325}
+  tetuaLemas4: {fileID: 1827736605}
+  npcKampanye: {fileID: 1809582164}
+  npcLocked: {fileID: 0}
+  npcUnlocked: {fileID: 0}
 --- !u!1 &1420908041
 GameObject:
   m_ObjectHideFlags: 0
@@ -14637,6 +14760,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1117254035}
+        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
+        m_MethodName: AdvanceStageTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!61 &1665425516
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15456,6 +15591,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 752712729}
     m_Modifications:
+    - target: {fileID: 918273645000000033, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_isOrthographic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 918273645000000033, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 918273645000000033, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_ActiveFontFeatures.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1614456657876764101, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -16275,6 +16422,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1117254035}
+        m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
+        m_MethodName: AdvanceStageTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -18467,3 +18626,4 @@ SceneRoots:
   - {fileID: 1965858059}
   - {fileID: 1935109552}
   - {fileID: 382033278}
+  - {fileID: 1117254034}

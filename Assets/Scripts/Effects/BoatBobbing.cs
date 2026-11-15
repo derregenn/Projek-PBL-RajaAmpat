@@ -99,14 +99,19 @@ public class BoatBobbing : MonoBehaviour
                 rb.bodyType = RigidbodyType2D.Kinematic;
             }
 
-            // 5. Parent ke kapal (pertahankan world position saat ini)
-            playerObj.transform.SetParent(this.transform, true);
+            Transform passengerTransform = playerObj.transform;
+            Vector3 localPosition = transform.InverseTransformPoint(passengerTransform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * passengerTransform.rotation;
+            if (passengerTransform.IsChildOf(transform))
+            {
+                passengerTransform.SetParent(null, true);
+            }
 
             anchoredPassengers.Add(new AnchoredPassenger
             {
-                transform = playerObj.transform,
-                localPosition = playerObj.transform.localPosition,
-                localRotation = playerObj.transform.localRotation,
+                transform = passengerTransform,
+                localPosition = localPosition,
+                localRotation = localRotation,
                 rb = rb,
                 originalBodyType = origType,
                 playerComponent = playerComp
@@ -121,8 +126,9 @@ public class BoatBobbing : MonoBehaviour
         NPCTourGuide npcGuide = FindFirstObjectByType<NPCTourGuide>();
         GameObject npcObj = npcGuide != null ? npcGuide.gameObject : GameObject.Find("NPCTourGuide");
 
-        if (npcObj != null && npcObj.transform.parent != this.transform)
+        if (npcObj != null)
         {
+            Transform passengerTransform = npcObj.transform;
             Rigidbody2D rb = npcObj.GetComponent<Rigidbody2D>();
             RigidbodyType2D origType = RigidbodyType2D.Dynamic;
             if (rb != null)
@@ -133,13 +139,18 @@ public class BoatBobbing : MonoBehaviour
                 rb.bodyType = RigidbodyType2D.Kinematic;
             }
 
-            npcObj.transform.SetParent(this.transform, true);
+            Vector3 localPosition = transform.InverseTransformPoint(passengerTransform.position);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * passengerTransform.rotation;
+            if (passengerTransform.IsChildOf(transform))
+            {
+                passengerTransform.SetParent(null, true);
+            }
 
             anchoredPassengers.Add(new AnchoredPassenger
             {
-                transform = npcObj.transform,
-                localPosition = npcObj.transform.localPosition,
-                localRotation = npcObj.transform.localRotation,
+                transform = passengerTransform,
+                localPosition = localPosition,
+                localRotation = localRotation,
                 rb = rb,
                 originalBodyType = origType,
                 playerComponent = null
@@ -168,8 +179,8 @@ public class BoatBobbing : MonoBehaviour
             var p = anchoredPassengers[i];
             if (p != null && p.transform != null)
             {
-                p.transform.localPosition = p.localPosition;
-                p.transform.localRotation = p.localRotation;
+                p.transform.position = transform.TransformPoint(p.localPosition);
+                p.transform.rotation = transform.rotation * p.localRotation;
 
                 if (p.playerComponent != null)
                 {
@@ -197,9 +208,8 @@ public class BoatBobbing : MonoBehaviour
     {
         foreach (var p in anchoredPassengers)
         {
-            if (p != null && p.transform != null && p.transform.parent == this.transform)
+            if (p != null && p.transform != null)
             {
-                p.transform.SetParent(null, true);
                 if (p.rb != null)
                 {
                     p.rb.bodyType = p.originalBodyType;
