@@ -165,7 +165,6 @@ public class QuestJournalManager : MonoBehaviour
             Instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
-            CheckFreshTestPlayReset();
             LoadJournalSaveData();
         }
         else if (Instance != this)
@@ -174,18 +173,6 @@ public class QuestJournalManager : MonoBehaviour
             Instance.AdoptUIReferences(this);
             Destroy(gameObject);
             return;
-        }
-    }
-
-    private void CheckFreshTestPlayReset()
-    {
-        const string FreshTestPlayKey = "FreshTestPlay_Reset_v2";
-        if (PlayerPrefs.GetInt(FreshTestPlayKey, 0) == 0)
-        {
-            Debug.Log("<color=cyan>[QuestJournalManager] Menginisialisasi Fresh Test Play: Mereset seluruh save data ke 0%.</color>");
-            ResetAllProgress(false);
-            PlayerPrefs.SetInt(FreshTestPlayKey, 1);
-            PlayerPrefs.Save();
         }
     }
 
@@ -372,7 +359,6 @@ public class QuestJournalManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(questID) && completedQuestIDs.Contains(questID))
         {
-            UpdateProgressUI();
             RefreshQuestTabText();
             return;
         }
@@ -406,7 +392,6 @@ public class QuestJournalManager : MonoBehaviour
             }
         }
 
-        UpdateProgressUI();
         RefreshQuestTabText();
     }
 
@@ -481,32 +466,22 @@ public class QuestJournalManager : MonoBehaviour
         PlayerPrefs.SetInt("QJM_Award_" + island.ToString(), 1);
         PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
         PlayerPrefs.SetInt("Island_" + (int)island, 1);
-        PlayerPrefs.Save();
         SaveJournalSaveData();
         CheckIslandPageUnlocks(island);
         UpdateAwardsUI();
     }
 
-    public static IslandName? GetIslandFromSceneName(string sceneName)
-    {
-        if (string.IsNullOrEmpty(sceneName)) return null;
-
-        if (sceneName.Contains("Airstrip")) return IslandName.Airstrip;
-        if (sceneName.Contains("Waisai")) return IslandName.Waisai;
-        if (sceneName.Contains("Pianemo") || sceneName.Contains("Piaynemo")) return IslandName.Piaynemo;
-        if (sceneName.Contains("Misool")) return IslandName.Misool;
-        if (sceneName.Contains("Arborek")) return IslandName.Arborek;
-        if (sceneName.Contains("Sawinggrai")) return IslandName.Sawinggrai;
-        if (sceneName.Contains("Friwen")) return IslandName.Friwen;
-        if (sceneName.Contains("Gag")) return IslandName.Gag;
-
-        return null;
-    }
-
     public void UnlockIslandAwardForCurrentScene()
     {
         string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        IslandName? island = GetIslandFromSceneName(sceneName);
+        IslandName? island = null;
+        if (sceneName.Contains("Waisai")) island = IslandName.Waisai;
+        else if (sceneName.Contains("Pianemo") || sceneName.Contains("Piaynemo")) island = IslandName.Piaynemo;
+        else if (sceneName.Contains("Misool")) island = IslandName.Misool;
+        else if (sceneName.Contains("Arborek")) island = IslandName.Arborek;
+        else if (sceneName.Contains("Sawinggrai")) island = IslandName.Sawinggrai;
+        else if (sceneName.Contains("Friwen")) island = IslandName.Friwen;
+        else if (sceneName.Contains("Gag")) island = IslandName.Gag;
 
         if (island.HasValue && IsFinalQuestOfIslandDone(island.Value))
         {
@@ -563,12 +538,6 @@ public class QuestJournalManager : MonoBehaviour
 
         if (willOpen)
         {
-            QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
-            if (tabUI != null)
-            {
-                tabUI.EnsureStandardTransform();
-                tabUI.EnsureCanvasSortingOrder();
-            }
             UpdateAllJournalSystems();
         }
     }
@@ -583,71 +552,26 @@ public class QuestJournalManager : MonoBehaviour
     // PROGRESS TRACKING (KIRI ATAS)
     // =========================================================
 
-    private bool isUpdatingProgressUI = false;
-
     private void UpdateProgressUI(float percentage = -1f)
     {
-        if (isUpdatingProgressUI) return;
-        isUpdatingProgressUI = true;
-
-        try
+        if (percentage < 0f && GamePhaseManager.Instance != null)
         {
-            if (percentage < 0f && GamePhaseManager.Instance != null)
-            {
-                percentage = GamePhaseManager.Instance.GetCurrentPercentage();
-            }
-
-            // Jika persentase masih 0 atau GamePhaseManager belum menghitung, hitung secara mandiri dari aktivitas player
-            if (percentage <= 0f)
-            {
-                int completedCount = completedQuestTitles != null ? completedQuestTitles.Count : 0;
-                if (completedQuestIDs != null && completedQuestIDs.Count > completedCount)
-                {
-                    completedCount = completedQuestIDs.Count;
-                }
-
-                int islandCount = unlockedAwardIslands != null ? unlockedAwardIslands.Count : 0;
-                int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
-
-                // Perhitungan progres proporsional:
-                // Misi selesai (bobot ~3.5% per misi), Award pulau (3% per pulau), dan Sampah (hingga 10%)
-                float calculated = (completedCount * 3.5f) + (islandCount * 3f) + Mathf.Min(10f, (trashCount / 20f * 10f));
-                percentage = Mathf.Clamp(calculated, 0f, 100f);
-
-                // Buka pulau Gag jika quest selesai sudah cukup atau persentase mencapai target
-                if (percentage >= 25f || completedCount >= 3)
-                {
-                    if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.GetIsGagUnlocked())
-                    {
-                        GamePhaseManager.Instance.UnlockGag(true);
-                    }
-                    PlayerPrefs.SetInt("GPM_GagUnlocked", 1);
-                }
-
-                if (percentage > 0f &&
-                    GamePhaseManager.Instance != null &&
-                    !Mathf.Approximately(GamePhaseManager.Instance.GetCurrentPercentage(), percentage))
-                {
-                    GamePhaseManager.Instance.SetPercentageDirectly(percentage);
-                }
-            }
-
-            int displayPct = Mathf.FloorToInt(percentage);
-
-            if (progressPercentageText != null)
-            {
-                progressPercentageText.text = $"Progress: {displayPct}%";
-            }
-
-            if (trashStatusText != null)
-            {
-                int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
-                trashStatusText.text = $"{trashCount}/20";
-            }
+            percentage = GamePhaseManager.Instance.GetCurrentPercentage();
         }
-        finally
+
+        if (percentage < 0f) percentage = 0f;
+
+        int displayPct = Mathf.FloorToInt(percentage);
+
+        if (progressPercentageText != null)
         {
-            isUpdatingProgressUI = false;
+            progressPercentageText.text = $"Progress: {displayPct}%";
+        }
+
+        if (trashStatusText != null)
+        {
+            int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
+            trashStatusText.text = $"{trashCount}/20";
         }
     }
 
@@ -670,22 +594,6 @@ public class QuestJournalManager : MonoBehaviour
 
     public void ToggleQuestTab()
     {
-        if (questTabPanel == null)
-        {
-            QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
-            if (tabUI != null)
-            {
-                tabUI.RegisterToJournalManager();
-                questTabPanel = tabUI.gameObject;
-            }
-        }
-
-        if (questTabPanel != null && !questTabPanel.activeSelf)
-        {
-            ToggleJournalPanel();
-            return;
-        }
-
         isOngoingTabActive = !isOngoingTabActive;
         RefreshTabVisual();
         RefreshQuestTabText();
@@ -1139,245 +1047,11 @@ public class QuestJournalManager : MonoBehaviour
         }
     }
 
-    public bool HasCompletedQuestID(string qid)
+    private bool HasCompletedQuestID(string qid)
     {
-        if (string.IsNullOrEmpty(qid)) return false;
         if (completedQuestIDs.Contains(qid)) return true;
         if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(qid)) return true;
         return false;
-    }
-
-    public static bool HasCompletedQuestIDPersistent(string qid)
-    {
-        if (string.IsNullOrEmpty(qid)) return false;
-        if (Instance != null && Instance.HasCompletedQuestID(qid)) return true;
-        if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(qid)) return true;
-
-        string gpmRaw = PlayerPrefs.GetString("GPM_CompletedQuests", "");
-        if (ContainsDelimitedQuestId(gpmRaw, qid)) return true;
-
-        string qjmRaw = PlayerPrefs.GetString(SaveKeyCompletedQuestIDs, "");
-        return ContainsDelimitedQuestId(qjmRaw, qid);
-    }
-
-    private static bool ContainsDelimitedQuestId(string raw, string qid)
-    {
-        if (string.IsNullOrEmpty(raw)) return false;
-        string[] parts = raw.Split(',', '|');
-        for (int i = 0; i < parts.Length; i++)
-        {
-            if (string.Equals(parts[i].Trim(), qid, StringComparison.Ordinal)) return true;
-        }
-        return false;
-    }
-
-    public static bool IsIslandCompletedPersistent(IslandName island)
-    {
-        if (Instance != null && Instance.IsIslandUnlocked(island))
-        {
-            return true;
-        }
-
-        return PlayerPrefs.GetInt("QJM_Award_" + island.ToString(), 0) == 1 ||
-               PlayerPrefs.GetInt("GPM_Island_" + island.ToString(), 0) == 1 ||
-               PlayerPrefs.GetInt("Island_" + (int)island, 0) == 1;
-    }
-
-    public bool IsCurrentSceneIslandCompleted()
-    {
-        return IsCurrentSceneIslandCompletedPersistent();
-    }
-
-    public static bool IsCurrentSceneIslandCompletedPersistent()
-    {
-        if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
-        {
-            return true;
-        }
-
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        IslandName? island = GetIslandFromSceneName(sceneName);
-        return island.HasValue && IsIslandCompletedPersistent(island.Value);
-    }
-
-    /// <summary>
-    /// Mengecek apakah seluruh quest wajib untuk sebuah pulau sudah tuntas sehingga pulau boleh ditamatkan / ditinggalkan.
-    /// </summary>
-    public static bool CanCompleteIslandOrOpenMap(IslandName island)
-    {
-        if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
-        {
-            return true;
-        }
-
-        if (IsIslandCompletedPersistent(island))
-        {
-            return true;
-        }
-
-        return Instance != null && Instance.IsFinalQuestOfIslandDone(island);
-    }
-
-    /// <summary>
-    /// Mengecek apakah pemain sudah boleh membuka MapMenuPanel dan teleport dari pulau pada scene aktif.
-    /// </summary>
-    public static bool CanLeaveCurrentIslandForMap()
-    {
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        IslandName? island = GetIslandFromSceneName(sceneName);
-        if (!island.HasValue)
-        {
-            return true;
-        }
-
-        return CanCompleteIslandOrOpenMap(island.Value);
-    }
-
-    /// <summary>
-    /// Menyelesaikan seluruh progres pulau tertentu (quest, award, halaman jurnal terkait, dan state scene).
-    /// </summary>
-    public void DebugCompleteIsland(IslandName island)
-    {
-        string suffix = "_" + island.ToString();
-        foreach (var kv in KnownQuestTitles)
-        {
-            bool belongsToIsland = kv.Key.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
-            if (!belongsToIsland && island == IslandName.Friwen)
-            {
-                belongsToIsland = kv.Key == "10" || kv.Key == "07";
-            }
-            else if (!belongsToIsland && island == IslandName.Gag)
-            {
-                belongsToIsland = kv.Key.Length == 2 && string.CompareOrdinal(kv.Key, "01") >= 0 && string.CompareOrdinal(kv.Key, "08") <= 0;
-            }
-
-            if (!belongsToIsland) continue;
-
-            completedQuestIDs.Add(kv.Key);
-            if (!completedQuestTitles.Contains(kv.Value))
-            {
-                completedQuestTitles.Add(kv.Value);
-            }
-            lastCompletedQuest = kv.Value;
-            GamePhaseManager.Instance?.HandleQuestCompleted(kv.Key);
-        }
-
-        if (island == IslandName.Friwen)
-        {
-            completedQuestIDs.Add("07");
-            GamePhaseManager.Instance?.HandleQuestCompleted("07");
-        }
-        else if (island == IslandName.Misool)
-        {
-            PlayerPrefs.SetInt("Misool_QuestStage", 9);
-            if (MasterQuestManager.Instance != null &&
-                MasterQuestManager.Instance.CurrentIsland == IslandType.Misool)
-            {
-                MasterQuestManager.Instance.AdvanceStageTo(9);
-            }
-        }
-        else if (island == IslandName.Gag)
-        {
-            PlayerPrefs.SetInt("Visited_10_Gag", 1);
-            GamePhaseManager.Instance?.UnlockGag(true);
-        }
-
-        if (GamePhaseManager.Instance != null)
-        {
-            GamePhaseManager.Instance.CompleteIsland(island);
-        }
-        else
-        {
-            StoryManager.Instance?.CompleteIsland(island);
-        }
-
-        UnlockIslandAward(island);
-        currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
-
-        IslandName? activeIsland = GetIslandFromSceneName(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-        if (activeIsland.HasValue && activeIsland.Value == island && QuestController.Instance != null)
-        {
-            QuestController.Instance.CompleteAllActiveQuests();
-        }
-
-        SaveJournalSaveData();
-        UpdateAllJournalSystems();
-
-        if (activeIsland.HasValue && activeIsland.Value == island)
-        {
-            IslandCompletedStateRestorer.RestoreActiveSceneState();
-        }
-    }
-
-    /// <summary>
-    /// Membuka seluruh halaman jurnal, foto, award pulau, dan progress 100% tanpa memicu popup flash.
-    /// </summary>
-    public void DebugUnlockAllJournalContent()
-    {
-        for (int p = 1; p <= 17; p++)
-        {
-            UnlockPageInternal(p);
-        }
-
-        if (allJournalDatabase != null)
-        {
-            foreach (var entry in allJournalDatabase)
-            {
-                if (entry != null)
-                {
-                    UnlockPageInternal(entry.pageID);
-                }
-            }
-        }
-
-        if (allPhotoSpritesDatabase != null)
-        {
-            for (int i = 0; i < allPhotoSpritesDatabase.Length; i++)
-            {
-                if (allPhotoSpritesDatabase[i] != null && !collectedPhotos.ContainsKey(i))
-                {
-                    collectedPhotos.Add(i, allPhotoSpritesDatabase[i]);
-                }
-            }
-        }
-
-        foreach (var kv in KnownQuestTitles)
-        {
-            completedQuestIDs.Add(kv.Key);
-            if (!completedQuestTitles.Contains(kv.Value))
-            {
-                completedQuestTitles.Add(kv.Value);
-            }
-            lastCompletedQuest = kv.Value;
-            GamePhaseManager.Instance?.HandleQuestCompleted(kv.Key);
-        }
-
-        TrashInteractable.totalCollected = 20;
-        PlayerPrefs.SetInt("TotalTrashCollected", 20);
-        PlayerPrefs.SetInt("Misool_QuestStage", 9);
-        PlayerPrefs.SetInt("Visited_10_Gag", 1);
-        PlayerPrefs.SetInt("GameCompleted", 1);
-
-        foreach (IslandName island in Enum.GetValues(typeof(IslandName)))
-        {
-            UnlockIslandAward(island);
-            StoryManager.Instance?.CompleteIsland(island);
-            PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
-            PlayerPrefs.SetInt("Island_" + (int)island, 1);
-        }
-
-        if (GamePhaseManager.Instance != null)
-        {
-            GamePhaseManager.Instance.UnlockGag(true);
-            GamePhaseManager.Instance.SetPercentageDirectly(100f);
-        }
-
-        QuestController.Instance?.CompleteAllActiveQuests();
-        currentOngoingQuest = "Seluruh Pulau Raja Ampat Telah Selesai!";
-
-        SaveJournalSaveData();
-        UpdateAllJournalSystems();
-        IslandCompletedStateRestorer.RestoreActiveSceneState();
     }
 
     // =========================================================
@@ -1825,59 +1499,5 @@ public class QuestJournalManager : MonoBehaviour
                 lastCompletedQuest = completedQuestTitles[completedQuestTitles.Count - 1];
             }
         }
-    }
-
-    [ContextMenu("Reset All Progress To 0")]
-    public void ResetAllProgress(bool keepFreshFlag = true)
-    {
-        unlockedPages.Clear();
-        if (allJournalDatabase != null && allJournalDatabase.Length > 0)
-        {
-            unlockedPages.Add(allJournalDatabase[0].pageID);
-        }
-        else
-        {
-            unlockedPages.Add(1);
-        }
-
-        collectedPhotos.Clear();
-        completedQuestIDs.Clear();
-        unlockedAwardIslands.Clear();
-        completedQuestTitles.Clear();
-        currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
-        lastCompletedQuest = "Belum ada misi selesai.";
-        currentJournalIndex = 0;
-
-        TrashInteractable.totalCollected = 0;
-
-        PlayerPrefs.DeleteAll();
-        if (keepFreshFlag)
-        {
-            PlayerPrefs.SetInt("FreshTestPlay_Reset_v2", 1);
-        }
-        PlayerPrefs.Save();
-
-        if (GamePhaseManager.Instance != null)
-        {
-            GamePhaseManager.Instance.ResetAllProgress();
-        }
-
-        if (StoryManager.Instance != null)
-        {
-            StoryManager.Instance.ResetProgress();
-        }
-
-        if (MasterQuestManager.Instance != null)
-        {
-            MasterQuestManager.Instance.ResetAllProgress();
-        }
-
-        if (QuestController.Instance != null)
-        {
-            QuestController.Instance.ActiveQuests.Clear();
-        }
-
-        UpdateAllJournalSystems();
-        Debug.Log("<color=green>[QuestJournalManager] Seluruh progres jurnal, award, dan trivia berhasil direset ke 0!</color>");
     }
 }

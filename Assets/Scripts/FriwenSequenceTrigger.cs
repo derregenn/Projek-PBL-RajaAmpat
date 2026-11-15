@@ -14,15 +14,8 @@ public class FriwenSequenceTrigger : MonoBehaviour
 
     private void Start()
     {
-        if (QuestJournalManager.IsIslandCompletedPersistent(IslandName.Friwen))
-        {
-            hasTriggered = true;
-            return;
-        }
-
         // 1. Terima Quest 1 otomatis saat scene dimuat agar langsung muncul di HUD
-        if (autoAcceptQuestOnSceneStart && questToGive != null && QuestController.Instance != null &&
-            !QuestJournalManager.HasCompletedQuestIDPersistent(questToGive.QuestID))
+        if (autoAcceptQuestOnSceneStart && questToGive != null && QuestController.Instance != null)
         {
             QuestController.Instance.AcceptQuest(questToGive);
         }
@@ -30,7 +23,7 @@ public class FriwenSequenceTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (hasTriggered || QuestJournalManager.IsIslandCompletedPersistent(IslandName.Friwen)) return;
+        if (hasTriggered) return;
 
         if (other.CompareTag("Player"))
         {
