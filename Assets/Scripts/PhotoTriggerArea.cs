@@ -34,6 +34,12 @@ public class PhotoTriggerArea : MonoBehaviour
         {
             photoPromptPanel.SetActive(false);
         }
+
+        if (QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        {
+            isPhotoTaken = true;
+            gameObject.SetActive(false);
+        }
     }
 
     private void Update()
