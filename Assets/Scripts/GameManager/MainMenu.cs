@@ -70,9 +70,6 @@ public class MainMenu : MonoBehaviour
             GamePhaseManager.Instance.CalculatePercentage();
         }
 
-        PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 1);
-        PlayerPrefs.Save();
-
         Time.timeScale = 1f;
         Debug.Log($"[MainMenu] Melanjutkan game ke scene: {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);

@@ -31,50 +31,6 @@ public class ArborekFaderManager : MonoBehaviour
     public GameObject npcFotoToHide;      // Drag NPC_TetuaAdat_Fotografi
     public GameObject npcTourGuideToHide; // Drag TourGuide
 
-    private void Start()
-    {
-        if (QuestJournalManager.IsIslandCompletedPersistent(IslandName.Arborek))
-        {
-            ApplyCompletedState();
-        }
-    }
-
-    /// <summary>
-    /// Memulihkan state akhir Desa Arborek agar NPC quest awal tidak muncul ulang setelah pulau selesai.
-    /// </summary>
-    public void ApplyCompletedState()
-    {
-        GameObject[] stageObjects =
-        {
-            npcMatiTransisi1,
-            npcHidupTransisi1,
-            npcSasiBefore,
-            npcSasiAfter,
-            npcMatiTransisi2,
-            npcHidupTransisi2,
-            npcFotografi,
-            npcTourGuide,
-            npcFotoToHide,
-            npcTourGuideToHide
-        };
-
-        for (int i = 0; i < stageObjects.Length; i++)
-        {
-            if (stageObjects[i] != null && stageObjects[i].activeSelf)
-            {
-                stageObjects[i].SetActive(false);
-            }
-        }
-
-        IslandCompletedStateRestorer.SetObjectsActive(gameObject.scene, false,
-            "NPC_TetuaAdat_Awal",
-            "Umpan",
-            "Kerang",
-            "TitikSasi_1",
-            "TitikSasi_2",
-            "AreaFoto_Sasi");
-    }
-
     // --- METHOD PEMANGGIL TRANSISI ---
 
     public void PlayTransition1()
@@ -302,13 +258,6 @@ public class ArborekFaderManager : MonoBehaviour
         if (QuestJournalManager.Instance != null)
         {
             QuestJournalManager.Instance.UnlockIslandAward(IslandName.Arborek);
-        }
-        else
-        {
-            PlayerPrefs.SetInt("QJM_Award_Arborek", 1);
-            PlayerPrefs.SetInt("GPM_Island_Arborek", 1);
-            PlayerPrefs.SetInt("Island_" + (int)IslandName.Arborek, 1);
-            PlayerPrefs.Save();
         }
         SetTrackerHint("Kembali ke Dermaga Arborek");
 

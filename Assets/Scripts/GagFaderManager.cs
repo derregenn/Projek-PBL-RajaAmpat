@@ -12,40 +12,6 @@ public class GagFaderManager : MonoBehaviour
     [Tooltip("Drag NPC_Peneliti_Awal (Peneliti Cewek) ke sini")]
     public GameObject npcPeneliti;
 
-    private void Start()
-    {
-        if (QuestJournalManager.IsIslandCompletedPersistent(IslandName.Gag) ||
-            PlayerPrefs.GetInt("GameCompleted", 0) == 1)
-        {
-            ApplyCompletedState();
-        }
-    }
-
-    /// <summary>
-    /// Memulihkan state akhir Pulau Gag ketika pemain mengunjungi kembali pulau tersebut.
-    /// </summary>
-    public void ApplyCompletedState()
-    {
-        if (npcPeneliti != null) npcPeneliti.SetActive(false);
-
-        UnityEngine.SceneManagement.Scene scene = gameObject.scene;
-        IslandCompletedStateRestorer.SetObjectsActive(scene, false,
-            "NPC_Peneliti_Awal",
-            "NPC_Peneliti_Quest2",
-            "NPC_Peneliti_Quest3",
-            "NPC_Tetua_Lemas",
-            "NPC_Tetua_Lemas2",
-            "NPC_Tetua_Lemas3",
-            "Item_Sagu",
-            "Area_ViewTambang");
-
-        IslandCompletedStateRestorer.SetObjectsActive(scene, true,
-            "NPC_Tetua_Lemas4",
-            "TourGuide");
-
-        IslandCompletedStateRestorer.RefreshAllSceneDialogueLoops(scene);
-    }
-
     [Header("Events")]
     [Tooltip("Dipanggil tepat SETELAH fade in selesai (layar kembali terang)")]
     public UnityEvent OnPenelitiPulangFadeCompleted;
