@@ -84,14 +84,13 @@ public class MisoolLandSceneManager : MonoBehaviour
         if (ibuIbuStage6 != null)
             ibuIbuStage6.SetActive(stage == 6 || stage == 7);
         if (ibuIbuStage8 != null)
-            ibuIbuStage8.SetActive(stage == 8);
+            ibuIbuStage8.SetActive(stage == 8 || stage == 9);
 
         // Point 9 & 10: Akhir Quest (Tour Guide pindah ke kanan MC)
         if (stage >= 9)
         {
             if (tourGuideStart != null) tourGuideStart.SetActive(false);
             if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
-            if (ibuIbuStage8 != null) ibuIbuStage8.SetActive(false);
 
             if (tourGuideEnd != null)
             {

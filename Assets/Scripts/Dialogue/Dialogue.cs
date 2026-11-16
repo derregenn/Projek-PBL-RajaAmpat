@@ -49,6 +49,11 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue Events")]
     [SerializeField] private UnityEvent onDialogueEnd;
 
+    [Header("Post-Quest Dialogue Loop")]
+    [TextArea(2, 5)]
+    [SerializeField] private string[] postQuestLoopLines;
+    [SerializeField] private bool isPostQuestLoop = false;
+
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
@@ -97,6 +102,8 @@ public class Dialogue : MonoBehaviour
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        RefreshPostQuestLoopState();
     }
 
     private void Update()
@@ -432,5 +439,37 @@ public class Dialogue : MonoBehaviour
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
 
         StartTyping();
+    }
+
+    public bool IsMapNPC()
+    {
+        return GetComponent<NPCMapTrigger>() != null ||
+               gameObject.name.IndexOf("Map", System.StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    public void RefreshPostQuestLoopState()
+    {
+        if (isPostQuestLoop || IsMapNPC()) return;
+
+        if (QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        {
+            SwitchToLoopDialogue();
+            lineIndex = 0;
+        }
+    }
+
+    public void SwitchToLoopDialogue()
+    {
+        if (postQuestLoopLines == null || postQuestLoopLines.Length == 0) return;
+
+        isPostQuestLoop = true;
+        DialogueLines = postQuestLoopLines;
+        lineIndex = 0;
+
+        DialogueLineSpeakers = new DialogueSpeaker[postQuestLoopLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
     }
 }

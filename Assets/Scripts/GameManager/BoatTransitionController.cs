@@ -84,6 +84,154 @@ public class BoatTransitionController : MonoBehaviour
         }
     }
 
+    public static string ExtractBaseIslandName(string raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return "";
+        string clean = raw.ToLower().Trim();
+        if (clean.StartsWith("0") || clean.StartsWith("1"))
+        {
+            int underscore = clean.IndexOf('_');
+            if (underscore >= 0 && underscore < clean.Length - 1)
+                clean = clean.Substring(underscore + 1);
+        }
+        return clean;
+    }
+
+    /// <summary>
+    /// Mengecek apakah cutscene boat trivia untuk pulau tujuan sudah pernah dimainkan atau pulaunya sudah selesai.
+    /// </summary>
+    public static bool HasCompletedBoatTriviaOrVisited(string targetSceneOrIsland)
+    {
+        if (string.IsNullOrWhiteSpace(targetSceneOrIsland)) return false;
+
+        if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
+        {
+            return true;
+        }
+
+        FindTargetSceneBuildIndex(targetSceneOrIsland, out string resolvedSceneName);
+
+        if (PlayerPrefs.GetInt("Visited_" + targetSceneOrIsland, 0) == 1 ||
+            (!string.IsNullOrEmpty(resolvedSceneName) && PlayerPrefs.GetInt("Visited_" + resolvedSceneName, 0) == 1))
+        {
+            return true;
+        }
+
+        IslandName? island = QuestJournalManager.GetIslandFromSceneName(
+            !string.IsNullOrEmpty(resolvedSceneName) ? resolvedSceneName : targetSceneOrIsland);
+
+        if (!island.HasValue)
+        {
+            island = QuestJournalManager.GetIslandFromSceneName(targetSceneOrIsland);
+        }
+
+        if (island.HasValue)
+        {
+            if (island.Value == IslandName.Airstrip || island.Value == IslandName.Waisai)
+            {
+                return true;
+            }
+
+            if (PlayerPrefs.GetInt("BoatTriviaDone_" + island.Value.ToString(), 0) == 1)
+            {
+                return true;
+            }
+
+            if (QuestJournalManager.IsIslandCompletedPersistent(island.Value))
+            {
+                return true;
+            }
+        }
+
+        string checkName = !string.IsNullOrEmpty(resolvedSceneName) ? resolvedSceneName : targetSceneOrIsland;
+        if (checkName.IndexOf("MainMenu", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+            checkName.IndexOf("Laut", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Menandai bahwa event boat trivia untuk pulau/scene tujuan telah selesai dijalankan (sekali seumur save).
+    /// </summary>
+    public static void MarkBoatTriviaCompleted(string targetSceneOrIsland, string resolvedSceneName = null)
+    {
+        if (!string.IsNullOrWhiteSpace(targetSceneOrIsland))
+        {
+            PlayerPrefs.SetInt("Visited_" + targetSceneOrIsland, 1);
+        }
+
+        if (!string.IsNullOrWhiteSpace(resolvedSceneName))
+        {
+            PlayerPrefs.SetInt("Visited_" + resolvedSceneName, 1);
+        }
+
+        IslandName? island = QuestJournalManager.GetIslandFromSceneName(
+            !string.IsNullOrWhiteSpace(resolvedSceneName) ? resolvedSceneName : targetSceneOrIsland);
+
+        if (!island.HasValue && !string.IsNullOrWhiteSpace(targetSceneOrIsland))
+        {
+            island = QuestJournalManager.GetIslandFromSceneName(targetSceneOrIsland);
+        }
+
+        if (island.HasValue)
+        {
+            PlayerPrefs.SetInt("BoatTriviaDone_" + island.Value.ToString(), 1);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// Menavigasi dari Peta ke pulau tujuan: memutar Cutscene_BoatToIsland sekali di kunjungan pertama,
+    /// atau langsung teleport ke scene pulau jika boat trivia sudah pernah dijalankan / pulau selesai.
+    /// </summary>
+    public static void NavigateToIsland(string sceneName)
+    {
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            Debug.LogWarning("[BoatTransition] sceneName kosong!");
+            return;
+        }
+
+        if (!QuestJournalManager.CanLeaveCurrentIslandForMap())
+        {
+            Debug.LogWarning("[BoatTransition] Teleport dibatalkan karena seluruh quest pada pulau ini belum selesai.");
+            return;
+        }
+
+        Time.timeScale = 1f;
+        MapController.targetIslandScene = sceneName;
+
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.targetIslandName = sceneName;
+        }
+
+        PlayerPrefs.SetString("TargetIsland", sceneName);
+        PlayerPrefs.Save();
+
+        if (HasCompletedBoatTriviaOrVisited(sceneName))
+        {
+            int buildIndex = FindTargetSceneBuildIndex(sceneName, out string resolvedSceneName);
+            Debug.Log($"[BoatTransition] Boat trivia untuk '{sceneName}' sudah selesai/dilewati -> langsung pindah ke scene '{(string.IsNullOrEmpty(resolvedSceneName) ? sceneName : resolvedSceneName)}'.");
+            if (buildIndex >= 0)
+            {
+                SceneManager.LoadScene(buildIndex);
+            }
+            else
+            {
+                SceneManager.LoadScene(sceneName);
+            }
+            return;
+        }
+
+        Debug.Log($"[BoatTransition] Kunjungan pertama ke '{sceneName}'. Memuat Cutscene_BoatToIsland.");
+        SceneManager.LoadScene("Cutscene_BoatToIsland");
+    }
+
     // <-- Method baru untuk Spawn Background
     private void SpawnParallaxBackground()
     {
@@ -139,28 +287,36 @@ public class BoatTransitionController : MonoBehaviour
 
     private void FinishTransition()
     {
-        int buildIndex = FindTargetSceneBuildIndex();
+        int buildIndex = FindTargetSceneBuildIndex(currentTarget, out string resolvedSceneName);
         if (buildIndex < 0)
         {
             Debug.LogError($"[BoatTransition] Scene '{currentTarget}' tidak ditemukan di Build Settings. Tambahkan scene tersebut ke Scenes In Build dan pastikan namanya cocok.", this);
             return;
         }
 
-        PlayerPrefs.SetInt("Visited_" + currentTarget, 1);
-        PlayerPrefs.Save();
+        MarkBoatTriviaCompleted(currentTarget, resolvedSceneName);
 
         // Pindah ke scene pulau tujuan yang sesungguhnya
         SceneManager.LoadScene(buildIndex);
     }
 
-    private int FindTargetSceneBuildIndex()
+    public static int FindTargetSceneBuildIndex(string rawTarget, out string resolvedSceneName)
     {
-        string targetName = currentTarget.Trim();
+        resolvedSceneName = null;
+        if (string.IsNullOrWhiteSpace(rawTarget)) return -1;
+
+        string targetName = rawTarget.Trim();
         int separatorIndex = Mathf.Max(targetName.LastIndexOf('/'), targetName.LastIndexOf('\\'));
         if (separatorIndex >= 0)
             targetName = targetName.Substring(separatorIndex + 1);
         if (targetName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
             targetName = targetName.Substring(0, targetName.Length - 6);
+
+        string targetBase = ExtractBaseIslandName(targetName);
+        int exactBaseIndex = -1;
+        string exactBaseName = null;
+        int fallbackIndex = -1;
+        string fallbackName = null;
 
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
@@ -170,11 +326,43 @@ public class BoatTransitionController : MonoBehaviour
             if (sceneName.EndsWith(".unity", System.StringComparison.OrdinalIgnoreCase))
                 sceneName = sceneName.Substring(0, sceneName.Length - 6);
 
+            // 1. Exact match
             if (string.Equals(sceneName, targetName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                resolvedSceneName = sceneName;
                 return i;
+            }
+
+            // 2. Exact base name match (misal "05_Sawinggrai" -> "06_Sawinggrai", bukan "09_Laut Sawinggrai")
+            string sceneBase = ExtractBaseIslandName(sceneName);
+            if (!string.IsNullOrEmpty(targetBase) && !string.IsNullOrEmpty(sceneBase))
+            {
+                if (exactBaseIndex < 0 && targetBase == sceneBase)
+                {
+                    exactBaseIndex = i;
+                    exactBaseName = sceneName;
+                }
+                else if (fallbackIndex < 0 && (targetBase.Contains(sceneBase) || sceneBase.Contains(targetBase)))
+                {
+                    fallbackIndex = i;
+                    fallbackName = sceneName;
+                }
+            }
         }
 
-        return -1;
+        if (exactBaseIndex >= 0)
+        {
+            resolvedSceneName = exactBaseName;
+            return exactBaseIndex;
+        }
+
+        resolvedSceneName = fallbackName;
+        return fallbackIndex;
+    }
+
+    private int FindTargetSceneBuildIndex()
+    {
+        return FindTargetSceneBuildIndex(currentTarget, out _);
     }
 }
 

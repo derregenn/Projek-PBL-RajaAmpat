@@ -104,7 +104,7 @@ public class PianemoLandSceneManager : MonoBehaviour
         // Stage 2: Tangga kayu menuju atas
         if (tanggaTrigger != null)
         {
-            tanggaTrigger.SetActive(stage >= 1 && stage < 2);
+            tanggaTrigger.SetActive(stage >= 1 && stage < 3);
         }
 
         // Stage 3: Petugas pengaman di puncak tangga
