@@ -49,20 +49,7 @@ public class IslandSceneTransition : MonoBehaviour
 
         if (fadeBlackScreen == null)
         {
-            if (UniversalFader.Instance != null)
-            {
-                yield return UniversalFader.Instance.FadeOutRoutine(fadeDuration);
-            }
-            else
-            {
-                yield return new WaitForSeconds(fadeDuration);
-            }
-
-            if (QuestController.Instance != null)
-            {
-                QuestController.Instance.CompleteAllActiveQuests();
-            }
-
+            Debug.LogError("[Transition Error] Slot 'Fade Black Screen' belum ditarik dari Hierarchy scene saat ini!");
             SceneManager.LoadScene(targetSceneName);
             yield break;
         }

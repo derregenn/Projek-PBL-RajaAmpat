@@ -1,48 +1,91 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Pause manager per-scene.
-/// PENTING: Komponen ini menempel di root prefab System_PauseAudio (yang berisi Canvas_Pause).
-/// Dulu memanggil DontDestroyOnLoad sehingga seluruh Canvas_Pause ikut terbawa saat teleport pulau
-/// dan menumpuk dengan Canvas_Pause milik scene baru (pause menu terduplikasi).
-/// Sekarang komponen ini hanya hidup di scene-nya sendiri, dan jika GameManager (persistent) ada,
-/// input Escape diserahkan sepenuhnya ke GameManager agar tidak ada dua handler yang toggle bersamaan.
-/// </summary>
 public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance { get; private set; }
 
     [Header("UI Reference")]
     [Tooltip("Drag PauseMenuPanel ke sini")]
-    public GameObject pauseMenuUI; 
+    public GameObject pauseMenuUI;
 
     private bool isPaused = false;
+    public bool IsPaused => isPaused;
 
     private void Awake()
     {
-        // Instance scene-lokal: instance dari scene sebelumnya sudah ter-destroy saat scene berganti.
-        if (Instance != null && Instance != this && Instance.gameObject.scene == gameObject.scene)
+        if (Instance != null && Instance != this)
         {
-            // Duplikat di scene yang sama: cukup matikan komponen ini, JANGAN destroy gameObject
-            // (gameObject ini adalah root System_PauseAudio yang berisi Canvas_Pause & AudioManager).
-            enabled = false;
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
-        ResolvePauseMenuReference();
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        FindAndSetupPauseMenu();
     }
 
     private void OnDestroy()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         if (Instance == this) Instance = null;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FindAndSetupPauseMenu();
+        ResumeGame();
     }
 
     private void Start()
     {
+        FindAndSetupPauseMenu();
+        ResumeGame();
+    }
+
+    public void FindAndSetupPauseMenu()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        pauseMenuUI = FindPauseMenu(currentScene);
         ResolvePauseMenuReference();
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+
+        if (pauseMenuUI != null)
+        {
+            // Pastikan binder terpasang agar tombol-tombol selalu terkoneksi
+            if (pauseMenuUI.GetComponent<PauseMenuBinder>() == null)
+            {
+                pauseMenuUI.AddComponent<PauseMenuBinder>();
+            }
+
+            Transform parentCanvas = pauseMenuUI.transform.parent;
+            if (parentCanvas != null && parentCanvas.GetComponent<PauseMenuBinder>() == null)
+            {
+                parentCanvas.gameObject.AddComponent<PauseMenuBinder>();
+            }
+        }
+    }
+
+    private GameObject FindPauseMenu(Scene scene)
+    {
+        GameObject pauseCanvas = null;
+
+        foreach (GameObject root in scene.GetRootGameObjects())
+        {
+            Transform[] descendants = root.GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in descendants)
+            {
+                if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                    return child.gameObject;
+
+                if (child.name == "Canvas_Pause")
+                    pauseCanvas = child.gameObject;
+            }
+        }
+
+        return pauseCanvas;
     }
 
     private void ResolvePauseMenuReference()
@@ -64,8 +107,11 @@ public class PauseManager : MonoBehaviour
 
         if (pausePanel == null)
         {
+            if (pauseMenuUI.name == "Canvas_Pause")
+                return;
+
             Debug.LogError(
-                "[PauseManager] pauseMenuUI points to a Canvas, but no PauseMenuUI / PauseMenuPanel child was found. Assign the pause panel instead.",
+                "[PauseManager] pauseMenuUI points to a Canvas, but no PauseMenuUI or PauseMenuPanel child was found.",
                 this);
             pauseMenuUI = null;
             return;
@@ -74,12 +120,11 @@ public class PauseManager : MonoBehaviour
         pauseMenuUI = pausePanel.gameObject;
     }
 
-    private bool GameManagerHandlesPause => GameManager.Instance != null && GameManager.Instance.isActiveAndEnabled;
-
     private void Update()
     {
-        // GameManager sudah menangani Escape secara global; hindari toggle ganda.
-        if (GameManagerHandlesPause) return;
+        // Jika GameManager ada, biarkan GameManager yang menangani input Escape untuk menghindari bentrok ganda
+        if (GameManager.Instance != null)
+            return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -88,29 +133,80 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    public void SetPausedState(bool paused)
+    {
+        isPaused = paused;
+    }
+
     public void PauseGame()
     {
-        if (GameManagerHandlesPause)
+        isPaused = true;
+        Time.timeScale = 0f;
+
+        if (pauseMenuUI == null)
         {
-            GameManager.Instance.PauseGame();
-            return;
+            FindAndSetupPauseMenu();
         }
 
-        isPaused = true;
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
+        if (pauseMenuUI != null)
+        {
+            Transform parentCanvas = pauseMenuUI.transform.parent;
+            if (parentCanvas != null && parentCanvas.GetComponent<Canvas>() != null)
+            {
+                parentCanvas.gameObject.SetActive(true);
+            }
+            pauseMenuUI.SetActive(true);
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetPausedState(true);
+        }
     }
 
     public void ResumeGame()
     {
-        if (GameManagerHandlesPause)
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        if (pauseMenuUI != null)
         {
-            GameManager.Instance.ResumeGame();
-            return;
+            pauseMenuUI.SetActive(false);
+            Transform parentCanvas = pauseMenuUI.transform.parent;
+            if (parentCanvas != null && parentCanvas.name.Contains("Canvas_Pause"))
+            {
+                parentCanvas.gameObject.SetActive(false);
+            }
         }
 
-        isPaused = false;
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        // Pastikan seluruh elemen pause di scene saat ini dimatikan
+        DeactivateAllPauseUIInActiveScene();
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetPausedState(false);
+        }
+    }
+
+    private void DeactivateAllPauseUIInActiveScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        if (!scene.isLoaded) return;
+
+        foreach (GameObject root in scene.GetRootGameObjects())
+        {
+            Transform[] descendants = root.GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in descendants)
+            {
+                if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                {
+                    child.gameObject.SetActive(false);
+                }
+                else if (child.name == "Canvas_Pause")
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }

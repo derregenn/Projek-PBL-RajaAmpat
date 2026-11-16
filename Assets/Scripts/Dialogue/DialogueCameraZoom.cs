@@ -4,197 +4,42 @@ using System.Collections;
 
 public class DialogueCameraZoom : MonoBehaviour
 {
-    public static DialogueCameraZoom Instance { get; private set; }
-
     [Header("Cinemachine Cameras")]
-    [Tooltip("Kamera eksplorasi / biasa yang mengikuti Player (Priority default 10)")]
     [SerializeField] private CinemachineCamera gameplayCamera;
-
-    [Tooltip("Kamera dialog saat berbicara dengan NPC (Priority default 0, saat dialog 20)")]
     [SerializeField] private CinemachineCamera dialogueCamera;
-
-    [Tooltip("Kamera objektif / cutscene / pemandangan (Priority default 0, saat event 30)")]
     [SerializeField] private CinemachineCamera objectiveCamera;
 
-    [Header("Priority Settings")]
+    [Header("Priority")]
     [SerializeField] private int gameplayPriority = 10;
     [SerializeField] private int dialoguePriority = 20;
     [SerializeField] private int objectivePriority = 0;
 
-    [Header("Zoom Settings")]
-    [SerializeField] private float normalSize = 3.0f;
-    [SerializeField] private float zoomSize = 2.0f;
+    [Header("Zoom")]
+    [SerializeField] private float normalSize = 8.28f;
+    [SerializeField] private float zoomSize = 4.7f;
     [SerializeField] private float zoomDuration = 0.5f;
     private Coroutine zoomCoroutine;
 
-    private void Awake()
-    {
-        Instance = this;
-        EnsureCameraReferences();
-    }
-
     private void Start()
     {
-        EnsureCameraReferences();
-        InitializeCameraPriorities();
-    }
+        // Kamera gameplay aktif saat game dimulai
+        gameplayCamera.Priority.Value = gameplayPriority;
+        dialogueCamera.Priority.Value = 0;
+        if (objectiveCamera != null)
+            objectiveCamera.Priority.Value = objectivePriority;
 
-    public void EnsureCameraReferences()
-    {
-        // 1. Gameplay Camera (Kamera biasa yang mengikuti player)
-        if (gameplayCamera == null)
-        {
-            GameObject go = GameObject.Find("CinemachineCamera");
-            if (go != null) gameplayCamera = go.GetComponent<CinemachineCamera>();
-        }
-
-        // 2. Dialogue Camera (Kamera dialog zoom ke NPC)
-        if (dialogueCamera == null)
-        {
-            GameObject go = GameObject.Find("CinemachineCameraDialogue");
-            if (go != null) dialogueCamera = go.GetComponent<CinemachineCamera>();
-        }
-
-        // 3. Objective Camera (Kamera cutscene/objektif/pemandangan)
-        // Perbaiki jika objectiveCamera salah tunjuk ke dialogueCamera atau masih kosong
-        if (objectiveCamera == null || objectiveCamera == dialogueCamera)
-        {
-            objectiveCamera = null;
-            string[] possibleObjectiveNames = new string[] {
-                "ObjectiveCamera",
-                "Cam_ViewTambang",
-                "Cam_ViewPerahu",
-                "CinemachineCameraPenyu"
-            };
-
-            foreach (string objName in possibleObjectiveNames)
-            {
-                GameObject go = GameObject.Find(objName);
-                if (go != null)
-                {
-                    CinemachineCamera cam = go.GetComponent<CinemachineCamera>();
-                    if (cam != null)
-                    {
-                        objectiveCamera = cam;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // 4. Pastikan gameplayCamera selalu melacak Player (atau Boat di cutscene perahu) jika TrackingTarget masih kosong
-        if (gameplayCamera != null && gameplayCamera.Target.TrackingTarget == null)
-        {
-            try
-            {
-                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                bool isBoatCutscene = sceneName.IndexOf("Cutscene", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                      sceneName.IndexOf("Boat", System.StringComparison.OrdinalIgnoreCase) >= 0;
-                if (isBoatCutscene)
-                {
-                    BoatBobbing boat = FindFirstObjectByType<BoatBobbing>();
-                    if (boat != null) gameplayCamera.Target.TrackingTarget = boat.transform;
-                }
-                else
-                {
-                    GameObject player = GameObject.FindGameObjectWithTag("Player");
-                    if (player == null) player = GameObject.Find("Player");
-                    if (player != null) gameplayCamera.Target.TrackingTarget = player.transform;
-                }
-            }
-            catch { }
-        }
-    }
-
-    public void InitializeCameraPriorities()
-    {
-        // Kamera gameplay aktif saat game dimulai (Priority 10)
-        if (gameplayCamera != null)
-        {
-            gameplayCamera.Priority.Value = gameplayPriority;
-        }
-
-        // Kamera dialogue standby (Priority 0)
-        if (dialogueCamera != null)
-        {
-            dialogueCamera.Priority.Value = 0;
-        }
-
-        // 3. Kamera objective standby (Priority 0, hanya aktif saat event/cutscene)
-        if (objectiveCamera != null && objectiveCamera != gameplayCamera)
-        {
-            objectiveCamera.Priority.Value = 0;
-        }
-
-        // Pastikan SEMUA kamera non-gameplay lain di scene standby pada prioritas 0
-        CinemachineCamera[] allCams = FindObjectsByType<CinemachineCamera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (var c in allCams)
-        {
-            if (c == null) continue;
-            if (c != gameplayCamera)
-            {
-                c.Priority.Value = 0;
-            }
-        }
-    }
-
-    // =========================================================
-    // PUBLIC CONTROL METHODS (Untuk ganti-ganti kamera secara bersih)
-    // =========================================================
-
-    public void SwitchToGameplay()
-    {
-        EnsureCameraReferences();
-        if (dialogueCamera != null) dialogueCamera.Priority.Value = 0;
-        if (objectiveCamera != null) objectiveCamera.Priority.Value = 0;
-        if (gameplayCamera != null) gameplayCamera.Priority.Value = gameplayPriority;
-    }
-
-    public void SwitchToDialogue(Transform targetNPC = null, float targetOrthoSize = -1f)
-    {
-        EnsureCameraReferences();
-        if (dialogueCamera != null)
-        {
-            if (targetNPC != null)
-            {
-                dialogueCamera.Target.TrackingTarget = targetNPC;
-            }
-            if (targetOrthoSize > 0f)
-            {
-                var lens = dialogueCamera.Lens;
-                lens.OrthographicSize = targetOrthoSize;
-                dialogueCamera.Lens = lens;
-            }
-            dialogueCamera.Priority.Value = dialoguePriority;
-        }
-    }
-
-    public void SwitchToObjective(CinemachineCamera customObjective = null)
-    {
-        EnsureCameraReferences();
-        CinemachineCamera targetObj = customObjective != null ? customObjective : objectiveCamera;
-        if (targetObj != null)
-        {
-            targetObj.Priority.Value = 30;
-        }
-    }
-
-    public void ResetObjective(CinemachineCamera customObjective = null)
-    {
-        CinemachineCamera targetObj = customObjective != null ? customObjective : objectiveCamera;
-        if (targetObj != null)
-        {
-            targetObj.Priority.Value = 0;
-        }
-        SwitchToGameplay();
+        // Set ukuran awal kamera dialogue
+        var lens = dialogueCamera.Lens;
+        lens.OrthographicSize = zoomSize;
+        dialogueCamera.Lens = lens;
     }
 
     public void ZoomIn()
     {
-        EnsureCameraReferences();
         if (dialogueCamera == null || gameplayCamera == null)
             return;
 
+        // Aktifkan kamera dialogue
         dialogueCamera.Priority.Value = dialoguePriority;
 
         if (zoomCoroutine != null)
@@ -205,7 +50,6 @@ public class DialogueCameraZoom : MonoBehaviour
 
     public void ZoomOut()
     {
-        EnsureCameraReferences();
         if (dialogueCamera == null || gameplayCamera == null)
             return;
 
@@ -268,8 +112,8 @@ public class DialogueCameraZoom : MonoBehaviour
         finalLens.OrthographicSize = normalSize;
         dialogueCamera.Lens = finalLens;
 
+        // Kembalikan kamera gameplay
         dialogueCamera.Priority.Value = 0;
-        if (gameplayCamera != null)
-            gameplayCamera.Priority.Value = gameplayPriority;
+        gameplayCamera.Priority.Value = gameplayPriority;
     }
 }

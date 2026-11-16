@@ -11,7 +11,7 @@ public class NPCMapTrigger : MonoBehaviour
     [SerializeField] private float popupDuration = 0.35f;
     [SerializeField] private Vector3 popupScaleMin = new Vector3(0.75f, 0.75f, 1f);
     [SerializeField] private AudioClip openMapSfx;
-
+    [SerializeField] private string objectiveIDOnMapOpen;
     private void Update()
     {
         if (isMapOpen && Time.frameCount > mapOpenedFrame && Input.GetKeyDown(KeyCode.E))
@@ -25,33 +25,12 @@ public class NPCMapTrigger : MonoBehaviour
     {
         if (mapController == null)
         {
-            mapController = FindFirstObjectByType<MapController>(FindObjectsInactive.Include);
-        }
-
-        if (mapController == null)
-        {
-            Debug.LogWarning("[NPCMapTrigger] MapController tidak ditemukan di scene!");
-            return;
-        }
-
-        // Jika map sedang tertutup di hierarchy, reset status isMapOpen
-        if (mapController.worldMapCanvasGroup != null && !mapController.worldMapCanvasGroup.gameObject.activeInHierarchy)
-        {
-            isMapOpen = false;
-        }
-
-        if (!QuestJournalManager.CanLeaveCurrentIslandForMap())
-        {
-            isMapOpen = false;
-            MapController.HideCanvasGroupImmediate(mapController.worldMapCanvasGroup);
-            Time.timeScale = 1f;
-            Debug.Log("[NPCMapTrigger] Dialog NPCMap selesai, namun MapMenuPanel disembunyikan karena semua quest pulau ini belum selesai.");
+            Debug.LogWarning($"[{nameof(NPCMapTrigger)}] MapController belum di-assign pada {name}.");
             return;
         }
 
         if (isMapOpen) return;
 
-        // Buka peta dunia tanpa menyelesaikan quest atau membuka award secara prematur
         mapController.OpenWorldMap();
         if (openMapSfx != null)
         {
@@ -59,26 +38,42 @@ public class NPCMapTrigger : MonoBehaviour
         }
         isMapOpen = true;
         mapOpenedFrame = Time.frameCount;
+        CompleteMapObjective();
         PlayPopupAnimation(true);
     }
 
-    public void ResetMapState()
+    private void CompleteMapObjective()
     {
-        isMapOpen = false;
+        if (string.IsNullOrWhiteSpace(objectiveIDOnMapOpen))
+        {
+            return;
+        }
+
+        QuestController questController = QuestController.Instance;
+        if (questController == null || questController.ActiveQuests == null)
+        {
+            return;
+        }
+
+        foreach (Quest quest in questController.ActiveQuests)
+        {
+            QuestObjective objective = quest != null ? quest.GetObjective(objectiveIDOnMapOpen) : null;
+            if (objective == null || objective.IsComplete)
+            {
+                continue;
+            }
+
+            questController.ProgressObjective(objectiveIDOnMapOpen);
+            return;
+        }
     }
 
     public void CloseWorldMap()
     {
-        if (mapController == null)
-        {
-            mapController = FindFirstObjectByType<MapController>(FindObjectsInactive.Include);
-        }
+        if (mapController == null || !isMapOpen) return;
 
         isMapOpen = false;
-        if (mapController != null)
-        {
-            PlayPopupAnimation(false);
-        }
+        PlayPopupAnimation(false);
     }
 
     private void PlayPopupAnimation(bool opening)

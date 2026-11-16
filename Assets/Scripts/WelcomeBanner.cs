@@ -14,8 +14,6 @@ public class WelcomeBanner : MonoBehaviour
     public Vector2 slideOffset = new Vector2(0, -60f); // Jarak melayang dari bawah
 
     private Vector2 originalPosition;
-    private bool isBannerPlaying = false;
-    private GameObject cachedPlayerObj;
 
     private void Start()
     {
@@ -30,84 +28,8 @@ public class WelcomeBanner : MonoBehaviour
         bannerTransform.anchoredPosition = originalPosition + slideOffset;
         bannerGroup.alpha = 0f;
 
-        // KUNCI GERAKAN PLAYER SELAMA BANNER BERLANGSUNG
-        isBannerPlaying = true;
-        SetPlayerMovementLock(true);
-
         // Jalankan animasi
         StartCoroutine(PlayBannerAnimation());
-    }
-
-    private void Update()
-    {
-        // Pastikan player tetap terkunci selama animasi banner belum selesai
-        if (isBannerPlaying)
-        {
-            EnsurePlayerLocked();
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (isBannerPlaying)
-        {
-            isBannerPlaying = false;
-            SetPlayerMovementLock(false);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (isBannerPlaying)
-        {
-            isBannerPlaying = false;
-            SetPlayerMovementLock(false);
-        }
-    }
-
-    private void EnsurePlayerLocked()
-    {
-        SetPlayerMovementLock(true);
-    }
-
-    private void SetPlayerMovementLock(bool isLocked)
-    {
-        if (cachedPlayerObj == null)
-        {
-            cachedPlayerObj = GameObject.FindGameObjectWithTag("Player");
-            if (cachedPlayerObj == null) cachedPlayerObj = GameObject.Find("Player");
-        }
-
-        if (cachedPlayerObj != null)
-        {
-            Player player = cachedPlayerObj.GetComponent<Player>();
-            if (player != null)
-            {
-                player.isMovementLocked = isLocked;
-                player.enabled = true;
-            }
-
-            PlayerSwim swim = cachedPlayerObj.GetComponent<PlayerSwim>();
-            if (swim != null)
-            {
-                swim.isMovementLocked = isLocked;
-            }
-
-            Rigidbody2D rb = cachedPlayerObj.GetComponent<Rigidbody2D>();
-            if (rb != null && isLocked)
-            {
-                rb.linearVelocity = Vector2.zero;
-            }
-
-            Animator anim = cachedPlayerObj.GetComponent<Animator>();
-            if (anim != null && isLocked)
-            {
-                if (player != null && player.isSwimming)
-                    anim.Play("Player_swim");
-                else
-                    anim.Play("Player_Idle");
-            }
-        }
     }
 
     private IEnumerator PlayBannerAnimation()
@@ -148,11 +70,6 @@ public class WelcomeBanner : MonoBehaviour
         }
 
         bannerGroup.alpha = 0f;
-
-        // BUKA KUNCI GERAKAN PLAYER SETELAH BANNER SELESAI MENGHILANG LENGKAP
-        isBannerPlaying = false;
-        SetPlayerMovementLock(false);
-
         gameObject.SetActive(false); // Matikan agar tidak memberatkan memori
     }
 }

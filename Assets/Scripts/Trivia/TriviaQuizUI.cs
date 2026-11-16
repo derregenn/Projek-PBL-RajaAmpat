@@ -8,10 +8,12 @@ public class TriviaQuizUI : MonoBehaviour
     public static TriviaQuizUI Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private Dialogue dialogueSystem;     // Drag NPC/Dialogue ke sini
     [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol di bawah
+    [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
+    [SerializeField] private Color correctBorderColor = new Color(0.2f, 0.82f, 0.48f);
+    [SerializeField] private Color wrongBorderColor = new Color(0.94f, 0.22f, 0.25f);
 
     [Header("Audio Settings (Pattern Recognition & Feedback)")]
     [SerializeField] private AudioSource audioSource;
@@ -43,6 +45,7 @@ public class TriviaQuizUI : MonoBehaviour
     private bool isQuizActive = false;
     private bool canPressEToClose = false;
     private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
+    private Outline feedbackOutline;
 
     private void Awake()
     {
@@ -55,6 +58,16 @@ public class TriviaQuizUI : MonoBehaviour
         Instance = this;
 
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText == null && choicesPanel != null)
+        {
+            Transform questionTransform = choicesPanel.transform.Find("QuestionText");
+            if (questionTransform != null)
+            {
+                questionText = questionTransform.GetComponent<TextMeshProUGUI>();
+            }
+        }
+
+        SetupFeedbackOutline();
 
         // Setup audio source otomatis jika belum diset di inspector
         if (audioSource == null)
@@ -72,7 +85,10 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void Update()
     {
-        // Trivia diselesaikan dengan memilih jawaban tombol (A, B, C / klik) agar pemain tidak sengaja membatalkan kuis saat menekan E dari dialog sebelumnya
+        if (isQuizActive && canPressEToClose && Input.GetKeyDown(closeKey) && !isShowingFeedback)
+        {
+            CloseQuiz();
+        }
     }
 
     public void StartQuiz(TriviaQuestion[] questions, System.Action onComplete)
@@ -97,6 +113,8 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void ShowQuestion()
     {
+        SetFeedbackOutline(false, false);
+
         if (currentQuestionIndex >= currentQuestions.Length)
         {
             EndQuiz();
@@ -108,25 +126,11 @@ public class TriviaQuizUI : MonoBehaviour
         // Mainkan SFX setiap kali pertanyaan ditampilkan.
         PlaySFX(startQuizSFX);
 
-        // 1. Tampilkan teks pertanyaan di kotak dialog NPC dengan format standout dua baris
-        if (dialogueSystem != null)
-        {
-            string standoutQuestion = FormatStandoutQuestion(q.questionText, currentQuestionIndex);
-            dialogueSystem.ShowTriviaQuestion(standoutQuestion);
-        }
+        if (questionText != null) questionText.text = q.questionText;
 
-        // 2. Tampilkan panel tombol opsi jawaban (pastikan posisinya cukup ke bawah agar tidak menutupi karakter / dialog)
-        if (choicesPanel != null)
-        {
-            RectTransform rt = choicesPanel.GetComponent<RectTransform>();
-            if (rt != null && rt.anchoredPosition.y > -60f)
-            {
-                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -85f);
-            }
-            choicesPanel.SetActive(true);
-        }
+        // Tampilkan panel soal dan opsi jawaban.
+        if (choicesPanel != null) choicesPanel.SetActive(true);
 
-        // 3. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
         for (int i = 0; i < optionButtons.Length; i++)
         {
             if (i < q.options.Length)
@@ -161,7 +165,7 @@ public class TriviaQuizUI : MonoBehaviour
             // SFX Jawaban Benar
             PlaySFX(correctAnswerSFX);
 
-            // Jawaban Benar -> Tampilkan feedback di dialogue NPC lalu lanjut ke pertanyaan berikutnya
+            // Jawaban benar menampilkan feedback sebelum lanjut ke soal berikutnya.
             string successMsg = GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
             StartCoroutine(ShowFeedbackRoutine(successMsg, true));
         }
@@ -170,7 +174,7 @@ public class TriviaQuizUI : MonoBehaviour
             // SFX Jawaban Salah
             PlaySFX(wrongAnswerSFX);
 
-            // Jawaban Salah -> Tampilkan feedback di dialogue NPC lalu ulangi pertanyaan
+            // Jawaban salah menampilkan feedback sebelum mengulang soal.
             string wrongMsg = GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
             StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
         }
@@ -186,49 +190,18 @@ public class TriviaQuizUI : MonoBehaviour
         return defaultMessage;
     }
 
-    private string FormatStandoutQuestion(string rawQuestion, int index)
-    {
-        if (string.IsNullOrEmpty(rawQuestion)) return "";
-
-        string numberWord;
-        switch (index)
-        {
-            case 0: numberWord = "pertama"; break;
-            case 1: numberWord = "kedua"; break;
-            case 2: numberWord = "ketiga"; break;
-            case 3: numberWord = "keempat"; break;
-            case 4: numberWord = "kelima"; break;
-            default: numberWord = $"ke-{index + 1}"; break;
-        }
-
-        string header = $"Pertanyaan {numberWord}:";
-
-        string body = rawQuestion.Trim();
-        // Bersihkan jika pertanyaan aslinya sudah memiliki awalan "Pertanyaan pertama," dsb
-        System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(
-            @"^Pertanyaan\s*(pertama|kedua|ketiga|keempat|kelima|terakhir|ke-\d+|\d+)\s*[,:]?\s*",
-            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-        body = regex.Replace(body, "").Trim();
-
-        if (!string.IsNullOrEmpty(body))
-        {
-            body = char.ToUpper(body[0]) + body.Substring(1);
-        }
-
-        return $"<b><color=#FFD700>{header}</color></b>\n{body}";
-    }
-
     private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect)
     {
         isShowingFeedback = true;
+        SetFeedbackOutline(true, isCorrect);
 
-        // Sembunyikan panel pilihan jawaban saat feedback ditampilkan di kotak dialog
-        if (choicesPanel != null) choicesPanel.SetActive(false);
-
-        // Kirim teks feedback langsung ke dialogue box NPC
-        if (dialogueSystem != null)
+        if (questionText != null) questionText.text = feedbackMessage;
+        if (optionButtons != null)
         {
-            dialogueSystem.ShowTriviaQuestion(feedbackMessage);
+            foreach (Button button in optionButtons)
+            {
+                if (button != null) button.gameObject.SetActive(false);
+            }
         }
 
         // Tunggu sebentar agar player sempat membaca feedback
@@ -251,20 +224,24 @@ public class TriviaQuizUI : MonoBehaviour
     public void CloseQuiz()
     {
         ResetButtonScales();
+        SetFeedbackOutline(false, false);
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText != null) questionText.text = string.Empty;
     }
 
     private void EndQuiz()
     {
         StopAllCoroutines();
         ResetButtonScales();
+        SetFeedbackOutline(false, false);
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText != null) questionText.text = string.Empty;
 
         System.Action completed = onQuizCompleted;
         onQuizCompleted = null;
@@ -298,6 +275,32 @@ public class TriviaQuizUI : MonoBehaviour
             var hoverComp = btn.GetComponent<TriviaButtonHover>();
             if (hoverComp != null) hoverComp.ResetScaleInstant();
         }
+    }
+
+    private void SetupFeedbackOutline()
+    {
+        if (questionText == null || questionText.transform.parent == null) return;
+
+        Graphic borderGraphic = questionText.transform.parent.GetComponent<Graphic>();
+        if (borderGraphic == null) return;
+
+        feedbackOutline = borderGraphic.GetComponent<Outline>();
+        if (feedbackOutline == null)
+        {
+            feedbackOutline = borderGraphic.gameObject.AddComponent<Outline>();
+        }
+
+        feedbackOutline.effectDistance = new Vector2(6f, 6f);
+        feedbackOutline.useGraphicAlpha = false;
+        feedbackOutline.enabled = false;
+    }
+
+    private void SetFeedbackOutline(bool visible, bool isCorrect)
+    {
+        if (feedbackOutline == null) return;
+
+        feedbackOutline.effectColor = isCorrect ? correctBorderColor : wrongBorderColor;
+        feedbackOutline.enabled = visible;
     }
 
     public void PlaySFX(AudioClip clip)

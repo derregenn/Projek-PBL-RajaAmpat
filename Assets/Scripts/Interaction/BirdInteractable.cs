@@ -43,9 +43,18 @@ public class BirdInteractable : MonoBehaviour
     [SerializeField] private GameObject promptFotoUI; // UI tulisan "Tekan F"
     [SerializeField] private GameObject flashEffect;  // UI Canvas Putih untuk efek kilat kamera
 
+    [Header("Journal & Photo Settings")]
+    [Tooltip("ID foto pada database foto QuestJournalManager")]
+    [SerializeField] private int photoID;
+    [Tooltip("ID halaman jurnal yang dibuka saat foto diambil")]
+    [SerializeField] private int pageIDToUnlock = 1;
+
     [Header("Quest Objective")]
     [Tooltip("ID Objective untuk diserahkan ke Pembisnis Foto")]
     [SerializeField] private string objectiveID = "serahkan_foto_pembisnis";
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent onObjectiveEnd;
 
     private bool canTakePhoto = false;
     private bool isPhotoDone = false;
@@ -219,15 +228,27 @@ public class BirdInteractable : MonoBehaviour
         if (flashEffect != null)
         {
             flashEffect.SetActive(true);
-            Invoke(nameof(MatikanFlash), 1f); // Flash kilat selama 0.15 detik
+            Invoke(nameof(MatikanFlash), 1f);
         }
 
-        // Update Quest Controller sesuai Guideline Poin 10
-        if (QuestController.Instance != null)
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.TakeSpecificPhoto(photoID);
+            QuestJournalManager.Instance.UnlockNewPage(pageIDToUnlock);
+            Debug.Log($"[Cenderawasih] Foto ID {photoID} diambil & halaman jurnal ID {pageIDToUnlock} dibuka.");
+        }
+        else
+        {
+            Debug.LogWarning("[Cenderawasih] QuestJournalManager.Instance tidak ditemukan di scene!");
+        }
+
+        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, 1);
-            Debug.Log("[Cenderawasih] Foto diambil! Objective diupdate: Serahkan Hasil Foto kepada Pembisnis Foto");
+            Debug.Log($"[Cenderawasih] Objective '{objectiveID}' berhasil.");
         }
+
+        onObjectiveEnd?.Invoke();
     }
 
     private void MatikanFlash()

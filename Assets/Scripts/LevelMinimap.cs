@@ -34,6 +34,8 @@ public class LevelMinimap : MonoBehaviour
     void Start()
     {
         trackWidth = trackBar.rect.width > 0 ? trackBar.rect.width : trackBar.sizeDelta.x;
+        playerIcon.anchorMin = new Vector2(0f, 0.5f);
+        playerIcon.anchorMax = new Vector2(0f, 0.5f);
         SpawnQuestIcons();
     }
 
@@ -46,7 +48,10 @@ public class LevelMinimap : MonoBehaviour
 
         float playerProgress = (player.position.x - startPoint.position.x) / totalDistance;
         playerProgress = Mathf.Clamp01(playerProgress);
-        playerIcon.anchoredPosition = new Vector2(playerProgress * trackWidth, playerIcon.anchoredPosition.y);
+        float iconHalfWidth = playerIcon.rect.width * Mathf.Abs(playerIcon.localScale.x) * 0.5f;
+        float iconOffset = Mathf.Min(iconHalfWidth, trackWidth * 0.5f);
+        float playerX = Mathf.Lerp(iconOffset, trackWidth - iconOffset, playerProgress);
+        playerIcon.anchoredPosition = new Vector2(playerX, playerIcon.anchoredPosition.y);
 
         CheckPassedQuests();
     }

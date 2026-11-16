@@ -27,11 +27,6 @@ public class MainMenu : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
 
-        if (QuestJournalManager.Instance != null)
-        {
-            QuestJournalManager.Instance.ResetAllProgress(false);
-        }
-
         if (GamePhaseManager.Instance != null)
         {
             GamePhaseManager.Instance.ResetAllProgress();
@@ -40,11 +35,6 @@ public class MainMenu : MonoBehaviour
         if (StoryManager.Instance != null)
         {
             StoryManager.Instance.ResetProgress();
-        }
-
-        if (MasterQuestManager.Instance != null)
-        {
-            MasterQuestManager.Instance.ResetAllProgress();
         }
 
         if (QuestController.Instance != null)

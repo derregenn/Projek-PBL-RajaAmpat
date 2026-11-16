@@ -48,14 +48,22 @@ public class MasterQuestManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(_instance.gameObject);
         }
+
         _instance = this;
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         DetectIslandFromActiveScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+        }
     }
 
     private void OnEnable()
@@ -212,8 +220,31 @@ public class MasterQuestManager : MonoBehaviour
                 var seaManager = FindFirstObjectByType<MisoolSeaManager>();
                 seaManager?.RefreshSeaState();
                 break;
-            default:
-                IslandCompletedStateRestorer.RestoreActiveSceneState();
+
+            case IslandType.Sawinggrai:
+                SawinggraiLandSceneManager.Instance?.RefreshLandState();
+                var sawSeaManager = FindFirstObjectByType<SawinggraiSeaManager>();
+                sawSeaManager?.RefreshSeaState();
+                break;
+
+            case IslandType.Waisai:
+                WaisaiLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Piaynemo:
+                PianemoLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Arborek:
+                ArborekLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Friwen:
+                FriwenLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Gag:
+                GagSceneManager.Instance?.RefreshSceneState();
                 break;
         }
     }
