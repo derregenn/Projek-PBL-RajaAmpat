@@ -77,6 +77,10 @@ public class QuestJournalManager : MonoBehaviour
     public List<IslandAwardData> islandAwards = new List<IslandAwardData>();
     public Image awardRajaAmpat;
     public Image awardSecretEnding;
+    public Sprite awardRajaAmpatLockedSprite;
+    public Sprite awardRajaAmpatUnlockedSprite;
+    public Sprite awardSecretEndingLockedSprite;
+    public Sprite awardSecretEndingUnlockedSprite;
     public TextMeshProUGUI trashStatusText;
 
     [Header("Halaman Jurnal (Kanan)")]
@@ -294,6 +298,10 @@ public class QuestJournalManager : MonoBehaviour
         if (sceneManager.completedText3 != null) this.completedText3 = sceneManager.completedText3;
         if (sceneManager.awardRajaAmpat != null) this.awardRajaAmpat = sceneManager.awardRajaAmpat;
         if (sceneManager.awardSecretEnding != null) this.awardSecretEnding = sceneManager.awardSecretEnding;
+        if (sceneManager.awardRajaAmpatLockedSprite != null) this.awardRajaAmpatLockedSprite = sceneManager.awardRajaAmpatLockedSprite;
+        if (sceneManager.awardRajaAmpatUnlockedSprite != null) this.awardRajaAmpatUnlockedSprite = sceneManager.awardRajaAmpatUnlockedSprite;
+        if (sceneManager.awardSecretEndingLockedSprite != null) this.awardSecretEndingLockedSprite = sceneManager.awardSecretEndingLockedSprite;
+        if (sceneManager.awardSecretEndingUnlockedSprite != null) this.awardSecretEndingUnlockedSprite = sceneManager.awardSecretEndingUnlockedSprite;
         if (sceneManager.trashStatusText != null) this.trashStatusText = sceneManager.trashStatusText;
         if (sceneManager.tabOngoingSprite != null) this.tabOngoingSprite = sceneManager.tabOngoingSprite;
         if (sceneManager.tabCompletedSprite != null) this.tabCompletedSprite = sceneManager.tabCompletedSprite;
@@ -1055,22 +1063,63 @@ public class QuestJournalManager : MonoBehaviour
             }
         }
 
-        // Update Award Raja Ampat & Secret Ending
-        bool allIslandsDone = false;
-        if (GamePhaseManager.Instance != null)
-        {
-            allIslandsDone = GamePhaseManager.Instance.GetCurrentPercentage() >= 99f;
-        }
+        // Update Award Raja Ampat (Tamat) & Secret Ending
+        bool allMainIslandsUnlocked =
+            IsIslandUnlocked(IslandName.Piaynemo) &&
+            IsIslandUnlocked(IslandName.Arborek) &&
+            IsIslandUnlocked(IslandName.Misool) &&
+            IsIslandUnlocked(IslandName.Friwen) &&
+            IsIslandUnlocked(IslandName.Sawinggrai) &&
+            IsIslandUnlocked(IslandName.Gag);
 
-        if (awardRajaAmpat != null)
-        {
-            awardRajaAmpat.color = allIslandsDone ? Color.white : new Color(0.25f, 0.25f, 0.25f, 0.85f);
-        }
+        bool allIslandsDone =
+            PlayerPrefs.GetInt("GameCompleted", 0) == 1 ||
+            (GamePhaseManager.Instance != null && GamePhaseManager.Instance.GetCurrentPercentage() >= 99f) ||
+            allMainIslandsUnlocked;
 
-        if (awardSecretEnding != null)
+        UpdateSpecialAwardVisual(
+            awardRajaAmpat,
+            allIslandsDone,
+            awardRajaAmpatLockedSprite,
+            awardRajaAmpatUnlockedSprite
+        );
+
+        int sasiCount = PlayerPrefs.GetInt("Sasi_Count", 0);
+        int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
+        bool secretEndingUnlocked = allIslandsDone && (sasiCount >= 2 || trashCount >= 20);
+
+        UpdateSpecialAwardVisual(
+            awardSecretEnding,
+            secretEndingUnlocked,
+            awardSecretEndingLockedSprite,
+            awardSecretEndingUnlockedSprite
+        );
+    }
+
+    private static void UpdateSpecialAwardVisual(Image awardImage, bool isUnlocked, Sprite lockedSprite, Sprite unlockedSprite)
+    {
+        if (awardImage == null) return;
+        awardImage.preserveAspect = true;
+
+        if (isUnlocked)
         {
-            int sasiCount = PlayerPrefs.GetInt("Sasi_Count", 0);
-            awardSecretEnding.color = (allIslandsDone && sasiCount >= 2) ? Color.white : new Color(0.25f, 0.25f, 0.25f, 0.85f);
+            if (unlockedSprite != null)
+            {
+                awardImage.sprite = unlockedSprite;
+            }
+            awardImage.color = Color.white;
+        }
+        else
+        {
+            if (lockedSprite != null)
+            {
+                awardImage.sprite = lockedSprite;
+                awardImage.color = Color.white;
+            }
+            else
+            {
+                awardImage.color = new Color(0.25f, 0.25f, 0.25f, 0.85f);
+            }
         }
     }
 
@@ -1354,6 +1403,7 @@ public class QuestJournalManager : MonoBehaviour
 
         TrashInteractable.totalCollected = 20;
         PlayerPrefs.SetInt("TotalTrashCollected", 20);
+        PlayerPrefs.SetInt("Sasi_Count", 2);
         PlayerPrefs.SetInt("Misool_QuestStage", 9);
         PlayerPrefs.SetInt("Visited_10_Gag", 1);
         PlayerPrefs.SetInt("GameCompleted", 1);

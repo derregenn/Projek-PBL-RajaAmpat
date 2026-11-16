@@ -44,11 +44,36 @@ public class QuestTabUI : MonoBehaviour
     public Image awardSawinggrai;
     public Image awardRajaAmpat;
     public Image awardSecretEnding;
+    public Sprite awardRajaAmpatLockedSprite;
+    public Sprite awardRajaAmpatUnlockedSprite;
+    public Sprite awardSecretEndingLockedSprite;
+    public Sprite awardSecretEndingUnlockedSprite;
     public TMPro.TextMeshProUGUI trashStatusText;
 
     [Header("Canvas Sorting")]
     [Tooltip("Sorting order to ensure QuestTabUI renders above Canvas_HUD (order 0)")]
     public int journalSortingOrder = 30;
+
+    private void Awake()
+    {
+        EnsureStandardTransform();
+        EnsureCanvasSortingOrder();
+        RegisterToJournalManager();
+    }
+
+    private void Start()
+    {
+        EnsureStandardTransform();
+        EnsureCanvasSortingOrder();
+        RegisterToJournalManager();
+    }
+
+    private void OnEnable()
+    {
+        EnsureStandardTransform();
+        EnsureCanvasSortingOrder();
+        RegisterToJournalManager();
+    }
 
     public void EnsureStandardTransform()
     {
@@ -81,23 +106,11 @@ public class QuestTabUI : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        RegisterToJournalManager();
-    }
-
-    private void Start()
-    {
-        RegisterToJournalManager();
-    }
-
-    private void OnEnable()
-    {
-        RegisterToJournalManager();
-    }
-
     public void RegisterToJournalManager()
     {
+        EnsureCanvasSortingOrder();
+        EnsureSpecialAwardsInCollectibles();
+
         QuestJournalManager manager = QuestJournalManager.Instance;
         if (manager == null)
         {
@@ -119,6 +132,10 @@ public class QuestTabUI : MonoBehaviour
             if (completedText3 != null) manager.completedText3 = completedText3;
             if (awardRajaAmpat != null) manager.awardRajaAmpat = awardRajaAmpat;
             if (awardSecretEnding != null) manager.awardSecretEnding = awardSecretEnding;
+            if (awardRajaAmpatLockedSprite != null) manager.awardRajaAmpatLockedSprite = awardRajaAmpatLockedSprite;
+            if (awardRajaAmpatUnlockedSprite != null) manager.awardRajaAmpatUnlockedSprite = awardRajaAmpatUnlockedSprite;
+            if (awardSecretEndingLockedSprite != null) manager.awardSecretEndingLockedSprite = awardSecretEndingLockedSprite;
+            if (awardSecretEndingUnlockedSprite != null) manager.awardSecretEndingUnlockedSprite = awardSecretEndingUnlockedSprite;
             if (trashStatusText != null) manager.trashStatusText = trashStatusText;
             if (journalPageImage != null) manager.journalPageImage = journalPageImage;
             if (journalPhotoImage != null) manager.journalPhotoImage = journalPhotoImage;
@@ -158,6 +175,81 @@ public class QuestTabUI : MonoBehaviour
             AssignAwardImage(manager, IslandName.Sawinggrai, awardSawinggrai);
 
             manager.UpdateAllJournalSystems();
+        }
+    }
+
+    private void EnsureSpecialAwardsInCollectibles()
+    {
+        Transform collectiblesTransform = transform.Find("Collectibles");
+        if (collectiblesTransform == null && awardGag != null)
+        {
+            collectiblesTransform = awardGag.transform.parent;
+        }
+        if (collectiblesTransform == null && awardPiaynemo != null)
+        {
+            collectiblesTransform = awardPiaynemo.transform.parent;
+        }
+
+        if (awardSecretEnding == null && collectiblesTransform != null)
+        {
+            awardSecretEnding = FindOrCreateSpecialAward(
+                collectiblesTransform,
+                new[] { "Award_SecretEnding", "Award_Secret Ending" },
+                "Award_SecretEnding",
+                new Vector2(290f, 0f)
+            );
+        }
+
+        if (awardRajaAmpat == null && collectiblesTransform != null)
+        {
+            awardRajaAmpat = FindOrCreateSpecialAward(
+                collectiblesTransform,
+                new[] { "Award_Tampat", "Award_RajaAmpat" },
+                "Award_Tampat",
+                new Vector2(405f, 0f)
+            );
+        }
+
+        NormalizeSpecialAwardTransform(awardSecretEnding);
+        NormalizeSpecialAwardTransform(awardRajaAmpat);
+    }
+
+    private Image FindOrCreateSpecialAward(Transform parent, string[] candidateNames, string createName, Vector2 anchoredPosition)
+    {
+        for (int i = 0; i < candidateNames.Length; i++)
+        {
+            Transform existing = parent.Find(candidateNames[i]);
+            if (existing != null)
+            {
+                Image existingImage = existing.GetComponent<Image>();
+                if (existingImage != null) return existingImage;
+            }
+        }
+
+        GameObject awardObj = new GameObject(createName, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        awardObj.layer = parent.gameObject.layer;
+        awardObj.transform.SetParent(parent, false);
+
+        RectTransform rt = awardObj.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = anchoredPosition;
+        rt.sizeDelta = new Vector2(87f, 76f);
+        rt.localScale = new Vector3(1f, 4.65f, 1f);
+
+        Image img = awardObj.GetComponent<Image>();
+        img.preserveAspect = true;
+        return img;
+    }
+
+    private void NormalizeSpecialAwardTransform(Image img)
+    {
+        if (img == null) return;
+        img.preserveAspect = true;
+        if (img.rectTransform != null)
+        {
+            img.rectTransform.localScale = new Vector3(1f, 4.65f, 1f);
         }
     }
 
