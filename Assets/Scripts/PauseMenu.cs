@@ -7,12 +7,25 @@ public class PauseMenu : MonoBehaviour
 
     private void Awake()
     {
+        if (DisableIfModernPauseExists()) return;
         EnsureBinder();
     }
 
     private void Start()
     {
+        if (DisableIfModernPauseExists()) return;
         EnsureBinder();
+    }
+
+    private bool DisableIfModernPauseExists()
+    {
+        if (GameManager.Instance != null || PauseManager.Instance != null || FindFirstObjectByType<PauseManager>(FindObjectsInactive.Include) != null)
+        {
+            if (container != null) container.SetActive(false);
+            gameObject.SetActive(false);
+            return true;
+        }
+        return false;
     }
 
     private void EnsureBinder()

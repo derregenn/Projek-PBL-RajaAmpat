@@ -66,6 +66,7 @@ public class QuestTabUI : MonoBehaviour
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
+        StartCoroutine(RefreshStandardTransformNextFrame());
     }
 
     private void OnEnable()
@@ -75,18 +76,75 @@ public class QuestTabUI : MonoBehaviour
         RegisterToJournalManager();
     }
 
+    private void OnRectTransformDimensionsChange()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            EnsureStandardTransform();
+        }
+    }
+
+    private System.Collections.IEnumerator RefreshStandardTransformNextFrame()
+    {
+        yield return null;
+        EnsureStandardTransform();
+    }
+
     public void EnsureStandardTransform()
     {
         RectTransform rt = GetComponent<RectTransform>();
-        if (rt != null)
+        if (rt == null) return;
+
+        float factor = ComputeParentCanvasScaleFactor();
+
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.sizeDelta = new Vector2(1197.1f, 566.82f);
+        rt.localScale = new Vector3(0.63567f * factor, 0.66664f * factor, 0.97687f * factor);
+        rt.anchoredPosition = new Vector2(0.45939f * factor, 7f * factor);
+    }
+
+    private float ComputeParentCanvasScaleFactor()
+    {
+        if (transform.parent == null) return 1f;
+
+        Canvas rootParentCanvas = transform.parent.GetComponentInParent<Canvas>(true);
+        if (rootParentCanvas == null) return 1f;
+
+        RectTransform canvasRt = rootParentCanvas.GetComponent<RectTransform>();
+        CanvasScaler scaler = rootParentCanvas.GetComponent<CanvasScaler>();
+
+        float canvasWidth = canvasRt != null ? canvasRt.rect.width : 0f;
+        float canvasHeight = canvasRt != null ? canvasRt.rect.height : 0f;
+
+        if (canvasWidth <= 10f || canvasHeight <= 10f)
         {
-            rt.anchorMin = new Vector2(0.5f, 0.5f);
-            rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(1197.1f, 566.82f);
-            rt.localScale = new Vector3(0.63567f, 0.66664f, 0.97687f);
-            rt.anchoredPosition = new Vector2(0.45939f, 7f);
+            float sw = Screen.width > 0 ? Screen.width : 1920f;
+            float sh = Screen.height > 0 ? Screen.height : 1080f;
+            float aspect = sw / sh;
+
+            if (scaler != null && scaler.uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize &&
+                scaler.referenceResolution.x > 0f && scaler.referenceResolution.y > 0f)
+            {
+                float wFromWidth = scaler.referenceResolution.x;
+                float wFromHeight = scaler.referenceResolution.y * aspect;
+                canvasWidth = Mathf.Lerp(wFromWidth, wFromHeight, scaler.matchWidthOrHeight);
+                canvasHeight = canvasWidth / aspect;
+            }
+            else
+            {
+                canvasWidth = sw;
+                canvasHeight = sh;
+            }
         }
+
+        if (canvasWidth > 10f && canvasHeight > 10f)
+        {
+            return Mathf.Clamp(Mathf.Min(canvasWidth / 800f, canvasHeight / 450f), 0.5f, 4f);
+        }
+
+        return 1f;
     }
 
     public void EnsureCanvasSortingOrder()

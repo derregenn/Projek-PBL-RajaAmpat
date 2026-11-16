@@ -128,10 +128,7 @@ public class FriwenEventManager : MonoBehaviour
 
         if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
 
-        // Kembalikan prioritas kamera ke pemain sebelum fade in agar layar fokus ke pemain & warlok saat QTE
-        if (camViewPerahu != null) camViewPerahu.Priority.Value = 0;
-        if (playerCamera != null) playerCamera.Priority.Value = 10;
-
+        // Kamera tetap di camViewPerahu saat QTE, baru di-reset di RoutineQTESelesai / RoutineQTEGagal
         if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
 
         SetPlayerCrouch(true);
@@ -218,12 +215,13 @@ public class FriwenEventManager : MonoBehaviour
         if (playerScript == null) playerScript = FindFirstObjectByType<Player>();
         if (playerScript == null) return;
 
-        playerScript.enabled = !freeze;
+        playerScript.isMovementLocked = freeze;
+        playerScript.enabled = true;
 
         Rigidbody2D rb = playerScript.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.linearVelocity = Vector2.zero; 
+            rb.linearVelocity = Vector2.zero;
         }
 
         if (freeze)

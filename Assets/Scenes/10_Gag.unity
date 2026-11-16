@@ -1368,6 +1368,7 @@ MonoBehaviour:
   - Warga lokal di sini sangat terdampak oleh pencemaran ini.
   - Beliau perlu tahu hasil temuan lapangan ini, sekaligus butuh pasokan air bersih
   DialogueLineSpeakers: 00000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 118326636}
@@ -1381,7 +1382,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -1399,7 +1399,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &118326640
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4357,6 +4356,7 @@ MonoBehaviour:
     segera saya ajukan ke pusat '
   - Terima kasih banyak atas airnya, hati-hati di jalan ya mba!
   DialogueLineSpeakers: 000000000100000000000000010000000000000000000000010000000000000000000000000000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 333385656}
@@ -4370,7 +4370,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -4412,7 +4411,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &333385658
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10349,6 +10347,7 @@ MonoBehaviour:
   - 'Kamu akan melihat apa yang sebenarnya terjadi pada tanah kami  '
   - 'Kamu akan melihat apa yang sebenarnya terjadi pada tanah kami  '
   DialogueLineSpeakers: 010000000000000000000000010000000100000000000000000000000000000000000000000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1102240332}
@@ -10362,7 +10361,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -10404,7 +10402,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &1102240329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11343,6 +11340,7 @@ MonoBehaviour:
     air bersih yang tersisa '
   - 'Baik pak '
   DialogueLineSpeakers: 010000000000000000000000000000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1196625911}
@@ -11356,7 +11354,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -11386,7 +11383,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &1196625908
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13740,8 +13736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90951f3c7e444745a756eeef8064177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriviaQuizUI
-  dialogueSystem: {fileID: 0}
   choicesPanel: {fileID: 1619692036}
+  questionText: {fileID: 0}
   optionButtons:
   - {fileID: 1619692035}
   - {fileID: 1619692033}
@@ -13750,6 +13746,8 @@ MonoBehaviour:
   - {fileID: 1619692034}
   - {fileID: 1619692032}
   - {fileID: 1619692030}
+  correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
+  wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
   audioSource: {fileID: 0}
   startQuizSFX: {fileID: 0}
   buttonHoverSFX: {fileID: 0}
@@ -15502,6 +15500,7 @@ MonoBehaviour:
   - Mau saya ambilkan makanan pak?
   - 'Boleh nak, maaf saya belum bisa berbuat apa-apa sekarang '
   DialogueLineSpeakers: 010000000000000000000000000000000100000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1665425519}
@@ -15515,7 +15514,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -15545,7 +15543,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &1665425516
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16787,6 +16784,7 @@ MonoBehaviour:
   DialogueLines:
   - OK GAS (belom ada dialog)
   DialogueLineSpeakers: 00000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1809582165}
@@ -16800,13 +16798,11 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &1809582167
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17247,6 +17243,7 @@ MonoBehaviour:
   - 'Bawa kisah ini pulang, agar dunia tahu bahwa surga ini butuh dijaga bersama  '
   - 'Bawa kisah ini pulang, agar dunia tahu bahwa surga ini butuh dijaga bersama  '
   DialogueLineSpeakers: 010000000000000000000000000000000000000000000000000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1827736612}
@@ -17260,7 +17257,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -17290,7 +17286,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1.8
 --- !u!61 &1827736609
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17975,13 +17970,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  sceneTujuanEnding: 02_Waisai
+  sceneTujuanEnding: 11_Waisai Ending
   cutsceneManager: {fileID: 59106293}
   sunsetPortraits:
   - {fileID: 3888252877740673255, guid: 249c703ac0e32e34cb370593383c1648, type: 3}
   sunsetDialogues:
-  - Matahari mulai terbenam di barat Pulau Gag, memancarkan semburat jingga di atas
-    pantai berpasir merah...
+  - Matahari mulai terbenam di barat Pulau Gag, memancarkan semburat jingga di atas pantai berpasir merah...
   OnGameFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -18660,6 +18654,7 @@ MonoBehaviour:
   - Biar saya bantu ambilkan Mba, pakai botol yang saya bawa
   - Wah, terima kasih banyak!
   DialogueLineSpeakers: 000000000000000001000000000000000000000000000000010000000000000000000000000000000000000000000000000000000100000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 2022872709}
@@ -18673,7 +18668,6 @@ MonoBehaviour:
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
-  zoomTransitionDuration: 1
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -18691,7 +18685,6 @@ MonoBehaviour:
         m_CallState: 2
   postQuestLoopLines: []
   isPostQuestLoop: 0
-  interactDistance: 1
 --- !u!61 &2022872705
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19671,10 +19664,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -5, y: -26}
+    - - {x: 16.810646, y: -15.268794}
       - {x: 95, y: -26}
       - {x: 95, y: 12}
-      - {x: -5, y: 12}
+      - {x: 16.658865, y: -3.2841816}
   m_UseDelaunayMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

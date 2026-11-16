@@ -25,7 +25,27 @@ public class NPCMapTrigger : MonoBehaviour
     {
         if (mapController == null)
         {
-            Debug.LogWarning($"[{nameof(NPCMapTrigger)}] MapController belum di-assign pada {name}.");
+            mapController = FindFirstObjectByType<MapController>(FindObjectsInactive.Include);
+        }
+
+        if (mapController == null)
+        {
+            Debug.LogWarning($"[{nameof(NPCMapTrigger)}] MapController tidak ditemukan di scene pada {name}.");
+            return;
+        }
+
+        // Jika map sedang tertutup di hierarchy, reset status isMapOpen
+        if (mapController.worldMapCanvasGroup != null && !mapController.worldMapCanvasGroup.gameObject.activeInHierarchy)
+        {
+            isMapOpen = false;
+        }
+
+        if (!QuestJournalManager.CanLeaveCurrentIslandForMap())
+        {
+            isMapOpen = false;
+            MapController.HideCanvasGroupImmediate(mapController.worldMapCanvasGroup);
+            Time.timeScale = 1f;
+            Debug.Log("[NPCMapTrigger] Dialog NPCMap selesai, namun MapMenuPanel disembunyikan karena semua quest pulau ini belum selesai.");
             return;
         }
 
@@ -40,6 +60,11 @@ public class NPCMapTrigger : MonoBehaviour
         mapOpenedFrame = Time.frameCount;
         CompleteMapObjective();
         PlayPopupAnimation(true);
+    }
+
+    public void ResetMapState()
+    {
+        isMapOpen = false;
     }
 
     private void CompleteMapObjective()
@@ -70,10 +95,16 @@ public class NPCMapTrigger : MonoBehaviour
 
     public void CloseWorldMap()
     {
-        if (mapController == null || !isMapOpen) return;
+        if (mapController == null)
+        {
+            mapController = FindFirstObjectByType<MapController>(FindObjectsInactive.Include);
+        }
 
         isMapOpen = false;
-        PlayPopupAnimation(false);
+        if (mapController != null)
+        {
+            PlayPopupAnimation(false);
+        }
     }
 
     private void PlayPopupAnimation(bool opening)

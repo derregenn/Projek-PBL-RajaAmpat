@@ -14,28 +14,32 @@ public class PauseManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         Instance = this;
-        transform.SetParent(null);
-        DontDestroyOnLoad(gameObject);
-
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        isPaused = false;
+        Time.timeScale = 1f;
         FindAndSetupPauseMenu();
+        DeactivateAllPauseUIInActiveScene();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
         if (Instance == this) Instance = null;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        isPaused = false;
+        Time.timeScale = 1f;
         FindAndSetupPauseMenu();
         ResumeGame();
     }
@@ -54,6 +58,8 @@ public class PauseManager : MonoBehaviour
 
         if (pauseMenuUI != null)
         {
+            NormalizePauseCanvasLayout(pauseMenuUI);
+
             // Pastikan binder terpasang agar tombol-tombol selalu terkoneksi
             if (pauseMenuUI.GetComponent<PauseMenuBinder>() == null)
             {
@@ -70,6 +76,8 @@ public class PauseManager : MonoBehaviour
 
     private GameObject FindPauseMenu(Scene scene)
     {
+        if (!scene.isLoaded) return null;
+
         GameObject pauseCanvas = null;
 
         foreach (GameObject root in scene.GetRootGameObjects())
@@ -90,7 +98,15 @@ public class PauseManager : MonoBehaviour
 
     private void ResolvePauseMenuReference()
     {
-        if (pauseMenuUI == null || pauseMenuUI.GetComponent<Canvas>() == null)
+        if (pauseMenuUI == null) return;
+
+        if (pauseMenuUI.name == "Canvas" || pauseMenuUI.name == "Canvas_HUD")
+        {
+            pauseMenuUI = FindPauseMenu(SceneManager.GetActiveScene());
+            if (pauseMenuUI == null) return;
+        }
+
+        if (pauseMenuUI.GetComponent<Canvas>() == null)
             return;
 
         Transform[] descendants = pauseMenuUI.GetComponentsInChildren<Transform>(true);
@@ -110,14 +126,37 @@ public class PauseManager : MonoBehaviour
             if (pauseMenuUI.name == "Canvas_Pause")
                 return;
 
-            Debug.LogError(
-                "[PauseManager] pauseMenuUI points to a Canvas, but no PauseMenuUI or PauseMenuPanel child was found.",
-                this);
             pauseMenuUI = null;
             return;
         }
 
         pauseMenuUI = pausePanel.gameObject;
+    }
+
+    private void NormalizePauseCanvasLayout(GameObject target)
+    {
+        if (target == null) return;
+
+        Canvas canvas = target.GetComponentInParent<Canvas>(true);
+        if (canvas != null && canvas.name.Contains("Canvas_Pause"))
+        {
+            UnityEngine.UI.CanvasScaler scaler = canvas.GetComponent<UnityEngine.UI.CanvasScaler>();
+            if (scaler != null)
+            {
+                scaler.uiScaleMode = UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1920f, 1080f);
+                scaler.matchWidthOrHeight = 0.5f;
+            }
+        }
+
+        Transform scope = canvas != null ? canvas.transform : target.transform;
+        foreach (Transform t in scope.GetComponentsInChildren<Transform>(true))
+        {
+            if (t.name.StartsWith("TitleBackground") || t.name == "ControlHints" || t.name == "ControlsPanel")
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void Update()
@@ -143,13 +182,16 @@ public class PauseManager : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
-        if (pauseMenuUI == null)
+        DeactivateAllPauseUIInActiveScene();
+
+        if (pauseMenuUI == null || pauseMenuUI.name == "Canvas" || pauseMenuUI.name == "Canvas_HUD")
         {
             FindAndSetupPauseMenu();
         }
 
         if (pauseMenuUI != null)
         {
+            NormalizePauseCanvasLayout(pauseMenuUI);
             Transform parentCanvas = pauseMenuUI.transform.parent;
             if (parentCanvas != null && parentCanvas.GetComponent<Canvas>() != null)
             {
@@ -169,7 +211,7 @@ public class PauseManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
 
-        if (pauseMenuUI != null)
+        if (pauseMenuUI != null && pauseMenuUI.name != "Canvas" && pauseMenuUI.name != "Canvas_HUD")
         {
             pauseMenuUI.SetActive(false);
             Transform parentCanvas = pauseMenuUI.transform.parent;
@@ -191,21 +233,41 @@ public class PauseManager : MonoBehaviour
     private void DeactivateAllPauseUIInActiveScene()
     {
         Scene scene = SceneManager.GetActiveScene();
-        if (!scene.isLoaded) return;
-
-        foreach (GameObject root in scene.GetRootGameObjects())
+        if (scene.isLoaded)
         {
-            Transform[] descendants = root.GetComponentsInChildren<Transform>(true);
-            foreach (Transform child in descendants)
+            foreach (GameObject root in scene.GetRootGameObjects())
             {
-                if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                Transform[] descendants = root.GetComponentsInChildren<Transform>(true);
+                foreach (Transform child in descendants)
                 {
-                    child.gameObject.SetActive(false);
+                    if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
+                    else if (child.name == "Canvas_Pause")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
                 }
-                else if (child.name == "Canvas_Pause")
-                {
-                    child.gameObject.SetActive(false);
-                }
+            }
+        }
+
+        // Matikan Canvas_Pause nyasar di DontDestroyOnLoad agar tidak double
+        foreach (Canvas c in FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (c != null && c.name == "Canvas_Pause" && c.gameObject.scene != scene)
+            {
+                c.gameObject.SetActive(false);
+            }
+        }
+
+        // Matikan prefab pause hijau lama (Assets/Prefabs_Reg/PauseMenu.prefab) jika ada di scene
+        foreach (PauseMenu legacyPause in FindObjectsByType<PauseMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (legacyPause != null)
+            {
+                if (legacyPause.container != null) legacyPause.container.SetActive(false);
+                legacyPause.gameObject.SetActive(false);
             }
         }
     }

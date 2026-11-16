@@ -51,7 +51,13 @@ public class GagFaderManager : MonoBehaviour
     public UnityEvent OnPenelitiPulangFadeCompleted;
 
     [Header("Transisi 2: Ending Pulau Gag (Pindah Scene)")]
-    public string sceneTujuanEnding = "02_Waisai";
+    public string sceneTujuanEnding = "11_Waisai Ending";
+
+    [Header("Cutscene Sunset Pulau Gag")]
+    public CutsceneTransitionManager cutsceneManager;
+    public Sprite[] sunsetPortraits;
+    [TextArea(2, 5)]
+    public string[] sunsetDialogues;
 
     [Header("Event Tamat Game")]
     public UnityEvent OnGameFinished;
@@ -59,6 +65,15 @@ public class GagFaderManager : MonoBehaviour
     // =========================================================
     // PUBLIC METHODS FOR INSPECTOR EVENTS
     // =========================================================
+
+    private string ResolveEndingScene()
+    {
+        if (string.IsNullOrEmpty(sceneTujuanEnding) || sceneTujuanEnding == "02_Waisai")
+        {
+            return "11_Waisai Ending";
+        }
+        return sceneTujuanEnding;
+    }
 
     // 1. Panggil ini di On Dialogue End NPC_Peneliti_Awal saat MC minta air bersih
     public void PenelitiPulang()
@@ -69,13 +84,45 @@ public class GagFaderManager : MonoBehaviour
     // 2. Panggil ini di On Dialogue End TourGuide di Dermaga
     public void PindahKeWaisai()
     {
-        if (!isTransitioning) StartCoroutine(RoutinePindahScene(sceneTujuanEnding));
+        CloseDialogueUI();
+        RecordGagCompletion();
+
+        string targetScene = ResolveEndingScene();
+        CutsceneTransitionManager ctm = cutsceneManager != null ? cutsceneManager : CutsceneTransitionManager.Instance;
+        if (ctm == null) ctm = FindFirstObjectByType<CutsceneTransitionManager>(FindObjectsInactive.Include);
+
+        if (ctm != null && sunsetPortraits != null && sunsetPortraits.Length > 0)
+        {
+            Player p = FindFirstObjectByType<Player>();
+            if (p != null) p.isMovementLocked = true;
+            ctm.StartPortraitCutscene(sunsetPortraits, sunsetDialogues, targetScene);
+        }
+        else if (!isTransitioning)
+        {
+            StartCoroutine(RoutinePindahScene(targetScene));
+        }
     }
 
     // 3. Panggil ini saat cerita Pulau Gag dan seluruh quest tamat
     public void TamatGame()
     {
-        if (!isTransitioning) StartCoroutine(RoutineTamatGame());
+        CloseDialogueUI();
+        RecordGagCompletion();
+
+        string targetScene = ResolveEndingScene();
+        CutsceneTransitionManager ctm = cutsceneManager != null ? cutsceneManager : CutsceneTransitionManager.Instance;
+        if (ctm == null) ctm = FindFirstObjectByType<CutsceneTransitionManager>(FindObjectsInactive.Include);
+
+        if (ctm != null && sunsetPortraits != null && sunsetPortraits.Length > 0)
+        {
+            Player p = FindFirstObjectByType<Player>();
+            if (p != null) p.isMovementLocked = true;
+            ctm.StartPortraitCutscene(sunsetPortraits, sunsetDialogues, targetScene);
+        }
+        else if (!isTransitioning)
+        {
+            StartCoroutine(RoutineTamatGame());
+        }
     }
 
     public void PindahKeScene(string sceneName)
@@ -93,7 +140,8 @@ public class GagFaderManager : MonoBehaviour
         ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
 
         // Fade out ke hitam
-        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
+        else if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -108,7 +156,8 @@ public class GagFaderManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         // Fade in kembali ke game
-        if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeInRoutine(durasiFade));
+        else if (fader != null) yield return StartCoroutine(fader.FadeInRoutine());
         isTransitioning = false;
 
         if (QuestController.Instance != null)
@@ -124,7 +173,8 @@ public class GagFaderManager : MonoBehaviour
         isTransitioning = true;
         ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
 
-        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
+        else if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -140,7 +190,8 @@ public class GagFaderManager : MonoBehaviour
         isTransitioning = true;
         ScreenFader fader = ScreenFader.Instance != null ? ScreenFader.Instance : FindFirstObjectByType<ScreenFader>();
 
-        if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
+        if (UniversalFader.Instance != null) yield return StartCoroutine(UniversalFader.Instance.FadeOutRoutine(durasiFade));
+        else if (fader != null) yield return StartCoroutine(fader.FadeOutRoutine());
         else yield return new WaitForSeconds(durasiFade);
 
         CloseDialogueUI();
@@ -150,8 +201,8 @@ public class GagFaderManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        // Pindah ke Main Menu atau scene tujuan ending
-        string nextScene = !string.IsNullOrEmpty(sceneTujuanEnding) ? sceneTujuanEnding : "01_MainMenu";
+        // Pindah ke scene tujuan ending
+        string nextScene = ResolveEndingScene();
         SceneManager.LoadScene(nextScene);
     }
 
