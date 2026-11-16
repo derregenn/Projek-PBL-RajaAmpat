@@ -194,17 +194,85 @@ public class SasiInteractable : MonoBehaviour
 
     private void SetPlayerCrouch(bool isCrouching)
     {
-        // Jika animator belum di-assign di Inspector, cari otomatis di GameObject Tag Player
-        if (playerAnimator == null)
+        GameObject playerObj = playerAnimator != null ? playerAnimator.gameObject : GameObject.FindGameObjectWithTag("Player");
+        Player playerScript = playerObj != null ? playerObj.GetComponentInParent<Player>() : null;
+        if (playerScript == null) playerScript = FindFirstObjectByType<Player>();
+
+        string activeSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        bool isGagScene = activeSceneName.IndexOf("Gag", System.StringComparison.OrdinalIgnoreCase) >= 0;
+
+        if (playerScript != null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null) playerAnimator = player.GetComponentInChildren<Animator>();
+            playerScript.enabled = true;
+            playerScript.isMovementLocked = isCrouching;
+            playerScript.SetCrouching(isCrouching, isGagScene);
+            if (isCrouching)
+            {
+                Rigidbody2D rb = playerScript.GetComponent<Rigidbody2D>();
+                if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                }
+            }
+        }
+
+        if (playerAnimator == null && playerObj != null)
+        {
+            playerAnimator = playerObj.GetComponentInChildren<Animator>();
         }
 
         if (playerAnimator != null)
         {
-            playerAnimator.SetBool(crouchBoolName, isCrouching);
+            if (isGagScene)
+            {
+                if (HasAnimatorBoolParameter(playerAnimator, "isCrouchingGag"))
+                {
+                    playerAnimator.SetBool("isCrouchingGag", isCrouching);
+                }
+
+                if (crouchBoolName != "isCrouchingGag" && HasAnimatorBoolParameter(playerAnimator, crouchBoolName))
+                {
+                    playerAnimator.SetBool(crouchBoolName, false);
+                }
+
+                if (isCrouching)
+                {
+                    int gagHash = Animator.StringToHash("Player_Crouch_Gag");
+                    if (playerAnimator.HasState(0, gagHash))
+                    {
+                        playerAnimator.Play("Player_Crouch_Gag");
+                    }
+                }
+                else
+                {
+                    playerAnimator.Play("Player_Idle");
+                }
+                return;
+            }
+
+            if (HasAnimatorBoolParameter(playerAnimator, crouchBoolName))
+            {
+                playerAnimator.SetBool(crouchBoolName, isCrouching);
+            }
+            playerAnimator.Play(isCrouching ? "Player_Crouch" : "Player_Idle");
         }
+    }
+
+    private static bool HasAnimatorBoolParameter(Animator anim, string paramName)
+    {
+        if (anim == null || string.IsNullOrEmpty(paramName)) return false;
+
+        AnimatorControllerParameter[] parameters = anim.parameters;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            if (parameters[i].type == AnimatorControllerParameterType.Bool &&
+                parameters[i].name == paramName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

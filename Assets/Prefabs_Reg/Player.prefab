@@ -70,7 +70,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 102.69}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5079076757162388652
 CanvasRenderer:
@@ -189,6 +189,7 @@ Transform:
   m_Children:
   - {fileID: 4899115752309090273}
   - {fileID: 994758816447089966}
+  - {fileID: 5631512482485545516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1686357090159600224
@@ -237,7 +238,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -72866051
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
@@ -335,12 +336,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b742a5b9f113eb4db0a7a77f62ebb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  health: 100
   hasMap: 0
   moveSpeed: 2
-  healthImage: {fileID: 0}
-  hurtClip: {fileID: 8300000, guid: 3dc7d265f9c42437492a59228fc7b6d7, type: 3}
+  isMovementLocked: 0
   isSwimming: 0
+  audioSource: {fileID: 0}
+  swimClip: {fileID: 0}
+  defaultRunClip: {fileID: 0}
+  surfaceAudioList: []
+  movementVolume: 0.7
+  audioPitch: 1
 --- !u!95 &585931584632713692
 Animator:
   serializedVersion: 7
@@ -492,11 +497,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  climbDownSteps: []
   topPlatformPoint: {fileID: 0}
   moveSpeed: 5
   climbSprite1: {fileID: -3792163413847495037, guid: c38b964438cbd5d4897d9d3bf602d81d, type: 3}
   climbSprite2: {fileID: 5271053423098316305, guid: 76859e94329a867449366cbb8ee8ca2c, type: 3}
   qte2Script: {fileID: 0}
+  questObjectiveID: piaynemo_hiking
+  topPlatformCollider: {fileID: 0}
 --- !u!1 &3185970182691614766
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,8 +812,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 280, y: 52.69}
+  m_AnchoredPosition: {x: 150, y: -52.4225}
+  m_SizeDelta: {x: 280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9084911414562746442
 CanvasRenderer:
@@ -1115,8 +1123,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 200, y: 30}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6459514244281968339
 CanvasRenderer:
