@@ -19,6 +19,7 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private string[] DialogueLines;
     [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
+    [SerializeField] private Sprite[] DialogueLineSprites;
     [SerializeField] private string triviaQuestionText;
     [SerializeField] private float TypeSpeed = 0.02f;
 
@@ -37,10 +38,10 @@ public class Dialogue : MonoBehaviour
 
     [Header("NPC Sprite Settings")]
     [SerializeField] private SpriteRenderer npcSpriteRenderer;
-    [SerializeField] private Sprite talkingSprite1; 
-    [SerializeField] private Sprite talkingSprite2; 
-    [SerializeField] private Sprite idleSprite;      
-    [SerializeField] private int spriteToggleInterval = 3; 
+    [SerializeField] private Sprite talkingSprite1;
+    [SerializeField] private Sprite talkingSprite2;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private int spriteToggleInterval = 3;
 
     [Header("Camera Zoom Settings")]
     public CinemachineCamera dialogueCamera;
@@ -59,12 +60,12 @@ public class Dialogue : MonoBehaviour
     private bool canInteract = false;
     private bool isPlayerInCollider = false; // Penjaga status posisi player
     private bool isTyping = false;
-    private bool hasBeenTriggered = false; 
+    private bool hasBeenTriggered = false;
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
     private Action onDialogueCompleteCallback;
-    
+
     // Referensi ke Player Controller untuk dimatikan saat dialog
     private MonoBehaviour playerMovementScript;
 
@@ -81,12 +82,12 @@ public class Dialogue : MonoBehaviour
         {
             idleSprite = npcSpriteRenderer.sprite;
         }
-        
+
         // Cari skrip Player pada objek ber-tag Player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
-            playerMovementScript = playerObj.GetComponent<Player>(); 
+            playerMovementScript = playerObj.GetComponent<Player>();
         }
     }
 
@@ -128,7 +129,7 @@ public class Dialogue : MonoBehaviour
 
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
-        canInteract = false; 
+        canInteract = false;
         isInteracting = true;
         lineIndex = 0;
 
@@ -187,6 +188,9 @@ public class Dialogue : MonoBehaviour
         bool isPlayerLine = DialogueLineSpeakers != null
             && lineIndex < DialogueLineSpeakers.Length
             && DialogueLineSpeakers[lineIndex] == DialogueSpeaker.Player;
+        Sprite lineSprite = DialogueLineSprites != null && lineIndex < DialogueLineSprites.Length
+            ? DialogueLineSprites[lineIndex]
+            : null;
         TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
 
         if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine);
@@ -200,6 +204,11 @@ public class Dialogue : MonoBehaviour
 
         activeText.text = DialogueLines[lineIndex];
         activeText.maxVisibleCharacters = 0;
+
+        if (!isPlayerLine && npcSpriteRenderer != null && lineSprite != null)
+        {
+            npcSpriteRenderer.sprite = lineSprite;
+        }
 
         int totalCharacters = DialogueLines[lineIndex].Length;
         bool toggleSprite = false;
@@ -215,7 +224,8 @@ public class Dialogue : MonoBehaviour
                 nextTypingAudioTime = Time.time + typingAudioInterval;
             }
 
-            if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
+            if (!isPlayerLine && lineSprite == null && npcSpriteRenderer != null
+                && talkingSprite1 != null && talkingSprite2 != null)
             {
                 if (i % spriteToggleInterval == 0)
                 {
