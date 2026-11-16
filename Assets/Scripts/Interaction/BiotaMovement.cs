@@ -39,7 +39,9 @@ public class BiotaMovement : MonoBehaviour
     {
         while (!isFeeding)
         {
-            targetPosition = originPosition + new Vector2(movingRight ? wanderRadius : -wanderRadius, 0f);
+            // Ikan berenang bolak-balik, tetapi sedikit naik-turun agar gerakannya terasa alami.
+            float verticalOffset = UnityEngine.Random.Range(-wanderRadius * 0.25f, wanderRadius * 0.25f);
+            targetPosition = originPosition + new Vector2(movingRight ? wanderRadius : -wanderRadius, verticalOffset);
             FlipSprite(targetPosition.x - transform.position.x);
 
             while (Vector2.Distance(transform.position, targetPosition) > 0.05f)
@@ -61,7 +63,7 @@ public class BiotaMovement : MonoBehaviour
                 animator.SetFloat(speedAnimParameter, 0f);
             }
 
-            yield return new WaitForSeconds((minWaitTime + maxWaitTime) * 0.5f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(minWaitTime, maxWaitTime));
             movingRight = !movingRight;
         }
     }
@@ -121,11 +123,11 @@ public class BiotaMovement : MonoBehaviour
         {
             if (directionX > 0.01f)
             {
-                renderer.flipX = true;
+                renderer.flipX = false;
             }
             else if (directionX < -0.01f)
             {
-                renderer.flipX = false;
+                renderer.flipX = true;
             }
         }
     }

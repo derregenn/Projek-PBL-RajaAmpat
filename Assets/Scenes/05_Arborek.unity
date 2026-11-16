@@ -1978,6 +1978,7 @@ MonoBehaviour:
     kamu disini
   - ' Siap Pak!'
   DialogueLineSpeakers: 0000000001000000000000000000000000000000000000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -2018,6 +2019,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &153149760
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3270,6 +3273,7 @@ MonoBehaviour:
   - Terima kasih banyak, kawan! Dengan berdirinya patok ini, area pesisir ini resmi
     dilindungi oleh adat
   DialogueLineSpeakers: 00000000010000000100000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -3310,6 +3314,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &292704874
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6804,7 +6810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7026,7 +7032,7 @@ MonoBehaviour:
   m_text: Press [E] to talk
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 16773e71d6fb63040a487b2200453eef, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 1904319409956540183, guid: 16773e71d6fb63040a487b2200453eef, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7092,7 +7098,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &722844688
@@ -8189,62 +8195,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -24.59
-      objectReference: {fileID: 0}
-    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 786594774439226356, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: m_Name
       value: NPCMap_Locked
@@ -8377,6 +8327,62 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -24.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5044695647541820758, guid: 1511c852ecce3394dad341050a11508f, type: 3}
@@ -9175,7 +9181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10860,7 +10866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11572,7 +11578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12024,6 +12030,7 @@ MonoBehaviour:
   - 'Mama-mama di desa kami juga rajin menganyam daun pandan jadi topi unik '
   - 'Jangan lupa keliling dan nikmati keasrian Desa Arborek ya! '
   DialogueLineSpeakers: 0100000000000000000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -12040,6 +12047,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &1388967371
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13161,7 +13170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13303,7 +13312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14142,6 +14151,7 @@ MonoBehaviour:
   DialogueLines:
   - ...
   DialogueLineSpeakers: 00000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -14158,6 +14168,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &1660750591
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14368,6 +14380,7 @@ MonoBehaviour:
   - Kemungkinan ada di pesisir ujung pantai sana
   - ...
   DialogueLineSpeakers: 0000000000000000010000000000000000000000000000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -14420,6 +14433,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &1665425516
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14813,6 +14828,7 @@ MonoBehaviour:
   - Dengan menghormati alam, alam akan memberi kita hasil yang berlimpah di masa
     depan
   DialogueLineSpeakers: 0000000000000000000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 2022872709}
@@ -14853,6 +14869,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &1668667928
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15727,6 +15745,7 @@ MonoBehaviour:
   DialogueLines:
   - ...
   DialogueLineSpeakers: 00000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -15743,6 +15762,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &1779326723
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18448,6 +18469,7 @@ MonoBehaviour:
   - Aduh, bantu sebentar saja lah! Kasihan saya ini sudah tua tapi harus nyari sana-sini
   - "\u2026"
   DialogueLineSpeakers: 00000000000000000100000000000000010000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 2022872709}
@@ -18476,6 +18498,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &2022872705
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19553,6 +19577,7 @@ MonoBehaviour:
   - Kalau begitu, Sebagai gantinya, mari saya tunjukkan bagaimana desa kami menjaga
     kelestarian laut secara turun-temurun
   DialogueLineSpeakers: 01000000000000000000000000000000010000000000000001000000000000000000000001000000000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.01
   typingAudioSource: {fileID: 1388967374}
@@ -19593,6 +19618,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &2143221579
 BoxCollider2D:
   m_ObjectHideFlags: 0

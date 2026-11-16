@@ -70,7 +70,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         // Aktifkan NPC yang sesuai dengan stage saat ini
         if (petugasStage1 != null) petugasStage1.SetActive(stage == 1 || stage == 2);
         if (petugasStage3 != null) petugasStage3.SetActive(stage == 3 || stage == 4);
-        if (petugasStage5 != null) petugasStage5.SetActive(stage == 5);
+        if (petugasStage5 != null) petugasStage5.SetActive(stage >= 5);
 
         // Point 1: Penyu Sisik
         if (penyuInteractive != null)
@@ -84,7 +84,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         if (ibuIbuStage6 != null)
             ibuIbuStage6.SetActive(stage == 6 || stage == 7);
         if (ibuIbuStage8 != null)
-            ibuIbuStage8.SetActive(stage == 8 || stage == 9);
+            ibuIbuStage8.SetActive(stage >= 8);
 
         // Point 9 & 10: Akhir Quest (Tour Guide pindah ke kanan MC)
         if (stage >= 9)
