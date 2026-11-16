@@ -12,13 +12,6 @@ public class FriwenLandSceneManager : MonoBehaviour
     [Tooltip("Trigger QTE untuk menarik perahu")]
     [SerializeField] private GameObject triggerQtePerahu;
 
-    [Tooltip("Objek visual perahu saat terikat")]
-    [SerializeField] private GameObject perahuTerikat;
-
-    [Tooltip("Objek visual perahu setelah terlepas")]
-    [SerializeField] private GameObject perahuLepas1;
-    [SerializeField] private GameObject perahuLepas2;
-
     [Header("Referensi Quest 2 (Trivia Friwen)")]
     [Tooltip("Warlok 2 untuk sesi Trivia Friwen")]
     [SerializeField] private GameObject warlok2;
@@ -54,9 +47,6 @@ public class FriwenLandSceneManager : MonoBehaviour
     {
         if (warlok1Qte == null) warlok1Qte = GameObject.Find("NPC_Warlok1_QTE");
         if (triggerQtePerahu == null) triggerQtePerahu = GameObject.Find("Trigger_QTE_Perahu");
-        if (perahuTerikat == null) perahuTerikat = GameObject.Find("Perahu_keiket_Quest 1_0 (1)");
-        if (perahuLepas1 == null) perahuLepas1 = GameObject.Find("Perahu_lepas1_Quest 1_0");
-        if (perahuLepas2 == null) perahuLepas2 = GameObject.Find("Perahu_Lepas2_Quest 1_0");
 
         if (warlok2 == null) warlok2 = GameObject.Find("NPC_Warlok2");
         if (tourGuidePasirTimbul == null) tourGuidePasirTimbul = GameObject.Find("Spot_TourGuide_PasirTimbul");
@@ -69,6 +59,10 @@ public class FriwenLandSceneManager : MonoBehaviour
     {
         if (MasterQuestManager.Instance != null)
         {
+            if (MasterQuestManager.Instance.CurrentStage < 1)
+            {
+                MasterQuestManager.Instance.AdvanceStageTo(1);
+            }
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Friwen);
             Debug.Log($"<color=cyan>[FriwenLandSceneManager] STAGE FRIWEN SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
@@ -96,14 +90,9 @@ public class FriwenLandSceneManager : MonoBehaviour
 
         Debug.Log($"<color=cyan>[FriwenLandSceneManager] Refresh State Friwen. Stage Aktif: {stage}</color>");
 
-        // Stage 0: QTE Tarik Perahu
-        if (warlok1Qte != null) warlok1Qte.SetActive(stage == 0);
-        if (triggerQtePerahu != null) triggerQtePerahu.SetActive(stage == 0);
-        if (perahuTerikat != null) perahuTerikat.SetActive(stage == 0);
-
-        // Setelah perahu ditarik (Stage >= 1), tampilkan perahu yang lepas
-        if (perahuLepas1 != null) perahuLepas1.SetActive(stage >= 1);
-        if (perahuLepas2 != null) perahuLepas2.SetActive(stage >= 1);
+        // Stage 1: QTE Tarik Perahu
+        if (warlok1Qte != null) warlok1Qte.SetActive(stage == 0 || stage == 1);
+        if (triggerQtePerahu != null) triggerQtePerahu.SetActive(stage == 0 || stage <= 3);
 
         // Stage 1 - 2: Trivia Friwen bersama Warlok 2
         if (warlok2 != null) warlok2.SetActive(stage >= 1);
