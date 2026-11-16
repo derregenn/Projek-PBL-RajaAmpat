@@ -15,14 +15,13 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private TMP_Text PlayerDialogueText;
     [SerializeField] private GameObject NextPrompt;
     [SerializeField] private GameObject PlayerNextPrompt;
-    [SerializeField] private Behaviour playerMovementController;
 
     [Header("Dialogue")]
     [SerializeField] private string[] DialogueLines;
     [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
+    [SerializeField] private Sprite[] DialogueLineSprites;
     [SerializeField] private string triviaQuestionText;
-    [SerializeField] private float TypeSpeed = 0.04f;
-    [SerializeField, Min(0f)] private float lineAdvanceCooldown = 0.35f;
+    [SerializeField] private float TypeSpeed = 0.02f;
 
     [Header("Typing Audio")]
     [SerializeField] private AudioSource typingAudioSource;
@@ -39,10 +38,10 @@ public class Dialogue : MonoBehaviour
 
     [Header("NPC Sprite Settings")]
     [SerializeField] private SpriteRenderer npcSpriteRenderer;
-    [SerializeField] private Sprite talkingSprite1; // Drag sprite talking1_V1 di Inspector
-    [SerializeField] private Sprite talkingSprite2; // Drag sprite talking2_V1 di Inspector
-    [SerializeField] private Sprite idleSprite;      // Sprite default saat NPC diam (opsional)
-    [SerializeField] private int spriteToggleInterval = 3; // Berganti sprite tiap N karakter
+    [SerializeField] private Sprite talkingSprite1;
+    [SerializeField] private Sprite talkingSprite2;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private int spriteToggleInterval = 3;
 
     [Header("Camera Zoom Settings")]
     public CinemachineCamera dialogueCamera;
@@ -51,36 +50,44 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue Events")]
     [SerializeField] private UnityEvent onDialogueEnd;
 
+    [Header("Post-Quest Dialogue Loop")]
+    [TextArea(2, 5)]
+    [SerializeField] private string[] postQuestLoopLines;
+    [SerializeField] private bool isPostQuestLoop = false;
+
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
+    private bool isPlayerInCollider = false; // Penjaga status posisi player
     private bool isTyping = false;
     private bool hasBeenTriggered = false;
-    private bool playerMovementWasEnabled;
-    private float nextLineAdvanceTime;
 
     private QuestGiver questGiver;
     private Coroutine typingCoroutine;
     private Action onDialogueCompleteCallback;
 
-    public UnityEvent onInteractComplete; // Akan muncul di Inspector
-
-
+    // Referensi ke Player Controller untuk dimatikan saat dialog
+    private MonoBehaviour playerMovementScript;
 
     private void Awake()
     {
         questGiver = GetComponent<QuestGiver>();
 
-        // Auto-assign SpriteRenderer jika belum diisi di Inspector
         if (npcSpriteRenderer == null)
         {
             npcSpriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        // Simpan sprite default jika idleSprite belum di-set
         if (npcSpriteRenderer != null && idleSprite == null)
         {
             idleSprite = npcSpriteRenderer.sprite;
+        }
+
+        // Cari skrip Player pada objek ber-tag Player
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            playerMovementScript = playerObj.GetComponent<Player>();
         }
     }
 
@@ -91,19 +98,23 @@ public class Dialogue : MonoBehaviour
             dialogueCamera.Priority.Value = 0;
         }
 
-        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+        if (!isPlayerInCollider && InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(false);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
         if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        RefreshPostQuestLoopState();
     }
 
     private void Update()
     {
-        if (canInteract && !isInteracting && hasBeenTriggered && Input.GetKeyDown(KeyCode.E))
+        // 1. Memulai dialog manual dengan memencet E
+        if (canInteract && !isInteracting && Input.GetKeyDown(KeyCode.E))
         {
             StartDialogue();
         }
+        // 2. Lanjut dialog
         else if (isInteracting && Input.GetKeyDown(KeyCode.E)
             && ((NextPrompt != null && NextPrompt.activeInHierarchy)
                 || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)))
@@ -116,25 +127,16 @@ public class Dialogue : MonoBehaviour
     {
         if (isInteracting) return;
 
-        /* // Tambahan wajib agar Dialogue.cs tahu dia menempel di Petugas
-        PetugasMisool petugas = GetComponent<PetugasMisool>();
-        if (petugas != null)
-        {
-            petugas.InteractWithOfficer();
-            return; // Hentikan eksekusi StartDialogue bawaan karena sudah diambil alih StartCustomDialogue
-        }
-        */
-
         if (InteractPrompt != null) InteractPrompt.SetActive(false);
 
         canInteract = false;
         isInteracting = true;
         lineIndex = 0;
 
-        if (playerMovementController != null)
+        // --- KUNCI GERAKAN PLAYER ---
+        if (playerMovementScript != null)
         {
-            playerMovementWasEnabled = playerMovementController.enabled;
-            playerMovementController.enabled = false;
+            playerMovementScript.enabled = false;
         }
 
         if (dialogueCamera != null)
@@ -186,6 +188,9 @@ public class Dialogue : MonoBehaviour
         bool isPlayerLine = DialogueLineSpeakers != null
             && lineIndex < DialogueLineSpeakers.Length
             && DialogueLineSpeakers[lineIndex] == DialogueSpeaker.Player;
+        Sprite lineSprite = DialogueLineSprites != null && lineIndex < DialogueLineSprites.Length
+            ? DialogueLineSprites[lineIndex]
+            : null;
         TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
 
         if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine);
@@ -199,6 +204,11 @@ public class Dialogue : MonoBehaviour
 
         activeText.text = DialogueLines[lineIndex];
         activeText.maxVisibleCharacters = 0;
+
+        if (!isPlayerLine && npcSpriteRenderer != null && lineSprite != null)
+        {
+            npcSpriteRenderer.sprite = lineSprite;
+        }
 
         int totalCharacters = DialogueLines[lineIndex].Length;
         bool toggleSprite = false;
@@ -214,8 +224,8 @@ public class Dialogue : MonoBehaviour
                 nextTypingAudioTime = Time.time + typingAudioInterval;
             }
 
-            // Animasi pergantian sprite bicaranya NPC saat teks diketik
-            if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
+            if (!isPlayerLine && lineSprite == null && npcSpriteRenderer != null
+                && talkingSprite1 != null && talkingSprite2 != null)
             {
                 if (i % spriteToggleInterval == 0)
                 {
@@ -232,9 +242,7 @@ public class Dialogue : MonoBehaviour
 
         isTyping = false;
         if (typingAudioSource != null) typingAudioSource.Stop();
-        nextLineAdvanceTime = Time.time + lineAdvanceCooldown;
 
-        // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
         ResetNPCSprite();
 
         if (isPlayerLine)
@@ -249,7 +257,7 @@ public class Dialogue : MonoBehaviour
 
     private void NextLine()
     {
-        if (isTyping || Time.time < nextLineAdvanceTime) return;
+        if (isTyping) return;
 
         if (lineIndex < DialogueLines.Length - 1)
         {
@@ -260,24 +268,6 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            if (!string.IsNullOrEmpty(triviaQuestionText))
-            {
-                if (questGiver != null)
-                {
-                    questGiver.GiveQuest();
-                }
-
-                if (NextPrompt != null) NextPrompt.SetActive(false);
-                if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
-                ShowTriviaQuestion(triviaQuestionText);
-                return;
-            }
-
-            if (questGiver != null)
-            {
-                questGiver.GiveQuest();
-            }
-
             lineIndex = 0;
             EndDialogue();
         }
@@ -295,9 +285,10 @@ public class Dialogue : MonoBehaviour
         isTyping = false;
         isInteracting = false;
 
-        if (playerMovementController != null)
+        // --- BUKA KUNCI GERAKAN PLAYER ---
+        if (playerMovementScript != null)
         {
-            playerMovementController.enabled = playerMovementWasEnabled;
+            playerMovementScript.enabled = true;
         }
 
         ResetNPCSprite();
@@ -311,7 +302,6 @@ public class Dialogue : MonoBehaviour
         {
             dialogueCamera.Priority.Value = 0;
 
-            // [PERBAIKAN UTAMA]: Paksa Target Kamera balik membuntut ke Player setiap kali dialog selesai
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
             {
@@ -319,7 +309,26 @@ public class Dialogue : MonoBehaviour
             }
         }
 
-        if (canInteract && InteractPrompt != null) InteractPrompt.SetActive(true);
+        // PERBAIKAN: Jika player masih di dalam area collider, aktifkan lagi izin interaksi & prompt
+        if (isPlayerInCollider)
+        {
+            canInteract = true;
+            if (InteractPrompt != null) InteractPrompt.SetActive(true);
+        }
+
+        // Selesaikan QuestObjectiveTrigger yang menempel pada NPC ini (misal serahkan barang / bicara dengan NPC)
+        // SEBELUM onDialogueEnd memicu QuestGiver untuk quest berikutnya!
+        QuestObjectiveTrigger[] triggers = GetComponents<QuestObjectiveTrigger>();
+        if (triggers != null)
+        {
+            foreach (var trig in triggers)
+            {
+                if (trig != null && trig.enabled)
+                {
+                    trig.CompleteFromDialogue();
+                }
+            }
+        }
 
         onDialogueEnd?.Invoke();
 
@@ -339,16 +348,26 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            isPlayerInCollider = true;
             canInteract = true;
 
-            if (!isInteracting)
+            if (!isInteracting && InteractPrompt != null)
             {
-                if (!hasBeenTriggered)
-                {
-                    hasBeenTriggered = true;
-                }
+                InteractPrompt.SetActive(true);
+            }
+        }
+    }
 
-                if (InteractPrompt != null) InteractPrompt.SetActive(true);
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!isPlayerInCollider && collision.CompareTag("Player"))
+        {
+            isPlayerInCollider = true;
+            canInteract = true;
+
+            if (!isInteracting && InteractPrompt != null)
+            {
+                InteractPrompt.SetActive(true);
             }
         }
     }
@@ -357,6 +376,7 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            isPlayerInCollider = false;
             canInteract = false;
 
             if (InteractPrompt != null) InteractPrompt.SetActive(false);
@@ -366,11 +386,9 @@ public class Dialogue : MonoBehaviour
 
     public void ShowTriviaQuestion(string questionText)
     {
-        if (string.IsNullOrEmpty(questionText))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(questionText)) return;
 
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
         if (DialogueBox != null) DialogueBox.SetActive(true);
         if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
         if (NextPrompt != null) NextPrompt.SetActive(false);
@@ -385,22 +403,17 @@ public class Dialogue : MonoBehaviour
             DialogueText.maxVisibleCharacters = questionText.Length;
         }
 
-        // Gunakan sprite bicara saat pertanyaan trivia ditampilkan
         if (npcSpriteRenderer != null && talkingSprite1 != null)
         {
             npcSpriteRenderer.sprite = talkingSprite1;
         }
     }
 
-    /// <summary>
-    /// Fungsi publik agar skrip NPC lain (seperti PetugasMisool) bisa mengirim naskah secara langsung
-    /// </summary>
     public void StartCustomDialogue(string[] customLines, Action onComplete)
     {
         DialogueLines = customLines;
         onDialogueCompleteCallback = onComplete;
 
-        // Paksa set speaker jadi NPC semua atau sesuaikan jika butuh
         DialogueLineSpeakers = new DialogueSpeaker[customLines.Length];
         for (int i = 0; i < DialogueLineSpeakers.Length; i++)
         {
@@ -410,13 +423,63 @@ public class Dialogue : MonoBehaviour
         StartDialogue();
     }
 
-    public void SelesaiInteraksi()
+    public void StartDialogueForced()
     {
-        // Lakukan animasi atau efek selesai
-        Debug.Log("Interaksi Selesai!");
+        if (isInteracting) return;
 
-        // Berikan sinyal bahwa interaksi ini sudah selesai
-        onInteractComplete?.Invoke();
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+
+        isInteracting = true;
+        lineIndex = 0;
+
+        if (playerMovementScript != null)
+        {
+            playerMovementScript.enabled = false;
+        }
+
+        if (dialogueCamera != null)
+        {
+            dialogueCamera.Target.TrackingTarget = this.transform;
+            dialogueCamera.Lens.OrthographicSize = npcLensSize;
+            dialogueCamera.Priority.Value = 20;
+        }
+
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
+        if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        StartTyping();
     }
 
+    public bool IsMapNPC()
+    {
+        return GetComponent<NPCMapTrigger>() != null ||
+               gameObject.name.IndexOf("Map", System.StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    public void RefreshPostQuestLoopState()
+    {
+        if (isPostQuestLoop || IsMapNPC()) return;
+
+        if (QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        {
+            SwitchToLoopDialogue();
+            lineIndex = 0;
+        }
+    }
+
+    public void SwitchToLoopDialogue()
+    {
+        if (postQuestLoopLines == null || postQuestLoopLines.Length == 0) return;
+
+        isPostQuestLoop = true;
+        DialogueLines = postQuestLoopLines;
+        lineIndex = 0;
+
+        DialogueLineSpeakers = new DialogueSpeaker[postQuestLoopLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
+    }
 }

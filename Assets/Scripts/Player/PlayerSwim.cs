@@ -158,11 +158,6 @@ public class PlayerSwim : MonoBehaviour
             if (rb != null) rb.linearVelocity = knockbackDir * 8f;
 
             StartCoroutine(BlinkRed());
-
-            if (health <= 0)
-            {
-                Die();
-            }
         }
     }
 
@@ -174,11 +169,6 @@ public class PlayerSwim : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             spriteRenderer.color = Color.white;
         }
-    }
-
-    private void Die()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void PlaySFX(AudioClip audioClip)

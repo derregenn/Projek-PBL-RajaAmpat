@@ -11,7 +11,7 @@ public class NPCMapTrigger : MonoBehaviour
     [SerializeField] private float popupDuration = 0.35f;
     [SerializeField] private Vector3 popupScaleMin = new Vector3(0.75f, 0.75f, 1f);
     [SerializeField] private AudioClip openMapSfx;
-
+    [SerializeField] private string objectiveIDOnMapOpen;
     private void Update()
     {
         if (isMapOpen && Time.frameCount > mapOpenedFrame && Input.GetKeyDown(KeyCode.E))
@@ -23,7 +23,13 @@ public class NPCMapTrigger : MonoBehaviour
     // Hanya dipanggil melalui UnityEvent atau script event lain.
     public void OpenWorldMap()
     {
-        if (mapController == null || isMapOpen) return;
+        if (mapController == null)
+        {
+            Debug.LogWarning($"[{nameof(NPCMapTrigger)}] MapController belum di-assign pada {name}.");
+            return;
+        }
+
+        if (isMapOpen) return;
 
         mapController.OpenWorldMap();
         if (openMapSfx != null)
@@ -32,7 +38,34 @@ public class NPCMapTrigger : MonoBehaviour
         }
         isMapOpen = true;
         mapOpenedFrame = Time.frameCount;
+        CompleteMapObjective();
         PlayPopupAnimation(true);
+    }
+
+    private void CompleteMapObjective()
+    {
+        if (string.IsNullOrWhiteSpace(objectiveIDOnMapOpen))
+        {
+            return;
+        }
+
+        QuestController questController = QuestController.Instance;
+        if (questController == null || questController.ActiveQuests == null)
+        {
+            return;
+        }
+
+        foreach (Quest quest in questController.ActiveQuests)
+        {
+            QuestObjective objective = quest != null ? quest.GetObjective(objectiveIDOnMapOpen) : null;
+            if (objective == null || objective.IsComplete)
+            {
+                continue;
+            }
+
+            questController.ProgressObjective(objectiveIDOnMapOpen);
+            return;
+        }
     }
 
     public void CloseWorldMap()

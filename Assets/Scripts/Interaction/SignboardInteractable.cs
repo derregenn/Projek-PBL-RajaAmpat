@@ -14,6 +14,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [Header("Quest Options")]
     [Tooltip("Jika dicentang, event onClose hanya akan dipanggil 1 kali (memicu NPC Warlok 2)")]
     [SerializeField] private bool triggerOnce = true;
+    [SerializeField] private string objectiveID = "papan_informasi";
     private bool hasTriggered = false;
 
     [Header("Events")]
@@ -68,6 +69,18 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     {
         if (!hasTriggered || !triggerOnce)
         {
+            if (QuestController.Instance != null)
+            {
+                if (QuestController.Instance.IsQuestActive("02_Friwen"))
+                {
+                    QuestController.Instance.ProgressObjective("papan_friwen", 1);
+                }
+                else if (!string.IsNullOrEmpty(objectiveID))
+                {
+                    QuestController.Instance.ProgressObjective(objectiveID, 1);
+                }
+            }
+
             onClose?.Invoke();
             if (triggerOnce) hasTriggered = true;
         }

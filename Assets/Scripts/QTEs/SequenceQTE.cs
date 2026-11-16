@@ -16,6 +16,9 @@ public class SequenceQTE : MonoBehaviour
     [SerializeField] private Slider timerSlider;
     [SerializeField] private TextMeshProUGUI[] keyTexts;
     [SerializeField] private Image[] keyBoxes;
+    [SerializeField] private Sprite[] neutralKeySprites;
+    [SerializeField] private Sprite[] correctKeySprites;
+    [SerializeField] private Sprite[] incorrectKeySprites;
 
     [Header("QTE SFX")]
     [SerializeField] private AudioSource qteAudioSource;
@@ -42,7 +45,7 @@ public class SequenceQTE : MonoBehaviour
     [SerializeField]
     private KeyCode[] possibleKeys = new KeyCode[]
     {
-        KeyCode.A, KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.Z, KeyCode.X, KeyCode.E, KeyCode.F
+        KeyCode.A, KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.Z, KeyCode.X, KeyCode.Q
     };
 
     [Header("Events")]
@@ -57,9 +60,19 @@ public class SequenceQTE : MonoBehaviour
     private Vector3 originalPanelPosition;
     private Coroutine shakeCoroutine;
     private Coroutine fadeCoroutine;
+    private Sprite[] originalKeyBoxSprites;
 
     private void Awake()
     {
+        if (keyBoxes != null)
+        {
+            originalKeyBoxSprites = new Sprite[keyBoxes.Length];
+            for (int i = 0; i < keyBoxes.Length; i++)
+            {
+                if (keyBoxes[i] != null) originalKeyBoxSprites[i] = keyBoxes[i].sprite;
+            }
+        }
+
         if (qtePanelTransform != null)
         {
             originalPanelPosition = qtePanelTransform.anchoredPosition;
@@ -106,7 +119,7 @@ public class SequenceQTE : MonoBehaviour
             if (Input.GetKeyDown(expectedKey))
             {
                 PlayQTESfx(tappingSfx);
-                HighlightBox(currentIndex, successColor);
+                SetBoxSprite(currentIndex, expectedKey, correctKeySprites, successColor);
                 currentIndex++;
 
                 if (currentIndex >= currentSequence.Count)
@@ -115,7 +128,7 @@ public class SequenceQTE : MonoBehaviour
                 }
                 else
                 {
-                    HighlightBox(currentIndex, activeColor);
+                    SetBoxSprite(currentIndex, currentSequence[currentIndex], neutralKeySprites, activeColor);
                 }
             }
             else
@@ -139,7 +152,7 @@ public class SequenceQTE : MonoBehaviour
         timer -= timePenalty;
         if (timerSlider != null) timerSlider.value = Mathf.Max(0, timer / timeLimit);
 
-        HighlightBox(currentIndex, failColor);
+        SetBoxSprite(currentIndex, currentSequence[currentIndex], incorrectKeySprites, failColor);
 
         if (qtePanelTransform != null)
         {
@@ -170,9 +183,9 @@ public class SequenceQTE : MonoBehaviour
 
         qtePanelTransform.anchoredPosition = originalPanelPosition;
 
-        if (isActive && currentIndex < keyBoxes.Length)
+        if (isActive && keyBoxes != null && currentIndex < keyBoxes.Length)
         {
-            HighlightBox(currentIndex, activeColor);
+            SetBoxSprite(currentIndex, currentSequence[currentIndex], neutralKeySprites, activeColor);
         }
         shakeCoroutine = null;
     }
@@ -216,17 +229,46 @@ public class SequenceQTE : MonoBehaviour
                 keyTexts[i].text = randomKey.ToString().ToUpper();
             }
 
-            HighlightBox(i, normalColor);
+            SetBoxSprite(i, randomKey, neutralKeySprites, normalColor);
         }
 
-        HighlightBox(0, activeColor);
+        SetBoxSprite(0, currentSequence[0], neutralKeySprites, activeColor);
     }
 
-    private void HighlightBox(int index, Color color)
+    private void SetBoxSprite(int index, KeyCode key, Sprite[] stateSprites, Color fallbackColor)
     {
-        if (keyBoxes != null && index < keyBoxes.Length && keyBoxes[index] != null)
+        if (keyBoxes == null || index < 0 || index >= keyBoxes.Length || keyBoxes[index] == null) return;
+
+        int spriteIndex = GetKeySpriteIndex(key);
+        Sprite sprite = stateSprites != null && spriteIndex >= 0 && spriteIndex < stateSprites.Length
+            ? stateSprites[spriteIndex]
+            : null;
+
+        keyBoxes[index].sprite = sprite != null
+            ? sprite
+            : originalKeyBoxSprites != null && index < originalKeyBoxSprites.Length
+                ? originalKeyBoxSprites[index]
+                : null;
+        keyBoxes[index].color = sprite != null ? Color.white : fallbackColor;
+
+        if (keyTexts != null && index < keyTexts.Length && keyTexts[index] != null)
         {
-            keyBoxes[index].color = color;
+            keyTexts[index].enabled = sprite == null;
+        }
+    }
+
+    private int GetKeySpriteIndex(KeyCode key)
+    {
+        switch (key)
+        {
+            case KeyCode.A: return 0;
+            case KeyCode.D: return 1;
+            case KeyCode.Q: return 2;
+            case KeyCode.S: return 3;
+            case KeyCode.W: return 4;
+            case KeyCode.X: return 5;
+            case KeyCode.Z: return 6;
+            default: return -1;
         }
     }
 
@@ -242,6 +284,11 @@ public class SequenceQTE : MonoBehaviour
 
     private void FailQTE()
     {
+        if (currentIndex >= 0 && currentIndex < currentSequence.Count)
+        {
+            SetBoxSprite(currentIndex, currentSequence[currentIndex], incorrectKeySprites, failColor);
+        }
+
         isActive = false;
         Debug.Log("QTE GAGAL!");
         onFail?.Invoke();

@@ -22,17 +22,27 @@ public class PetugasMisool : MonoBehaviour
     public void InteractWithOfficer()
     {
         if (dialogueSystem == null) dialogueSystem = GetComponent<Dialogue>();
-        if (dialogueSystem == null || MisoolQuestManager.Instance == null) return;
+        if (dialogueSystem == null) dialogueSystem = FindFirstObjectByType<Dialogue>();
 
-        int stage = MisoolQuestManager.Instance.CurrentStage;
+        MasterQuestManager mqm = MasterQuestManager.Instance;
+        if (mqm == null)
+        {
+            Debug.LogWarning("[PetugasMisool] MasterQuestManager tidak ditemukan!");
+            return;
+        }
+
+        mqm.SetActiveIsland(IslandType.Misool);
+        int stage = mqm.CurrentStage;
+        Debug.Log($"[PetugasMisool] Interaksi dimulai. Stage Misool saat ini: {stage}");
 
         if (stage == 1 || stage == 2)
         {
             // Stage 1: Petugas menyuruh Player menyelam pertama kali (Monolog)
             dialogueSystem.StartCustomDialogue(dialogSuruhMenyelam, () =>
             {
-                QuestController.Instance?.ProgressObjective("misool_start_dive", 1);
-                MisoolQuestManager.Instance.AdvanceStageTo(2); // Naik ke Stage 2 (Siap menyelam)
+                ProgressMisoolObjective("petugas_konservasi", "misool_start_dive");
+                mqm.AdvanceStageTo(2); // Naik ke Stage 2 (Siap menyelam)
+                if (MisoolQuestManager.Instance != null) MisoolQuestManager.Instance.AdvanceStageTo(2);
             });
         }
         else if (stage == 3)
@@ -40,9 +50,14 @@ public class PetugasMisool : MonoBehaviour
             // Stage 3: Setelah monolog laut selesai, Petugas minta bantuan 3 Bulu Seribu
             dialogueSystem.StartCustomDialogue(dialogMintaBantuan, () =>
             {
-                QuestController.Instance?.ProgressObjective("misool_collect_cots", 1);
-                MisoolQuestManager.Instance.ResetCotsCount();
-                MisoolQuestManager.Instance.AdvanceStageTo(4); // Naik ke Stage 4 (Ambil Bulu Seribu)
+                ProgressMisoolObjective("petugas_report", "misool_collect_cots");
+                mqm.ResetCollectibleCount();
+                mqm.AdvanceStageTo(4); // Naik ke Stage 4 (Ambil Bulu Seribu)
+                if (MisoolQuestManager.Instance != null)
+                {
+                    MisoolQuestManager.Instance.ResetCotsCount();
+                    MisoolQuestManager.Instance.AdvanceStageTo(4);
+                }
             });
         }
         else if (stage == 4)
@@ -55,9 +70,25 @@ public class PetugasMisool : MonoBehaviour
             // Stage 5: 3 Bulu Seribu sudah terkumpul, Petugas berterima kasih & mengarahkan ke Ibu-Ibu
             dialogueSystem.StartCustomDialogue(dialogTerimaKasih, () =>
             {
-                QuestController.Instance?.ProgressObjective("misool_go_to_manta", 1);
-                MisoolQuestManager.Instance.AdvanceStageTo(6); // Naik ke Stage 6 (Aktifkan Ibu-Ibu)
+                ProgressMisoolObjective("pesisir_pantai", "misool_go_to_manta");
+                mqm.AdvanceStageTo(6); // Naik ke Stage 6 (Aktifkan Ibu-Ibu)
+                if (MisoolQuestManager.Instance != null) MisoolQuestManager.Instance.AdvanceStageTo(6);
             });
+        }
+    }
+
+    private void ProgressMisoolObjective(string primaryID, string fallbackID)
+    {
+        if (QuestController.Instance == null) return;
+
+        // Coba primary objective terlebih dahulu, jika tidak ada baru gunakan fallback
+        if (!string.IsNullOrEmpty(primaryID))
+        {
+            QuestController.Instance.ProgressObjective(primaryID, 1);
+        }
+        if (!string.IsNullOrEmpty(fallbackID))
+        {
+            QuestController.Instance.ProgressObjective(fallbackID, 1);
         }
     }
 }

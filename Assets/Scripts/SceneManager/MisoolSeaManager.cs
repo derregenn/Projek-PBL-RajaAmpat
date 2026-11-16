@@ -54,10 +54,10 @@ public class MisoolSeaManager : MonoBehaviour
             }
         }
 
-        // Manta yang sama aktif sejak Stage 7 hingga quest selesai.
+        // Manta yang sama aktif sejak Stage 0 hingga quest selesai.
         if (pariManta != null)
         {
-            pariManta.SetActive(stage >= 7);
+            pariManta.SetActive(stage >= 0);
         }
     }
 }

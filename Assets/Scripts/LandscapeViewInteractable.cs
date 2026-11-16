@@ -49,6 +49,10 @@ public class LandscapeViewInteractable : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         // 5. Jalankan event penutup (Quest progress / dialog)
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ProgressObjective("Lihat “pemandangan”", 1);
+        }
         OnViewEnded?.Invoke();
 
         isViewing = false;

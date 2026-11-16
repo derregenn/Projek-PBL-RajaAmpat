@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public bool hasMap = false;
     public float moveSpeed = 3f;
+    public bool isMovementLocked = false;
 
     [Header("Mode Berenang")]
     public bool isSwimming = false;
@@ -68,6 +69,17 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (isMovementLocked)
+        {
+            if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+            {
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            }
+            SetAnimation(0f);
+            UpdateMovementAudio(0f);
+            return;
+        }
+
         float moveInput = Input.GetAxisRaw("Horizontal");
 
         if (moveInput > 0 && spriteRenderer != null)

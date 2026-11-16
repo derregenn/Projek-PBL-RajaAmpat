@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MapController : MonoBehaviour
 {
@@ -58,7 +57,24 @@ public class MapController : MonoBehaviour
     // --- LOGIKA WORLD MAP PULAU (DIPANGGIL NPC) ---
     public void OpenWorldMap()
     {
+        if (!QuestJournalManager.CanLeaveCurrentIslandForMap())
+        {
+            HideCanvasGroupImmediate(worldMapCanvasGroup);
+            Time.timeScale = 1f;
+            Debug.Log("[MapController] MapMenuPanel ditahan karena quest di pulau ini belum semua selesai.");
+            return;
+        }
+
         StartCoroutine(FadeGroup(worldMapCanvasGroup, true, true));
+    }
+
+    public static void HideCanvasGroupImmediate(CanvasGroup cg)
+    {
+        if (cg == null) return;
+        cg.alpha = 0f;
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
+        cg.gameObject.SetActive(false);
     }
 
     public void CloseWorldMap()
@@ -101,10 +117,6 @@ public class MapController : MonoBehaviour
     // --- PANGGIL FUNGSI INI DARI TOMBOL PETA ---
     public void LoadIslandScene(string sceneName)
     {
-        targetIslandScene = sceneName; // Simpan nama pulau (contoh: "03_Pianemo")
-        Time.timeScale = 1f;
-
-        // Pindah ke Scene Cutscene Perahu terlebih dahulu
-        SceneManager.LoadScene("Cutscene_BoatToIsland");
+        BoatTransitionController.NavigateToIsland(sceneName);
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public enum IslandType
 {
@@ -15,7 +17,24 @@ public enum IslandType
 
 public class MasterQuestManager : MonoBehaviour
 {
-    public static MasterQuestManager Instance { get; private set; }
+    private static MasterQuestManager _instance;
+    public static MasterQuestManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<MasterQuestManager>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("MasterQuestManager");
+                    _instance = go.AddComponent<MasterQuestManager>();
+                    DontDestroyOnLoad(go);
+                }
+            }
+            return _instance;
+        }
+    }
 
     [Header("Pengaturan Pulau")]
     [SerializeField] private IslandType currentIsland = IslandType.Misool;
@@ -23,15 +42,59 @@ public class MasterQuestManager : MonoBehaviour
     [Header("Event Perubahan Stage (Opsional)")]
     public UnityEvent<int> onStageChanged;
 
+    private int lastBuluSeribuFrame = -1;
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(_instance.gameObject);
         }
-        Instance = this;
+
+        _instance = this;
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
+
+        DetectIslandFromActiveScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        DetectIslandFromActiveScene(scene.name);
+        RefreshCurrentLandState();
+    }
+
+    public void DetectIslandFromActiveScene(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName)) return;
+        string lower = sceneName.ToLower();
+
+        if (lower.Contains("misool")) SetActiveIsland(IslandType.Misool);
+        else if (lower.Contains("arborek")) SetActiveIsland(IslandType.Arborek);
+        else if (lower.Contains("sawinggrai")) SetActiveIsland(IslandType.Sawinggrai);
+        else if (lower.Contains("friwen")) SetActiveIsland(IslandType.Friwen);
+        else if (lower.Contains("gag")) SetActiveIsland(IslandType.Gag);
+        else if (lower.Contains("pianemo") || lower.Contains("piaynemo")) SetActiveIsland(IslandType.Piaynemo);
+        else if (lower.Contains("waisai")) SetActiveIsland(IslandType.Waisai);
+        else if (lower.Contains("airstrip")) SetActiveIsland(IslandType.Airstrip);
     }
 
     private string StageKey => $"{currentIsland}_QuestStage";
@@ -43,7 +106,7 @@ public class MasterQuestManager : MonoBehaviour
     public void SetActiveIsland(IslandType newIsland)
     {
         currentIsland = newIsland;
-        Debug.Log($"<color=yellow>[MasterQuestManager] Pulau Aktif Berpindah Ke: {newIsland}</color>");
+        Debug.Log($"<color=yellow>[MasterQuestManager] Pulau Aktif: {newIsland}</color>");
     }
 
     // --- MANAJEMEN QUEST STAGE ---
@@ -54,6 +117,13 @@ public class MasterQuestManager : MonoBehaviour
         private set
         {
             PlayerPrefs.SetInt(StageKey, value);
+
+            // Selaraskan dengan key legacy Misool jika pulau aktif adalah Misool
+            if (currentIsland == IslandType.Misool)
+            {
+                PlayerPrefs.SetInt("Misool_QuestStage", value);
+            }
+
             PlayerPrefs.Save();
         }
     }
@@ -65,10 +135,8 @@ public class MasterQuestManager : MonoBehaviour
 
     public void AdvanceStageTo(int newStage)
     {
-        // PERBAIKAN: Hapus pembatasan if (newStage <= CurrentStage) 
-        // agar stage bisa di-set ke angka berapa pun (termasuk reset ke 0)
         CurrentStage = newStage;
-        Debug.Log($"<color=green>[{currentIsland}] Quest Stage Naik/Berubah Ke: {newStage}</color>");
+        Debug.Log($"<color=green>[MasterQuestManager: {currentIsland}] Quest Stage Diperbarui Ke: {newStage}</color>");
 
         onStageChanged?.Invoke(newStage);
         RefreshCurrentLandState();
@@ -80,29 +148,31 @@ public class MasterQuestManager : MonoBehaviour
 
     public void AddCollectible(int targetAmount, int stageOnComplete)
     {
-
-        // PERBAIKAN: Tambah item terlebih dahulu tanpa diblokir guard clause
         int count = CollectibleCount + 1;
         PlayerPrefs.SetInt(CollectibleKey, count);
-        PlayerPrefs.Save();
-        Debug.Log($"<color=cyan>[{currentIsland}] Progress Item/Hama: {count}/{targetAmount}</color>");
 
-        // Jika jumlah target tercapai, baru naikkan stage
+        if (currentIsland == IslandType.Misool)
+        {
+            PlayerPrefs.SetInt("Misool_CotsCount", count);
+        }
+
+        PlayerPrefs.Save();
+        Debug.Log($"<color=cyan>[MasterQuestManager: {currentIsland}] Item/Hama Terkumpul: {count}/{targetAmount}</color>");
+
         if (count >= targetAmount)
         {
             AdvanceStageTo(stageOnComplete);
         }
     }
 
-    // --- FUNGSI HELPER UNTUK UNITY EVENT INSPECTOR ---
+    // --- FUNGSI HELPER UNTUK BULU SERIBU ---
 
-    /// <summary>
-    /// Dipanggil dari Inspector UnityEvent untuk pengambilan Bulu Seribu (Target 3, Stage 5)
-    /// </summary>
     public void AddBuluSeribu()
     {
-        // MasterQuestManager bertahan antar-scene, jadi pastikan event ini
-        // mencatat progress pada pulau yang memiliki quest Bulu Seribu.
+        // Hindari eksekusi dobel pada frame yang sama
+        if (Time.frameCount == lastBuluSeribuFrame) return;
+        lastBuluSeribuFrame = Time.frameCount;
+
         SetActiveIsland(IslandType.Misool);
         AddCollectible(3, 5);
     }
@@ -110,6 +180,10 @@ public class MasterQuestManager : MonoBehaviour
     public void ResetCollectibleCount()
     {
         PlayerPrefs.SetInt(CollectibleKey, 0);
+        if (currentIsland == IslandType.Misool)
+        {
+            PlayerPrefs.SetInt("Misool_CotsCount", 0);
+        }
         PlayerPrefs.Save();
     }
 
@@ -118,6 +192,10 @@ public class MasterQuestManager : MonoBehaviour
     public void SetLastExitPoint(string exitPointName)
     {
         PlayerPrefs.SetString(ExitPointKey, exitPointName);
+        if (currentIsland == IslandType.Misool)
+        {
+            PlayerPrefs.SetString("Misool_LastExitPoint", exitPointName);
+        }
         PlayerPrefs.Save();
     }
 
@@ -125,18 +203,68 @@ public class MasterQuestManager : MonoBehaviour
     {
         string exit = PlayerPrefs.GetString(ExitPointKey, "DEFAULT");
         PlayerPrefs.SetString(ExitPointKey, "DEFAULT");
+        if (currentIsland == IslandType.Misool)
+        {
+            PlayerPrefs.SetString("Misool_LastExitPoint", "DEFAULT");
+        }
         PlayerPrefs.Save();
         return exit;
     }
 
-    private void RefreshCurrentLandState()
+    public void RefreshCurrentLandState()
     {
         switch (currentIsland)
         {
             case IslandType.Misool:
                 MisoolLandSceneManager.Instance?.RefreshLandState();
+                var seaManager = FindFirstObjectByType<MisoolSeaManager>();
+                seaManager?.RefreshSeaState();
+                break;
+
+            case IslandType.Sawinggrai:
+                SawinggraiLandSceneManager.Instance?.RefreshLandState();
+                var sawSeaManager = FindFirstObjectByType<SawinggraiSeaManager>();
+                sawSeaManager?.RefreshSeaState();
+                break;
+
+            case IslandType.Waisai:
+                WaisaiLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Piaynemo:
+                PianemoLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Arborek:
+                ArborekLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Friwen:
+                FriwenLandSceneManager.Instance?.RefreshLandState();
+                break;
+
+            case IslandType.Gag:
+                GagSceneManager.Instance?.RefreshSceneState();
                 break;
         }
+    }
+
+    [ContextMenu("Reset All Progress (All Islands)")]
+    public void ResetAllProgress()
+    {
+        foreach (IslandType island in Enum.GetValues(typeof(IslandType)))
+        {
+            PlayerPrefs.DeleteKey($"{island}_QuestStage");
+            PlayerPrefs.DeleteKey($"{island}_CollectCount");
+            PlayerPrefs.DeleteKey($"{island}_LastExitPoint");
+        }
+        PlayerPrefs.DeleteKey("Misool_QuestStage");
+        PlayerPrefs.DeleteKey("Misool_CotsCount");
+        PlayerPrefs.DeleteKey("Misool_LastExitPoint");
+        PlayerPrefs.Save();
+
+        Debug.LogWarning("[MasterQuestManager] Seluruh progres pulau telah direset.");
+        RefreshCurrentLandState();
     }
 
     [ContextMenu("Reset Current Island Quest Data")]

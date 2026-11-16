@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MisoolPlayerSpawner : MonoBehaviour
@@ -15,32 +16,79 @@ public class MisoolPlayerSpawner : MonoBehaviour
         if (playerTransform == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj == null) playerObj = GameObject.Find("Player");
             if (playerObj != null) playerTransform = playerObj.transform;
         }
 
         RepositionPlayer();
+        StartCoroutine(VerifyPositionNextFrame());
+    }
+
+    private IEnumerator VerifyPositionNextFrame()
+    {
+        yield return null;
+        // Jaga-jaga jika kamera Cinemachine atau fisika Rigidbody memerlukan snap ulang
+        if (playerTransform != null)
+        {
+            Rigidbody2D rb = playerTransform.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
     }
 
     private void RepositionPlayer()
     {
+        if (playerTransform == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj == null) playerObj = GameObject.Find("Player");
+            if (playerObj != null) playerTransform = playerObj.transform;
+        }
+
         if (playerTransform == null) return;
 
         // Ambil penanda lokasi terakhir lalu reset dari memori temporary
-        string lastExit = MasterQuestManager.Instance.ConsumeLastExitPoint();
-
-        if (lastExit == "SEA_MAIN")
+        string lastExit = "DEFAULT";
+        if (MasterQuestManager.Instance != null)
         {
-            if (pierSpawnPoint != null) playerTransform.position = pierSpawnPoint.position;
-            Debug.Log("[Spawner] Player ditempatkan di Dermaga.");
-        }
-        else if (lastExit == "SEA_MANTA")
-        {
-            if (beachSpawnPoint != null) playerTransform.position = beachSpawnPoint.position;
-            Debug.Log("[Spawner] Player ditempatkan di Pesisir Ujung.");
+            lastExit = MasterQuestManager.Instance.ConsumeLastExitPoint();
         }
         else
         {
-            if (defaultSpawnPoint != null) playerTransform.position = defaultSpawnPoint.position;
+            lastExit = PlayerPrefs.GetString("Misool_LastExitPoint", "DEFAULT");
+            PlayerPrefs.SetString("Misool_LastExitPoint", "DEFAULT");
+            PlayerPrefs.Save();
+        }
+
+        Transform targetPoint = defaultSpawnPoint;
+
+        if (lastExit == "SEA_MAIN")
+        {
+            if (pierSpawnPoint != null) targetPoint = pierSpawnPoint;
+            Debug.Log("[MisoolPlayerSpawner] Menempatkan Player di Dermaga (SEA_MAIN).");
+        }
+        else if (lastExit == "SEA_MANTA")
+        {
+            if (beachSpawnPoint != null) targetPoint = beachSpawnPoint;
+            Debug.Log("[MisoolPlayerSpawner] Menempatkan Player di Pesisir Ujung (SEA_MANTA).");
+        }
+        else
+        {
+            if (defaultSpawnPoint != null) targetPoint = defaultSpawnPoint;
+            Debug.Log("[MisoolPlayerSpawner] Menempatkan Player di Spawn Default.");
+        }
+
+        if (targetPoint != null)
+        {
+            Rigidbody2D rb = playerTransform.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.position = targetPoint.position;
+            }
+            playerTransform.position = targetPoint.position;
         }
     }
 }

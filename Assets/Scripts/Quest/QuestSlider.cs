@@ -26,13 +26,16 @@ public class QuestSlider : MonoBehaviour
 
     private Coroutine slideCoroutine;
 
-    private void Start()
+    private void Awake()
     {
         if (panelRect == null) panelRect = GetComponent<RectTransform>();
         if (sfxAudioSource == null) sfxAudioSource = GetComponent<AudioSource>();
 
-        // Pastikan saat game mulai, panel berada di posisi tersembunyi
-        panelRect.anchoredPosition = hiddenPosition;
+        if (panelRect != null)
+        {
+            // Pastikan saat game mulai, panel berada di posisi tersembunyi
+            panelRect.anchoredPosition = hiddenPosition;
+        }
     }
 
     /// <summary>
@@ -40,6 +43,23 @@ public class QuestSlider : MonoBehaviour
     /// </summary>
     public void ShowQuestPopup()
     {
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
+
+        if (!isActiveAndEnabled)
+        {
+            Debug.LogError("[QuestSlider] Panel harus aktif di hierarchy agar popup dapat dijalankan.", this);
+            return;
+        }
+
+        if (panelRect == null)
+        {
+            Debug.LogError("[QuestSlider] Panel RectTransform tidak ditemukan.", this);
+            return;
+        }
+
         // Hentikan animasi yang sedang berjalan (jika ada) agar tidak bentrok
         if (slideCoroutine != null) StopCoroutine(slideCoroutine);
 

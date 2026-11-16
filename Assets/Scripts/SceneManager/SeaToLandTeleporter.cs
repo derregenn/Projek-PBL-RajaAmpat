@@ -5,39 +5,58 @@ public class SeaToLandTeleporter : MonoBehaviour
 {
     [Header("Pengaturan Scene Tujuan")]
     [SerializeField] private string landSceneName = "04_Misool";
+    [SerializeField] private IslandType currentIsland;
 
+
+    /// <summary>
+    /// Menyiapkan data stage dan exit point sebelum scene darat dimuat (tanpa memicu LoadScene langsung).
+    /// Mencegah race condition ketika dipanggil bersamaan dengan Screen Fade.
+    /// </summary>
+    public void PrepareReturn()
+    {
+        MasterQuestManager mqm = MasterQuestManager.Instance;
+        if (mqm == null)
+        {
+            Debug.LogWarning("[SeaToLandTeleporter] MasterQuestManager tidak ditemukan!");
+            return;
+        }
+
+        int currentStage = mqm.CurrentStage;
+        int count = mqm.CollectibleCount;
+        string exitPoint = "SEA_MAIN";
+
+        if (currentIsland == IslandType.Sawinggrai || mqm.CurrentIsland == IslandType.Sawinggrai)
+        {
+            if (currentStage == 4)
+                mqm.AdvanceStageTo(5);
+
+            if (currentStage == 4 || currentStage == 5)
+                exitPoint = "SAWINGGRAI_PIER";
+        }
+        // Stage transition logic for Misool.
+        else if (currentStage == 2)
+        {
+            mqm.AdvanceStageTo(3);
+        }
+        else if ((currentStage >= 3 && currentStage <= 4 && count >= 3) || currentStage == 5)
+        {
+            mqm.AdvanceStageTo(5);
+        }
+        else if (currentStage == 8)
+        {
+            exitPoint = "SEA_MANTA";
+        }
+
+        mqm.SetLastExitPoint(exitPoint);
+        Debug.Log($"[SeaToLandTeleporter] Data transisi disiapkan. Stage: {mqm.CurrentStage}, ExitPoint: {exitPoint}");
+    }
+
+    /// <summary>
+    /// Dipanggil jika transisi ingin langsung mengeksekusi perpindahan scene.
+    /// </summary>
     public void ReturnToLand()
     {
-        int currentStage = MasterQuestManager.Instance.CurrentStage;
-
-        // 1. EVALUASI STAGE & SIMPAN PROGRES SEBELUM PINDAH
-        if (currentStage == 2)
-        {
-            // Selesai Monolog Laut -> Lanjut Stage 3 (Bulu Seribu)
-            MasterQuestManager.Instance.AdvanceStageTo(3);
-            MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN");
-        }
-        else if (currentStage == 4 && MasterQuestManager.Instance.CollectibleCount >= 3)
-        {
-            // Selesai Ambil 3 Bulu Seribu -> Lanjut Stage 5 (Serahkan ke Petugas)
-            MasterQuestManager.Instance.AdvanceStageTo(5);
-            MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN");
-        }
-        else if (currentStage == 7)
-        {
-            // Selesai Rescue Pari Manta -> Lanjut Stage 8 (Lapor Ibu-Ibu)
-            MasterQuestManager.Instance.AdvanceStageTo(8);
-            MasterQuestManager.Instance.SetLastExitPoint("SEA_MANTA");
-        }
-        else
-        {
-            // Jika kembali ke darat sebelum quest laut selesai
-            MasterQuestManager.Instance.SetLastExitPoint("SEA_MAIN");
-        }
-
-        // Data otomatis ter-save ke PlayerPrefs via MasterQuestManager!
-
-        // 2. LOAD SCENE DARAT
+        PrepareReturn();
         SceneManager.LoadScene(landSceneName);
     }
 }
