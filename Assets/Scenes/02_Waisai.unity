@@ -640,6 +640,7 @@ MonoBehaviour:
     plastik dan jangan menyentuh terumbu karang '
   - Jangan tinggalkan sampah plastik dan jangan menyentuh terumbu karang
   DialogueLineSpeakers: 00000000010000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 78562408}
@@ -692,6 +693,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &78562404
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3479,6 +3482,7 @@ MonoBehaviour:
     diluar sana!
   - Kamu bisa menekan tombol [TAB] kapan saja untuk membukanya.
   DialogueLineSpeakers: 000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.02
   typingAudioSource: {fileID: 193927118}
@@ -3507,6 +3511,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!114 &412539125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3874,6 +3880,7 @@ MonoBehaviour:
   - 'Saya rencana mau ke Pianemo dulu buat lihat bukit karst '
   - Selamat berlibur ya!
   DialogueLineSpeakers: 01000000000000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 449681120}
@@ -3890,6 +3897,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &449681125
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5203,6 +5212,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 92.69
       objectReference: {fileID: 0}
+    - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3100866956964956624, guid: d9eef132e72927948852f0a723f816bb, type: 3}
     m_RemovedGameObjects: []
@@ -5790,6 +5811,7 @@ MonoBehaviour:
   DialogueLines:
   - ini quest ya
   DialogueLineSpeakers: 
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 0}
@@ -5806,6 +5828,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &756967813
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7285,6 +7309,7 @@ MonoBehaviour:
   - Kalau lihat sampah di pasir atau dermaga, bantu dipungut dan dibuang ke tempatnya
   - Tentu saja pak, Terima kasih!
   DialogueLineSpeakers: 0100000000000000000000000000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 944592166}
@@ -7301,6 +7326,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &944592171
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8412,6 +8439,7 @@ MonoBehaviour:
   - Pemandangan di sini benar-benar unbelievable
   - Selamat berlibur ya!
   DialogueLineSpeakers: 0000000001000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1057765664}
@@ -8428,6 +8456,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!61 &1057765669
 BoxCollider2D:
   m_ObjectHideFlags: 0
