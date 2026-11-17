@@ -63,12 +63,7 @@ public class PianemoLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance != null)
         {
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Piaynemo);
-
-            if (MasterQuestManager.Instance.CurrentStage < 1)
-            {
-                MasterQuestManager.Instance.AdvanceStageTo(1);
-            }
-
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[PianemoLandSceneManager] STAGE PIANEMO SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 

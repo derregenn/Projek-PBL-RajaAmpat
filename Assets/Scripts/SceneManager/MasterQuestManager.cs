@@ -142,6 +142,14 @@ public class MasterQuestManager : MonoBehaviour
         RefreshCurrentLandState();
     }
 
+    public void EnsureStageInitialized()
+    {
+        if (CurrentStage < 1)
+        {
+            AdvanceStageTo(1);
+        }
+    }
+
     // --- MANAJEMEN COLLECTIBLES / HAMA / ITEM ---
 
     public int CollectibleCount => PlayerPrefs.GetInt(CollectibleKey, 0);

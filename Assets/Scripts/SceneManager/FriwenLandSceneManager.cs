@@ -59,11 +59,8 @@ public class FriwenLandSceneManager : MonoBehaviour
     {
         if (MasterQuestManager.Instance != null)
         {
-            if (MasterQuestManager.Instance.CurrentStage < 1)
-            {
-                MasterQuestManager.Instance.AdvanceStageTo(1);
-            }
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Friwen);
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[FriwenLandSceneManager] STAGE FRIWEN SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 

@@ -47,6 +47,7 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance != null)
         {
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Waisai);
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[WaisaiLandSceneManager] STAGE WAISAI SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 
