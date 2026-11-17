@@ -12,11 +12,21 @@ public class IslandSceneTransition : MonoBehaviour
     [Header("UI Fade Settings")]
     public Image fadeBlackScreen; // Tarik FadePanel dari Hierarchy ke sini
 
+    [Header("Interaksi")]
+    public bool requirePressE = true;
+    public GameObject promptPanel; // Panel petunjuk untuk menekan E
+
     private CanvasGroup canvasGroup;
     private bool isTransitioning = false;
+    private bool playerInRange = false;
 
     private void Start()
     {
+        if (promptPanel != null)
+        {
+            promptPanel.SetActive(false);
+        }
+
         if (fadeBlackScreen != null)
         {
             canvasGroup = fadeBlackScreen.GetComponent<CanvasGroup>();
@@ -33,14 +43,43 @@ public class IslandSceneTransition : MonoBehaviour
     {
         if (isTransitioning) return;
 
-        bool isPlayer = collision.CompareTag("Player") || 
-                        (collision.transform.root != null && collision.transform.root.CompareTag("Player")) || 
-                        collision.gameObject.name.ToLower().Contains("player");
-
-        if (isPlayer)
+        if (IsPlayer(collision))
         {
+            playerInRange = true;
+            if (requirePressE)
+            {
+                if (promptPanel != null) promptPanel.SetActive(true);
+            }
+            else
+            {
+                StartCoroutine(FadeAndLoadScene());
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (IsPlayer(collision))
+        {
+            playerInRange = false;
+            if (promptPanel != null) promptPanel.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (requirePressE && playerInRange && !isTransitioning && Input.GetKeyDown(KeyCode.E))
+        {
+            if (promptPanel != null) promptPanel.SetActive(false);
             StartCoroutine(FadeAndLoadScene());
         }
+    }
+
+    private bool IsPlayer(Collider2D collision)
+    {
+        return collision.CompareTag("Player") ||
+               (collision.transform.root != null && collision.transform.root.CompareTag("Player")) ||
+               collision.gameObject.name.ToLower().Contains("player");
     }
 
     private IEnumerator FadeAndLoadScene()

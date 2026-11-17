@@ -33,6 +33,8 @@ public class SawinggraiLandSceneManager : MonoBehaviour
     private void Start()
     {
         if (MasterQuestManager.Instance == null) return;
+        MasterQuestManager.Instance.SetActiveIsland(IslandType.Sawinggrai);
+        MasterQuestManager.Instance.EnsureStageInitialized();
         Debug.Log("<color=cyan>STAGE SAAT INI ADALAH: " + MasterQuestManager.Instance.CurrentStage + "</color>");
         RefreshLandState();
 

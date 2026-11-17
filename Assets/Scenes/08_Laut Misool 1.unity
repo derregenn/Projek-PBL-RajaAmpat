@@ -272,8 +272,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -72866051
-  m_SortingLayer: 5
+  m_SortingLayerID: 1209922747
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 418116986526876675, guid: 426310a469c7ce34687f873febcdc118, type: 3}
@@ -399,8 +399,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698487427
-  m_SortingLayer: 7
+  m_SortingLayerID: -72866051
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8624944081307457310, guid: 0198fd167a090b3498ed5667e080fbd1, type: 3}
@@ -1145,6 +1145,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 7.21
+      objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: isSwimming
       value: 0
@@ -1239,6 +1243,7 @@ MonoBehaviour:
   PlayerNextPrompt: {fileID: 1328651845}
   DialogueLines: []
   DialogueLineSpeakers: 
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 0}
@@ -1255,6 +1260,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!1 &325118151
 GameObject:
   m_ObjectHideFlags: 0
@@ -2718,8 +2725,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698487427
-  m_SortingLayer: 7
+  m_SortingLayerID: -72866051
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4079832013506250444, guid: 3800ea1c004dcc64a9c10705378b764b, type: 3}
@@ -5074,8 +5081,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 992077337
-  m_SortingLayer: 6
+  m_SortingLayerID: -72866051
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4543821952543147069, guid: 4f6eac274ffa2894c8a8788c07e1d469, type: 3}
@@ -5440,6 +5447,7 @@ MonoBehaviour:
   - Apa itu yang menempel di atas terumbu karang?
   - Aku harus lapor ini ke petugas tadi!
   DialogueLineSpeakers: 000000000000000000000000
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.02
   typingAudioSource: {fileID: 0}
@@ -5468,6 +5476,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  postQuestLoopLines: []
+  isPostQuestLoop: 0
 --- !u!114 &1650328946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6591,8 +6601,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -72866051
-  m_SortingLayer: 5
+  m_SortingLayerID: 1209922747
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2620912907789732799, guid: 54162fd713735b24f9686258617d3423, type: 3}

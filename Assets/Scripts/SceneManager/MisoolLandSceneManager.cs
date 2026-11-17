@@ -41,6 +41,8 @@ public class MisoolLandSceneManager : MonoBehaviour
             return;
         }
 
+        MasterQuestManager.Instance.SetActiveIsland(IslandType.Misool);
+        MasterQuestManager.Instance.EnsureStageInitialized();
         Debug.Log("<color=cyan>STAGE SAAT INI ADALAH: " + MasterQuestManager.Instance.CurrentStage + "</color>");
         RefreshLandState();
     }

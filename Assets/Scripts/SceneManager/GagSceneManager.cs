@@ -63,12 +63,7 @@ public class GagSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance != null)
         {
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Gag);
-
-            if (MasterQuestManager.Instance.CurrentStage < 1)
-            {
-                MasterQuestManager.Instance.AdvanceStageTo(1);
-            }
-
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[GagSceneManager] STAGE GAG SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 
