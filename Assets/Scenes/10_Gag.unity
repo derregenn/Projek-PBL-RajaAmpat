@@ -1367,7 +1367,7 @@ MonoBehaviour:
     kampung sana '
   - Warga lokal di sini sangat terdampak oleh pencemaran ini.
   - Beliau perlu tahu hasil temuan lapangan ini, sekaligus butuh pasokan air bersih
-  DialogueLineSpeakers: 00000000
+  DialogueLineSpeakers: 0000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -1397,7 +1397,8 @@ MonoBehaviour:
           m_StringArgument: minta_air
           m_BoolArgument: 0
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Data penelitian ini akan kami gunakan untuk terus mengadvokasi pemulihan ekosistem Pulau Gag.
   isPostQuestLoop: 0
 --- !u!61 &118326640
 BoxCollider2D:
@@ -4409,7 +4410,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Data penelitian ini akan kami gunakan untuk terus mengadvokasi pemulihan ekosistem Pulau Gag.
   isPostQuestLoop: 0
 --- !u!61 &333385658
 BoxCollider2D:
@@ -5996,6 +5998,30 @@ PrefabInstance:
       propertyPath: mapController
       value: 
       objectReference: {fileID: 149307474}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: DialogueLines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: 'DialogueLines.Array.data[0]'
+      value: Sudah mau kembali? Apa masih mau menikmati keindahan pulau lain?
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: 'DialogueLines.Array.data[1]'
+      value: Hmmm
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: DialogueLineSpeakers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[0]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[1]'
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1270992414121551918, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
@@ -10335,18 +10361,17 @@ MonoBehaviour:
   PlayerNextPrompt: {fileID: 1466734215}
   DialogueLines:
   - Ini pak air jernih nya, silahkan diminum
-  - 'Puji Tuhan... Segar sekali. Terima kasih banyak ya Nak. '
-  - 'Kamu sudah menyelamatkan saya hari ini. '
-  - 'Oh iya, Peneliti tadi juga titip pesan. '
-  - 'Ini botol sampel air laut keruh yang kami ambil dari pantai pesisir tadi '
-  - ' (...)'
-  - "Yah\u2026Begitulah kondisi laut yang menjadi sumber hidup kami sekarang Nak "
-  - 'Kalau kamu mau tahu mengapa air laut kami sampai seperti ini... '
-  - ' Coba kamu berjalan ke ujung tebing pantai di sebelah kanan sana '
-  - 'Tataplah ke arah perbukitan di luar sana... '
-  - 'Kamu akan melihat apa yang sebenarnya terjadi pada tanah kami  '
-  - 'Kamu akan melihat apa yang sebenarnya terjadi pada tanah kami  '
-  DialogueLineSpeakers: 010000000000000000000000010000000100000000000000000000000000000000000000000000000000000000000000
+  - Puji Tuhan... Segar sekali. Terima kasih banyak ya Nak.
+  - Kamu sudah menyelamatkan saya hari ini.
+  - Oh iya, Peneliti tadi juga titip pesan.
+  - Ini botol sampel air laut keruh yang kami ambil dari pantai pesisir tadi
+  - (...)
+  - "Yah\u2026Begitulah kondisi laut yang menjadi sumber hidup kami sekarang Nak"
+  - Kalau kamu mau tahu mengapa air laut kami sampai seperti ini..
+  - Coba kamu berjalan ke ujung tebing pantai di sebelah kanan sana
+  - Tataplah ke arah perbukitan di luar sana...
+  - Kamu akan melihat apa yang sebenarnya terjadi pada tanah kami
+  DialogueLineSpeakers: 0100000000000000000000000100000001000000000000000000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -10400,7 +10425,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Bawa pulang kisah tentang tanah dan laut kami ini Nak..
+  - Agar dunia tahu bahwa surga yang terluka ini butuh kita jaga bersama.
   isPostQuestLoop: 0
 --- !u!61 &1102240329
 BoxCollider2D:
@@ -11381,7 +11408,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Bawa pulang kisah tentang tanah dan laut kami ini Nak..
+  - Agar dunia tahu bahwa surga yang terluka ini butuh kita jaga bersama.
   isPostQuestLoop: 0
 --- !u!61 &1196625908
 BoxCollider2D:
@@ -15541,7 +15570,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Bawa pulang kisah tentang tanah dan laut kami ini Nak..
+  - Agar dunia tahu bahwa surga yang terluka ini butuh kita jaga bersama.
   isPostQuestLoop: 0
 --- !u!61 &1665425516
 BoxCollider2D:
@@ -16782,8 +16813,9 @@ MonoBehaviour:
   NextPrompt: {fileID: 618036554}
   PlayerNextPrompt: {fileID: 1466734215}
   DialogueLines:
-  - OK GAS (belom ada dialog)
-  DialogueLineSpeakers: 00000000
+  - Mari Kawan, wujudkan masa depan hijau bersama PT Gag Nikel Sejahtera!
+  - Tambang kemajuan, sejahtera bersama!
+  DialogueLineSpeakers: 0000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -17234,15 +17266,14 @@ MonoBehaviour:
   PlayerNextPrompt: {fileID: 1466734215}
   DialogueLines:
   - Bukitnya gundul semua pak
-  - 'Itulah ironi tanah kami nak '
-  - 'Di saat turis-turis mengagumi keindahan laut Raja Ampat di pulau lain  '
-  - ' Di sini rumah kami perlahan tergerus oleh mesin-mesin tambang '
-  - ' Laut memberi kehidupan pada daratan, dan daratan melindungi laut dari kerusakan. '
-  - ' Ketika satu terluka, yang lain ikut terluka'
-  - 'Terima kasih sudah mau datang, melihat, dan mendengarkan cerita kami.  '
-  - 'Bawa kisah ini pulang, agar dunia tahu bahwa surga ini butuh dijaga bersama  '
-  - 'Bawa kisah ini pulang, agar dunia tahu bahwa surga ini butuh dijaga bersama  '
-  DialogueLineSpeakers: 010000000000000000000000000000000000000000000000000000000000000000000000
+  - Itulah ironi tanah kami nak
+  - Di saat turis-turis mengagumi keindahan laut Raja Ampat di pulau lain
+  - Di sini rumah kami perlahan tergerus oleh mesin-mesin tambang
+  - Laut memberi kehidupan pada daratan, dan daratan melindungi laut dari kerusakan.
+  - Ketika satu terluka, yang lain ikut terluka
+  - Terima kasih sudah mau datang, melihat, dan mendengarkan cerita kami.
+  - Bawa kisah ini pulang, agar dunia tahu bahwa surga ini butuh dijaga bersama
+  DialogueLineSpeakers: 0100000000000000000000000000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -17284,7 +17315,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Bawa pulang kisah tentang tanah dan laut kami ini Nak..
+  - Agar dunia tahu bahwa surga yang terluka ini butuh kita jaga bersama.
   isPostQuestLoop: 0
 --- !u!61 &1827736609
 BoxCollider2D:
@@ -18634,26 +18667,21 @@ MonoBehaviour:
   NextPrompt: {fileID: 1466530326}
   PlayerNextPrompt: {fileID: 1466734215}
   DialogueLines:
-  - 'Air laut di pantai ini... warnanya tidak jernih biru lagi, tapi merah keruh
-    seperti berlumpur '
-  - 'Kadar sedimennya tinggi sekali... Ini sudah menutupi terumbu karang di pesisir    '
-  - " Permisi\u2026Sedang apa ya Mba?"
-  - 'Saya peneliti independen dari luar pulau. '
-  - 'Saya datang khusus ke Pulau Gag untuk menguji dan mendokumentasikan kualitas
-    air pesisir di sekitar '
-  - 'Saya datang khusus ke Pulau Gag untuk menguji dan mendokumentasikan kualitas
-    air pesisir di sekitar '
+  - Air laut di pantai ini... warnanya tidak jernih biru lagi, tapi merah keruh seperti berlumpur
+  - Kadar sedimennya tinggi sekali... Ini sudah menutupi terumbu karang di pesisir
+  - "Permisi\u2026Sedang apa ya Mba?"
+  - Saya peneliti independen dari luar pulau.
+  - Saya datang khusus ke Pulau Gag untuk menguji dan mendokumentasikan kualitas air pesisir di sekitar
   - Apakah kondisi airnya separah itu Mba?
-  - 'Sangat parah! '
-  - 'Kikisan tanah laterit dari lahan tambang terbawa hujan dan bermuara ke pantai. '
-  - 'Lumpur merah ini mengendap di dasar air, mematikan karang, dan mengusir ikan-ikan
-    pesisir '
-  - 'Saya butuh satu sampel air lagi '
-  - 'Dari area ceruk yang agak dalam di sebelah sana untuk melengkapi data laboratorium '
-  - 'Tapi peralatan saya sedang penuh '
+  - Sangat parah!
+  - Kikisan tanah laterit dari lahan tambang terbawa hujan dan bermuara ke pantai.
+  - Lumpur merah ini mengendap di dasar air, mematikan karang, dan mengusir ikan-ikan pesisir
+  - Saya butuh satu sampel air lagi
+  - Dari area ceruk yang agak dalam di sebelah sana untuk melengkapi data laboratorium
+  - Tapi peralatan saya sedang penuh
   - Biar saya bantu ambilkan Mba, pakai botol yang saya bawa
   - Wah, terima kasih banyak!
-  DialogueLineSpeakers: 000000000000000001000000000000000000000000000000010000000000000000000000000000000000000000000000000000000100000000000000
+  DialogueLineSpeakers: 0000000000000000010000000000000000000000010000000000000000000000000000000000000000000000000000000100000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -18683,7 +18711,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Data penelitian ini akan kami gunakan untuk terus mengadvokasi pemulihan ekosistem Pulau Gag.
   isPostQuestLoop: 0
 --- !u!61 &2022872705
 BoxCollider2D:

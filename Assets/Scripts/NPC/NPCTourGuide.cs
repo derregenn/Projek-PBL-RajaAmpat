@@ -15,6 +15,7 @@ public class NPCTourGuide : MonoBehaviour
     [SerializeField] private Dialogue dialogueSystem;       // Script Dialogue Awal Warlok 2
     [SerializeField] private Dialogue postTriviaDialogue;   // Script Dialogue Post-Trivia (Canvas_PostTrivia)
     [SerializeField] private QuestGiver questGiver;         // Script QuestGiver (Quest Foto)
+    [SerializeField] private TriviaQuizUI triviaQuizUI;     // Opsional: drag TriviaQuizUI langsung dari scene di Inspector
 
     [Header("Events")]
     public UnityEvent onQuizSuccessEvent;
@@ -56,9 +57,10 @@ public class NPCTourGuide : MonoBehaviour
         // Jeda 1 frame agar pencetan tombol [E] dari dialog tidak mengganggu kuis
         yield return null;
 
-        if (TriviaQuizUI.Instance != null && quizQuestions != null && quizQuestions.Length > 0)
+        TriviaQuizUI activeQuizUI = triviaQuizUI != null ? triviaQuizUI : TriviaQuizUI.FindOrActivateInstance();
+        if (activeQuizUI != null && quizQuestions != null && quizQuestions.Length > 0)
         {
-            TriviaQuizUI.Instance.StartQuiz(quizQuestions, OnQuizSuccess);
+            activeQuizUI.StartQuiz(quizQuestions, OnQuizSuccess);
         }
         else
         {

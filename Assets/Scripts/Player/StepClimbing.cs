@@ -39,6 +39,10 @@ public class StepClimbing : MonoBehaviour
     [Header("Platform Ground Settings")]
     [SerializeField] private Collider2D topPlatformCollider; // Drag BoxCollider2D dari TopPlatformGround
 
+    [Header("Post-Climb Trigger Control")]
+    [Tooltip("Objek trigger panjat tebing (misal WallInteractionTrigger) yang dinonaktifkan otomatis setelah sampai atas")]
+    [SerializeField] private GameObject disableOnClimbUpComplete;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -224,6 +228,16 @@ public class StepClimbing : MonoBehaviour
             }
         }
 
+        // Matikan trigger panjat tebing atas setelah selesai memanjat ke atas agar MC tidak memanjat ulang di puncak
+        if (!isClimbingDown)
+        {
+            DisableClimbUpTrigger();
+            if (MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < 5)
+            {
+                MasterQuestManager.Instance.AdvanceStageTo(5);
+            }
+        }
+
         // 4. Kembalikan fisik & gravitasi ke normal
         if (rb != null) rb.bodyType = RigidbodyType2D.Dynamic;
         if (playerCollider != null) playerCollider.enabled = true;
@@ -271,6 +285,26 @@ public class StepClimbing : MonoBehaviour
         if (qte2Script != null)
         {
             qte2Script.gameObject.SetActive(false);
+        }
+    }
+
+    private void DisableClimbUpTrigger()
+    {
+        isClimbingMode = false;
+
+        if (disableOnClimbUpComplete != null)
+        {
+            disableOnClimbUpComplete.SetActive(false);
+            return;
+        }
+
+        WallInteractable[] walls = FindObjectsByType<WallInteractable>(FindObjectsSortMode.None);
+        foreach (WallInteractable w in walls)
+        {
+            if (w != null && !w.IsClimbDown)
+            {
+                w.gameObject.SetActive(false);
+            }
         }
     }
 }

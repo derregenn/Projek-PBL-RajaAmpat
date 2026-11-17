@@ -27,8 +27,19 @@ public class SasiInteractable : MonoBehaviour
 
     private void Start()
     {
-        // Pastikan QTE Biru mati di awal
+        // Pastikan QTE mati di awal
         if (qtePanel != null) qtePanel.SetActive(false);
+        ResolvePlayerAnimator();
+    }
+
+    private void ResolvePlayerAnimator()
+    {
+        if (playerAnimator != null) return;
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            playerAnimator = playerObj.GetComponentInChildren<Animator>();
+        }
     }
 
     private void Update()
@@ -50,16 +61,25 @@ public class SasiInteractable : MonoBehaviour
         // 2. Pemicu Animasi Jongkok MC
         SetPlayerCrouch(true);
 
-        // 3. Tampilkan UI QTE Biru & sambungkan callback QTE2 secara dinamis
+        // 3. Tampilkan UI QTE (mendukung QTE2 maupun QTE1) & sambungkan callback secara dinamis
         if (qtePanel != null)
         {
             QTE2 qte2 = qtePanel.GetComponent<QTE2>();
+            QTE1 qte1 = qte2 == null ? qtePanel.GetComponent<QTE1>() : null;
+
             if (qte2 != null)
             {
                 qte2.onSuccess.RemoveListener(FinishQTE);
                 qte2.onSuccess.AddListener(FinishQTE);
                 qte2.onFail.RemoveListener(CancelQTE);
                 qte2.onFail.AddListener(CancelQTE);
+            }
+            else if (qte1 != null)
+            {
+                qte1.onSuccess.RemoveListener(FinishQTE);
+                qte1.onSuccess.AddListener(FinishQTE);
+                qte1.onFail.RemoveListener(CancelQTE);
+                qte1.onFail.AddListener(CancelQTE);
             }
 
             qtePanel.SetActive(true);
@@ -68,6 +88,14 @@ public class SasiInteractable : MonoBehaviour
             {
                 qte2.BeginQTE();
             }
+            else if (qte1 != null)
+            {
+                qte1.InitQTE();
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[SasiInteractable] qtePanel belum di-assign di Inspector pada '{gameObject.name}'!", this);
         }
     }
 
@@ -80,6 +108,12 @@ public class SasiInteractable : MonoBehaviour
             {
                 qte2.onSuccess.RemoveListener(FinishQTE);
                 qte2.onFail.RemoveListener(CancelQTE);
+            }
+            QTE1 qte1 = qtePanel.GetComponent<QTE1>();
+            if (qte1 != null)
+            {
+                qte1.onSuccess.RemoveListener(FinishQTE);
+                qte1.onFail.RemoveListener(CancelQTE);
             }
             qtePanel.SetActive(false);
         }
@@ -106,6 +140,12 @@ public class SasiInteractable : MonoBehaviour
         {
             qte2.onSuccess.RemoveListener(FinishQTE);
             qte2.onFail.RemoveListener(CancelQTE);
+        }
+        QTE1 qte1 = qtePanel != null ? qtePanel.GetComponent<QTE1>() : null;
+        if (qte1 != null)
+        {
+            qte1.onSuccess.RemoveListener(FinishQTE);
+            qte1.onFail.RemoveListener(CancelQTE);
         }
 
         // 1. Kembalikan Animasi MC ke berdiri

@@ -7,6 +7,25 @@ public class TriviaQuizUI : MonoBehaviour
 {
     public static TriviaQuizUI Instance { get; private set; }
 
+    public static TriviaQuizUI FindOrActivateInstance()
+    {
+        if (Instance != null) return Instance;
+
+        TriviaQuizUI found = FindFirstObjectByType<TriviaQuizUI>(FindObjectsInactive.Include);
+        if (found != null)
+        {
+            if (!found.gameObject.activeSelf)
+            {
+                found.gameObject.SetActive(true);
+            }
+            if (Instance == null)
+            {
+                Instance = found;
+            }
+        }
+        return Instance;
+    }
+
     [Header("References")]
     [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol di bawah
     [SerializeField] private TextMeshProUGUI questionText;
@@ -165,8 +184,10 @@ public class TriviaQuizUI : MonoBehaviour
             // SFX Jawaban Benar
             PlaySFX(correctAnswerSFX);
 
-            // Jawaban benar menampilkan feedback sebelum lanjut ke soal berikutnya.
-            string successMsg = GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
+            // Prioritaskan feedback spesifik per pertanyaan dari Inspector, baru fallback ke array/default
+            string successMsg = !string.IsNullOrWhiteSpace(q.correctFeedback)
+                ? q.correctFeedback
+                : GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
             StartCoroutine(ShowFeedbackRoutine(successMsg, true));
         }
         else
@@ -174,8 +195,10 @@ public class TriviaQuizUI : MonoBehaviour
             // SFX Jawaban Salah
             PlaySFX(wrongAnswerSFX);
 
-            // Jawaban salah menampilkan feedback sebelum mengulang soal.
-            string wrongMsg = GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
+            // Prioritaskan feedback spesifik per pertanyaan dari Inspector, baru fallback ke array/default
+            string wrongMsg = !string.IsNullOrWhiteSpace(q.wrongFeedback)
+                ? q.wrongFeedback
+                : GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
             StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
         }
     }

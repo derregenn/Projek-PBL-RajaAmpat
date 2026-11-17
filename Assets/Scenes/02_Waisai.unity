@@ -632,14 +632,17 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 1443418856}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - Selamat datang. Mau registrasi PIN Turis untuk akses kawasan konservasi?
-  - Iya betul
+  - 'Iya betul  '
   - Baik, ini kartu PIN kamu. Tolong selalu dibawa selama menjelajah
-  - 'Sebagai sesama pengunjung, tolong bantu jaga laut kita. Jangan tinggalkan sampah
-    plastik dan jangan menyentuh terumbu karang '
+  - Sebagai sesama pengunjung, tolong bantu jaga laut kita.
   - Jangan tinggalkan sampah plastik dan jangan menyentuh terumbu karang
-  DialogueLineSpeakers: 00000000010000000000000000000000
+  DialogueLineSpeakers: 0000000001000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -694,7 +697,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Selamat menjelajahi pulau-pulau Raja Ampat!
+  - Dan ingat untuk selalu jaga kebersihan laut kita ya
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: 1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
@@ -1339,8 +1347,33 @@ PrefabInstance:
       value: Sederhana aja, 2 pertanyaan doang kok.
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: postQuestLoopLines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'postQuestLoopLines.Array.data[0]'
+      value: Kamu terbukti turis yang bijak dan bertanggung jawab. Sekarang kamu
+        sudah siap menjelajah.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[0]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[3]'
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
@@ -1407,6 +1440,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 412539124}
     - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: postTriviaDialogue.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -1447,8 +1484,73 @@ PrefabInstance:
         penting diluar sana!
       objectReference: {fileID: 0}
     - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[0].questionText
+      value: Pertanyaan pertama, Saat kamu menyelam dan melihat terumbu karang atau
+        penyu yang sangat cantik, apa yang boleh kamu lakukan?
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[1].questionText
+      value: Pertanyaan selanjutnya, Kalau kamu punya sampah plastik selama menjelajahi
+        pulau, apa yang harus kamu lakukan
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[0].wrongFeedback
+      value: Aduh, Itu bisa merusak ekosistem yang butuh puluhan tahun untuk tumbuh,
+        coba lagi!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[1].wrongFeedback
+      value: Wah, jangan dong! Sampah plastik di pasir atau laut bisa tertelan oleh
+        penyu. Coba jawab lagi!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[0].correctFeedback
+      value: Tepat sekali! Mengamati dari jarak aman adalah cara terbaik menikmati
+        laut kita
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[1].correctFeedback
+      value: Mantap! 100 untukmu!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[0].correctAnswerIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[0].options.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[1].correctAnswerIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: quizQuestions.Array.data[1].options.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'quizQuestions.Array.data[0].options.Array.data[0]'
+      value: Ambil sedikit karang untuk kenang-kenangan
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'quizQuestions.Array.data[0].options.Array.data[1]'
+      value: Menyentuhnya dengan perlahan untuk merasakan teksturnya
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'quizQuestions.Array.data[0].options.Array.data[2]'
-      value: Menjaga jarak aman dan tidak menyentuh atau menginjaknya sama sekali
+      value: Menjaga jarak aman dan tidak menyentuh atau menginjaknya
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'quizQuestions.Array.data[1].options.Array.data[0]'
+      value: Menguburnya di dalam pasir pantai agar tidak kelihatan.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'quizQuestions.Array.data[1].options.Array.data[1]'
+      value: Memasukkannya ke dalam tas/kantong sampah lalu membawanya pulang.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'quizQuestions.Array.data[1].options.Array.data[2]'
+      value: Melemparnya ke laut kalau tidak ada tempat sampah di dekat situ.
       objectReference: {fileID: 0}
     - target: {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onQuizSuccessEvent.m_PersistentCalls.m_Calls.Array.size
@@ -3448,6 +3550,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 460366931}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - Kamu terbukti turis yang bijak dan bertanggung jawab. Sekarang kamu sudah siap
     menjelajah.
@@ -3485,7 +3591,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Kamu bisa menekan tombol [TAB] kapan saja untuk membukanya.
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: 2
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 0
@@ -3850,12 +3960,17 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 1375513364}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 1240042226}
+  SecondaryNPCDialogueText: {fileID: 1388510149}
+  SecondaryNPCNextPrompt: {fileID: 204028852}
   DialogueLines:
   - Halo! Baru sampai juga?
-  - 'Oh, hi! Yes, I just arrived! '
-  - 'Saya rencana mau ke Pianemo dulu buat lihat bukit karst '
+  - Oh, hi! Yes, I just arrived!
+  - Pemandangan di sini benar-benar unbelievable
+  - Saya rencana mau ke Pianemo dulu buat lihat bukit karst
   - Selamat berlibur ya!
-  DialogueLineSpeakers: 01000000000000000000000001000000
+  DialogueLineSpeakers: 0100000000000000020000000000000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -3875,6 +3990,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   postQuestLoopLines: []
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
@@ -4628,10 +4746,10 @@ MonoBehaviour:
   - Tepat sekali! Mengamati dari jarak aman adalah cara terbaik menikmati laut kita
   - Mantap! 100 untukmu!
   wrongFeedbackMessages:
-  - Aduh, Menyentuh atau mengambil karang bisa merusak ekosistem yang butuh puluhan
-    tahun untuk tumbuh, coba lagi!
-  - Wah, jangan dong! Sampah plastik di pasir atau laut bisa tertelan oleh penyu
-    dan membunuh mereka. Coba jawab lagi!
+  - Aduh, Itu bisa merusak ekosistem yang butuh puluhan tahun untuk tumbuh, coba
+    lagi!
+  - Wah, jangan dong! Sampah plastik di pasir atau laut bisa tertelan oleh penyu.
+    Coba jawab lagi!
   closeKey: 101
 --- !u!1001 &638748627
 PrefabInstance:
@@ -4965,6 +5083,10 @@ MonoBehaviour:
   manualWidth: 0
   targetCamera: {fileID: 0}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 0
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!212 &663971491
 SpriteRenderer:
   serializedVersion: 2
@@ -5809,6 +5931,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 346163010}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - ini quest ya
   DialogueLineSpeakers: 
@@ -5830,7 +5956,11 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Selamat menikmati keindahan alam Raja Ampat!
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
@@ -7418,6 +7548,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 318702905}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - Permisi, Pak. Sedang istirahat?
   - Iya Nak, Baru selesai menambat perahu. Laut lagi bagus anginnya hari ini
@@ -7444,6 +7578,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   postQuestLoopLines: []
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
@@ -7827,26 +7964,16 @@ PrefabInstance:
       value: Kalau kamu udah dapet PIN Turis, kita bisa langsung jalan.
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[5]'
-      value: Disini kita sekarang ada di Bandar Udara Marinda di Pulau Waisai
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[6]'
-      value: Sebelum kita mulai keliling pulau eksotis pakai perahu, kita harus jalan
-        sedikit ke Pelabuhan Waisai
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[7]'
-      value: Ada urusan administrasi kecil yang harus kita urus di pos informasi
-        sebelum kamu memulai eksplorasi.
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[8]'
-      value: Aku tunggu di depan Papan Informasi Waisai ya.
+      propertyPath: postQuestLoopLines.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[0]'
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[1]'
@@ -7854,6 +7981,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[4]'
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -8558,7 +8693,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057765663}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
   m_Name: 
@@ -8570,6 +8705,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 204028852}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - Pemandangan di sini benar-benar unbelievable
   - Selamat berlibur ya!
@@ -8592,7 +8731,11 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Pemandangan di sini benar-benar unbelievable! Selamat berlibur ya!
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
@@ -12643,7 +12786,7 @@ Transform:
   m_GameObject: {fileID: 1971256658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.99, y: -1.223, z: 0}
+  m_LocalPosition: {x: 10.945, y: -1.223, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

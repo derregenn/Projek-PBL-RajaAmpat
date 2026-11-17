@@ -5,6 +5,7 @@ public class WallInteractable : MonoBehaviour, IInteractable
     [Header("Prompt Settings")]
     [SerializeField] private string promptMessage = "Panjat Tebing";
     [SerializeField] private bool climbDown;
+    public bool IsClimbDown => climbDown;
 
     public void Interact()
     {

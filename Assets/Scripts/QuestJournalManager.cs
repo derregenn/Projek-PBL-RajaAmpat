@@ -44,6 +44,8 @@ public class QuestJournalManager : MonoBehaviour
     public Image cameraFlash;
     public GameObject polaroidPopup;
     public Image popupPhotoDisplay;
+    [Tooltip("Lama tampilan Polaroid sebelum menghilang / lanjut transisi (detik, default 5 detik).")]
+    [SerializeField] private float polaroidDisplayDuration = 5f;
 
     [Header("Travel Journal Panel")]
     public GameObject questTabPanel;
@@ -231,7 +233,19 @@ public class QuestJournalManager : MonoBehaviour
 
         if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 0);
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
-        if (questTabPanel != null) questTabPanel.SetActive(false);
+        if (questTabPanel != null)
+        {
+            if (journalPageImage == null)
+            {
+                Transform bgTr = questTabPanel.transform.Find("RightPanel/JournalBackground")
+                              ?? questTabPanel.transform.Find("RightPanel");
+                if (bgTr != null)
+                {
+                    journalPageImage = bgTr.GetComponent<Image>();
+                }
+            }
+            questTabPanel.SetActive(false);
+        }
 
         // Pasang listener tombol UI jika belum terhubung
         if (btnPrevPage != null)
@@ -282,6 +296,7 @@ public class QuestJournalManager : MonoBehaviour
         if (sceneManager.cameraFlash != null) this.cameraFlash = sceneManager.cameraFlash;
         if (sceneManager.polaroidPopup != null) this.polaroidPopup = sceneManager.polaroidPopup;
         if (sceneManager.popupPhotoDisplay != null) this.popupPhotoDisplay = sceneManager.popupPhotoDisplay;
+        if (sceneManager.polaroidDisplayDuration > 0f) this.polaroidDisplayDuration = sceneManager.polaroidDisplayDuration;
 
         if (sceneManager.questTabPanel != null) this.questTabPanel = sceneManager.questTabPanel;
         if (sceneManager.btnCloseJournal != null) this.btnCloseJournal = sceneManager.btnCloseJournal;
@@ -1711,38 +1726,61 @@ public class QuestJournalManager : MonoBehaviour
 
     public void TakeSpecificPhoto(int photoID)
     {
-        if (isFlashing) return;
-
-        Sprite photoSprite = GetPhotoSpriteByID(photoID);
-        if (photoSprite != null && !collectedPhotos.ContainsKey(photoID))
-        {
-            collectedPhotos.Add(photoID, photoSprite);
-            SaveJournalSaveData();
-        }
-
-        StartCoroutine(PhotoSequence());
+        TakeSpecificPhoto(photoID, null);
     }
 
-    private IEnumerator PhotoSequence()
+    public void TakeSpecificPhoto(int photoID, Action onComplete)
+    {
+        if (isFlashing)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        Sprite photoSprite = GetPhotoSpriteByID(photoID);
+        if (photoSprite != null)
+        {
+            if (popupPhotoDisplay != null)
+            {
+                popupPhotoDisplay.sprite = photoSprite;
+                popupPhotoDisplay.preserveAspect = true;
+            }
+            if (!collectedPhotos.ContainsKey(photoID))
+            {
+                collectedPhotos.Add(photoID, photoSprite);
+                SaveJournalSaveData();
+            }
+        }
+
+        StartCoroutine(PhotoSequence(onComplete));
+    }
+
+    private IEnumerator PhotoSequence(Action onComplete = null)
     {
         isFlashing = true;
 
-        if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 1);
+        if (cameraFlash != null)
+        {
+            if (!cameraFlash.gameObject.activeSelf) cameraFlash.gameObject.SetActive(true);
+            cameraFlash.color = new Color(1, 1, 1, 1);
+        }
         if (polaroidPopup != null) polaroidPopup.SetActive(true);
 
         float alpha = 1f;
         while (alpha > 0)
         {
             alpha -= Time.unscaledDeltaTime * 2.5f;
-            if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, alpha);
+            if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, Mathf.Max(0f, alpha));
             yield return null;
         }
 
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(Mathf.Max(0.1f, polaroidDisplayDuration));
 
         if (polaroidPopup != null) polaroidPopup.SetActive(false);
         if (cameraFlash != null) cameraFlash.color = new Color(1, 1, 1, 0);
         isFlashing = false;
+
+        onComplete?.Invoke();
     }
 
     private Sprite GetPhotoSpriteByID(int id)

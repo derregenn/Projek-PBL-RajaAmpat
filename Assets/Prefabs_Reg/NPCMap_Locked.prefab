@@ -306,10 +306,14 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 0}
   NextPrompt: {fileID: 326161645545705813}
   PlayerNextPrompt: {fileID: 0}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
-  - Saya tunggu disini ya
-  - Selesaikan dulu eksplorasi mu di pulau ini baru kita lanjut berlayar
-  - Siap bang!
+  - Saya tunggu di sini ya
+  - Selesaikan dulu eksplorasi mu di pulau ini baru kita lanjut berlayar.
+  - Oke bang!
   DialogueLineSpeakers: 000000000000000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
@@ -330,8 +334,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   postQuestLoopLines: []
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
+  allowManualInteract: 1
 --- !u!114 &3024842305996777886
 MonoBehaviour:
   m_ObjectHideFlags: 0

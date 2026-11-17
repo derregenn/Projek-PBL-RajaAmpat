@@ -21,6 +21,8 @@ public class PhotoTriggerArea : MonoBehaviour
     public KeyCode interactKey = KeyCode.F; // Tombol F sesuai permintaan
 
     [Header("Events")]
+    [Tooltip("Jika dicentang, onObjectiveEnd menunggu hingga popup Polaroid selesai tampil sebelum dipanggil.")]
+    [SerializeField] private bool waitForPolaroidBeforeEnd = false;
     [Tooltip("Dipanggil tepat setelah foto berhasil diambil & objective quest diproses")]
     public UnityEvent onObjectiveEnd;
 
@@ -89,18 +91,6 @@ public class PhotoTriggerArea : MonoBehaviour
             photoPromptPanel.SetActive(false);
         }
 
-        // 1. Panggil QuestJournalManager untuk mengurus Flash, Polaroid Popup, dan Jurnal secara terpusat
-        if (QuestJournalManager.Instance != null)
-        {
-            QuestJournalManager.Instance.TakeSpecificPhoto(photoID);
-            QuestJournalManager.Instance.UnlockNewPage(pageIDToUnlock);
-            Debug.Log($"[PhotoTrigger] Foto ID {photoID} diambil & Halaman Jurnal ID {pageIDToUnlock} dibuka!");
-        }
-        else
-        {
-            Debug.LogWarning("[PhotoTrigger] QuestJournalManager.Instance tidak ditemukan di scene!");
-        }
-
         // 2. Progress Objective Quest
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
@@ -108,7 +98,25 @@ public class PhotoTriggerArea : MonoBehaviour
             Debug.Log($"[PhotoTrigger] Quest Objective '{objectiveID}' Berhasil!");
         }
 
-        // 3. Panggil Event Transisi Layar
-        onObjectiveEnd?.Invoke();
+        // 1 & 3. Panggil QuestJournalManager + Event Transisi Layar (tunggu Polaroid jika diaktifkan di Inspector)
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.UnlockNewPage(pageIDToUnlock);
+            if (waitForPolaroidBeforeEnd)
+            {
+                QuestJournalManager.Instance.TakeSpecificPhoto(photoID, () => onObjectiveEnd?.Invoke());
+            }
+            else
+            {
+                QuestJournalManager.Instance.TakeSpecificPhoto(photoID);
+                onObjectiveEnd?.Invoke();
+            }
+            Debug.Log($"[PhotoTrigger] Foto ID {photoID} diambil & Halaman Jurnal ID {pageIDToUnlock} dibuka!");
+        }
+        else
+        {
+            Debug.LogWarning("[PhotoTrigger] QuestJournalManager.Instance tidak ditemukan di scene!");
+            onObjectiveEnd?.Invoke();
+        }
     }
 }

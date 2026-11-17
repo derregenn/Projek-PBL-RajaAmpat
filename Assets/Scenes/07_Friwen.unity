@@ -1591,7 +1591,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192280446}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
   m_Name: 
@@ -1628,7 +1628,8 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Silakan bersantai menikmati pantai Friwen yang teduh.
   isPostQuestLoop: 0
   interactDistance: 1.8
 --- !u!61 &192280449
@@ -1924,29 +1925,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 530993217}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: journalPageImage
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: journalTitleText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: ongoingQuestText
       value: 
       objectReference: {fileID: 1071030257}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: tabOngoingSprite
-      value: 
-      objectReference: {fileID: 8784829389143851988, guid: 1d9e21d6181c34a44bea0fbce660a6f6, type: 3}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: journalPhotoImage
       value: 
       objectReference: {fileID: 1151964080}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: journalTriviaText
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: pianemoAwardImage
       value: 
@@ -1955,10 +1940,6 @@ PrefabInstance:
       propertyPath: popupPhotoDisplay
       value: 
       objectReference: {fileID: 405927870}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: tabCompletedSprite
-      value: 
-      objectReference: {fileID: 802241303481011371, guid: a16392ba11d075645a1d906611a59175, type: 3}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: pianemoActiveSprite
       value: 
@@ -1976,22 +1957,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1924653095}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: unlockedPages.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: 'unlockedPages.Array.data[0]'
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: 'unlockedPages.Array.data[1]'
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: allPhotoSpritesDatabase.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -1999,30 +1964,6 @@ PrefabInstance:
       propertyPath: 'allPhotoSpritesDatabase.Array.data[0]'
       value: 
       objectReference: {fileID: -2206125559949482453, guid: f1dc75c2fc7f3924b88318a294b33be9, type: 3}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.data[0].title
-      value: Pulau Waisai
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.data[1].pageID
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.data[1].requiresPhoto
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.data[0].triviaDescription
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.data[0].pageBackgroundSprite
-      value: 
-      objectReference: {fileID: 3424396184158989399, guid: 2a4c706e47d9bc64d9a374316ba40ce4, type: 3}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: allJournalDatabase.Array.data[1].pageBackgroundSprite
-      value: 
-      objectReference: {fileID: -5846104581428803394, guid: d12b5d184485e3a4cb36ab03fd01b73d, type: 3}
     - target: {fileID: 5051786363657526056, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: m_LocalPosition.x
       value: 330.61533
@@ -3769,13 +3710,9 @@ MonoBehaviour:
   NextPrompt: {fileID: 1573509946}
   PlayerNextPrompt: {fileID: 296206243}
   DialogueLines:
-  - 'Betul sekali! Menjaga kelestarian karang itu memang mulai dari hal-hal kecil
-    seperti tidak asal menyenggol '
-  - 'Karang itu makhluk hidup rapuh yang jaringan selnya bisa mati hanya karena gesekan
-    fisik dan sentuhan fisik dapat merusak jaringan serta memicu stres pada biota
-    laut '
-  - 'Nah, kalau kamu jalan terus ke ujung kanan pesisir sana, kamu bakal sampai di
-    area Pasir Timbul. '
+  - Karang itu makhluk hidup rapuh yang jaringan selnya bisa mati hanya karena gesekan fisik
+  - Dan sentuhan fisik dapat merusak jaringan serta memicu stres pada biota laut
+  - Nah, kalau kamu jalan terus ke ujung kanan pesisir sana, kamu bakal sampai di area Pasir Timbul.
   - Tempatnya bagus sekali untuk difoto!
   DialogueLineSpeakers: 00000000000000000000000000000000
   DialogueLineSprites: []
@@ -3820,7 +3757,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Ingat terus pesan tadi ya, Kawan.
+  - Menjaga jarak aman dan tidak membuang sampah adalah cara terbaik menikmati
   isPostQuestLoop: 0
   interactDistance: 1.8
 --- !u!114 &586884659
@@ -6704,11 +6643,11 @@ PrefabInstance:
       objectReference: {fileID: 772613821}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLines.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[0]'
-      value: Baru pertama kali kamu berdiri di tengah laut seperti ini ya?
+      value: Baru pertama kali saya berdiri di tengah laut seperti ini ya?
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[1]'
@@ -6716,53 +6655,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[2]'
-      value: 'Mulai dari pantai rindangnya, Friwen Wall di bawah air, sampai pasir
-        timbulnya '
+      value: Itulah keajaiban Friwen.
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[3]'
-      value: Semuanya memang memberikan ketenangan pada jiwa.
+      value: Mulai dari pantai rindangnya, Friwen Wall di bawah air, sampai pasir timbulnya
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[4]'
-      value: 'Aksi cepatmu membantu mengamankan tali perahu tadi juga patut diacungi
-        jempol '
+      value: Semuanya memang memberikan ketenangan pada jiwa.
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[5]'
-      value: Okelah kalau begitu, kamu bisa kembali ke perahu untuk menuju ke pulau
-        berikutnya!
+      value: Aksi cepatmu membantu mengamankan tali perahu tadi juga patut diacungi jempol
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[6]'
-      value: 'Dan juga bersuara untuk menjaga apa yang tersisa '
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[7]'
-      value: 'Terima kasih ya sudah mau melangkah sampai ke pulau ini dan membantu
-        warga di sini '
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[8]'
-      value: Ayo, naik ke perahu
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[9]'
-      value: Kita berlayar kembali ke Pelabuhan Waisai untuk mengakhiri perjalanan
-        ini
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLines.Array.data[10]'
-      value: Kita berlayar kembali ke Pelabuhan Waisai untuk mengakhiri perjalanan
-        ini
+      value: Okelah kalau begitu, kamu bisa kembali ke perahu untuk menuju ke pulau berikutnya!
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
-      value: 6
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[0]'
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[1]'
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[4]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[5]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSpeakers.Array.data[6]'
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
@@ -9088,17 +9029,18 @@ MonoBehaviour:
   InteractPrompt: {fileID: 1488201462}
   DialogueBox: {fileID: 898615051}
   DialogueText: {fileID: 1282788329}
-  PlayerDialogueBox: {fileID: 52373822}
-  PlayerDialogueText: {fileID: 772613821}
+  PlayerDialogueBox: {fileID: 22965169}
+  PlayerDialogueText: {fileID: 1359990642}
   NextPrompt: {fileID: 85854366}
-  PlayerNextPrompt: {fileID: 296206243}
+  PlayerNextPrompt: {fileID: 1313099388}
+  speaker2IsOtherNpc: 1
   DialogueLines:
   - Udara pantai yang rindang begini memang paling enak buat tempat istirahat
   - Benar sekali!
   - Sepertinya air laut sudah mulai surut
   - Setelah ini aku mampir ke area Pasir Timbul di ujung sana
-  - 'Wahh..Setuju! Pemandangannya sangat bagus disana  '
-  DialogueLineSpeakers: 0000000000000000000000000000000000000000
+  - Wahh..Setuju! Pemandangannya sangat bagus disana
+  DialogueLineSpeakers: 0000000001000000010000000100000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
@@ -9863,10 +9805,9 @@ MonoBehaviour:
   hoverScale: 1.06
   hoverTransitionSpeed: 14
   correctFeedbackMessages:
-  - Benar sekali, Pemahamanmu luar biasa!
+  - Betul sekali! Menjaga kelestarian karang itu memang mulai dari hal-hal kecil
   wrongFeedbackMessages:
-  - Bukan begitu, kawan. Sasi bukan untuk menutup wisata atau membagi wilayah, coba
-    pilih jawaban yang bijak!
+  - Aduh, kurang tepat! Karang itu makhluk hidup yang rapuh, Coba ingat lagi!
   closeKey: 101
 --- !u!1 &1461069729
 GameObject:
@@ -11753,11 +11694,13 @@ MonoBehaviour:
   NextPrompt: {fileID: 686536877}
   PlayerNextPrompt: {fileID: 296206243}
   DialogueLines:
-  - Halo, Kawan! Sudah dibaca papan informasinya ?
-  - Sudah Pak
-  - 'Nah, untuk memastikan kamu benar-benar paham dan bisa jadi wisatawan yang bertanggung
-    jawab, aku mau tanya satu hal kecil '
-  DialogueLineSpeakers: 000000000100000000000000
+  - Halo, Kawan! Sudah dibaca papan informasinya?
+  - "\u2026."
+  - "Sudah Pak\u2026"
+  - Nah, untuk memastikan kamu benar-benar paham dan bisa jadi wisatawan yang bertanggung jawab
+  - Aku mau tanya satu hal kecil
+  - Mengapa kita dilarang keras menyenggol atau menginjak dinding karang saat berada di sekitar perairan Friwen Wall ?
+  DialogueLineSpeakers: 000000000100000001000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: ' '
   TypeSpeed: 0.04
@@ -11789,7 +11732,9 @@ MonoBehaviour:
             dinding karang saat berada di sekitar perairan Friwen Wall ?
           m_BoolArgument: 0
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Ingat terus pesan tadi ya, Kawan.
+  - Menjaga jarak aman dan tidak membuang sampah adalah cara terbaik menikmati
   isPostQuestLoop: 0
   interactDistance: 1.8
 --- !u!61 &1668667928
@@ -11929,13 +11874,14 @@ MonoBehaviour:
   tourGuideName: NPC_Warlok2
   objectiveID: trivia_friwen
   quizQuestions:
-  - questionText: Mengapa kita dilarang keras menyenggol atau menginjak dinding karang
-      saat berada di sekitar perairan Friwen Wall ?
+  - questionText: Mengapa kita dilarang keras menyenggol atau menginjak dinding karang saat berada di sekitar perairan Friwen Wall ?
     options:
     - Karena karang adalah makhluk hidup yang sangat rapuh
-    - Karena dinding karang itu sangat keras dan bisa merusak alat selam...
-    - Karena ikan-ikan di Friwen Wall akan marah...
+    - Karena dinding karang itu sangat keras dan bisa merusak alat selam yang kita sewa
+    - Karena ikan-ikan di Friwen Wall akan marah dan menyerang wisatawan
     correctAnswerIndex: 0
+    correctFeedback: Betul sekali! Menjaga kelestarian karang itu memang mulai dari hal-hal kecil
+    wrongFeedback: Aduh, kurang tepat! Karang itu makhluk hidup yang rapuh, Coba ingat lagi!
   dialogueSystem: {fileID: 1668667927}
   postTriviaDialogue: {fileID: 586884658}
   questGiver: {fileID: 1668667926}
@@ -14076,16 +14022,13 @@ MonoBehaviour:
   NextPrompt: {fileID: 1562061078}
   PlayerNextPrompt: {fileID: 296206243}
   DialogueLines:
-  - 'Puji Tuhan! Terima kasih banyak! '
-  - 'Kalau kamu tidak cepat menahan talinya tadi, perahu saya pasti sudah terbawa
-    arus '
+  - Puji Tuhan! Terima kasih banyak!
+  - Kalau kamu tidak cepat menahan talinya tadi, perahu saya pasti sudah terbawa arus
   - Sama-sama Bu!, Untung talinya masih bisa dijangkau tadi
-  - 'Aduh, kamu refleksnya cepat sekali. '
-  - 'Sebagai rasa terima kasih, silakan jalan-jalan menikmati pantai Friwen yang
-    teduh ini ya '
-  - 'Jangan lupa mampir membaca Papan Informasi di sebelah sana. '
-  - 'Di situ ada penjelasan soal keunikan dinding karang Friwen Wall dan Pasir Timbul
-    kami '
+  - Aduh, kamu refleksnya cepat sekali.
+  - Sebagai rasa terima kasih, silakan jalan-jalan menikmati pantai Friwen yang teduh ini ya
+  - Jangan lupa mampir membaca Papan Informasi di sebelah sana.
+  - Di situ ada penjelasan soal keunikan dinding karang Friwen Wall dan Pasir Timbul kami
   - Oke!
   DialogueLineSpeakers: 0000000000000000010000000000000000000000000000000000000001000000
   DialogueLineSprites: []
@@ -14130,7 +14073,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  postQuestLoopLines: []
+  postQuestLoopLines:
+  - Silakan bersantai menikmati pantai Friwen yang teduh.
   isPostQuestLoop: 0
   interactDistance: 1.8
 --- !u!61 &2022872705
