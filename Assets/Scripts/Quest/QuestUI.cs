@@ -11,6 +11,9 @@ public class QuestUI : MonoBehaviour
     public TextMeshProUGUI hudQuestDescription;
     public TextMeshProUGUI objectiveListText;
 
+    [Header("Layout Normalisasi")]
+    [SerializeField] private bool normalizeTrackerTextLayout = true;
+
     public Quest currentActiveQuest;
 
     void Awake()
@@ -18,11 +21,35 @@ public class QuestUI : MonoBehaviour
         // QuestUI TIDAK boleh DontDestroyOnLoad — ia harus menjadi bagian dari
         // Canvas di masing-masing scene gameplay. QuestController akan
         // mencarinya secara otomatis setiap kali scene baru dimuat.
+        EnsureStandardTrackerLayout();
     }
 
     void Start()
     {
+        EnsureStandardTrackerLayout();
+    }
 
+    public void EnsureStandardTrackerLayout()
+    {
+        if (!normalizeTrackerTextLayout || hudQuestTitle == null) return;
+
+        RectTransform titleRt = hudQuestTitle.rectTransform;
+        if (titleRt != null)
+        {
+            titleRt.anchorMin = new Vector2(0.5f, 0.5f);
+            titleRt.anchorMax = new Vector2(0.5f, 0.5f);
+            titleRt.pivot = new Vector2(0.5f, 0.5f);
+            titleRt.anchoredPosition = Vector2.zero;
+            titleRt.sizeDelta = new Vector2(540f, 120f);
+        }
+
+        hudQuestTitle.margin = Vector4.zero;
+        hudQuestTitle.enableAutoSizing = true;
+        hudQuestTitle.fontSizeMin = 16f;
+        hudQuestTitle.fontSizeMax = 26f;
+        hudQuestTitle.fontSize = 24f;
+        hudQuestTitle.horizontalAlignment = HorizontalAlignmentOptions.Center;
+        hudQuestTitle.verticalAlignment = VerticalAlignmentOptions.Middle;
     }
 
     public void SetQuest(Quest quest)
@@ -31,9 +58,20 @@ public class QuestUI : MonoBehaviour
         UpdateQuestUI();
     }
 
+    public void ShowStandalonePrompt(string title, string description = "")
+    {
+        EnsureStandardTrackerLayout();
+        if (hudQuestTitle != null) hudQuestTitle.text = title;
+        if (hudQuestDescription != null) hudQuestDescription.text = description;
+        if (objectiveListText != null) objectiveListText.text = "";
+        if (panelHUD != null) panelHUD.SetActive(true);
+    }
+
     public void UpdateQuestUI()
     {
         if (currentActiveQuest == null) return;
+
+        EnsureStandardTrackerLayout();
 
         string activeTitle = currentActiveQuest.QuestTitle;
         string activeDesc = currentActiveQuest.Description;
@@ -45,32 +83,34 @@ public class QuestUI : MonoBehaviour
                 var obj = currentActiveQuest.Objectives[i];
                 if (obj != null && !obj.IsComplete)
                 {
-                    string objText = !string.IsNullOrEmpty(obj.ObjectiveTitle) ? obj.ObjectiveTitle : obj.Description;
+                    string objText = !string.IsNullOrWhiteSpace(obj.ObjectiveTitle) ? obj.ObjectiveTitle : obj.Description;
 
                     // Jika sudah di tahap berikutnya (misal setelah dapat barang, sekarang antar ke NPC),
                     // tampilkan judul/deskripsi tahap aktif di HUD dan Journal!
-                    if (i > 0 && !string.IsNullOrEmpty(objText))
+                    if (i > 0 && !string.IsNullOrWhiteSpace(objText))
                     {
                         activeTitle = objText;
                     }
-                    else if (string.IsNullOrEmpty(activeTitle) && !string.IsNullOrEmpty(objText))
+                    else if (string.IsNullOrWhiteSpace(activeTitle) && !string.IsNullOrWhiteSpace(objText))
                     {
                         activeTitle = objText;
                     }
 
-                    if (!string.IsNullOrEmpty(obj.Description))
+                    if (!string.IsNullOrWhiteSpace(obj.Description))
                     {
                         activeDesc = obj.Description;
                     }
 
                     if (obj.RequiredAmount > 1)
                     {
-                        activeTitle = $"{activeTitle} ({obj.CurrentAmount}/{obj.RequiredAmount})";
+                        activeTitle = $"{activeTitle?.Trim()} ({obj.CurrentAmount}/{obj.RequiredAmount})";
                     }
                     break;
                 }
             }
         }
+
+        activeTitle = string.IsNullOrWhiteSpace(activeTitle) ? "" : activeTitle.Trim();
 
         if (hudQuestTitle != null) hudQuestTitle.text = activeTitle;
         if (hudQuestDescription != null) hudQuestDescription.text = "";

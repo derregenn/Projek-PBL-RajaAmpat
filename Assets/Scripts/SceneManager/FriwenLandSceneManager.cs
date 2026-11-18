@@ -90,12 +90,12 @@ public class FriwenLandSceneManager : MonoBehaviour
 
         Debug.Log($"<color=cyan>[FriwenLandSceneManager] Refresh State Friwen. Stage Aktif: {stage}</color>");
 
-        // Stage 1: QTE Tarik Perahu
-        if (warlok1Qte != null) warlok1Qte.SetActive(stage == 0 || stage == 1);
+        // Stage 1: QTE Tarik Perahu — Warlok 1 baru muncul setelah QTE perahu sukses via FriwenEventManager
+        if (warlok1Qte != null) warlok1Qte.SetActive(stage >= 2);
         if (triggerQtePerahu != null) triggerQtePerahu.SetActive(stage == 0 || stage <= 3);
 
-        // Stage 1 - 2: Trivia Friwen bersama Warlok 2
-        if (warlok2 != null) warlok2.SetActive(stage >= 1);
+        // Stage 1-2: Warlok 2 baru muncul ketika SignBoard UI dibuka (stage >= 3 saat revisit setelah trivia)
+        if (warlok2 != null) warlok2.SetActive(stage >= 3);
 
         // Stage 2 - 3: Foto Pasir Timbul
         if (tourGuidePasirTimbul != null) tourGuidePasirTimbul.SetActive(stage >= 2);

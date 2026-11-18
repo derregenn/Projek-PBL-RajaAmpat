@@ -16,6 +16,11 @@ public class SeaSceneTransition : MonoBehaviour
     public Image fadeBlackScreen; // Objek Image Hitam
     public AudioClip seaTransitionSfx;
 
+    [Header("Quest Progression Gate (Opsional)")]
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredActiveOrCompletedQuestID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
+
     private bool isPlayerInRange = false;
     private bool isTransitioning = false;
     private SeaToLandTeleporter returnTeleporter;
@@ -41,7 +46,13 @@ public class SeaSceneTransition : MonoBehaviour
 
     private void Update()
     {
-        // Cek jika pemain berada di area, belum transisi, dan menekan tombol E
+        // Cek jika pemain berada di area, belum transisi, memenuhi syarat quest, dan menekan tombol E
+        if (isPlayerInRange && !isTransitioning && !QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
+        {
+            if (warningUI != null && warningUI.activeSelf) warningUI.SetActive(false);
+            return;
+        }
+
         if (isPlayerInRange && !isTransitioning && Input.GetKeyDown(interactKey))
         {
             if (warningUI != null)
@@ -71,6 +82,12 @@ public class SeaSceneTransition : MonoBehaviour
 
         if (isPlayer)
         {
+            if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
+            {
+                isPlayerInRange = true;
+                if (warningUI != null && warningUI.activeSelf) warningUI.SetActive(false);
+                return;
+            }
             isPlayerInRange = true;
 
             returnTeleporter = GetComponent<SeaToLandTeleporter>();

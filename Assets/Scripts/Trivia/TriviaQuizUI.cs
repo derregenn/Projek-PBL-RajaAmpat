@@ -66,6 +66,9 @@ public class TriviaQuizUI : MonoBehaviour
     private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
     private Outline feedbackOutline;
 
+    public static bool IsAnyQuizActive => Instance != null && Instance.isQuizActive;
+    public bool IsQuizActive => isQuizActive;
+
     private void Awake()
     {
         // Selesaikan quiz pada instance lama sebelum mengganti Instance agar callback-nya tidak hilang.
@@ -99,7 +102,60 @@ public class TriviaQuizUI : MonoBehaviour
             }
         }
 
+        PreloadAndTrimClip(ref startQuizSFX);
+        PreloadAndTrimClip(ref buttonHoverSFX);
+        PreloadAndTrimClip(ref correctAnswerSFX);
+        PreloadAndTrimClip(ref wrongAnswerSFX);
+
         SetupOptionButtonHovers();
+    }
+
+    private void OnDisable()
+    {
+        isQuizActive = false;
+        isShowingFeedback = false;
+    }
+
+    private static void PreloadAndTrimClip(ref AudioClip clip)
+    {
+        if (clip == null) return;
+        if (clip.loadState != AudioDataLoadState.Loaded)
+        {
+            clip.LoadAudioData();
+        }
+        try
+        {
+            if (clip.loadState != AudioDataLoadState.Loaded || clip.samples <= 1024 || clip.channels <= 0) return;
+            int totalSamples = clip.samples * clip.channels;
+            float[] samples = new float[totalSamples];
+            if (!clip.GetData(samples, 0)) return;
+
+            int firstLoudSample = -1;
+            for (int i = 0; i < totalSamples; i++)
+            {
+                if (Mathf.Abs(samples[i]) > 0.01f)
+                {
+                    firstLoudSample = (i / clip.channels) * clip.channels;
+                    break;
+                }
+            }
+
+            int minTrimFrames = 80;
+            if (firstLoudSample > minTrimFrames * clip.channels && totalSamples - firstLoudSample > 512 * clip.channels)
+            {
+                int remainingSamples = totalSamples - firstLoudSample;
+                int remainingFrames = remainingSamples / clip.channels;
+                AudioClip trimmed = AudioClip.Create(clip.name + "_Instant", remainingFrames, clip.channels, clip.frequency, false);
+                float[] trimmedData = new float[remainingSamples];
+                System.Array.Copy(samples, firstLoudSample, trimmedData, 0, remainingSamples);
+                trimmed.SetData(trimmedData, 0);
+                clip = trimmed;
+            }
+        }
+        catch (System.Exception)
+        {
+            // Streaming/compressed clips yang tidak mendukung GetData tetap menggunakan preload LoadAudioData
+        }
     }
 
     private void Update()

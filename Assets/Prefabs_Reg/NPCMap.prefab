@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 1270992414121551918}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.034083333, y: 0.034083333, z: 1}
+  m_LocalScale: {x: 0.042604167, y: 0.042604167, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6779139200214658869}
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 4.4616666}
+  m_AnchoredPosition: {x: 0, y: 4.565833}
   m_SizeDelta: {x: 300, y: 102.69}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!223 &6031441284725757604
@@ -851,6 +851,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 3
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -873,6 +877,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!114 &8685177386890641346
 MonoBehaviour:
   m_ObjectHideFlags: 0

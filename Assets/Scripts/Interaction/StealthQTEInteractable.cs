@@ -19,6 +19,10 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
     public UnityEvent onQTESuccess;
     public UnityEvent onQTEFail;
 
+    [Header("Quest Progression Gate (Opsional)")]
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
+
     private bool isDone = false;
     private bool qteRunning = false;
     private Transform playerTransform;
@@ -37,6 +41,7 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (isDone || qteRunning || !other.CompareTag(playerTag)) return;
+        if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return;
 
         playerTransform = other.transform;
         playerRigidbody = other.attachedRigidbody;
@@ -166,7 +171,11 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
         onQTEFail?.Invoke();
     }
 
-    public string GetPromptText() => isDone ? "" : promptText;
+    public string GetPromptText()
+    {
+        if (isDone || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return "";
+        return promptText;
+    }
 
     /// <summary>
     /// Dipanggil oleh Manager jika player gagal total dan seluruh area harus diulang

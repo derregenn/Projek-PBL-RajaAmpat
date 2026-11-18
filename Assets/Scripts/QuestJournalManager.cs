@@ -118,6 +118,7 @@ public class QuestJournalManager : MonoBehaviour
     private const string SaveKeyCompletedQuests = "QJM_CompletedQuests";
     private const string SaveKeyCompletedQuestIDs = "QJM_CompletedQuestIDs";
     private const string SaveKeyUnlockedIslands = "QJM_UnlockedIslands";
+    private const string SaveKeyJournalUnlocked = "QJM_JournalUnlocked";
 
     private static readonly Dictionary<string, string> KnownQuestTitles = new Dictionary<string, string>
     {
@@ -211,8 +212,39 @@ public class QuestJournalManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab) && !isFlashing)
         {
+            if (!IsJournalUnlocked()) return;
             ToggleJournalPanel();
         }
+    }
+
+    public static bool IsJournalUnlockedPersistent()
+    {
+        if (PlayerPrefs.GetInt(SaveKeyJournalUnlocked, 0) == 1) return true;
+        if (HasCompletedQuestIDPersistent("01_Waisai") ||
+            HasCompletedQuestIDPersistent("02_Waisai") ||
+            HasCompletedQuestIDPersistent("03_Waisai"))
+        {
+            return true;
+        }
+
+        string activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (string.IsNullOrEmpty(activeScene)) return false;
+
+        if (activeScene == "01_MainMenu" || activeScene == "02_CutsceneAirstrip" || activeScene == "02_Waisai")
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool IsJournalUnlocked() => IsJournalUnlockedPersistent();
+
+    public void UnlockJournal()
+    {
+        PlayerPrefs.SetInt(SaveKeyJournalUnlocked, 1);
+        PlayerPrefs.Save();
+        CanvasHUDAutoBinder.Instance?.RefreshJournalButtonState();
     }
 
     // =========================================================
@@ -437,6 +469,11 @@ public class QuestJournalManager : MonoBehaviour
     {
         RecordCompletedQuest(questID, null);
 
+        if (string.Equals(questID, "01_Waisai", System.StringComparison.OrdinalIgnoreCase))
+        {
+            UnlockJournal();
+        }
+
         // Cek unlock halaman berdasarkan QuestID yang selesai
         CheckJournalPageUnlocks(questID);
 
@@ -558,6 +595,8 @@ public class QuestJournalManager : MonoBehaviour
 
     public void ToggleJournalPanel()
     {
+        if (!IsJournalUnlocked()) return;
+
         if (questTabPanel == null)
         {
             // Coba auto-find QuestTabUI jika belum terhubung
@@ -693,6 +732,8 @@ public class QuestJournalManager : MonoBehaviour
 
     public void ToggleQuestTab()
     {
+        if (!IsJournalUnlocked()) return;
+
         if (questTabPanel == null)
         {
             QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
@@ -1939,11 +1980,13 @@ public class QuestJournalManager : MonoBehaviour
         TrashInteractable.totalCollected = 0;
 
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey(SaveKeyJournalUnlocked);
         if (keepFreshFlag)
         {
             PlayerPrefs.SetInt("FreshTestPlay_Reset_v2", 1);
         }
         PlayerPrefs.Save();
+        CanvasHUDAutoBinder.Instance?.RefreshJournalButtonState();
 
         if (GamePhaseManager.Instance != null)
         {

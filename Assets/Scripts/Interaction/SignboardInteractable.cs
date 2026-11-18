@@ -15,6 +15,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [Tooltip("Jika dicentang, event onClose hanya akan dipanggil 1 kali (memicu NPC Warlok 2)")]
     [SerializeField] private bool triggerOnce = true;
     [SerializeField] private string objectiveID = "papan_informasi";
+    [SerializeField] private string requiredCompletedQuestID = "";
     private bool hasTriggered = false;
 
     [Header("Events")]
@@ -25,10 +26,18 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip popupSfx;
 
+    [Header("Voice Over (VO) Settings")]
+    [Tooltip("Slot Voice Over (VO) per poster/scene. Durasi auto-close mengikuti panjang klip VO.")]
+    [SerializeField] private AudioClip voiceOverClip;
+    [SerializeField] private AudioSource voiceOverAudioSource;
+    [SerializeField] private bool autoCloseAfterVoiceOver = true;
+    [SerializeField, Min(0f)] private float extraDelayAfterVoiceOver = 0.25f;
+
     private bool isOpen = false;
     private RectTransform panelRect;
     private Vector2 panelOpenPosition;
     private Coroutine animationCoroutine;
+    private Coroutine voAutoCloseCoroutine;
 
     private void Awake()
     {
@@ -47,6 +56,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (!isOpen && !QuestProgressionGate.Passes(string.Empty, string.Empty, requiredCompletedQuestID)) return;
         isOpen = !isOpen;
         AnimatePanel(isOpen);
 
@@ -57,10 +67,69 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
                 audioSource.PlayOneShot(popupSfx);
             }
 
+            StartVoiceOverAndAutoClose();
             onOpen?.Invoke();
         }
         else
         {
+            StopVoiceOverAndAutoClose();
+            CloseSignboard();
+        }
+    }
+
+    private void StartVoiceOverAndAutoClose()
+    {
+        StopVoiceOverAndAutoClose();
+        if (voiceOverClip == null) return;
+
+        if (voiceOverAudioSource == null)
+        {
+            voiceOverAudioSource = audioSource != null ? audioSource : GetComponent<AudioSource>();
+            if (voiceOverAudioSource == null)
+            {
+                voiceOverAudioSource = gameObject.AddComponent<AudioSource>();
+                voiceOverAudioSource.playOnAwake = false;
+                voiceOverAudioSource.spatialBlend = 0f;
+            }
+        }
+
+        voiceOverAudioSource.Stop();
+        voiceOverAudioSource.clip = voiceOverClip;
+        voiceOverAudioSource.Play();
+
+        if (autoCloseAfterVoiceOver)
+        {
+            float delay = voiceOverClip.length + Mathf.Max(0f, extraDelayAfterVoiceOver);
+            voAutoCloseCoroutine = StartCoroutine(AutoCloseAfterVoiceOverRoutine(delay));
+        }
+    }
+
+    private void StopVoiceOverAndAutoClose()
+    {
+        if (voAutoCloseCoroutine != null)
+        {
+            StopCoroutine(voAutoCloseCoroutine);
+            voAutoCloseCoroutine = null;
+        }
+        if (voiceOverAudioSource != null && voiceOverAudioSource.isPlaying)
+        {
+            voiceOverAudioSource.Stop();
+        }
+    }
+
+    private IEnumerator AutoCloseAfterVoiceOverRoutine(float delay)
+    {
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, delay));
+        while (voiceOverAudioSource != null && voiceOverAudioSource.isPlaying)
+        {
+            yield return null;
+        }
+
+        voAutoCloseCoroutine = null;
+        if (isOpen)
+        {
+            isOpen = false;
+            AnimatePanel(false);
             CloseSignboard();
         }
     }
@@ -86,7 +155,11 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         }
     }
 
-    public string GetPromptText() => isOpen ? "Tutup Info" : "Baca Informasi";
+    public string GetPromptText()
+    {
+        if (!isOpen && !QuestProgressionGate.Passes(string.Empty, string.Empty, requiredCompletedQuestID)) return "";
+        return isOpen ? "Tutup Info" : "Baca Informasi";
+    }
 
     private void AnimatePanel(bool opening)
     {
@@ -128,11 +201,17 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         animationCoroutine = null;
     }
 
+    private void OnDisable()
+    {
+        StopVoiceOverAndAutoClose();
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && isOpen)
         {
             isOpen = false;
+            StopVoiceOverAndAutoClose();
             AnimatePanel(false);
             CloseSignboard();
         }

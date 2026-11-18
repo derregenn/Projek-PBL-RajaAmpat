@@ -25,8 +25,10 @@ public class PlayerInteraction : MonoBehaviour
         IInteractable interactable = collision.GetComponent<IInteractable>();
         if (interactable != null)
         {
+            string msg = interactable.GetPromptText();
+            if (string.IsNullOrEmpty(msg)) return;
             currentInteractable = interactable;
-            ShowPrompt(interactable.GetPromptText());
+            ShowPrompt(msg);
         }
     }
 

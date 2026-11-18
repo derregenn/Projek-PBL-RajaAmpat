@@ -23,6 +23,13 @@ public class InfographicUI : MonoBehaviour
     [Tooltip("Event yang berjalan saat infografis ditutup (Bisa dipakai untuk memberi Quest)")]
     public UnityEvent onInfographicClosed;
 
+    [Header("Voice Over (VO) Settings")]
+    [Tooltip("Slot audio Voice Over (bisa berbeda tiap infografis/scene). Durasi panel mengikuti panjang audio ini.")]
+    [SerializeField] private AudioClip voiceOverClip;
+    [SerializeField] private AudioSource voiceOverAudioSource;
+    [SerializeField] private bool autoCloseAfterVoiceOver = true;
+    [SerializeField, Min(0f)] private float extraDelayAfterVoiceOver = 0.25f;
+
     private CanvasGroup infographicCanvasGroup;
     private RectTransform infographicRectTransform;
     private Coroutine popupCoroutine;
@@ -56,6 +63,7 @@ public class InfographicUI : MonoBehaviour
 
     private void OnDisable()
     {
+        StopVoiceOver();
         RestorePlayerControl();
 
         if (popupCoroutine != null)
@@ -150,9 +158,26 @@ public class InfographicUI : MonoBehaviour
             enablePlayerControlCoroutine = null;
         }
 
+        float activeDuration = playerControlLockDuration;
+        if (voiceOverClip != null)
+        {
+            EnsureVoiceOverAudioSource();
+            if (voiceOverAudioSource != null)
+            {
+                voiceOverAudioSource.Stop();
+                voiceOverAudioSource.clip = voiceOverClip;
+                voiceOverAudioSource.Play();
+            }
+
+            if (autoCloseAfterVoiceOver)
+            {
+                activeDuration = voiceOverClip.length + Mathf.Max(0f, extraDelayAfterVoiceOver);
+            }
+        }
+
         popupCoroutine = StartCoroutine(EaseInPopup());
-        DisablePlayerControlForDuration(playerControlLockDuration);
-        autoCloseCoroutine = StartCoroutine(CloseAfterDelay(playerControlLockDuration));
+        DisablePlayerControlForDuration(activeDuration);
+        autoCloseCoroutine = StartCoroutine(CloseAfterDelay(activeDuration));
     }
 
     private IEnumerator EaseInPopup()
@@ -261,8 +286,32 @@ public class InfographicUI : MonoBehaviour
 
     private IEnumerator CloseAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, delay));
+        while (autoCloseAfterVoiceOver && voiceOverAudioSource != null && voiceOverAudioSource.isPlaying)
+        {
+            yield return null;
+        }
         HidePanel();
+    }
+
+    private void EnsureVoiceOverAudioSource()
+    {
+        if (voiceOverAudioSource != null) return;
+        voiceOverAudioSource = GetComponent<AudioSource>();
+        if (voiceOverAudioSource == null)
+        {
+            voiceOverAudioSource = gameObject.AddComponent<AudioSource>();
+            voiceOverAudioSource.playOnAwake = false;
+            voiceOverAudioSource.spatialBlend = 0f;
+        }
+    }
+
+    private void StopVoiceOver()
+    {
+        if (voiceOverAudioSource != null && voiceOverAudioSource.isPlaying)
+        {
+            voiceOverAudioSource.Stop();
+        }
     }
 
     private void DisablePlayerControlForDuration(float duration)
@@ -297,7 +346,7 @@ public class InfographicUI : MonoBehaviour
 
     private IEnumerator EnablePlayerControlAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, delay));
         RestorePlayerControl();
     }
 
@@ -348,6 +397,8 @@ public class InfographicUI : MonoBehaviour
     /// </summary>
     public void HidePanel()
     {
+        StopVoiceOver();
+
         if (autoCloseCoroutine != null)
         {
             StopCoroutine(autoCloseCoroutine);

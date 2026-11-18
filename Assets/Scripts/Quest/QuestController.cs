@@ -256,13 +256,27 @@ public class QuestController : MonoBehaviour
                 $"Objective Progress: {objective.ObjectiveID} {objective.CurrentAmount}/{objective.RequiredAmount}"
             );
 
-            // Update UI
-            if (questUI != null)
-                questUI.UpdateQuestUI();
+            // Update UI & tampilkan popup tracker untuk sub-objective berikutnya (jika quest belum selesai)
+            if (questUI == null)
+                questUI = FindFirstObjectByType<QuestUI>(FindObjectsInactive.Include);
 
-            // Cek quest selesai
-            if (IsQuestFinished(quest))
+            if (questSliderAnim == null)
+                questSliderAnim = FindFirstObjectByType<QuestSlider>(FindObjectsInactive.Include);
+
+            bool isFinished = IsQuestFinished(quest);
+
+            if (questUI != null)
+            {
+                if (!isFinished)
+                    questUI.SetQuest(quest);
+                else
+                    questUI.UpdateQuestUI();
+            }
+
+            if (isFinished)
                 CompleteQuest(quest);
+            else if (questSliderAnim != null)
+                questSliderAnim.ShowQuestPopup();
 
             return;
         }

@@ -20,6 +20,10 @@ public class SasiInteractable : MonoBehaviour
     [Header("Events")]
     public UnityEvent OnSasiCompleted; // Dipanggil saat QTE sukses
 
+    [Header("Quest Progression Gate (Opsional)")]
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
+
     private bool isPlayerInArea = false;
     private bool isQTEActive = false;
     private bool isCompleted = false;
@@ -44,10 +48,17 @@ public class SasiInteractable : MonoBehaviour
 
     private void Update()
     {
-        // Jika player di area, QTE belum jalan, belum selesai, dan menekan tombol E
-        if (isPlayerInArea && !isQTEActive && !isCompleted && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInArea && !isQTEActive && !isCompleted)
         {
-            MulaiQTE();
+            if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            {
+                if (uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                MulaiQTE();
+            }
         }
     }
 
@@ -320,6 +331,11 @@ public class SasiInteractable : MonoBehaviour
         if (other.CompareTag("Player") && !isQTEActive && !isCompleted)
         {
             isPlayerInArea = true;
+            if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            {
+                if (uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+                return;
+            }
             if (uiPrompt != null) uiPrompt.SetActive(true);
         }
     }
