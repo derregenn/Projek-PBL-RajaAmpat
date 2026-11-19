@@ -50,13 +50,16 @@ public class SasiInteractable : MonoBehaviour
     {
         if (isPlayerInArea && !isQTEActive && !isCompleted)
         {
-            if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
             {
                 if (uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E))
             {
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
                 MulaiQTE();
             }
         }
@@ -331,7 +334,9 @@ public class SasiInteractable : MonoBehaviour
         if (other.CompareTag("Player") && !isQTEActive && !isCompleted)
         {
             isPlayerInArea = true;
-            if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
             {
                 if (uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
                 return;

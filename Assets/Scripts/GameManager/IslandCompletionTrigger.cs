@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IslandCompletionTrigger : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class IslandCompletionTrigger : MonoBehaviour
     /// </summary>
     public void CompleteThisIsland()
     {
-        if (!QuestJournalManager.CanCompleteIslandOrOpenMap(islandToComplete))
+        IslandName targetIsland = QuestJournalManager.GetIslandFromSceneName(SceneManager.GetActiveScene().name) ?? islandToComplete;
+        islandToComplete = targetIsland;
+
+        if (!QuestJournalManager.CanCompleteIslandOrOpenMap(targetIsland))
         {
-            Debug.Log($"[IslandCompletionTrigger] Pulau {islandToComplete} belum menyelesaikan semua quest-nya; penyelesaian pulau ditahan.");
+            Debug.Log($"[IslandCompletionTrigger] Pulau {targetIsland} belum menyelesaikan semua quest-nya; penyelesaian pulau ditahan.");
             return;
         }
 
@@ -23,18 +27,18 @@ public class IslandCompletionTrigger : MonoBehaviour
 
         if (GamePhaseManager.Instance != null)
         {
-            GamePhaseManager.Instance.CompleteIsland(islandToComplete);
+            GamePhaseManager.Instance.CompleteIsland(targetIsland);
         }
         else
         {
             Debug.LogWarning("[IslandCompletionTrigger] GamePhaseManager tidak ditemukan, menyimpan ke PlayerPrefs langsung.");
-            PlayerPrefs.SetInt("Island_" + (int)islandToComplete, 1);
+            PlayerPrefs.SetInt("Island_" + (int)targetIsland, 1);
             PlayerPrefs.Save();
         }
 
         if (StoryManager.Instance != null)
         {
-            StoryManager.Instance.CompleteIsland(islandToComplete);
+            StoryManager.Instance.CompleteIsland(targetIsland);
         }
     }
 

@@ -33,10 +33,19 @@ public class FishFeedZone : MonoBehaviour
 
     private void Update()
     {
-        if (playerInZone && !isFed && Input.GetKeyDown(feedKey))
+        if (playerInZone && !isFed)
         {
-            Debug.Log($"[FishFeedZone] Feed key pressed: {feedKey}");
-            ExecuteFeeding();
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
+            {
+                if (promptPanel != null && promptPanel.activeSelf) promptPanel.SetActive(false);
+                return;
+            }
+            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(feedKey))
+            {
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
+                Debug.Log($"[FishFeedZone] Feed key pressed: {feedKey}");
+                ExecuteFeeding();
+            }
         }
     }
 

@@ -46,15 +46,16 @@ public class SeaSceneTransition : MonoBehaviour
 
     private void Update()
     {
-        // Cek jika pemain berada di area, belum transisi, memenuhi syarat quest, dan menekan tombol E
-        if (isPlayerInRange && !isTransitioning && !QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
+        // Cek jika pemain berada di area, belum transisi, memenuhi syarat quest, dan tidak ada modal aktif
+        if (isPlayerInRange && !isTransitioning && (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen || !QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID)))
         {
             if (warningUI != null && warningUI.activeSelf) warningUI.SetActive(false);
             return;
         }
 
-        if (isPlayerInRange && !isTransitioning && Input.GetKeyDown(interactKey))
+        if (isPlayerInRange && !isTransitioning && !InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(interactKey))
         {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
             if (warningUI != null)
             {
                 warningUI.SetActive(false);
@@ -82,7 +83,7 @@ public class SeaSceneTransition : MonoBehaviour
 
         if (isPlayer)
         {
-            if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen || !QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
             {
                 isPlayerInRange = true;
                 if (warningUI != null && warningUI.activeSelf) warningUI.SetActive(false);

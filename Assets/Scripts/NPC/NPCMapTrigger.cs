@@ -3,6 +3,23 @@ using UnityEngine;
 
 public class NPCMapTrigger : MonoBehaviour
 {
+    private static NPCMapTrigger activeMapTrigger;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        activeMapTrigger = null;
+    }
+
+    public static bool IsAnyMapOpen =>
+        activeMapTrigger != null
+        && activeMapTrigger.isMapOpen
+        && activeMapTrigger.gameObject.activeInHierarchy
+        && (activeMapTrigger.mapController == null
+            || activeMapTrigger.mapController.worldMapCanvasGroup == null
+            || (activeMapTrigger.mapController.worldMapCanvasGroup.gameObject.activeInHierarchy
+                && activeMapTrigger.mapController.worldMapCanvasGroup.alpha > 0.01f));
+
     public MapController mapController;
     private bool isMapOpen = false;
     private int mapOpenedFrame = -1;
@@ -16,8 +33,15 @@ public class NPCMapTrigger : MonoBehaviour
     {
         if (isMapOpen && Time.frameCount > mapOpenedFrame && Input.GetKeyDown(KeyCode.E))
         {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
             CloseWorldMap();
         }
+    }
+
+    private void OnDisable()
+    {
+        isMapOpen = false;
+        if (activeMapTrigger == this) activeMapTrigger = null;
     }
 
     // Hanya dipanggil melalui UnityEvent atau script event lain.
@@ -57,6 +81,7 @@ public class NPCMapTrigger : MonoBehaviour
             AudioSource.PlayClipAtPoint(openMapSfx, transform.position);
         }
         isMapOpen = true;
+        activeMapTrigger = this;
         mapOpenedFrame = Time.frameCount;
         CompleteMapObjective();
         PlayPopupAnimation(true);
@@ -101,6 +126,7 @@ public class NPCMapTrigger : MonoBehaviour
         }
 
         isMapOpen = false;
+        if (activeMapTrigger == this) activeMapTrigger = null;
         if (mapController != null)
         {
             PlayPopupAnimation(false);

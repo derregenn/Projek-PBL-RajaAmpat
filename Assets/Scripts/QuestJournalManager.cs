@@ -119,6 +119,37 @@ public class QuestJournalManager : MonoBehaviour
     private const string SaveKeyCompletedQuestIDs = "QJM_CompletedQuestIDs";
     private const string SaveKeyUnlockedIslands = "QJM_UnlockedIslands";
     private const string SaveKeyJournalUnlocked = "QJM_JournalUnlocked";
+    private static HashSet<string> cachedPersistentCompletedQuestIDs;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticPersistentCaches()
+    {
+        cachedPersistentCompletedQuestIDs = null;
+    }
+
+    public static void InvalidatePersistentQuestCache()
+    {
+        cachedPersistentCompletedQuestIDs = null;
+    }
+
+    private static void EnsurePersistentQuestCacheLoaded()
+    {
+        if (cachedPersistentCompletedQuestIDs != null) return;
+        cachedPersistentCompletedQuestIDs = new HashSet<string>(StringComparer.Ordinal);
+        AddDelimitedQuestIdsToSet(PlayerPrefs.GetString("GPM_CompletedQuests", ""), cachedPersistentCompletedQuestIDs);
+        AddDelimitedQuestIdsToSet(PlayerPrefs.GetString(SaveKeyCompletedQuestIDs, ""), cachedPersistentCompletedQuestIDs);
+    }
+
+    private static void AddDelimitedQuestIdsToSet(string raw, HashSet<string> targetSet)
+    {
+        if (string.IsNullOrEmpty(raw)) return;
+        string[] parts = raw.Split(',', '|');
+        for (int i = 0; i < parts.Length; i++)
+        {
+            string trimmed = parts[i].Trim();
+            if (!string.IsNullOrEmpty(trimmed)) targetSet.Add(trimmed);
+        }
+    }
 
     private static readonly Dictionary<string, string> KnownQuestTitles = new Dictionary<string, string>
     {
@@ -132,6 +163,7 @@ public class QuestJournalManager : MonoBehaviour
         { "04_Piaynemo", "Turun dari Puncak Bukit" },
         { "05_Piaynemo", "Bersihkan Sampah di Pesisir Pantai" },
         { "06_Piaynemo", "Kembali ke Dermaga" },
+        { "06_Pianemo", "Kembali ke Dermaga" },
         { "01_Misool", "Temui Tour Guide di Misool" },
         { "02_Misool", "Baca Papan Informasi di Misool" },
         { "03_Misool", "Temui Warga Lokal Misool" },
@@ -150,11 +182,20 @@ public class QuestJournalManager : MonoBehaviour
         { "02_Sawinggrai", "Menyelam ke Laut Sawinggrai" },
         { "03_Sawinggrai", "Potret Ikan di Laut Sawinggrai" },
         { "04_Sawinggrai", "Serahkan Foto ke Pembisnis" },
+        { "05_Sawinggrai", "Serahkan Foto ke Pembisnis" },
         { "01_Friwen", "Ikat Perahu yang Lepas di Pantai" },
-        { "02_Friwen", "Baca Papan Informasi Friwen" },
-        { "03_Friwen", "Jawab Kuis Tour Guide Friwen" },
-        { "04_Friwen", "Potret Keindahan Pasir Timbul" },
+        { "02_Friwen", "Jawab Trivia Warga Lokal Friwen" },
+        { "03_Friwen", "Potret Keindahan Pasir Timbul" },
+        { "04_Friwen", "Jalan ke kiri dan baca Friwen Wall" },
         { "10", "Kembali ke Tour Guide Friwen" },
+        { "01_Gag", "Bantu Peneliti Mengambil Sampel Air" },
+        { "02_Gag", "Minta Air Bersih ke Peneliti" },
+        { "03_Gag", "Berikan Air Bersih ke Tetua Adat" },
+        { "04_Gag", "Bicara dengan Peneliti Gag" },
+        { "05_Gag", "Antarkan Air ke Tetua Adat" },
+        { "06_Gag", "Lihat Kondisi Tambang dari Bukit" },
+        { "07_Gag", "Bicara dengan Tetua Adat Gag" },
+        { "08_Gag", "Kembali ke Dermaga Pulau Gag" },
         { "01", "Bantu Peneliti Mengambil Sampel Air" },
         { "02", "Minta Air Bersih ke Peneliti" },
         { "03", "Berikan Air Bersih ke Tetua Adat" },
@@ -1215,33 +1256,46 @@ public class QuestJournalManager : MonoBehaviour
         return false;
     }
 
-    public bool IsFinalQuestOfIslandDone(IslandName island)
+    private static bool IsQuestDoneAny(string qid)
+    {
+        return HasCompletedQuestIDPersistent(qid)
+            || (QuestController.Instance != null && QuestController.Instance.IsQuestCompleted(qid));
+    }
+
+    public static bool IsFinalQuestOfIslandDonePersistent(IslandName island)
     {
         switch (island)
         {
             case IslandName.Airstrip:
-                return HasCompletedQuestID("01_Airstrip");
+                return IsQuestDoneAny("01_Airstrip");
             case IslandName.Waisai:
-                return HasCompletedQuestID("03_Waisai");
+                return IsQuestDoneAny("03_Waisai") || IsQuestDoneAny("02_Waisai");
             case IslandName.Piaynemo:
-                return HasCompletedQuestID("06_Piaynemo") || HasCompletedQuestID("05_Piaynemo");
+                return IsQuestDoneAny("06_Pianemo") || IsQuestDoneAny("06_Piaynemo") || IsQuestDoneAny("05_Piaynemo");
             case IslandName.Misool:
-                return (HasCompletedQuestID("07_Misool") || HasCompletedQuestID("08_Misool")) &&
-                       (PlayerPrefs.GetInt("Misool_QuestStage", 0) >= 8 || MasterQuestManager.Instance?.CurrentStage >= 8);
+                return IsQuestDoneAny("07_Misool")
+                    || IsQuestDoneAny("08_Misool")
+                    || PlayerPrefs.GetInt("Misool_QuestStage", 0) >= 8
+                    || (MasterQuestManager.Instance != null
+                        && MasterQuestManager.Instance.CurrentIsland == IslandType.Misool
+                        && MasterQuestManager.Instance.CurrentStage >= 8);
             case IslandName.Arborek:
-                return HasCompletedQuestID("05_Arborek");
+                return IsQuestDoneAny("06_Arborek") || IsQuestDoneAny("05_Arborek");
             case IslandName.Sawinggrai:
-                return HasCompletedQuestID("04_Sawinggrai") && HasCompletedQuestID("02_Sawinggrai");
+                return IsQuestDoneAny("05_Sawinggrai") || IsQuestDoneAny("04_Sawinggrai");
             case IslandName.Friwen:
-                return (HasCompletedQuestID("10") || HasCompletedQuestID("04_Friwen")) && HasCompletedQuestID("07");
+                return IsQuestDoneAny("03_Friwen")
+                    || (IsQuestDoneAny("10") && IsQuestDoneAny("07"));
             case IslandName.Gag:
-                return HasCompletedQuestID("08") && 
-                       (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.Contains("Gag") || 
-                        PlayerPrefs.GetInt("Visited_10_Gag", 0) == 1 || 
-                        HasCompletedQuestID("01"));
+                return IsQuestDoneAny("08_Gag") || IsQuestDoneAny("07_Gag") || IsQuestDoneAny("08");
             default:
                 return false;
         }
+    }
+
+    public bool IsFinalQuestOfIslandDone(IslandName island)
+    {
+        return IsFinalQuestOfIslandDonePersistent(island);
     }
 
     public bool HasCompletedQuestID(string qid)
@@ -1258,22 +1312,8 @@ public class QuestJournalManager : MonoBehaviour
         if (Instance != null && Instance.HasCompletedQuestID(qid)) return true;
         if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(qid)) return true;
 
-        string gpmRaw = PlayerPrefs.GetString("GPM_CompletedQuests", "");
-        if (ContainsDelimitedQuestId(gpmRaw, qid)) return true;
-
-        string qjmRaw = PlayerPrefs.GetString(SaveKeyCompletedQuestIDs, "");
-        return ContainsDelimitedQuestId(qjmRaw, qid);
-    }
-
-    private static bool ContainsDelimitedQuestId(string raw, string qid)
-    {
-        if (string.IsNullOrEmpty(raw)) return false;
-        string[] parts = raw.Split(',', '|');
-        for (int i = 0; i < parts.Length; i++)
-        {
-            if (string.Equals(parts[i].Trim(), qid, StringComparison.Ordinal)) return true;
-        }
-        return false;
+        EnsurePersistentQuestCacheLoaded();
+        return cachedPersistentCompletedQuestIDs.Contains(qid);
     }
 
     public static bool IsIslandCompletedPersistent(IslandName island)
@@ -1320,7 +1360,7 @@ public class QuestJournalManager : MonoBehaviour
             return true;
         }
 
-        return Instance != null && Instance.IsFinalQuestOfIslandDone(island);
+        return IsFinalQuestOfIslandDonePersistent(island);
     }
 
     /// <summary>
@@ -1369,8 +1409,20 @@ public class QuestJournalManager : MonoBehaviour
 
         if (island == IslandName.Friwen)
         {
+            completedQuestIDs.Add("03_Friwen");
             completedQuestIDs.Add("07");
+            GamePhaseManager.Instance?.HandleQuestCompleted("03_Friwen");
             GamePhaseManager.Instance?.HandleQuestCompleted("07");
+        }
+        else if (island == IslandName.Piaynemo)
+        {
+            completedQuestIDs.Add("06_Pianemo");
+            GamePhaseManager.Instance?.HandleQuestCompleted("06_Pianemo");
+        }
+        else if (island == IslandName.Sawinggrai)
+        {
+            completedQuestIDs.Add("05_Sawinggrai");
+            GamePhaseManager.Instance?.HandleQuestCompleted("05_Sawinggrai");
         }
         else if (island == IslandName.Misool)
         {
@@ -1383,6 +1435,8 @@ public class QuestJournalManager : MonoBehaviour
         }
         else if (island == IslandName.Gag)
         {
+            completedQuestIDs.Add("08_Gag");
+            GamePhaseManager.Instance?.HandleQuestCompleted("08_Gag");
             PlayerPrefs.SetInt("Visited_10_Gag", 1);
             GamePhaseManager.Instance?.UnlockGag(true);
         }
@@ -1866,6 +1920,7 @@ public class QuestJournalManager : MonoBehaviour
 
         string completedIDsStr = string.Join(",", completedQuestIDs);
         PlayerPrefs.SetString(SaveKeyCompletedQuestIDs, completedIDsStr);
+        InvalidatePersistentQuestCache();
 
         List<string> islandList = new List<string>();
         foreach (var isl in unlockedAwardIslands)
@@ -1980,6 +2035,7 @@ public class QuestJournalManager : MonoBehaviour
         TrashInteractable.totalCollected = 0;
 
         PlayerPrefs.DeleteAll();
+        InvalidatePersistentQuestCache();
         PlayerPrefs.DeleteKey(SaveKeyJournalUnlocked);
         if (keepFreshFlag)
         {

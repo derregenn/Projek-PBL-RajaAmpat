@@ -75,6 +75,7 @@ public class BirdInteractable : MonoBehaviour
     private void Update()
     {
         // Poin 10: Player sudah dekat dan memencet tombol F
+        if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen) return;
         if (canTakePhoto && !isPhotoDone && Input.GetKeyDown(photoKey))
         {
             AmbilFoto();

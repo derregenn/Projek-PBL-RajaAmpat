@@ -34,10 +34,54 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
     [SerializeField, Min(0f)] private float extraDelayAfterVoiceOver = 0.25f;
 
     private bool isOpen = false;
+    private static SignboardInteractable activeOpenSignboard;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        activeOpenSignboard = null;
+    }
+
+    public static SignboardInteractable ActiveOpenSignboard =>
+        (activeOpenSignboard != null
+         && activeOpenSignboard.isOpen
+         && activeOpenSignboard.gameObject.activeInHierarchy
+         && (activeOpenSignboard.infoPanel == null || activeOpenSignboard.infoPanel.activeInHierarchy))
+        ? activeOpenSignboard
+        : null;
+    public static bool IsAnySignboardOpen => ActiveOpenSignboard != null;
+    public bool IsOpen => isOpen;
     private RectTransform panelRect;
     private Vector2 panelOpenPosition;
     private Coroutine animationCoroutine;
     private Coroutine voAutoCloseCoroutine;
+
+    private bool PassesQuestGate()
+    {
+        if (QuestProgressionGate.Passes(string.Empty, string.Empty, requiredCompletedQuestID))
+        {
+            return true;
+        }
+
+        if (requiredCompletedQuestID == "01_Friwen")
+        {
+            if (QuestController.Instance != null &&
+                (QuestController.Instance.IsQuestActive("04_Friwen")
+                 || QuestController.Instance.IsQuestActive("02_Friwen")
+                 || QuestController.Instance.IsQuestCompleted("04_Friwen")
+                 || QuestController.Instance.IsQuestCompleted("02_Friwen")))
+            {
+                return true;
+            }
+
+            if (MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage >= 2)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private void Awake()
     {
@@ -56,12 +100,18 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (!isOpen && !QuestProgressionGate.Passes(string.Empty, string.Empty, requiredCompletedQuestID)) return;
+        if (!isOpen)
+        {
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.WasInteractKeyConsumedThisFrame) return;
+            if (!PassesQuestGate()) return;
+        }
         isOpen = !isOpen;
+        InteractionInputLock.ConsumeInteractKeyThisFrame();
         AnimatePanel(isOpen);
 
         if (isOpen)
         {
+            activeOpenSignboard = this;
             if (audioSource != null && popupSfx != null)
             {
                 audioSource.PlayOneShot(popupSfx);
@@ -72,6 +122,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         }
         else
         {
+            if (activeOpenSignboard == this) activeOpenSignboard = null;
             StopVoiceOverAndAutoClose();
             CloseSignboard();
         }
@@ -129,6 +180,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         if (isOpen)
         {
             isOpen = false;
+            if (activeOpenSignboard == this) activeOpenSignboard = null;
             AnimatePanel(false);
             CloseSignboard();
         }
@@ -157,7 +209,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
 
     public string GetPromptText()
     {
-        if (!isOpen && !QuestProgressionGate.Passes(string.Empty, string.Empty, requiredCompletedQuestID)) return "";
+        if (!isOpen && (InteractionInputLock.IsAnyModalBlockingWorldInteract || !PassesQuestGate())) return "";
         return isOpen ? "Tutup Info" : "Baca Informasi";
     }
 
@@ -203,6 +255,8 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
 
     private void OnDisable()
     {
+        isOpen = false;
+        if (activeOpenSignboard == this) activeOpenSignboard = null;
         StopVoiceOverAndAutoClose();
     }
 
@@ -211,6 +265,7 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         if (collision.CompareTag("Player") && isOpen)
         {
             isOpen = false;
+            if (activeOpenSignboard == this) activeOpenSignboard = null;
             StopVoiceOverAndAutoClose();
             AnimatePanel(false);
             CloseSignboard();

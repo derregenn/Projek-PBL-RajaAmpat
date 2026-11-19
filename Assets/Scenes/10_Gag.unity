@@ -9455,10 +9455,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinemachineCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 7804147975020256817, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: BoundingShape2D
-      value: 
-      objectReference: {fileID: 2147000003}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Priority.m_Value
       value: 10
@@ -9471,6 +9467,22 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1122863886}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 2147000003}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: SlowingDistance
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14892,6 +14904,22 @@ PrefabInstance:
       propertyPath: FollowOffset.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 2147000003}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: SlowingDistance
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19777,7 +19805,7 @@ Transform:
   m_GameObject: {fileID: 2147000001}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 45.28, y: -9.555, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19829,10 +19857,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 16.810646, y: -15.268794}
-      - {x: 95, y: -26}
-      - {x: 95, y: 12}
-      - {x: 16.658865, y: -3.2841816}
+    - - {x: -28.61, y: -5.405}
+      - {x: 28.61, y: -5.405}
+      - {x: 28.61, y: 5.405}
+      - {x: -28.61, y: 5.405}
   m_UseDelaunayMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

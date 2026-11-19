@@ -23,9 +23,17 @@ public class LandscapeViewInteractable : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInArea && !isViewing && Input.GetKeyDown(KeyCode.F))
+        if (isPlayerInArea && !isViewing)
         {
-            StartCoroutine(RoutineViewing());
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
+            {
+                if (uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                StartCoroutine(RoutineViewing());
+            }
         }
     }
 

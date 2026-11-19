@@ -444,6 +444,7 @@ MonoBehaviour:
   questToGive: {fileID: 0}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 0
 --- !u!114 &17665924
 MonoBehaviour:
@@ -459,6 +460,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrashInteractable
   objectiveID: kerang_arborek
   amountToAdd: 1
+  requiredActiveObjectiveID: 
+  requiredCompletedQuestID: 
   collectSound: {fileID: 0}
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
@@ -1970,6 +1973,7 @@ MonoBehaviour:
   questToGive: {fileID: 11400000, guid: b31d09039ac335944a8e6ec42b927677, type: 2}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 1
 --- !u!114 &153149759
 MonoBehaviour:
@@ -2025,6 +2029,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -2061,6 +2069,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &153149760
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3230,6 +3239,7 @@ MonoBehaviour:
   questToGive: {fileID: 11400000, guid: 7afaf405e095be64e9e17e138f9ec72d, type: 2}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 1
 --- !u!114 &292704873
 MonoBehaviour:
@@ -3276,6 +3286,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -3300,6 +3314,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &292704874
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5142,6 +5157,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 665430386}
     - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: npcLensSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: DialogueText
       value: 
       objectReference: {fileID: 1487501441}
@@ -5149,6 +5168,10 @@ PrefabInstance:
       propertyPath: InteractPrompt
       value: 
       objectReference: {fileID: 1762839983}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: dialogueCamera
+      value: 
+      objectReference: {fileID: 1491334919}
     - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: typingAudioClip
       value: 
@@ -5169,6 +5192,14 @@ PrefabInstance:
       propertyPath: PlayerDialogueText
       value: 
       objectReference: {fileID: 2010222994}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: matchGameplayCameraHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: preventDialogueBoxCameraOverlap
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -5269,22 +5300,6 @@ PrefabInstance:
       propertyPath: mapController
       value: 
       objectReference: {fileID: 8369088714582127669}
-    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: dialogueCamera
-      value: 
-      objectReference: {fileID: 1491334919}
-    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: npcLensSize
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: matchGameplayCameraHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4656081642101474642, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: preventDialogueBoxCameraOverlap
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1270992414121551918, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
@@ -5382,6 +5397,8 @@ MonoBehaviour:
   OnSasiCompleted:
     m_PersistentCalls:
       m_Calls: []
+  requiredActiveObjectiveID: 
+  requiredCompletedQuestID: 
 --- !u!61 &519875270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5460,6 +5477,7 @@ MonoBehaviour:
   questToGive: {fileID: 11400000, guid: acd5407f4b5dc304c9aa6b963ebcbf00, type: 2}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 0
 --- !u!114 &530993217 stripped
 MonoBehaviour:
@@ -6651,7 +6669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.199
+      value: -3.089
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7477,7 +7495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.639
+      value: -3.089
       objectReference: {fileID: 0}
     - target: {fileID: 2780489665870270534, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7511,18 +7529,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4240124796684014005, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: FollowOffset.y
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 4833609709971146027, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: m_Name
       value: CinemachineCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 7804147975020256817, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: BoundingShape2D
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: BoundingShape2D
-      value: 
-      objectReference: {fileID: 636223327}
     - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: OversizeWindow.Enabled
       value: 0
@@ -7539,9 +7553,21 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1122863886}
-    - target: {fileID: 4240124796684014005, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: FollowOffset.y
-      value: 0.55
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 636223327}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: SlowingDistance
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7939,7 +7965,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 0}
+  m_SizeDelta: {x: 300, y: 110.69}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &934573082
 MonoBehaviour:
@@ -8282,6 +8308,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 934573080}
     - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
+      propertyPath: npcLensSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: DialogueText
       value: 
       objectReference: {fileID: 1917431013}
@@ -8289,6 +8319,10 @@ PrefabInstance:
       propertyPath: InteractPrompt
       value: 
       objectReference: {fileID: 722844685}
+    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
+      propertyPath: dialogueCamera
+      value: 
+      objectReference: {fileID: 1491334919}
     - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: typingAudioClip
       value: 
@@ -8309,6 +8343,14 @@ PrefabInstance:
       propertyPath: PlayerDialogueText
       value: 
       objectReference: {fileID: 2010222994}
+    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
+      propertyPath: matchGameplayCameraHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
+      propertyPath: preventDialogueBoxCameraOverlap
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -8409,22 +8451,6 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
-      propertyPath: dialogueCamera
-      value: 
-      objectReference: {fileID: 1491334919}
-    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
-      propertyPath: npcLensSize
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
-      propertyPath: matchGameplayCameraHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2013950805245375082, guid: 1511c852ecce3394dad341050a11508f, type: 3}
-      propertyPath: preventDialogueBoxCameraOverlap
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5044695647541820758, guid: 1511c852ecce3394dad341050a11508f, type: 3}
@@ -8459,7 +8485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4356c2284c93a2545b8b445bc22150aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IslandCompletionTrigger
-  islandToComplete: 2
+  islandToComplete: 3
 --- !u!1 &998526961
 GameObject:
   m_ObjectHideFlags: 0
@@ -10828,18 +10854,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 50.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -8.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.58151
-      objectReference: {fileID: 0}
-    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
@@ -10867,41 +10881,85 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
-      value: -46.091034
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
-      value: 9.066175
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: -46.44083
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: 2.4361086
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: 26.131777
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: 2.7738583
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
-      value: 26.46384
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
-      value: 9.008038
-      objectReference: {fileID: 0}
     - target: {fileID: 3149436457622254271, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
       propertyPath: m_Name
       value: CameraBounds
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 45.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310026432329518848, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: -18.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: 18.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 18.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: -18.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 2550584757008037658, guid: 50a770a23badcaf4f9b8946c3688e04f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11045,10 +11103,10 @@ RectTransform:
   - {fileID: 681914698}
   m_Father: {fileID: 934573081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -84.69}
+  m_SizeDelta: {x: 276, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1279433045
 GameObject:
@@ -11288,6 +11346,7 @@ MonoBehaviour:
   questToGive: {fileID: 0}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 0
 --- !u!114 &1313240534
 MonoBehaviour:
@@ -11303,6 +11362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrashInteractable
   objectiveID: umpan_arborek
   amountToAdd: 1
+  requiredActiveObjectiveID: umpan_arborek
+  requiredCompletedQuestID: 
   collectSound: {fileID: 0}
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
@@ -11311,7 +11372,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   customPrompt: 
-  requiredActiveObjectiveID: umpan_arborek
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12189,6 +12249,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -12199,6 +12263,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &1388967371
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12634,6 +12699,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1418629231}
+    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2080000100}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &1418629229 stripped
 GameObject:
@@ -12940,6 +13008,8 @@ MonoBehaviour:
   OnSasiCompleted:
     m_PersistentCalls:
       m_Calls: []
+  requiredActiveObjectiveID: 
+  requiredCompletedQuestID: 
 --- !u!114 &1454387972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13722,7 +13792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.639
+      value: -3.089
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13759,6 +13829,22 @@ PrefabInstance:
     - target: {fileID: 5738539907792113228, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: FollowOffset.y
       value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 636223327}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: SlowingDistance
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14323,6 +14409,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -14333,6 +14423,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &1660750591
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14513,6 +14604,7 @@ MonoBehaviour:
   questToGive: {fileID: 11400000, guid: 9ac4f7db2f28f794ca99fffc438d42d5, type: 2}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 0
 --- !u!114 &1665425515
 MonoBehaviour:
@@ -14562,6 +14654,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -14610,6 +14706,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &1665425516
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15024,6 +15121,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -15048,6 +15149,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &1668667928
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15581,6 +15683,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8786893707811612753}
     m_Modifications:
+    - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_fontSize
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: hiddenPosition.x
+      value: -220
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: hiddenPosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: visiblePosition.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: visiblePosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
     - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_Name
       value: QuestHUDPanel 2
@@ -15588,6 +15714,54 @@ PrefabInstance:
     - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371388737094505655, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 615
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3125
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15618,6 +15792,14 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -15641,74 +15823,6 @@ PrefabInstance:
       propertyPath: hudQuestDescription
       value: 
       objectReference: {fileID: 618227029}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: hiddenPosition.x
-      value: -220
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: hiddenPosition.y
-      value: -18.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: visiblePosition.x
-      value: 140
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: visiblePosition.y
-      value: -18.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_Pivot.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 615
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 140
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -18.75
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3885563739840116965, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
@@ -15928,6 +16042,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -15938,6 +16056,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &1779326723
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17191,6 +17310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WallInteractable
   promptMessage: Panjat Tebing
   climbDown: 0
+  requiredActiveObjectiveID: 
+  requiredCompletedQuestID: 
 --- !u!61 &1890564054
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17447,7 +17568,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -38.345}
-  m_SizeDelta: {x: 276, y: 0}
+  m_SizeDelta: {x: 276, y: 52.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1917431010
 MonoBehaviour:
@@ -18619,6 +18740,7 @@ MonoBehaviour:
   questToGive: {fileID: 11400000, guid: 5a0dcabd6ef931349ab4f603bc6daeb9, type: 2}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 0
 --- !u!114 &2022872704
 MonoBehaviour:
@@ -18669,6 +18791,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -19174,6 +19300,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 519875271}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &2080000100
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418629229}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2085162833
 GameObject:
   m_ObjectHideFlags: 0
@@ -19734,6 +19957,7 @@ MonoBehaviour:
   questToGive: {fileID: 0}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 1
 --- !u!114 &2143221578
 MonoBehaviour:
@@ -19790,6 +20014,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -19826,6 +20054,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &2143221579
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20110,7 +20339,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 6.7951}
+  m_AnchoredPosition: {x: 0, y: 4}
   m_SizeDelta: {x: 0, y: -12.7776}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233442814437338872
@@ -20473,7 +20702,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          E_Arborek
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &1185736481032613834
@@ -21239,7 +21468,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          C_Pianemo
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &3098677833032395961
@@ -21543,7 +21772,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          F_Sawinggrai
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &4411969894093688557
@@ -21650,7 +21879,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          D_Misool
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &4677599079319877031
@@ -21884,7 +22113,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          H_Gag
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &5004102870497445757
@@ -22350,7 +22579,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          G_Friwen
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &6507185468433540723
@@ -23009,6 +23238,18 @@ MonoBehaviour:
   toggleKey: 113
   fadeDuration: 0.2
   worldMapCanvasGroup: {fileID: 5886233069130555131}
+  normalizeMapPanelToWaisaiLayout: 1
+  standardMapPanelScale: {x: 0.83738, y: 0.83738, z: 0.83738}
+  standardIslandsScaleOn800x600: 0.7
+  autoBindMissingIslandButtons: 1
+  currentLocationMarker: {fileID: 0}
+  currentLocationText: {fileID: 0}
+  currentLocationLabel: KAMU DI SINI
+  markerOffset: {x: 0, y: 52}
+  markerSize: {x: 154, y: 36}
+  markerBackgroundColor: {r: 0.86, g: 0.22, b: 0.16, a: 0.96}
+  markerTextColor: {r: 1, g: 1, b: 1, a: 1}
+  animateLocationMarker: 1
 --- !u!114 &8494008421597001220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23062,7 +23303,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          B_Waisai
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &8496680158896959136
@@ -23081,6 +23322,7 @@ MonoBehaviour:
   hudQuestTitle: {fileID: 119549038}
   hudQuestDescription: {fileID: 618227029}
   objectiveListText: {fileID: 0}
+  normalizeTrackerTextLayout: 1
   currentActiveQuest: {fileID: 0}
 --- !u!222 &8577744676585441185
 CanvasRenderer:
@@ -23266,100 +23508,3 @@ SceneRoots:
   - {fileID: 2145643863}
   - {fileID: 1123713462}
   - {fileID: 1245645509}
---- !u!82 &2080000100
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418629229}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4

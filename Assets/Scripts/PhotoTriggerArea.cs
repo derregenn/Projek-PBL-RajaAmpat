@@ -95,6 +95,14 @@ public class PhotoTriggerArea : MonoBehaviour
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, 1);
+            if (objectiveID == "foto_friwen")
+            {
+                QuestController.Instance.MarkQuestCompleted("03_Friwen");
+                if (QuestJournalManager.Instance != null)
+                {
+                    QuestJournalManager.Instance.RecordCompletedQuest("03_Friwen", "Foto Friwen");
+                }
+            }
             Debug.Log($"[PhotoTrigger] Quest Objective '{objectiveID}' Berhasil!");
         }
 

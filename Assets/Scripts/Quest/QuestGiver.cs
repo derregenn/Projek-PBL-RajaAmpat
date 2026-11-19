@@ -107,60 +107,102 @@ public class QuestGiver : MonoBehaviour
 
 public static class QuestProgressionGate
 {
+    private static bool IsQuestCompletedAnySource(string id)
+    {
+        return QuestJournalManager.HasCompletedQuestIDPersistent(id)
+            || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id))
+            || (QuestController.Instance != null && QuestController.Instance.IsQuestCompleted(id));
+    }
+
+    private static bool IsQuestActiveOrCompletedAnySource(string id)
+    {
+        return (QuestController.Instance != null && (QuestController.Instance.IsQuestActive(id) || QuestController.Instance.IsQuestCompleted(id)))
+            || QuestJournalManager.HasCompletedQuestIDPersistent(id)
+            || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id));
+    }
+
+    private static bool IsObjectiveActive(string objId)
+    {
+        if (QuestController.Instance == null || string.IsNullOrEmpty(objId)) return false;
+        var activeQuests = QuestController.Instance.ActiveQuests;
+        for (int i = 0; i < activeQuests.Count; i++)
+        {
+            var q = activeQuests[i];
+            if (q != null && q.GetObjective(objId) != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static bool Passes(string requiredActiveObjectiveID, string requiredActiveOrCompletedQuestID, string requiredCompletedQuestID)
     {
         if (!string.IsNullOrEmpty(requiredCompletedQuestID))
         {
-            string[] reqs = requiredCompletedQuestID.Split(',');
-            for (int i = 0; i < reqs.Length; i++)
+            if (requiredCompletedQuestID.IndexOf(',') < 0)
             {
-                string id = reqs[i].Trim();
-                if (string.IsNullOrEmpty(id)) continue;
-                bool done = QuestJournalManager.HasCompletedQuestIDPersistent(id)
-                    || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id));
-                if (!done) return false;
+                string id = requiredCompletedQuestID.Trim();
+                if (!string.IsNullOrEmpty(id) && !IsQuestCompletedAnySource(id)) return false;
+            }
+            else
+            {
+                string[] reqs = requiredCompletedQuestID.Split(',');
+                for (int i = 0; i < reqs.Length; i++)
+                {
+                    string id = reqs[i].Trim();
+                    if (!string.IsNullOrEmpty(id) && !IsQuestCompletedAnySource(id)) return false;
+                }
             }
         }
 
         if (!string.IsNullOrEmpty(requiredActiveOrCompletedQuestID))
         {
-            string[] anyIds = requiredActiveOrCompletedQuestID.Split(',');
-            bool matchedAny = false;
-            for (int i = 0; i < anyIds.Length; i++)
+            if (requiredActiveOrCompletedQuestID.IndexOf(',') < 0)
             {
-                string id = anyIds[i].Trim();
-                if (string.IsNullOrEmpty(id)) continue;
-                if ((QuestController.Instance != null && QuestController.Instance.IsQuestActive(id))
-                    || QuestJournalManager.HasCompletedQuestIDPersistent(id)
-                    || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id)))
-                {
-                    matchedAny = true;
-                    break;
-                }
+                string id = requiredActiveOrCompletedQuestID.Trim();
+                if (!string.IsNullOrEmpty(id) && !IsQuestActiveOrCompletedAnySource(id)) return false;
             }
-            if (!matchedAny) return false;
+            else
+            {
+                string[] anyIds = requiredActiveOrCompletedQuestID.Split(',');
+                bool matchedAny = false;
+                for (int i = 0; i < anyIds.Length; i++)
+                {
+                    string id = anyIds[i].Trim();
+                    if (!string.IsNullOrEmpty(id) && IsQuestActiveOrCompletedAnySource(id))
+                    {
+                        matchedAny = true;
+                        break;
+                    }
+                }
+                if (!matchedAny) return false;
+            }
         }
 
         if (!string.IsNullOrEmpty(requiredActiveObjectiveID))
         {
             if (QuestController.Instance == null) return false;
-            string[] objIds = requiredActiveObjectiveID.Split(',');
-            bool matchedObj = false;
-            foreach (var q in QuestController.Instance.ActiveQuests)
+            if (requiredActiveObjectiveID.IndexOf(',') < 0)
             {
-                if (q == null) continue;
+                string objId = requiredActiveObjectiveID.Trim();
+                if (!string.IsNullOrEmpty(objId) && !IsObjectiveActive(objId)) return false;
+            }
+            else
+            {
+                string[] objIds = requiredActiveObjectiveID.Split(',');
+                bool matchedObj = false;
                 for (int i = 0; i < objIds.Length; i++)
                 {
                     string objId = objIds[i].Trim();
-                    if (!string.IsNullOrEmpty(objId) && q.GetObjective(objId) != null)
+                    if (!string.IsNullOrEmpty(objId) && IsObjectiveActive(objId))
                     {
                         matchedObj = true;
                         break;
                     }
                 }
-                if (matchedObj) break;
+                if (!matchedObj) return false;
             }
-            if (!matchedObj) return false;
         }
 
         return true;

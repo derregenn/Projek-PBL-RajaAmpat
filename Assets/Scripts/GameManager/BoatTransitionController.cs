@@ -20,6 +20,7 @@ public class BoatTransitionController : MonoBehaviour
 
     private string currentTarget;
     private IslandTransitionData currentData;
+    private readonly System.Collections.Generic.List<GameObject> cachedInteractPrompts = new System.Collections.Generic.List<GameObject>();
 
     private void Start()
     {
@@ -33,11 +34,13 @@ public class BoatTransitionController : MonoBehaviour
         SetupCamera();
 
         // Nonaktifkan semua InteractPrompt di scene agar tidak melayang di langit selama cutscene perahu
+        cachedInteractPrompts.Clear();
         var prompts = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var p in prompts)
         {
             if (p != null && p.name == "InteractPrompt")
             {
+                cachedInteractPrompts.Add(p.gameObject);
                 p.gameObject.SetActive(false);
             }
         }
@@ -95,7 +98,16 @@ public class BoatTransitionController : MonoBehaviour
                 var confiner = vcam.GetComponent<Unity.Cinemachine.CinemachineConfiner2D>();
                 if (confiner != null)
                 {
-                    confiner.enabled = false;
+                    if (confiner.BoundingShape2D != null)
+                    {
+                        confiner.enabled = true;
+                        confiner.SlowingDistance = 0f;
+                        confiner.InvalidateBoundingShapeCache();
+                    }
+                    else
+                    {
+                        confiner.enabled = false;
+                    }
                 }
 
                 if (vcam.name.IndexOf("Dialogue", System.StringComparison.OrdinalIgnoreCase) >= 0)
@@ -108,12 +120,17 @@ public class BoatTransitionController : MonoBehaviour
 
     private void LateUpdate()
     {
-        var prompts = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (var p in prompts)
+        for (int i = cachedInteractPrompts.Count - 1; i >= 0; i--)
         {
-            if (p != null && p.name == "InteractPrompt" && p.gameObject.activeSelf)
+            GameObject promptObj = cachedInteractPrompts[i];
+            if (promptObj == null)
             {
-                p.gameObject.SetActive(false);
+                cachedInteractPrompts.RemoveAt(i);
+                continue;
+            }
+            if (promptObj.activeSelf)
+            {
+                promptObj.SetActive(false);
             }
         }
     }

@@ -4,6 +4,7 @@ public class FriwenLandSceneManager : MonoBehaviour
 {
     public static FriwenLandSceneManager Instance { get; private set; }
     private int lastObservedStage = -1;
+    private bool lastObservedMapUnlocked = false;
 
     [Header("Referensi Quest 1 (Tarik Perahu QTE)")]
     [Tooltip("Warlok 1 yang meminta bantuan menarik perahu")]
@@ -75,7 +76,8 @@ public class FriwenLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance == null) return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
-        if (stage != lastObservedStage)
+        bool mapUnlocked = QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Friwen);
+        if (stage != lastObservedStage || mapUnlocked != lastObservedMapUnlocked)
         {
             RefreshLandState();
         }
@@ -105,9 +107,10 @@ public class FriwenLandSceneManager : MonoBehaviour
         if (warlokOpsional2 != null) warlokOpsional2.SetActive(true);
 
         // NPC Locked / Unlocked
+        bool isUnlocked = QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Friwen);
+        lastObservedMapUnlocked = isUnlocked;
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 3; // Misal, NPC terbuka setelah stage
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

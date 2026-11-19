@@ -8,9 +8,15 @@ public class NPCQuestGiver : MonoBehaviour
 
     void Update()
     {
-        // Jika pemain dekat, menekan E, dan belum punya peta
-        if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerNearby && (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen))
         {
+            if (interactUI != null && interactUI.activeSelf) interactUI.SetActive(false);
+            return;
+        }
+        // Jika pemain dekat, menekan E, dan belum punya peta
+        if (isPlayerNearby && !InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E))
+        {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
             if (playerScript != null && !playerScript.hasMap)
             {
                 playerScript.hasMap = true;

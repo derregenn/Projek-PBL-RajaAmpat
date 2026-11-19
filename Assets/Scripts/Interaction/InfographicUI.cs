@@ -30,6 +30,19 @@ public class InfographicUI : MonoBehaviour
     [SerializeField] private bool autoCloseAfterVoiceOver = true;
     [SerializeField, Min(0f)] private float extraDelayAfterVoiceOver = 0.25f;
 
+    private static InfographicUI activeInfographic;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        activeInfographic = null;
+    }
+
+    public static bool IsAnyInfographicOpen =>
+        activeInfographic != null
+        && activeInfographic.infographicPanel != null
+        && activeInfographic.infographicPanel.activeInHierarchy;
+
     private CanvasGroup infographicCanvasGroup;
     private RectTransform infographicRectTransform;
     private Coroutine popupCoroutine;
@@ -63,6 +76,7 @@ public class InfographicUI : MonoBehaviour
 
     private void OnDisable()
     {
+        if (activeInfographic == this) activeInfographic = null;
         StopVoiceOver();
         RestorePlayerControl();
 
@@ -132,6 +146,7 @@ public class InfographicUI : MonoBehaviour
         }
 
         CachePanelComponents();
+        activeInfographic = this;
         infographicPanel.SetActive(true);
 
         if (popupCoroutine != null)
@@ -266,6 +281,7 @@ public class InfographicUI : MonoBehaviour
 
     private void FinishHidePanel()
     {
+        if (activeInfographic == this) activeInfographic = null;
         if (infographicPanel != null)
         {
             infographicPanel.SetActive(false);
@@ -334,7 +350,7 @@ public class InfographicUI : MonoBehaviour
 
         foreach (MonoBehaviour playerScript in FindPlayerControlScripts())
         {
-            if (playerScript != null && !toggledPlayerScripts.Contains(playerScript))
+            if (playerScript != null && playerScript.enabled && !toggledPlayerScripts.Contains(playerScript))
             {
                 toggledPlayerScripts.Add(playerScript);
                 playerScript.enabled = false;
@@ -372,7 +388,7 @@ public class InfographicUI : MonoBehaviour
 
         foreach (MonoBehaviour script in allScripts)
         {
-            if (script == null)
+            if (script == null || script is PlayerInteraction || script is QuestController)
             {
                 continue;
             }

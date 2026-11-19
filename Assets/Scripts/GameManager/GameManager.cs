@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
         }
         else if (_instance != this)
         {
+            TriviaQuizUI sceneTrivia = GetComponent<TriviaQuizUI>();
+            if (sceneTrivia != null)
+            {
+                TriviaQuizUI.AdoptOrAttachTo(_instance.gameObject, sceneTrivia);
+            }
             Destroy(gameObject);
             return;
         }

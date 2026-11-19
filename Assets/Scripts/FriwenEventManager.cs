@@ -150,6 +150,11 @@ public class FriwenEventManager : MonoBehaviour
         if (QuestController.Instance != null)
         {
             QuestController.Instance.ProgressObjective("perahu_friwen", 1);
+            QuestController.Instance.MarkQuestCompleted("01_Friwen");
+        }
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.RecordCompletedQuest("01_Friwen", "Tarik perahu");
         }
         StartCoroutine(RoutineQTESelesai());
     }

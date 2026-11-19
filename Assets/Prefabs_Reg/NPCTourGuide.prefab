@@ -215,7 +215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 315}
+  m_AnchoredPosition: {x: 0, y: 15}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1774673079806073879
@@ -510,6 +510,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 4.5
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -532,6 +536,7 @@ MonoBehaviour:
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!114 &3549110012235057317
 MonoBehaviour:
   m_ObjectHideFlags: 0
