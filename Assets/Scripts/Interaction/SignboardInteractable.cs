@@ -46,13 +46,15 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         (activeOpenSignboard != null
          && activeOpenSignboard.isOpen
          && activeOpenSignboard.gameObject.activeInHierarchy
-         && (activeOpenSignboard.infoPanel == null || activeOpenSignboard.infoPanel.activeInHierarchy))
+         && activeOpenSignboard.infoPanel != null
+         && activeOpenSignboard.infoPanel.activeInHierarchy)
         ? activeOpenSignboard
         : null;
     public static bool IsAnySignboardOpen => ActiveOpenSignboard != null;
     public bool IsOpen => isOpen;
     private RectTransform panelRect;
     private Vector2 panelOpenPosition;
+    private bool hasInitializedPanel = false;
     private Coroutine animationCoroutine;
     private Coroutine voAutoCloseCoroutine;
 
@@ -83,27 +85,42 @@ public class SignboardInteractable : MonoBehaviour, IInteractable
         return false;
     }
 
+    private void EnsurePanelInitialized()
+    {
+        if (hasInitializedPanel || infoPanel == null) return;
+        hasInitializedPanel = true;
+
+        panelRect = infoPanel.GetComponent<RectTransform>();
+        if (panelRect != null)
+        {
+            panelOpenPosition = panelRect.anchoredPosition;
+            panelRect.anchoredPosition = panelOpenPosition - Vector2.up * pushDistance;
+        }
+
+        infoPanel.SetActive(false);
+    }
+
     private void Awake()
     {
-        if (infoPanel != null)
-        {
-            panelRect = infoPanel.GetComponent<RectTransform>();
-            if (panelRect != null)
-            {
-                panelOpenPosition = panelRect.anchoredPosition;
-                panelRect.anchoredPosition = panelOpenPosition - Vector2.up * pushDistance;
-            }
-
-            infoPanel.SetActive(false);
-        }
+        EnsurePanelInitialized();
     }
 
     public void Interact()
     {
+        EnsurePanelInitialized();
         if (!isOpen)
         {
             if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.WasInteractKeyConsumedThisFrame) return;
             if (!PassesQuestGate()) return;
+
+            if (infoPanel == null)
+            {
+                Debug.LogWarning($"[SignboardInteractable] '{name}' belum memiliki referensi infoPanel.", this);
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
+                onOpen?.Invoke();
+                CloseSignboard();
+                return;
+            }
         }
         isOpen = !isOpen;
         InteractionInputLock.ConsumeInteractKeyThisFrame();

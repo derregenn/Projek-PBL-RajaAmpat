@@ -15,7 +15,9 @@ public class PlayerInteraction : MonoBehaviour
     private readonly List<IInteractable> nearbyInteractables = new List<IInteractable>();
     private IInteractable currentInteractable;
     private string lastPromptMessage;
-    private readonly Dictionary<Collider2D, IInteractable> triggerInteractableCache = new Dictionary<Collider2D, IInteractable>();
+    private readonly HashSet<Collider2D> activeTriggerColliders = new HashSet<Collider2D>();
+    private readonly List<Collider2D> staleCollidersBuffer = new List<Collider2D>(8);
+    private readonly List<IInteractable> interactableLookupBuffer = new List<IInteractable>(4);
     private Collider2D playerCollider;
     private readonly List<Collider2D> overlapResults = new List<Collider2D>(8);
     private ContactFilter2D overlapFilter;
@@ -108,31 +110,77 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void RefreshOverlappingInteractables()
+    private static bool BoundsIntersectWithTolerance(Bounds a, Bounds b, float tolerance)
     {
-        if (playerCollider == null) return;
+        return a.min.x - tolerance <= b.max.x
+            && a.max.x + tolerance >= b.min.x
+            && a.min.y - tolerance <= b.max.y
+            && a.max.y + tolerance >= b.min.y;
+    }
 
-        overlapResults.Clear();
-        playerCollider.Overlap(overlapFilter, overlapResults);
+    private void CollectInteractablesFromCollider(Collider2D col)
+    {
+        if (col == null || col == playerCollider) return;
 
-        nearbyInteractables.Clear();
-        for (int i = 0; i < overlapResults.Count; i++)
+        interactableLookupBuffer.Clear();
+        col.GetComponents(interactableLookupBuffer);
+        if (interactableLookupBuffer.Count == 0)
         {
-            Collider2D col = overlapResults[i];
-            if (col == null || col == playerCollider) continue;
+            col.GetComponentsInParent(false, interactableLookupBuffer);
+        }
 
-            if (!triggerInteractableCache.TryGetValue(col, out IInteractable interactable))
-            {
-                interactable = col.GetComponent<IInteractable>() ?? col.GetComponentInParent<IInteractable>();
-                triggerInteractableCache[col] = interactable;
-            }
-
+        for (int i = 0; i < interactableLookupBuffer.Count; i++)
+        {
+            IInteractable interactable = interactableLookupBuffer[i];
             if (interactable != null && !nearbyInteractables.Contains(interactable))
             {
                 nearbyInteractables.Add(interactable);
             }
         }
-        overlapResults.Clear();
+        interactableLookupBuffer.Clear();
+    }
+
+    private void RefreshOverlappingInteractables()
+    {
+        staleCollidersBuffer.Clear();
+        bool hasValidPlayerCollider = playerCollider != null && playerCollider.enabled;
+        Bounds playerBounds = hasValidPlayerCollider ? playerCollider.bounds : default;
+
+        foreach (Collider2D col in activeTriggerColliders)
+        {
+            if (col == null || !col.enabled || !col.gameObject.activeInHierarchy)
+            {
+                staleCollidersBuffer.Add(col);
+            }
+            else if (hasValidPlayerCollider && !BoundsIntersectWithTolerance(col.bounds, playerBounds, 0.15f))
+            {
+                staleCollidersBuffer.Add(col);
+            }
+        }
+
+        for (int i = 0; i < staleCollidersBuffer.Count; i++)
+        {
+            activeTriggerColliders.Remove(staleCollidersBuffer[i]);
+        }
+        staleCollidersBuffer.Clear();
+
+        nearbyInteractables.Clear();
+        foreach (Collider2D col in activeTriggerColliders)
+        {
+            CollectInteractablesFromCollider(col);
+        }
+
+        if (hasValidPlayerCollider)
+        {
+            overlapResults.Clear();
+            playerCollider.Overlap(overlapFilter, overlapResults);
+
+            for (int i = 0; i < overlapResults.Count; i++)
+            {
+                CollectInteractablesFromCollider(overlapResults[i]);
+            }
+            overlapResults.Clear();
+        }
     }
 
     private void CleanupNearbyInteractables()
@@ -140,48 +188,68 @@ public class PlayerInteraction : MonoBehaviour
         for (int i = nearbyInteractables.Count - 1; i >= 0; i--)
         {
             IInteractable item = nearbyInteractables[i];
-            if (item == null || (item is Object uObj && uObj == null))
+            if (item == null || (item is UnityEngine.Object uObj && uObj == null))
             {
                 nearbyInteractables.RemoveAt(i);
                 continue;
             }
-            if (item is Behaviour beh && (!beh.enabled || !beh.gameObject.activeInHierarchy))
+            if (item is Behaviour beh)
             {
-                nearbyInteractables.RemoveAt(i);
+                if (!beh.gameObject.activeInHierarchy)
+                {
+                    nearbyInteractables.RemoveAt(i);
+                }
+                else if (!beh.enabled)
+                {
+                    if (beh is SignboardInteractable)
+                    {
+                        beh.enabled = true;
+                    }
+                    else
+                    {
+                        nearbyInteractables.RemoveAt(i);
+                    }
+                }
             }
         }
     }
 
     private IInteractable ResolveBestInteractable(out string promptMessage)
     {
-        for (int i = nearbyInteractables.Count - 1; i >= 0; i--)
+        IInteractable best = null;
+        string bestPrompt = null;
+        float bestSqrDist = float.MaxValue;
+        Vector2 playerPos = transform.position;
+
+        for (int i = 0; i < nearbyInteractables.Count; i++)
         {
             IInteractable item = nearbyInteractables[i];
             string msg = item.GetPromptText();
-            if (!string.IsNullOrEmpty(msg))
+            if (string.IsNullOrEmpty(msg)) continue;
+
+            float sqrDist = float.MaxValue * 0.5f;
+            if (item is Component comp && comp != null)
             {
-                promptMessage = msg;
-                return item;
+                Vector2 itemPos = comp.transform.position;
+                sqrDist = (itemPos - playerPos).sqrMagnitude;
+            }
+
+            if (best == null || sqrDist < bestSqrDist)
+            {
+                best = item;
+                bestPrompt = msg;
+                bestSqrDist = sqrDist;
             }
         }
 
-        promptMessage = null;
-        return null;
+        promptMessage = bestPrompt;
+        return best;
     }
 
     private void RegisterTriggerInteractable(Collider2D collision)
     {
-        if (!triggerInteractableCache.TryGetValue(collision, out IInteractable interactable))
-        {
-            interactable = collision.GetComponent<IInteractable>() ?? collision.GetComponentInParent<IInteractable>();
-            triggerInteractableCache[collision] = interactable;
-        }
-        if (interactable == null) return;
-
-        if (!nearbyInteractables.Contains(interactable))
-        {
-            nearbyInteractables.Add(interactable);
-        }
+        CollectInteractablesFromCollider(collision);
+        CleanupNearbyInteractables();
 
         if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
         {
@@ -189,35 +257,48 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        string msg = interactable.GetPromptText();
-        if (string.IsNullOrEmpty(msg)) return;
-        currentInteractable = interactable;
-        ShowPrompt(msg);
+        currentInteractable = ResolveBestInteractable(out string msg);
+        if (currentInteractable != null)
+        {
+            ShowPrompt(msg);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision != null && collision != playerCollider)
+        {
+            activeTriggerColliders.Add(collision);
+        }
         RegisterTriggerInteractable(collision);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        if (collision != null && collision != playerCollider)
+        {
+            activeTriggerColliders.Add(collision);
+        }
         RegisterTriggerInteractable(collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!triggerInteractableCache.TryGetValue(collision, out IInteractable interactable))
+        if (collision == null) return;
+        activeTriggerColliders.Remove(collision);
+
+        interactableLookupBuffer.Clear();
+        collision.GetComponents(interactableLookupBuffer);
+        if (interactableLookupBuffer.Count == 0)
         {
-            interactable = collision.GetComponent<IInteractable>() ?? collision.GetComponentInParent<IInteractable>();
-        }
-        else
-        {
-            triggerInteractableCache.Remove(collision);
+            collision.GetComponentsInParent(false, interactableLookupBuffer);
         }
 
-        if (interactable != null)
+        for (int i = 0; i < interactableLookupBuffer.Count; i++)
         {
+            IInteractable interactable = interactableLookupBuffer[i];
+            if (interactable == null) continue;
+
             nearbyInteractables.Remove(interactable);
             if (interactable == currentInteractable)
             {
@@ -225,10 +306,12 @@ public class PlayerInteraction : MonoBehaviour
                 HidePrompt();
             }
         }
+        interactableLookupBuffer.Clear();
     }
 
     private void ShowPrompt(string message)
     {
+        if (promptPanel == null) EnsurePromptPanelReferences();
         if (promptPanel != null && !promptPanel.activeSelf) promptPanel.SetActive(true);
         if (promptText != null && message != lastPromptMessage)
         {
