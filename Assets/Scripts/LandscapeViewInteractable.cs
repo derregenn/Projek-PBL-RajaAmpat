@@ -20,6 +20,21 @@ public class LandscapeViewInteractable : MonoBehaviour
 
     private bool isViewing = false;
     private bool isPlayerInArea = false;
+    private bool isShowingPrompt = false;
+
+    private void SetPromptVisible(bool visible)
+    {
+        if (visible)
+        {
+            if (uiPrompt != null && !uiPrompt.activeSelf) uiPrompt.SetActive(true);
+            isShowingPrompt = uiPrompt != null;
+        }
+        else
+        {
+            if (isShowingPrompt && uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+            isShowingPrompt = false;
+        }
+    }
 
     private void Update()
     {
@@ -27,20 +42,25 @@ public class LandscapeViewInteractable : MonoBehaviour
         {
             if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
             {
-                if (uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+                SetPromptVisible(false);
                 return;
             }
+            SetPromptVisible(true);
             if (Input.GetKeyDown(KeyCode.F))
             {
                 StartCoroutine(RoutineViewing());
             }
+        }
+        else if (isShowingPrompt)
+        {
+            SetPromptVisible(false);
         }
     }
 
     private IEnumerator RoutineViewing()
     {
         isViewing = true;
-        if (uiPrompt != null) uiPrompt.SetActive(false);
+        SetPromptVisible(false);
 
         // 1. Pan / Zoom ke Tebing Tambang
         if (camViewTambang != null) camViewTambang.Priority.Value = activePriority;
@@ -64,7 +84,10 @@ public class LandscapeViewInteractable : MonoBehaviour
         OnViewEnded?.Invoke();
 
         isViewing = false;
-        if (isPlayerInArea && uiPrompt != null) uiPrompt.SetActive(true);
+        if (isPlayerInArea && !InteractionInputLock.IsAnyModalBlockingWorldInteract && !InteractionInputLock.IsSignboardOpen)
+        {
+            SetPromptVisible(true);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -72,7 +95,18 @@ public class LandscapeViewInteractable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInArea = true;
-            if (uiPrompt != null && !isViewing) uiPrompt.SetActive(true);
+            if (!isViewing && !InteractionInputLock.IsAnyModalBlockingWorldInteract && !InteractionInputLock.IsSignboardOpen)
+            {
+                SetPromptVisible(true);
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInArea = true;
         }
     }
 
@@ -81,7 +115,13 @@ public class LandscapeViewInteractable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInArea = false;
-            if (uiPrompt != null) uiPrompt.SetActive(false);
+            SetPromptVisible(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        isPlayerInArea = false;
+        SetPromptVisible(false);
     }
 }

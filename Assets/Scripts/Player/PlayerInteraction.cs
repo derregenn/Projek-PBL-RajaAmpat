@@ -15,6 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     private readonly List<IInteractable> nearbyInteractables = new List<IInteractable>();
     private IInteractable currentInteractable;
     private string lastPromptMessage;
+    private bool isShowingPrompt = false;
     private readonly HashSet<Collider2D> activeTriggerColliders = new HashSet<Collider2D>();
     private readonly List<Collider2D> staleCollidersBuffer = new List<Collider2D>(8);
     private readonly List<IInteractable> interactableLookupBuffer = new List<IInteractable>(4);
@@ -71,7 +72,7 @@ public class PlayerInteraction : MonoBehaviour
         SignboardInteractable openSignboard = SignboardInteractable.ActiveOpenSignboard;
         if (openSignboard != null)
         {
-            HidePrompt();
+            HidePrompt(true);
             if (!InteractionInputLock.IsAnyModalBlockingWorldInteract
                 && !InteractionInputLock.WasInteractKeyConsumedThisFrame
                 && Input.GetKeyDown(interactKey))
@@ -84,7 +85,7 @@ public class PlayerInteraction : MonoBehaviour
         // Priority 2: Blokir interaksi dunia & sembunyikan prompt saat modal lain aktif (Dialog NPC, Trivia, Infografis, Map)
         if (InteractionInputLock.IsAnyModalBlockingWorldInteract)
         {
-            HidePrompt();
+            HidePrompt(true);
             return;
         }
 
@@ -253,7 +254,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
         {
-            HidePrompt();
+            HidePrompt(true);
             return;
         }
 
@@ -312,7 +313,11 @@ public class PlayerInteraction : MonoBehaviour
     private void ShowPrompt(string message)
     {
         if (promptPanel == null) EnsurePromptPanelReferences();
-        if (promptPanel != null && !promptPanel.activeSelf) promptPanel.SetActive(true);
+        if (promptPanel != null)
+        {
+            if (!promptPanel.activeSelf) promptPanel.SetActive(true);
+            isShowingPrompt = true;
+        }
         if (promptText != null && message != lastPromptMessage)
         {
             promptText.text = "[E] " + message;
@@ -320,9 +325,13 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void HidePrompt()
+    private void HidePrompt(bool forceHide = false)
     {
         lastPromptMessage = null;
-        if (promptPanel != null && promptPanel.activeSelf) promptPanel.SetActive(false);
+        if (promptPanel != null && (isShowingPrompt || forceHide) && promptPanel.activeSelf)
+        {
+            promptPanel.SetActive(false);
+        }
+        isShowingPrompt = false;
     }
 }
