@@ -127,6 +127,7 @@ public class BirdInteractable : MonoBehaviour
 
         currentQTEProgress = 0;
         canTakePhoto = false;
+        isPhotoDone = false;
         if (promptFotoUI != null) promptFotoUI.SetActive(false);
         if (birdAnimation != null) birdAnimation.SetActive(true);
         TampilkanAnimasiBurungDenganKamera();
