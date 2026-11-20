@@ -177,6 +177,10 @@ public class GagFaderManager : MonoBehaviour
         PlayerPrefs.SetInt("Visited_10_Gag", 1);
         PlayerPrefs.SetInt("GameCompleted", 1);
         PlayerPrefs.Save();
+
+        // Aktifkan mode Free Roam setelah game tamat
+        // (pemain bisa kembali lewat tombol Free Roam di Main Menu)
+        // GlobalTrashManager TIDAK diaktifkan otomatis — pemain harus memilihnya dari Main Menu
         Debug.Log("<color=gold>[GagFaderManager] Game Selesai! Selamat Anda Telah Menamatkan Game!</color>");
     }
 

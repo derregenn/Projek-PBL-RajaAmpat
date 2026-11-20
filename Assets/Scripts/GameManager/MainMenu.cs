@@ -42,6 +42,12 @@ public class MainMenu : MonoBehaviour
             QuestController.Instance.ActiveQuests.Clear();
         }
 
+        // Reset sistem sampah global
+        if (GlobalTrashManager.Instance != null)
+        {
+            GlobalTrashManager.Instance.ResetAll();
+        }
+
         PlayerPrefs.SetString("SavedScene", "02_CutsceneAirstrip");
         PlayerPrefs.Save();
 
