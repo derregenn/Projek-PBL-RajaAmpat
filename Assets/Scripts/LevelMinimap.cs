@@ -51,7 +51,10 @@ public class LevelMinimap : MonoBehaviour
         float iconHalfWidth = playerIcon.rect.width * Mathf.Abs(playerIcon.localScale.x) * 0.5f;
         float iconOffset = Mathf.Min(iconHalfWidth, trackWidth * 0.5f);
         float playerX = Mathf.Lerp(iconOffset, trackWidth - iconOffset, playerProgress);
-        playerIcon.anchoredPosition = new Vector2(playerX, playerIcon.anchoredPosition.y);
+        if (Mathf.Abs(playerIcon.anchoredPosition.x - playerX) > 0.01f)
+        {
+            playerIcon.anchoredPosition = new Vector2(playerX, playerIcon.anchoredPosition.y);
+        }
 
         CheckPassedQuests();
     }

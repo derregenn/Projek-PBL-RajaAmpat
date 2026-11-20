@@ -24,6 +24,9 @@ public class QuestSlider : MonoBehaviour
     [SerializeField] private AudioClip slideInSfx;
     [SerializeField] private AudioClip slideOutSfx;
 
+    [Header("Normalisasi Skala & Posisi")]
+    [SerializeField] private bool normalizeTrackerLayout = true;
+
     private Coroutine slideCoroutine;
 
     private void Awake()
@@ -31,10 +34,40 @@ public class QuestSlider : MonoBehaviour
         if (panelRect == null) panelRect = GetComponent<RectTransform>();
         if (sfxAudioSource == null) sfxAudioSource = GetComponent<AudioSource>();
 
+        EnsureStandardTrackerLayout();
+
         if (panelRect != null)
         {
             // Pastikan saat game mulai, panel berada di posisi tersembunyi
             panelRect.anchoredPosition = hiddenPosition;
+        }
+    }
+
+    public void EnsureStandardTrackerLayout()
+    {
+        if (!normalizeTrackerLayout || panelRect == null) return;
+
+        panelRect.anchorMin = new Vector2(0f, 1f);
+        panelRect.anchorMax = new Vector2(0f, 1f);
+        panelRect.pivot = new Vector2(0.5f, 1f);
+        panelRect.sizeDelta = new Vector2(615f, 150f);
+
+        UnityEngine.UI.CanvasScaler scaler = GetComponentInParent<UnityEngine.UI.CanvasScaler>();
+        bool isLowResCanvas = scaler != null &&
+                              scaler.uiScaleMode == UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize &&
+                              scaler.referenceResolution.x <= 1000f;
+
+        if (isLowResCanvas)
+        {
+            panelRect.localScale = new Vector3(0.3125f, 0.3125f, 0.3125f);
+            visiblePosition = new Vector2(140f, -18.75f);
+            hiddenPosition = new Vector2(-220f, -18.75f);
+        }
+        else
+        {
+            panelRect.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            visiblePosition = new Vector2(336f, -45f);
+            hiddenPosition = new Vector2(-500f, -45f);
         }
     }
 

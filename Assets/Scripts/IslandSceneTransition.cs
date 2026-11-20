@@ -35,6 +35,13 @@ public class IslandSceneTransition : MonoBehaviour
                 canvasGroup = fadeBlackScreen.GetComponentInParent<CanvasGroup>();
             }
 
+            ScreenFader fader = fadeBlackScreen.GetComponent<ScreenFader>();
+            if (fader == null) fader = fadeBlackScreen.GetComponentInParent<ScreenFader>();
+            if (fader != null && fader.enabled && fader.FadeInOnStart)
+            {
+                return;
+            }
+
             SetFadeAlpha(0f);
         }
     }

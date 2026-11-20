@@ -16,10 +16,51 @@ public class SeaSceneTransition : MonoBehaviour
     public Image fadeBlackScreen; // Objek Image Hitam
     public AudioClip seaTransitionSfx;
 
+    [Header("Quest Progression Gate (Opsional)")]
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredActiveOrCompletedQuestID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
+
     private bool isPlayerInRange = false;
     private bool isTransitioning = false;
+    private bool isShowingWarning = false;
     private SeaToLandTeleporter returnTeleporter;
     public UnityEvent onInteractComplete;
+
+    private void SetWarningVisible(bool visible)
+    {
+        if (visible)
+        {
+            if (warningUI != null && !warningUI.activeSelf) warningUI.SetActive(true);
+            isShowingWarning = warningUI != null;
+        }
+        else
+        {
+            if (isShowingWarning && warningUI != null && warningUI.activeSelf) warningUI.SetActive(false);
+            isShowingWarning = false;
+        }
+    }
+
+    private static bool IsPlayerCollider(Collider2D collision)
+    {
+        return collision.CompareTag("Player")
+            || (collision.transform.root != null && collision.transform.root.CompareTag("Player"))
+            || collision.gameObject.name.ToLower().Contains("player");
+    }
+
+    private void ResolveReturnTeleporter(Collider2D collision)
+    {
+        if (returnTeleporter != null) return;
+        returnTeleporter = GetComponent<SeaToLandTeleporter>();
+        if (returnTeleporter == null)
+        {
+            returnTeleporter = GetComponentInParent<SeaToLandTeleporter>();
+        }
+        if (returnTeleporter == null && collision != null)
+        {
+            returnTeleporter = collision.GetComponent<SeaToLandTeleporter>();
+        }
+    }
 
     private void Start()
     {
@@ -37,27 +78,43 @@ public class SeaSceneTransition : MonoBehaviour
         {
             warningUI.SetActive(false);
         }
+        isShowingWarning = false;
     }
 
     private void Update()
     {
-        // Cek jika pemain berada di area, belum transisi, dan menekan tombol E
-        if (isPlayerInRange && !isTransitioning && Input.GetKeyDown(interactKey))
+        // Cek jika pemain berada di area, belum transisi, memenuhi syarat quest, dan tidak ada modal aktif
+        if (isPlayerInRange && !isTransitioning)
         {
-            if (warningUI != null)
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
             {
-                warningUI.SetActive(false);
+                SetWarningVisible(false);
+                return;
             }
 
-            Debug.Log($"[SeaSceneTransition] Player menekan {interactKey}. Transisi ke: {targetSceneName}");
-            
-            // Persiapkan exit point dan stage pada teleporter tanpa memanggil LoadScene ganda
-            if (returnTeleporter != null)
-            {
-                returnTeleporter.PrepareReturn();
-            }
+            SetWarningVisible(true);
 
-            StartCoroutine(FadeAndLoadScene());
+            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(interactKey))
+            {
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
+                SetWarningVisible(false);
+
+                Debug.Log($"[SeaSceneTransition] Player menekan {interactKey}. Transisi ke: {targetSceneName}");
+
+                // Persiapkan exit point dan stage pada teleporter tanpa memanggil LoadScene ganda
+                if (returnTeleporter != null)
+                {
+                    returnTeleporter.PrepareReturn();
+                }
+
+                StartCoroutine(FadeAndLoadScene());
+            }
+        }
+        else if (isShowingWarning)
+        {
+            SetWarningVisible(false);
         }
     }
 
@@ -65,47 +122,49 @@ public class SeaSceneTransition : MonoBehaviour
     {
         if (isTransitioning) return;
 
-        bool isPlayer = collision.CompareTag("Player") ||
-                        (collision.transform.root != null && collision.transform.root.CompareTag("Player")) ||
-                        collision.gameObject.name.ToLower().Contains("player");
-
-        if (isPlayer)
+        if (IsPlayerCollider(collision))
         {
             isPlayerInRange = true;
+            ResolveReturnTeleporter(collision);
 
-            returnTeleporter = GetComponent<SeaToLandTeleporter>();
-            if (returnTeleporter == null)
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, requiredActiveOrCompletedQuestID, requiredCompletedQuestID))
             {
-                returnTeleporter = GetComponentInParent<SeaToLandTeleporter>();
-            }
-            if (returnTeleporter == null)
-            {
-                returnTeleporter = collision.GetComponent<SeaToLandTeleporter>();
+                SetWarningVisible(false);
+                return;
             }
 
-            if (warningUI != null)
-            {
-                warningUI.SetActive(true);
-            }
+            SetWarningVisible(true);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (isTransitioning) return;
+
+        if (IsPlayerCollider(collision))
+        {
+            isPlayerInRange = true;
+            ResolveReturnTeleporter(collision);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        bool isPlayer = collision.CompareTag("Player") ||
-                        (collision.transform.root != null && collision.transform.root.CompareTag("Player")) ||
-                        collision.gameObject.name.ToLower().Contains("player");
-
-        if (isPlayer)
+        if (IsPlayerCollider(collision))
         {
             isPlayerInRange = false;
             returnTeleporter = null;
-
-            if (warningUI != null)
-            {
-                warningUI.SetActive(false);
-            }
+            SetWarningVisible(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        isPlayerInRange = false;
+        returnTeleporter = null;
+        SetWarningVisible(false);
     }
 
     private IEnumerator FadeAndLoadScene()

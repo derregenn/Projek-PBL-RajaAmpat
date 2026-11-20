@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     // Dictionary pencarian cepat (Key: Jenis Tanah -> Value: Audio Clip)
     private Dictionary<SurfaceKind, AudioClip> surfaceAudioDict = new Dictionary<SurfaceKind, AudioClip>();
     private AudioClip currentRunClip;
+    private Collider2D lastSurfaceCollider;
     private bool isCrouching = false;
     private bool isCrouchingGagVariant = false;
 
@@ -77,6 +78,33 @@ public class Player : MonoBehaviour
             if (animator.HasState(0, Animator.StringToHash("Player_Idle")))
             {
                 animator.Play("Player_Idle");
+            }
+        }
+
+        HideInactivePlayerDialogueBoxes();
+    }
+
+    private void HideInactivePlayerDialogueBoxes()
+    {
+        if (InteractionInputLock.IsDialogueActive) return;
+
+        Canvas[] canvases = GetComponentsInChildren<Canvas>(true);
+        for (int i = 0; i < canvases.Length; i++)
+        {
+            Canvas canvas = canvases[i];
+            if (canvas == null) continue;
+            if (canvas.gameObject.name.IndexOf("DialogueCanvas", System.StringComparison.OrdinalIgnoreCase) < 0) continue;
+
+            Transform[] children = canvas.GetComponentsInChildren<Transform>(true);
+            for (int j = 0; j < children.Length; j++)
+            {
+                Transform child = children[j];
+                if (child == null) continue;
+                string childName = child.name;
+                if (childName == "DialogueBox" || childName == "NextButton" || childName == "Btn_Next" || childName == "NextPrompt")
+                {
+                    child.gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -171,7 +199,17 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (other == lastSurfaceCollider) return;
+        lastSurfaceCollider = other;
         CheckSurface(other.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other == lastSurfaceCollider)
+        {
+            lastSurfaceCollider = null;
+        }
     }
 
     private void CheckSurface(GameObject obj)

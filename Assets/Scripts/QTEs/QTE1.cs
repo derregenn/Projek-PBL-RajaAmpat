@@ -29,6 +29,12 @@ public class QTE1 : MonoBehaviour
     [SerializeField] private Color successColor = Color.cyan;
     [SerializeField] private float flashDuration = 0.15f;
 
+    [Header("Audio SFX")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip successSfx;
+    [SerializeField] private AudioClip failSfx;
+    [SerializeField, Range(0f, 1f)] private float sfxVolume = 1f;
+
     [Header("Events")]
     public UnityEvent onSuccess; // Dipanggil 1x HANYA SETELAH target pencetan terpenuhi semua
     public UnityEvent onFail;    // Dipanggil kalau waktu habis di salah satu pencetan
@@ -127,7 +133,8 @@ public class QTE1 : MonoBehaviour
         {
             isCompleted = true;
             Debug.Log($"[QTE1] Sukses Penuh! Terpencet {currentPressCount}/{totalPressesRequired} kali.");
-            
+
+            PlayQteSfx(successSfx);
             onSuccess?.Invoke(); // Memanggil FaderTrigger.PlaySuccessSequence()
             gameObject.SetActive(false);
         }
@@ -161,7 +168,20 @@ public class QTE1 : MonoBehaviour
         currentPressCount = 0;
         Debug.Log("[QTE1] Gagal (Waktu Habis)!");
 
+        PlayQteSfx(failSfx);
         onFail?.Invoke(); // Memanggil FaderTrigger.PlayFailSequence()
+    }
+
+    private void PlayQteSfx(AudioClip clip)
+    {
+        if (clip == null) return;
+        GameObject tempGo = new GameObject("QTE1_OneShotSFX");
+        AudioSource src = tempGo.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.volume = sfxVolume;
+        src.spatialBlend = 0f;
+        src.Play();
+        Destroy(tempGo, clip.length + 0.1f);
     }
 
     private IEnumerator FlashSuccessRoutine()

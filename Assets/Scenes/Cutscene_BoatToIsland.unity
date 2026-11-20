@@ -651,9 +651,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 2
-  manualWidth: 2
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 0
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1001 &154263647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -801,10 +805,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011ccf82e94beee4fb54fe48d985bd74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  manualWidth: 4
-  targetCamera: {fileID: 0}
+  scrollSpeed: 1
+  manualWidth: 0
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &252886753
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,9 +862,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 2
-  manualWidth: 2
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 0
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &288438328 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3551916076822611479, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
@@ -917,7 +929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -995,6 +1007,18 @@ MonoBehaviour:
   toggleKey: 113
   fadeDuration: 0.2
   worldMapCanvasGroup: {fileID: 3210961641938993180}
+  normalizeMapPanelToWaisaiLayout: 1
+  standardMapPanelScale: {x: 0.83738, y: 0.83738, z: 0.83738}
+  standardIslandsScaleOn800x600: 0.7
+  autoBindMissingIslandButtons: 1
+  currentLocationMarker: {fileID: 0}
+  currentLocationText: {fileID: 0}
+  currentLocationLabel: KAMU DI SINI
+  markerOffset: {x: 0, y: 52}
+  markerSize: {x: 154, y: 36}
+  markerBackgroundColor: {r: 0.86, g: 0.22, b: 0.16, a: 0.96}
+  markerTextColor: {r: 1, g: 1, b: 1, a: 1}
+  animateLocationMarker: 1
 --- !u!114 &293378720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1011,6 +1035,7 @@ MonoBehaviour:
   hudQuestTitle: {fileID: 0}
   hudQuestDescription: {fileID: 0}
   objectiveListText: {fileID: 0}
+  normalizeTrackerTextLayout: 1
   currentActiveQuest: {fileID: 0}
 --- !u!1 &299534929
 GameObject:
@@ -1318,6 +1343,97 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
   m_PrefabInstance: {fileID: 3210961641938993179}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &443085873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443085874}
+  - component: {fileID: 443085875}
+  m_Layer: 0
+  m_Name: Sky Background_Boat Trivia_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &443085874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443085873}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.22, y: -4.46, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1056791527}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &443085875
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443085873}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: b384abbebae513447a6238171183d4b2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 25.3, y: 2.9648438}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1001 &481757277
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1367,18 +1483,6 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 546679791449983818, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 546679791449983818, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 546679791449983818, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.20355
-      objectReference: {fileID: 0}
-    - target: {fileID: 546679791449983818, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1412,7 +1516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 546679791449983818, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.37189
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 546679791449983818, guid: 7fce59567506eb742ad448a8e151aad8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1929,7 +2033,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5116727131349142916, guid: f0c33d9fca472444f9e87c62e4cc2eec, type: 3}
+  m_Sprite: {fileID: 4432567049115313064, guid: d76f80900484cc846b1f6c2aa290d4cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1950,30 +2054,6 @@ PrefabInstance:
     - target: {fileID: 1404806288926594878, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Name
       value: CameraBounds
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 21.53
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -6.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2002,6 +2082,82 @@ PrefabInstance:
     - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: -62.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: -12.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: 62.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
+      value: -12.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 62.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: 12.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: -62.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: 12.21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2365,10 +2521,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011ccf82e94beee4fb54fe48d985bd74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  manualWidth: 4
-  targetCamera: {fileID: 0}
+  scrollSpeed: 1
+  manualWidth: 0
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1001 &1008870063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2387,7 +2547,7 @@ PrefabInstance:
       objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: npcLensSize
-      value: 4
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: InteractPrompt
@@ -2415,7 +2575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2515850637544761682, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2515850637544761682, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2446,8 +2606,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2714829142977015304, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.060493015
+      objectReference: {fileID: 0}
+    - target: {fileID: 2714829142977015304, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.060493015
+      objectReference: {fileID: 0}
+    - target: {fileID: 2714829142977015304, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 12.17
+      value: 4.6453733
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2459,7 +2627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 276
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2467,11 +2635,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 160
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 3127640589397781713, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -46.345
+      value: -38.345
       objectReference: {fileID: 0}
     - target: {fileID: 3549110012235057317, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       propertyPath: quizQuestions.Array.size
@@ -2603,6 +2771,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8257977044528296014, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008870068}
     - targetCorrespondingSourceObject: {fileID: 3979835675472087360, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1008870066}
@@ -2618,7 +2789,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 127073382651893474, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
   m_PrefabInstance: {fileID: 1008870063}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1008870067}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
@@ -2651,6 +2822,108 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+--- !u!1 &1008870067 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8257977044528296014, guid: 083fb6e7ad59e8f4683078930b67dd15, type: 3}
+  m_PrefabInstance: {fileID: 1008870063}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1008870068
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008870067}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1008870074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2663,7 +2936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 2
+  m_HorizontalFit: 0
   m_VerticalFit: 2
 --- !u!111 &1008870075
 Animation:
@@ -2867,12 +3140,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1184007092}
+  - {fileID: 443085874}
   - {fileID: 299534930}
   m_Father: {fileID: 326412525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 50.5, y: 7.49}
+  m_AnchoredPosition: {x: 0, y: 7.49}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1056791528
@@ -2888,9 +3162,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &1067226685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3233,7 +3511,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2672119573203339491, guid: 57db8959ad8b0004aa0768dad337191d, type: 3}
+  m_Sprite: {fileID: 4432567049115313064, guid: d76f80900484cc846b1f6c2aa290d4cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3293,10 +3571,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011ccf82e94beee4fb54fe48d985bd74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  manualWidth: 4
-  targetCamera: {fileID: 0}
+  scrollSpeed: 1
+  manualWidth: 0
+  targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &1198570710
 GameObject:
   m_ObjectHideFlags: 0
@@ -3434,12 +3716,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 777770443}
+  - {fileID: 1513334504}
   - {fileID: 1080677989}
   m_Father: {fileID: 326412525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 50.5, y: 7.49}
+  m_AnchoredPosition: {x: 50.5, y: 6.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1286824542
@@ -3455,9 +3738,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   scrollSpeed: 1
-  manualWidth: 4
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
   loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1 &1296444819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,10 +3887,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011ccf82e94beee4fb54fe48d985bd74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  manualWidth: 4
+  scrollSpeed: 1
+  manualWidth: 0
   targetCamera: {fileID: 1575786837}
-  loopAtCameraBoundary: 0
+  loopAtCameraBoundary: 1
+  isSeamlessLoop: 1
+  seamOverlap: 0.02
+  extraPadding: 0.5
+  randomYRange: 0.3
 --- !u!1001 &1399827310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3740,7 +4031,7 @@ MonoBehaviour:
   audioSource: {fileID: 1399827313}
   startQuizSFX: {fileID: 8300000, guid: 60c07e7e94f39a34db0b9a6a77bc8548, type: 3}
   buttonHoverSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
-  correctAnswerSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
+  correctAnswerSFX: {fileID: 8300000, guid: 638382076d23c1b44b66fc984534f999, type: 3}
   wrongAnswerSFX: {fileID: 8300000, guid: d2f2246e6cab3c24faede3fbdf6ec116, type: 3}
   sfxVolume: 1
   enableButtonHover: 1
@@ -4221,6 +4512,97 @@ SpriteRenderer:
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 16.24, y: 2.66}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!1 &1513334503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1513334504}
+  - component: {fileID: 1513334505}
+  m_Layer: 0
+  m_Name: Sky Background_Boat Trivia_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1513334504
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513334503}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.69, y: -2.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1286824541}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1513334505
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513334503}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: b06f4c2a93e605245b91fb007d026e4b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 52.91483, y: 10.799999}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -4863,6 +5245,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoatTransitionController
   dialogueSystem: {fileID: 1008870064}
   triviaSystem: {fileID: 1399827312}
+  boatCameraLensSize: 3.6
+  boatCameraFollowOffset: {x: 0, y: 1.4, z: -10}
   environmentParent: {fileID: 326412525}
   islandData:
   - islandName: 03_Pianemo
@@ -4893,7 +5277,7 @@ MonoBehaviour:
       rusak tertimpa dahan
     - Kalau menemui tangga yang bolong, kita harus ekstra hati-hati manjat tebing
       batu di sampingnya
-    - Dangan lupa jaga kebersihan!
+    - Jangan lupa jaga kebersihan!
     - Karena ancaman terbesar Piaynemo adalah sampah plastik!
     - Sampah yang tersangkut di tebing bukit bisa tertiup angin dan jatuh ke air,
       mengancam kehidupan penyu dan ikan di bawahnya
@@ -4907,6 +5291,9 @@ MonoBehaviour:
       - '"Sambungan" atau "Ujung Tombak" '
       - '"Gugusan Batu" atau "Puncak Hijau" '
       correctAnswerIndex: 1
+      correctFeedback: Betul! Lanjut pertanyaan selanjutnya
+      wrongFeedback: Tetot, salah dong. Kata kuncinya merujuk pada posisi wilayahnya.
+        Coba lagi!
     - questionText: Pertanyaan Kedua, Bukit-bukit batu yang menjulang cantik di Piaynemo
         itu sebenarnya terbentuk dari apa?
       options:
@@ -4914,6 +5301,8 @@ MonoBehaviour:
       - Gumpalan tanah pasir murni yang memadat
       - Endapan fosil terumbu karang dan gamping yang terangkat jutaan tahun lalu
       correctAnswerIndex: 2
+      correctFeedback: Tepat sekali! Ke pertanyaan terakhir
+      wrongFeedback: Kurang tepat, ayo coba lagi!
     - questionText: Pertanyaan Ketiga, Sampah plastik yang tersangkut di tebing bukit
         Piaynemo dianggap sebagai ancaman ekologis yang sangat serius. Mengapa begitu?
       options:
@@ -4924,6 +5313,8 @@ MonoBehaviour:
       - Karena sampah plastik memantulkan sinar matahari yang memicu peningkatan
         suhu mikro dan mengeringkan vegetasi tebing
       correctAnswerIndex: 0
+      correctFeedback: Luar biasa! Pemahaman mu memang hebat
+      wrongFeedback: Jawabanmu memang masuk akal, tapi hampir benar. Coba lagi!
   - islandName: 04_Misool
     islandBackgroundPrefab: {fileID: 1286824540}
     npcDialogueLines:
@@ -4952,6 +5343,9 @@ MonoBehaviour:
       - Gundukan pasir pantai yang selalu pindah terbawa arah angin
       - Seluruh bukitnya tertutup oleh rumput hijau tanpa ada struktur batu keras
       correctAnswerIndex: 0
+      correctFeedback: Tepat sekali! Lanjut ke pertanyaan selanjutnya.
+      wrongFeedback: Tetot! Misool itu ikonik dengan dinding batunya yang tergerus
+        air. Coba lagi!
     - questionText: Pertanyaan Kedua, Di pedalaman Misool terdapat Danau Lenmakana.
         Apa keunikan fenomena alam yang ada di danau tersebut?
       options:
@@ -4959,6 +5353,9 @@ MonoBehaviour:
       - Airnya mengandung garam sangat tinggi sehingga semua benda bisa mengapung
       - Air danau bisa berganti warna menjadi merah setiap kali pasang surut
       correctAnswerIndex: 0
+      correctFeedback: Mantap! Ke pertanyaan terakhir.
+      wrongFeedback: Kurang tepat! Danau ini mendunia karena satwa unik di dalamnya.
+        Coba tebak lagi.
     - questionText: 'Pertanyaan Ketiga, Selain sampah plastik dan jaring nelayan,
         apa ancaman biologis alami yang bisa merusak ekosistem karang di Misool jika
         populasinya tidak terkendali? '
@@ -4968,6 +5365,9 @@ MonoBehaviour:
         karang
       - 'Pertumbuhan berlebih rumput laut yang menutup masuknya sinar matahari '
       correctAnswerIndex: 0
+      correctFeedback: Luar biasa! Pemahamanmu soal ekosistem laut memang hebat.
+      wrongFeedback: Hampir benar. Pari Manta dan rumput laut itu alami, ancaman
+        sebenarnya lebih merusak dari itu. Coba lagi!
   - islandName: 05_Arborek
     islandBackgroundPrefab: {fileID: 991987988}
     npcDialogueLines:
@@ -4994,6 +5394,10 @@ MonoBehaviour:
       - '"Pasir Putih", karena pantainya yang mengelilingi pulau'
       - '"Tepi Laut", karena lokasinya di perairan dangkal'
       correctAnswerIndex: 0
+      correctFeedback: Tepat sekali! Hebatnya, warga lokal berhasil menyulap pulau
+        berduri ini jadi desa wisata seindah sekarang.
+      wrongFeedback: Tetot, kurang tepat! Dulu pulau ini penuh dengan semak berduri
+        loh. Ayo coba tebak lagi!
     - questionText: Pertanyaan kedua, apa sih rahasia utama yang bikin Desa Arborek
         ini jadi salah satu desa paling bersih di Raja Ampat?
       options:
@@ -5002,6 +5406,10 @@ MonoBehaviour:
         kecil
       - Karena turis dilarang keras membawa barang apapun ke pulau
       correctAnswerIndex: 1
+      correctFeedback: Mantap! Kesadaran dan gotong royong warga lah yang jadi kunci
+        utamanya.
+      wrongFeedback: Salah dong! Kuncinya bukan di orang luar atau aturan turis,
+        tapi dari warganya sendiri. Coba pilih lagi!
     - questionText: Pertanyaan terakhir, Kalau kamu lagi jalan di pantai Arborek
         dan lihat sampah plastik kecil hanyut terbawa ombak dari laut, apa yang harus
         kamu lakukan?
@@ -5010,6 +5418,9 @@ MonoBehaviour:
       - Langsung pungut dan buang ke tempat sampah terdekat untuk bantu jaga desa
       - Tendang kembali ke laut supaya pemandangan pantai tetap bersih
       correctAnswerIndex: 1
+      correctFeedback: Luar biasa! Kamu memang punya kepedulian lingkungan yang tinggi.
+      wrongFeedback: Wah, jangan dicuekin atau malah ditendang balik ke laut dong!
+        Coba pikirkan tindakan yang lebih bijak.
   - islandName: 06_Sawinggrai
     islandBackgroundPrefab: {fileID: 1185722714}
     npcDialogueLines:
@@ -5035,6 +5446,9 @@ MonoBehaviour:
       - 'Chelonia mydas  '
       - 'Acanthaster planci '
       correctAnswerIndex: 0
+      correctFeedback: Tepat sekali! Lanjut ke pertanyaan selanjutnya.
+      wrongFeedback: Wah salah! Kalau Chelonia mydas itu Penyu Hijau, dan Acanthaster
+        planci itu Bulu Seribu. Coba pilih lagi!
     - questionText: 'Pertanyaan Kedua, Ketika kita masuk ke dalam hutan untuk mengamati
         Burung Cenderawasih, aturan paling utama yang wajib kita patuhi adalah? '
       options:
@@ -5044,6 +5458,10 @@ MonoBehaviour:
       - 'Menggunakan pakaian berwarna terang mencolok agar burung mengenali keberadaan
         kita '
       correctAnswerIndex: 1
+      correctFeedback: Luar biasa! Kita memang harus jadi pengamat yang bijak. Ke
+        pertanyaan terakhir.
+      wrongFeedback: Jangan dong! Burung ini sangat gampang kaget sama suara dan
+        cahaya terang. Coba pilih yang lebih aman.
     - questionText: ' Pertanyaan Ketiga, Tiang-tiang kayu rumah panggung warga di
         bawah air ternyata memiliki fungsi ekologis penting, yaitu? '
       options:
@@ -5052,35 +5470,117 @@ MonoBehaviour:
         serta kawanan ikan kecil
       - 'Menyaring arus laut kencang agar pasang surut di pesisir tetap stabil '
       correctAnswerIndex: 1
+      correctFeedback: Mantap 100%! Ini bukti kalau manusia dan laut bisa hidup berdampingan.
+      wrongFeedback: Kurang tepat! Tiang-tiang itu justru jadi tempat hidup favorit
+        biota kecil. Ayo tebak lagi!
   - islandName: 07_Friwen
     islandBackgroundPrefab: {fileID: 182984016}
     npcDialogueLines:
-    - 'Sebentar lagi perahu kita akan bersandar di Desa Friwen '
+    - Destinasi kita berikutnya adalah Pulau Friwen yang sangat tenang.
+    - Daratannya punya pantai rindang yang teduh, pas sekali untuk bersantai.
+    - Tapi di bawah airnya, ada dinding karang vertikal sangat curam bernama Friwen
+      Wall!
+    - Dinding karang itu menjadi jalur arus nutrisi tempat ratusan spesies ikan bermukim.
+    - Di dekat pulau ini juga ada keajaiban geologis bernama Pasir Timbul.
+    - Daratan pasir putih itu hanya muncul di tengah laut saat air sedang surut.
+    - Hati-hati saat melangkah di sana, karena perairannya dangkal dan banyak bibit
+      karang rapuh.
+    - Sebelum turun, ayo kita tes wawasanmu dengan 3 pertanyaan berikut ini!
     islandTriviaQuestions:
-    - questionText: 'Pertanyaan pertama, Apa nama latin dari spesies Burung Cenderawasih
-        Merah yang menjadi kebanggaan alami Pulau Sawinggrai ini? '
+    - questionText: Pertanyaan pertama, Apa yang dimaksud dengan fenomena alam Pasir
+        Timbul yang sangat terkenal di sekitar Pulau Friwen ini?
       options:
-      - Paradisaea rubra
-      - 'Chelonia mydas  '
-      - 'Acanthaster planci '
+      - Tumpukan batu karang mati yang sengaja dikumpulkan oleh warga setempat
+      - Daratan pasir di tengah laut yang hanya muncul ke permukaan saat air laut
+        sedang surut
+      - Pulau buatan yang dibangun khusus untuk area pendaratan perahu wisata
+      correctAnswerIndex: 1
+      correctFeedback: Mantap! Estetik banget kan fenomena ini. Lanjut ke pertanyaan
+        selanjutnya.
+      wrongFeedback: Tetot, kurang tepat! Namanya juga timbul secara alami. Coba
+        lagi ya.
+    - questionText: Pertanyaan Kedua, Apa nama situs konservasi dan patahan dinding
+        karang bawah air yang ikonik di perairan pulau ini?
+      options:
+      - Friwen Wall
+      - Piaynemo Cliff
+      - Wayag Lagoon
       correctAnswerIndex: 0
-    - questionText: 'Pertanyaan Kedua, Ketika kita masuk ke dalam hutan untuk mengamati
-        Burung Cenderawasih, aturan paling utama yang wajib kita patuhi adalah? '
+      correctFeedback: Tepat! Friwen Wall memang surganya para penyelam. Ke pertanyaan
+        terakhir.
+      wrongFeedback: Salah dong! Pianemo dan Wayag itu kan nama pulau yang beda.
+        Ingat lagi nama tempat ini!
+    - questionText: Pertanyaan Ketiga, Waktu berjalan di daratan Pasir Timbul saat
+        air surut, mengapa kita harus berhati-hati dan memperhatikan pijakan kaki?
       options:
-      - 'Memberi makan burung dengan roti manis agar mau mendekat ke tanah '
-      - 'Menjaga ketenangan, tidak berisik, dan mematikan lampu kilat kamera agar
-        burung tidak stres '
-      - 'Menggunakan pakaian berwarna terang mencolok agar burung mengenali keberadaan
-        kita '
+      - Karena pasir timbul bisa tenggelam secara mendadak jika diinjak terlalu keras
+      - Karena di perairan dangkal sekitarnya sering terdapat biota kecil dan bibit
+        karang yang rentan rusak jika terinjak
+      - Karena berjalan di pasir timbul dapat memicu abrasi pantai secara permanen
       correctAnswerIndex: 1
-    - questionText: ' Pertanyaan Ketiga, Tiang-tiang kayu rumah panggung warga di
-        bawah air ternyata memiliki fungsi ekologis penting, yaitu? '
+      correctFeedback: Luar biasa! Kamu benar-benar punya kepedulian ekologis yang
+        mantap.
+      wrongFeedback: Ayo pikir lagi! Pasirnya tidak akan amblas mendadak kok, ada
+        alasan biologis yang lebih penting. Coba pilih lagi!
+  - islandName: 10_Gag
+    islandBackgroundPrefab: {fileID: 1364128970}
+    npcDialogueLines:
+    - "Perahu kita sekarang menuju pulau terakhir di perjalanan ini\u2026 yaitu Pulau
+      Gag."
+    - Pulaunya mungkin tidak populer, tapi ada realita penting yang harus kita pelajari
+      di sini.
+    - Secara geografis, daratan di pulau kecil ini sangat kaya akan mineral nikel.
+    - Aktivitas pembukaan lahan tambang di pulau sekecil ini risikonya sangat tinggi.
+    - Saat hujan turun, tanah laterit merah dari bukit tergerus dan mengalir ke laut
+      pesisir.
+    - Lumpur merah itu mengendap, menghalangi cahaya matahari, dan membuat karang
+      mati tercekik.
+    - Ekowisata sejati berarti kita juga harus mau peduli pada krisis lingkungan
+      yang sedang terjadi.
+    - Sebelum mendarat di pantainya, mari jawab 3 pertanyaan terakhir ini.
+    islandTriviaQuestions:
+    - questionText: Pertanyaan pertama, Mengapa aliran lumpur tanah merah akibat
+        kikisan lahan ini sangat berbahaya bagi terumbu karang di pesisir pantai?
       options:
-      - 'Menghalangi pergerakan hiu agar tidak masuk ke perairan dangkal desa  '
-      - Sebagai tempat perlindungan alami dan rumah bermukim bagi terumbu karang
-        serta kawanan ikan kecil
-      - 'Menyaring arus laut kencang agar pasang surut di pesisir tetap stabil '
+      - Karena lumpur mengendap menutupi karang, menghalangi cahaya matahari, dan
+        membuat jaringan karang mati tercekik
+      - Karena aliran lumpur secara otomatis menaikkan suhu permukaan air laut menjadi
+        sangat mendidih
+      - Karena tanah laterit mengandung zat pewarna yang mengubah pigmen warna alami
+        koral laut
+      correctAnswerIndex: 0
+      correctFeedback: Tepat sekali! Sedimentasi itu ancaman fisik terbesar bagi
+        pernapasan karang. Lanjut ke pertanyaan selanjutnya.
+      wrongFeedback: Kurang tepat! Karang itu butuh matahari. Coba lagi!
+    - questionText: Pertanyaan Kedua, Secara ekologis, mengapa pulau-pulau kecil
+        jauh lebih rentan terhadap dampak perubahan lingkungan dibanding daratan
+        pulau besar?
+      options:
+      - Karena pulau kecil selalu diterjang oleh ombak laut yang jauh lebih tinggi
+      - Karena pulau kecil memiliki daya tampung terbatas, sehingga polusi darat
+        bisa langsung mencemari perairan pesisirnya
+      - Karena tanah di pulau kecil tidak memiliki daya serap air sama sekali saat
+        hujan
       correctAnswerIndex: 1
+      correctFeedback: 100 untukmu! Sedikit saja ada campur tangan di darat, laut
+        di sekelilingnya langsung kena imbas. Ke pertanyaan terakhir.
+      wrongFeedback: Pikirkan lagi soal jaraknya! Jarak aktivitas di darat ke laut
+        di pulau kecil itu dekat banget. Coba pilih yang pas.
+    - questionText: Pertanyaan Ketiga, Sebagai wisatawan, apa sikap ekowisatawan
+        paling bijak yang bisa kita lakukan saat menyaksikan kondisi krisis lingkungan
+        seperti ini?
+      options:
+      - Mengabaikan kondisinya dan pindah mencari tempat wisata lain yang pemandangannya
+        masih bersih
+      - Mendengarkan cerita warga lokal, memahami faktanya, dan ikut menyuarakan
+        pentingnya pelestarian alam secara bijak
+      - Mengambil sampel tanah dan air diam-diam untuk dibawa pulang sebagai kenang-kenangan
+        liburan
+      correctAnswerIndex: 1
+      correctFeedback: Luar biasa! Pemikiranmu benar-benar mencerminkan turis yang
+        peduli lingkungan.
+      wrongFeedback: Kurang tepat. Kita tidak boleh sekadar tutup mata. Ayo cari
+        tindakan yang lebih berempati!
 --- !u!4 &1898465148
 Transform:
   m_ObjectHideFlags: 0
@@ -5179,14 +5679,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinemachineCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 7804147975020256817, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7804147975020256817, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: BoundingShape2D
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Lens.OrthographicSize
       value: 4
@@ -5195,6 +5687,22 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 841745479}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 2147000003}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: SlowingDistance
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5389,6 +5897,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4719201432410195715, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 2147000003}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: SlowingDistance
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -5810,6 +6334,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 293378718}
     m_Modifications:
+    - target: {fileID: 2944844234315495321, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4409511276344703766, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_Name
       value: MapMenuPanel
@@ -5837,6 +6377,10 @@ PrefabInstance:
     - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: 06_Sawinggrai
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253729619575513762, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_Pivot.x
@@ -5869,6 +6413,18 @@ PrefabInstance:
     - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.83738
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.83738
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.83738
       objectReference: {fileID: 0}
     - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6045,12 +6601,40 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5542010447420625351, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -82.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.060493015
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.060493015
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.711096
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: hasMap
@@ -6072,9 +6656,13 @@ PrefabInstance:
       propertyPath: healthImage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6909095479283830814, guid: d9eef132e72927948852f0a723f816bb, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1575786837}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 112.69
+      value: 102.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6092,9 +6680,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 293378718}
     m_Modifications:
+    - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_fontSize
+      value: 26
+      objectReference: {fileID: 0}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: hiddenPosition.x
+      value: -220
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: hiddenPosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: visiblePosition.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: visiblePosition.y
+      value: -18.75
       objectReference: {fileID: 0}
     - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_Name
@@ -6141,6 +6749,18 @@ PrefabInstance:
       value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -6170,11 +6790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 300
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -40
+      value: -18.75
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6371,6 +6991,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+--- !u!60 &2147000003 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+  m_PrefabInstance: {fileID: 830070682}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

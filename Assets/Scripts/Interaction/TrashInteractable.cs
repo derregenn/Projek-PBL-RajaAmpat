@@ -7,6 +7,8 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [Header("Quest Integration")]
     [SerializeField] private string objectiveID = "collect_trash";
     [SerializeField] private int amountToAdd = 1;
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
 
     [Header("Audio & FX (Opsional)")]
     [SerializeField] private AudioClip collectSound;
@@ -46,6 +48,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     public void Interact()
     {
         if (collectionInProgress) return;
+        if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return;
 
         if (holdQTE != null)
         {
@@ -169,5 +172,9 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [Tooltip("Teks prompt saat didekati pemain. Biarkan kosong jika ingin default 'Ambil Sampah'")]
     [SerializeField] private string customPrompt = "";
 
-    public string GetPromptText() => string.IsNullOrEmpty(customPrompt) ? "Ambil Sampah" : customPrompt;
+    public string GetPromptText()
+    {
+        if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return "";
+        return string.IsNullOrEmpty(customPrompt) ? "Ambil Sampah" : customPrompt;
+    }
 }

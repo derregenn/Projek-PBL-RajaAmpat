@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class SasiInteractable : MonoBehaviour
 {
@@ -20,23 +21,91 @@ public class SasiInteractable : MonoBehaviour
     [Header("Events")]
     public UnityEvent OnSasiCompleted; // Dipanggil saat QTE sukses
 
+    [Header("Quest Progression Gate (Opsional)")]
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
+
     private bool isPlayerInArea = false;
     private bool isQTEActive = false;
     private bool isCompleted = false;
+    private bool isShowingPrompt = false;
     public bool IsCompleted => isCompleted;
+
+    private void EnsurePromptReference()
+    {
+        if (uiPrompt != null) return;
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (!activeScene.isLoaded) return;
+        GameObject[] roots = activeScene.GetRootGameObjects();
+        for (int r = 0; r < roots.Length; r++)
+        {
+            if (roots[r] == null) continue;
+            Transform[] all = roots[r].GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] != null && all[i].name == "PromptPanel")
+                {
+                    uiPrompt = all[i].gameObject;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void SetPromptVisible(bool visible)
+    {
+        if (visible)
+        {
+            EnsurePromptReference();
+            if (uiPrompt != null && !uiPrompt.activeSelf) uiPrompt.SetActive(true);
+            isShowingPrompt = uiPrompt != null;
+        }
+        else
+        {
+            if (isShowingPrompt && uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+            isShowingPrompt = false;
+        }
+    }
 
     private void Start()
     {
-        // Pastikan QTE Biru mati di awal
+        // Pastikan QTE mati di awal
         if (qtePanel != null) qtePanel.SetActive(false);
+        EnsurePromptReference();
+        ResolvePlayerAnimator();
+    }
+
+    private void ResolvePlayerAnimator()
+    {
+        if (playerAnimator != null) return;
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            playerAnimator = playerObj.GetComponentInChildren<Animator>();
+        }
     }
 
     private void Update()
     {
-        // Jika player di area, QTE belum jalan, belum selesai, dan menekan tombol E
-        if (isPlayerInArea && !isQTEActive && !isCompleted && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInArea && !isQTEActive && !isCompleted)
         {
-            MulaiQTE();
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            {
+                SetPromptVisible(false);
+                return;
+            }
+            SetPromptVisible(true);
+            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E))
+            {
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
+                MulaiQTE();
+            }
+        }
+        else if (isShowingPrompt)
+        {
+            SetPromptVisible(false);
         }
     }
 
@@ -45,21 +114,30 @@ public class SasiInteractable : MonoBehaviour
         isQTEActive = true;
 
         // 1. Sembunyikan prompt tombol E di atas kepala
-        if (uiPrompt != null) uiPrompt.SetActive(false);
+        SetPromptVisible(false);
 
         // 2. Pemicu Animasi Jongkok MC
         SetPlayerCrouch(true);
 
-        // 3. Tampilkan UI QTE Biru & sambungkan callback QTE2 secara dinamis
+        // 3. Tampilkan UI QTE (mendukung QTE2 maupun QTE1) & sambungkan callback secara dinamis
         if (qtePanel != null)
         {
             QTE2 qte2 = qtePanel.GetComponent<QTE2>();
+            QTE1 qte1 = qte2 == null ? qtePanel.GetComponent<QTE1>() : null;
+
             if (qte2 != null)
             {
                 qte2.onSuccess.RemoveListener(FinishQTE);
                 qte2.onSuccess.AddListener(FinishQTE);
                 qte2.onFail.RemoveListener(CancelQTE);
                 qte2.onFail.AddListener(CancelQTE);
+            }
+            else if (qte1 != null)
+            {
+                qte1.onSuccess.RemoveListener(FinishQTE);
+                qte1.onSuccess.AddListener(FinishQTE);
+                qte1.onFail.RemoveListener(CancelQTE);
+                qte1.onFail.AddListener(CancelQTE);
             }
 
             qtePanel.SetActive(true);
@@ -68,6 +146,14 @@ public class SasiInteractable : MonoBehaviour
             {
                 qte2.BeginQTE();
             }
+            else if (qte1 != null)
+            {
+                qte1.InitQTE();
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[SasiInteractable] qtePanel belum di-assign di Inspector pada '{gameObject.name}'!", this);
         }
     }
 
@@ -81,15 +167,21 @@ public class SasiInteractable : MonoBehaviour
                 qte2.onSuccess.RemoveListener(FinishQTE);
                 qte2.onFail.RemoveListener(CancelQTE);
             }
+            QTE1 qte1 = qtePanel.GetComponent<QTE1>();
+            if (qte1 != null)
+            {
+                qte1.onSuccess.RemoveListener(FinishQTE);
+                qte1.onFail.RemoveListener(CancelQTE);
+            }
             qtePanel.SetActive(false);
         }
 
         isQTEActive = false;
         SetPlayerCrouch(false);
 
-        if (isPlayerInArea && uiPrompt != null)
+        if (isPlayerInArea)
         {
-            uiPrompt.SetActive(true);
+            SetPromptVisible(true);
         }
     }
 
@@ -107,13 +199,19 @@ public class SasiInteractable : MonoBehaviour
             qte2.onSuccess.RemoveListener(FinishQTE);
             qte2.onFail.RemoveListener(CancelQTE);
         }
+        QTE1 qte1 = qtePanel != null ? qtePanel.GetComponent<QTE1>() : null;
+        if (qte1 != null)
+        {
+            qte1.onSuccess.RemoveListener(FinishQTE);
+            qte1.onFail.RemoveListener(CancelQTE);
+        }
 
         // 1. Kembalikan Animasi MC ke berdiri
         SetPlayerCrouch(false);
 
         // 2. Sembunyikan QTE Biru & Prompt
         if (qtePanel != null) qtePanel.SetActive(false);
-        if (uiPrompt != null) uiPrompt.SetActive(false);
+        SetPromptVisible(false);
 
         // 3. Matikan Collider2D saja (JANGAN matikan gameObject parent karena Batu Sasi & Sasi Laut1_Quest Item_Midground_0 adalah child dari TitikSasi!)
         Collider2D col = GetComponent<Collider2D>();
@@ -280,7 +378,22 @@ public class SasiInteractable : MonoBehaviour
         if (other.CompareTag("Player") && !isQTEActive && !isCompleted)
         {
             isPlayerInArea = true;
-            if (uiPrompt != null) uiPrompt.SetActive(true);
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            {
+                SetPromptVisible(false);
+                return;
+            }
+            SetPromptVisible(true);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") && !isQTEActive && !isCompleted)
+        {
+            isPlayerInArea = true;
         }
     }
 
@@ -289,7 +402,13 @@ public class SasiInteractable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInArea = false;
-            if (uiPrompt != null) uiPrompt.SetActive(false);
+            SetPromptVisible(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        isPlayerInArea = false;
+        SetPromptVisible(false);
     }
 }

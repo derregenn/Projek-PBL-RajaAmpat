@@ -233,6 +233,7 @@ public class GamePhaseManager : MonoBehaviour
         string joined = string.Join(",", completedQuestIDs);
         PlayerPrefs.SetString(SaveKeyCompletedQuests, joined);
         PlayerPrefs.Save();
+        QuestJournalManager.InvalidatePersistentQuestCache();
     }
 
     private void LoadProgress()
@@ -320,6 +321,7 @@ public class GamePhaseManager : MonoBehaviour
         PlayerPrefs.DeleteKey(SaveKeyGagUnlocked);
         PlayerPrefs.DeleteKey(SaveKeyTargetIsland);
         PlayerPrefs.Save();
+        QuestJournalManager.InvalidatePersistentQuestCache();
 
         CalculatePercentage();
         Debug.LogWarning("[GamePhaseManager] Seluruh progress GamePhaseManager telah direset.");

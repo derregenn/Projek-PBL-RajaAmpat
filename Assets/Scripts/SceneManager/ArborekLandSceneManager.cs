@@ -88,6 +88,7 @@ public class ArborekLandSceneManager : MonoBehaviour
     public void RefreshLandState()
     {
         if (MasterQuestManager.Instance == null) return;
+        if (ArborekFaderManager.IsAnyTransitioning) return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
         lastObservedStage = stage;
@@ -100,34 +101,42 @@ public class ArborekLandSceneManager : MonoBehaviour
             tetuaAdatAwal.SetActive(stage == 0 || stage == 1);
         }
 
-        // Stage 2: Cari dan serahkan Kerang Terompet; Tetua berpindah ke ujung pantai.
+        // Stage 2: Cari dan serahkan Kerang Terompet; Tetua menunggu di posisi awal/terima karang.
         if (tetuaAdatTerimaKarang != null)
         {
             tetuaAdatTerimaKarang.SetActive(stage == 2);
         }
 
-        // Stage 3 - 5: Tetua tetap di lokasi Quest Sasi selama pemasangan, trivia, dan foto.
+        // Stage 3: Ritual Sasi Before & pemasangan Sasi.
         if (tetuaAdatSasiBefore != null)
         {
-            tetuaAdatSasiBefore.SetActive(stage >= 3 && stage <= 5);
+            tetuaAdatSasiBefore.SetActive(stage == 3);
         }
 
-        // Pertahankan satu objek Tetua di lokasi yang sama sepanjang Quest 2 dan 3.
+        // Stage 4: Sasi After selesai dipasang, bicara dengan Tetua Adat.
         if (tetuaAdatSasiAfter != null)
         {
-            tetuaAdatSasiAfter.SetActive(false);
+            tetuaAdatSasiAfter.SetActive(stage == 4);
         }
 
-        // Tetua yang sama tetap aktif saat objective foto.
+        // Stage 5: Tetua Adat Fotografi & Trivia. Stage 6: Tetua tetap terlihat pasif bersama Tour Guide.
         if (tetuaAdatFotografi != null)
         {
-            tetuaAdatFotografi.SetActive(false);
+            bool showFotoTetua = (stage == 5 || stage == 6);
+            tetuaAdatFotografi.SetActive(showFotoTetua);
+            if (stage == 6)
+            {
+                Collider2D col = tetuaAdatFotografi.GetComponent<Collider2D>();
+                if (col != null) col.enabled = false;
+                Dialogue dlg = tetuaAdatFotografi.GetComponentInChildren<Dialogue>();
+                if (dlg != null) dlg.enabled = false;
+            }
         }
 
-        // Stage 6+: Penutupan setelah rangkaian quest selesai.
-        if (tetuaAdatTerimaUmpan != null)
+        // TerimaUmpan hanya opsional bila tidak aktif di akhir (jangan nyalakan lagi di stage >= 6).
+        if (tetuaAdatTerimaUmpan != null && stage >= 6)
         {
-            tetuaAdatTerimaUmpan.SetActive(stage >= 6);
+            tetuaAdatTerimaUmpan.SetActive(false);
         }
 
         // Warga Arborek tetap aktif sebagai ambient NPC
@@ -135,10 +144,10 @@ public class ArborekLandSceneManager : MonoBehaviour
         if (npcArborek2 != null) npcArborek2.SetActive(true);
         if (npcArborek3 != null) npcArborek3.SetActive(true);
 
-        // NPC Locked / Unlocked
+        // NPC Locked / Unlocked (terbuka setelah foto & transisi akhir di Stage 7+)
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 5; // Misal, NPC terbuka setelah stage
+            bool isUnlocked = stage >= 7;
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

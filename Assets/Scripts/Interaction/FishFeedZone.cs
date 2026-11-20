@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class FishFeedZone : MonoBehaviour
 {
@@ -25,18 +26,69 @@ public class FishFeedZone : MonoBehaviour
     private bool isFed = false;
     private bool allFishFedEventInvoked = false;
     private int fedCount = 0;
+    private bool isShowingPrompt = false;
+
+    private void EnsurePromptReference()
+    {
+        if (promptPanel != null) return;
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (!activeScene.isLoaded) return;
+        GameObject[] roots = activeScene.GetRootGameObjects();
+        for (int r = 0; r < roots.Length; r++)
+        {
+            if (roots[r] == null) continue;
+            Transform[] all = roots[r].GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] != null && all[i].name == "PromptPanel")
+                {
+                    promptPanel = all[i].gameObject;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void SetPromptVisible(bool visible)
+    {
+        if (visible)
+        {
+            EnsurePromptReference();
+            if (promptPanel != null && !promptPanel.activeSelf) promptPanel.SetActive(true);
+            isShowingPrompt = promptPanel != null;
+        }
+        else
+        {
+            if (isShowingPrompt && promptPanel != null && promptPanel.activeSelf) promptPanel.SetActive(false);
+            isShowingPrompt = false;
+        }
+    }
 
     private void Start()
     {
-        if (promptPanel != null) promptPanel.SetActive(false);
+        EnsurePromptReference();
     }
 
     private void Update()
     {
-        if (playerInZone && !isFed && Input.GetKeyDown(feedKey))
+        if (playerInZone && !isFed)
         {
-            Debug.Log($"[FishFeedZone] Feed key pressed: {feedKey}");
-            ExecuteFeeding();
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
+            {
+                SetPromptVisible(false);
+                return;
+            }
+            SetPromptVisible(true);
+            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(feedKey))
+            {
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
+                Debug.Log($"[FishFeedZone] Feed key pressed: {feedKey}");
+                ExecuteFeeding();
+            }
+        }
+        else if (isShowingPrompt)
+        {
+            SetPromptVisible(false);
         }
     }
 
@@ -47,7 +99,7 @@ public class FishFeedZone : MonoBehaviour
         fedCount = 0;
         allFishFedEventInvoked = false;
 
-        if (promptPanel != null) promptPanel.SetActive(false);
+        SetPromptVisible(false);
         onFeedingStarted?.Invoke();
 
         Vector3 spawnPos = baitSpawnPoint != null ? baitSpawnPoint.position : transform.position;
@@ -113,7 +165,18 @@ public class FishFeedZone : MonoBehaviour
         {
             playerInZone = true;
             Debug.Log("[FishFeedZone] Player entered feed zone.");
-            if (!isFed && promptPanel != null) promptPanel.SetActive(true);
+            if (!isFed && !InteractionInputLock.IsAnyModalBlockingWorldInteract && !InteractionInputLock.IsSignboardOpen)
+            {
+                SetPromptVisible(true);
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInZone = true;
         }
     }
 
@@ -123,7 +186,13 @@ public class FishFeedZone : MonoBehaviour
         {
             playerInZone = false;
             Debug.Log("[FishFeedZone] Player exited feed zone.");
-            if (promptPanel != null) promptPanel.SetActive(false);
+            SetPromptVisible(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        playerInZone = false;
+        SetPromptVisible(false);
     }
 }
