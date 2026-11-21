@@ -144,7 +144,15 @@ public class MasterQuestManager : MonoBehaviour
 
     public void EnsureStageInitialized()
     {
-        if (CurrentStage < 1)
+        if (currentIsland == IslandType.Misool)
+        {
+            // Scene Misool dimulai dari stage 0 dan tidak otomatis naik ke stage 1.
+            if (!PlayerPrefs.HasKey(StageKey) && !PlayerPrefs.HasKey("Misool_QuestStage"))
+            {
+                CurrentStage = 0;
+            }
+        }
+        else if (CurrentStage < 1)
         {
             AdvanceStageTo(1);
         }
