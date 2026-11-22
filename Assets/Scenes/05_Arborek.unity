@@ -1067,7 +1067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Size.x
-      value: 0.7606288
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Offset.x
@@ -1136,6 +1136,18 @@ PrefabInstance:
     - target: {fileID: 8060814205940713165, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: m_Size.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: pageIDToUnlock
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: photoID
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1402,7 +1414,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 0c82768c4dca79d41b3869ce15ee06ad, type: 2}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: questsToGive.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: giveQuestOnPlayerCollision
@@ -1417,8 +1429,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 98c34b3d4d9684a4b9c32cd528d781fd, type: 2}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: objectiveID
-      value: foto_arborek
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: OnObjectiveTriggered.m_PersistentCalls.m_Calls.Array.size
@@ -1589,7 +1605,7 @@ PrefabInstance:
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 133442101}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1802,6 +1818,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -77.69
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
     - {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -2113,7 +2145,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 153149761}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8311407304413757896, guid: 25bca17a63b81d64a944e99e5f8f3ef7, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -3370,7 +3402,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 292704875}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8311407304413757896, guid: 25bca17a63b81d64a944e99e5f8f3ef7, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -12574,7 +12606,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 1388967372}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8556380925916901931, guid: 8715051f4f6b4444f979a1bd2aa843c9, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -14734,7 +14766,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 1660750592}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: 575970247933533862, guid: ed60603fa3079bb46a473d1fd1686c05, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -14979,7 +15011,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 1665425517}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8311407304413757896, guid: 25bca17a63b81d64a944e99e5f8f3ef7, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -16456,7 +16488,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 1779326724}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8556380925916901931, guid: 8715051f4f6b4444f979a1bd2aa843c9, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -19217,7 +19249,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 2022872706}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8311407304413757896, guid: 25bca17a63b81d64a944e99e5f8f3ef7, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2
@@ -20440,7 +20472,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 2143221580}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: 0}
+  idleSprite: {fileID: -8311407304413757896, guid: 25bca17a63b81d64a944e99e5f8f3ef7, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 2

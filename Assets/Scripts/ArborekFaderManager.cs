@@ -311,6 +311,8 @@ public class ArborekFaderManager : MonoBehaviour
             npc2.SetActive(false);
         }
 
+        IslandCompletedStateRestorer.SetObjectsActive(gameObject.scene, false, "AreaFoto_Sasi");
+
         if (QuestJournalManager.Instance != null)
         {
             QuestJournalManager.Instance.UnlockIslandAward(IslandName.Arborek);

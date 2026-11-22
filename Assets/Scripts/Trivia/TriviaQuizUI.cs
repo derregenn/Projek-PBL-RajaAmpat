@@ -504,6 +504,11 @@ public class TriviaQuizUI : MonoBehaviour
                 }
 
                 int buttonIndex = i;
+                int persistentCount = optionButtons[i].onClick.GetPersistentEventCount();
+                for (int p = 0; p < persistentCount; p++)
+                {
+                    optionButtons[i].onClick.SetPersistentListenerState(p, UnityEngine.Events.UnityEventCallState.Off);
+                }
                 optionButtons[i].onClick.RemoveAllListeners();
                 optionButtons[i].onClick.AddListener(() => OnOptionSelected(buttonIndex));
             }

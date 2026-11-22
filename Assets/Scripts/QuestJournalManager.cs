@@ -1220,8 +1220,35 @@ public class QuestJournalManager : MonoBehaviour
         }
     }
 
+    private static bool IsArborekInProgressPreFinal()
+    {
+        if (IsFinalQuestOfIslandDonePersistent(IslandName.Arborek)) return false;
+        if (MasterQuestManager.Instance != null
+            && MasterQuestManager.Instance.CurrentIsland == IslandType.Arborek
+            && MasterQuestManager.Instance.CurrentStage < 7)
+        {
+            return true;
+        }
+        return !IsQuestDoneAny("05_Arborek") && IsQuestDoneAny("06_Arborek");
+    }
+
     public bool IsIslandUnlocked(IslandName island)
     {
+        if (island == IslandName.Arborek && IsArborekInProgressPreFinal())
+        {
+            unlockedAwardIslands.Remove(IslandName.Arborek);
+            if (PlayerPrefs.GetInt("QJM_Award_Arborek", 0) == 1
+                || PlayerPrefs.GetInt("GPM_Island_Arborek", 0) == 1
+                || PlayerPrefs.GetInt("Island_" + (int)IslandName.Arborek, 0) == 1)
+            {
+                PlayerPrefs.SetInt("QJM_Award_Arborek", 0);
+                PlayerPrefs.SetInt("GPM_Island_Arborek", 0);
+                PlayerPrefs.SetInt("Island_" + (int)IslandName.Arborek, 0);
+                PlayerPrefs.Save();
+            }
+            return false;
+        }
+
         if (unlockedAwardIslands.Contains(island))
         {
             return true;
@@ -1280,7 +1307,7 @@ public class QuestJournalManager : MonoBehaviour
                         && MasterQuestManager.Instance.CurrentIsland == IslandType.Misool
                         && MasterQuestManager.Instance.CurrentStage >= 8);
             case IslandName.Arborek:
-                return IsQuestDoneAny("06_Arborek") || IsQuestDoneAny("05_Arborek");
+                return IsQuestDoneAny("05_Arborek");
             case IslandName.Sawinggrai:
                 return IsQuestDoneAny("05_Sawinggrai") || IsQuestDoneAny("04_Sawinggrai");
             case IslandName.Friwen:
@@ -1318,6 +1345,21 @@ public class QuestJournalManager : MonoBehaviour
 
     public static bool IsIslandCompletedPersistent(IslandName island)
     {
+        if (island == IslandName.Arborek && IsArborekInProgressPreFinal())
+        {
+            if (Instance != null) Instance.unlockedAwardIslands.Remove(IslandName.Arborek);
+            if (PlayerPrefs.GetInt("QJM_Award_Arborek", 0) == 1
+                || PlayerPrefs.GetInt("GPM_Island_Arborek", 0) == 1
+                || PlayerPrefs.GetInt("Island_" + (int)IslandName.Arborek, 0) == 1)
+            {
+                PlayerPrefs.SetInt("QJM_Award_Arborek", 0);
+                PlayerPrefs.SetInt("GPM_Island_Arborek", 0);
+                PlayerPrefs.SetInt("Island_" + (int)IslandName.Arborek, 0);
+                PlayerPrefs.Save();
+            }
+            return false;
+        }
+
         if (Instance != null && Instance.IsIslandUnlocked(island))
         {
             return true;
@@ -1566,11 +1608,11 @@ public class QuestJournalManager : MonoBehaviour
         {
             newlyUnlocked |= UnlockPageInternal(4);
         }
-        else if (questID == "01_Arborek" || questID == "02_Arborek" || questID == "03_Arborek")
+        else if (questID == "01_Arborek" || questID == "02_Arborek" || questID == "03_Arborek" || questID == "06_Arborek" || questID == "04_Arborek")
         {
             newlyUnlocked |= UnlockPageInternal(5);
         }
-        else if (questID == "05_Arborek" || questID == "06_Arborek")
+        else if (questID == "05_Arborek")
         {
             newlyUnlocked |= UnlockPageInternal(13); // Page 13: Selesai Arborek
         }
