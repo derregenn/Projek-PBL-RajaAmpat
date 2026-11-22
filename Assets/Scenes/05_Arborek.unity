@@ -998,8 +998,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: photoID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: objectiveID
       value: foto_arborek
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: pageIDToUnlock
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: photoPromptPanel
@@ -1070,6 +1078,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: m_Size.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Offset.x
       value: -0.11968559
       objectReference: {fileID: 0}
@@ -1136,18 +1148,6 @@ PrefabInstance:
     - target: {fileID: 8060814205940713165, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
-      propertyPath: m_Size.y
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
-      propertyPath: pageIDToUnlock
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
-      propertyPath: photoID
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1570,6 +1570,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1578,6 +1582,18 @@ PrefabInstance:
       value: Momen langka seperti ini sayang banget kalau cuma diingat di kepala.
         Ayo, keluarkan kameramu!
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
       value: 0
@@ -1818,22 +1834,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -77.69
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: DialogueLineSprites.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[1]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[2]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
     - {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -2137,7 +2137,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000001000000000000000000000000000000000000000000000000000000000000000000000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -3394,7 +3394,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000100000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -5694,8 +5694,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.46664023, y: 0}
-  - {x: 0.4876956, y: -0.015316965}
+  - {x: -0.46664023, y: -0.046727188}
+  - {x: 0.4882917, y: -0.019207003}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -8133,7 +8133,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 110.69}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &934573082
 MonoBehaviour:
@@ -11465,10 +11465,10 @@ RectTransform:
   - {fileID: 681914698}
   m_Father: {fileID: 934573081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -84.69}
-  m_SizeDelta: {x: 276, y: 28}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1279433045
 GameObject:
@@ -13132,6 +13132,8 @@ MonoBehaviour:
   npcArborek3: {fileID: 1779326721}
   npcLocked: {fileID: 987503958}
   npcUnlocked: {fileID: 507135977}
+  tourGuide: {fileID: 0}
+  areaFotoSasi: {fileID: 0}
 --- !u!1 &1434921109
 GameObject:
   m_ObjectHideFlags: 0
@@ -15003,7 +15005,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000000000000010000000000000000000000010000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -15470,7 +15472,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000000000000000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 2022872709}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -18031,7 +18033,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -38.345}
-  m_SizeDelta: {x: 276, y: 52.69}
+  m_SizeDelta: {x: 276, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1917431010
 MonoBehaviour:
@@ -19241,7 +19243,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000001000000000000000100000001000000000000000000000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 2022872709}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -20166,6 +20168,18 @@ PrefabInstance:
       value: 51.6762
       objectReference: {fileID: 0}
     - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.1140924
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.9946733
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.8959775
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208160473892682288, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -20227,7 +20241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347093790615255095, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7348516504911967055, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -20464,7 +20478,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 010000000000000000000000000000000100000000000000010000000000000000000000010000000000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
