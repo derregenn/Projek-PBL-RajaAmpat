@@ -5,10 +5,15 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 {
     [Header("Audio Settings")]
     public AudioClip audioClip;
-    public AudioMixerGroup outputMixerGroup; // Sambungkan ke Mixer BGM/Ambience agar ikut slider volume
-    [Range(0f, 1f)] public float maxVolume = 0.6f;
+    public AudioMixerGroup outputMixerGroup;
+    [Range(0f, 1f)] public float maxVolume = 0.5f;
     public float crossfadeDuration = 2.0f;
     public bool playOnStart = true;
+
+    [Header("3D Spatial Settings (Centang Khusus Ambience)")]
+    public bool is3DSpatial = false;
+    public float minDistance = 5f;
+    public float maxDistance = 30f;
 
     private AudioSource[] sources = new AudioSource[2];
     private int activeIndex = 0;
@@ -25,11 +30,18 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             sources[i].playOnAwake = false;
             sources[i].loop = false;
             sources[i].volume = 0f;
+
+            if (is3DSpatial)
+            {
+                sources[i].spatialBlend = 1f;
+                sources[i].rolloffMode = AudioRolloffMode.Logarithmic;
+                sources[i].minDistance = minDistance;
+                sources[i].maxDistance = maxDistance;
+            }
         }
 
         if (playOnStart && audioClip != null)
         {
-            // Pastikan durasi fade tidak melebihi setengah panjang klip
             crossfadeDuration = Mathf.Min(crossfadeDuration, audioClip.length * 0.4f);
             StartLoop();
         }
@@ -54,7 +66,6 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 
         double currentTime = AudioSettings.dspTime;
 
-        // Jadwalkan AudioSource kedua sebelum titik crossfade dimulai
         if (currentTime >= nextStartTime - 0.5 && !sources[1 - activeIndex].isPlaying)
         {
             int nextIndex = 1 - activeIndex;
@@ -62,7 +73,6 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             sources[nextIndex].PlayScheduled(nextStartTime);
         }
 
-        // Lakukan fade-out pada source lama dan fade-in pada source baru
         if (currentTime >= nextStartTime)
         {
             float progress = Mathf.Clamp01((float)((currentTime - nextStartTime) / crossfadeDuration));
