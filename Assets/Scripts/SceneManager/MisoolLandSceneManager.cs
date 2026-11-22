@@ -89,21 +89,32 @@ public class MisoolLandSceneManager : MonoBehaviour
             ibuIbuStage8.SetActive(stage >= 8);
 
         // Point 9 & 10: Akhir Quest (Tour Guide pindah ke kanan MC)
-        if (stage >= 9)
-        {
-            if (tourGuideStart != null) tourGuideStart.SetActive(false);
-            if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
+        bool isPoint9 = stage >= 9;
 
-            if (tourGuideEnd != null)
+        if (tourGuideStart != null) tourGuideStart.SetActive(stage >= 1 && stage < 8);
+        if (tourGuideEnd != null)
+        {
+            if (isPoint9)
             {
                 if (tourGuideEndSpot != null)
                 {
                     tourGuideEnd.transform.position = tourGuideEndSpot.position;
                 }
                 tourGuideEnd.SetActive(true);
+
                 Dialogue endDialogue = tourGuideEnd.GetComponentInChildren<Dialogue>(true);
                 endDialogue?.RefreshPostQuestLoopState();
             }
+            else
+            {
+                tourGuideEnd.SetActive(false);
+            }
+        }
+
+        if (isPoint9)
+        {
+            if (tourGuideStart != null) tourGuideStart.SetActive(false);
+            if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
         }
 
         // NPC Locked & Unlocked

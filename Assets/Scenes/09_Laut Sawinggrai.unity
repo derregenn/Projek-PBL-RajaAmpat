@@ -843,6 +843,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174966864}
   m_CullTransparentMesh: 1
+--- !u!1 &193215383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 193215384}
+  - component: {fileID: 193215386}
+  - component: {fileID: 193215385}
+  m_Layer: 0
+  m_Name: TitikUmpan1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &193215384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193215383}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8, y: 11.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408034732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &193215385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193215383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2887e3857c53f9447aadc026c82d84ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishFeedSpot
+  targetFish: {fileID: 2113295044}
+  baitSpawnPoint: {fileID: 0}
+--- !u!58 &193215386
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193215383}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -6.392441}
+  m_Radius: 6.892441
 --- !u!1 &220225543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2362,6 +2445,89 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &757334842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 757334843}
+  - component: {fileID: 757334845}
+  - component: {fileID: 757334844}
+  m_Layer: 0
+  m_Name: TitikUmpan2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &757334843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757334842}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -32.4, y: -2.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408034732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &757334844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757334842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2887e3857c53f9447aadc026c82d84ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishFeedSpot
+  targetFish: {fileID: 2022832605}
+  baitSpawnPoint: {fileID: 0}
+--- !u!58 &757334845
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757334842}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -6.392441}
+  m_Radius: 6.892441
 --- !u!1 &765173852
 GameObject:
   m_ObjectHideFlags: 0
@@ -2521,7 +2687,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &881413092
 Transform:
   m_ObjectHideFlags: 0
@@ -3554,11 +3720,11 @@ MonoBehaviour:
   rightBoundary: {fileID: 98616191}
   fallbackRadius: 8
   arahRenang: 0
-  moveSpeed: 2
+  moveSpeed: 5
   verticalLaneRange: 1.5
   waveAmplitude: 0.2
   waveFrequency: 2.5
-  eatDuration: 3
+  eatDuration: 2
   animator: {fileID: 1047959133}
   spriteRenderers:
   - {fileID: 1867468433}
@@ -3993,7 +4159,7 @@ PrefabInstance:
     - target: {fileID: 544550929740783458, guid: f2c6b99417a993941b53c9d489f1a086, type: 3}
       propertyPath: 'allPhotoSpritesDatabase.Array.data[0]'
       value: 
-      objectReference: {fileID: 4233384755633241074, guid: 6b79e3f0a15b72a44bf15bc147522f3d, type: 3}
+      objectReference: {fileID: 6026581098678758716, guid: a75c88255c0e55f498180fdec181c8da, type: 3}
     - target: {fileID: 544550929740783458, guid: f2c6b99417a993941b53c9d489f1a086, type: 3}
       propertyPath: allJournalDatabase.Array.data[0].requiresPhoto
       value: 0
@@ -4767,13 +4933,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishFeedZone
   feedKey: 101
-  baitSpawnPoint: {fileID: 881413092}
   baitPrefab: {fileID: 0}
   promptPanel: {fileID: 485644862}
-  targetFishList:
-  - {fileID: 2113295044}
-  - {fileID: 2022832605}
-  - {fileID: 1047959132}
+  feedSpots:
+  - {fileID: 193215385}
+  - {fileID: 757334844}
+  - {fileID: 1963514071}
   onFeedingStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -4811,7 +4976,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408034729}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -4838,7 +5003,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -2.570549, y: -33.410282}
+  m_Offset: {x: -2.570549, y: -22.158218}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4848,7 +5013,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 70.27409, y: 55.36962}
+  m_Size: {x: 70.27409, y: 77.87375}
   m_EdgeRadius: 0
 --- !u!4 &1408034732
 Transform:
@@ -4863,6 +5028,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 193215384}
+  - {fileID: 757334843}
+  - {fileID: 1963514070}
   - {fileID: 881413092}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5535,11 +5703,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.013633333
+      value: 0.027266666
       objectReference: {fileID: 0}
     - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.013633333
+      value: 0.027266666
       objectReference: {fileID: 0}
     - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6914,6 +7082,89 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2154791656209574328, guid: 84974a88534fd734ebb8122dca666463, type: 3}
   m_PrefabInstance: {fileID: 1954612385}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1963514069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1963514070}
+  - component: {fileID: 1963514072}
+  - component: {fileID: 1963514071}
+  m_Layer: 0
+  m_Name: TitikUmpan3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1963514070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963514069}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.1, y: -28.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408034732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1963514071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963514069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2887e3857c53f9447aadc026c82d84ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishFeedSpot
+  targetFish: {fileID: 1047959132}
+  baitSpawnPoint: {fileID: 0}
+--- !u!58 &1963514072
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963514069}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -6.392441}
+  m_Radius: 6.892441
 --- !u!1001 &1969992511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7145,11 +7396,11 @@ MonoBehaviour:
   rightBoundary: {fileID: 98616191}
   fallbackRadius: 8
   arahRenang: 0
-  moveSpeed: 3
+  moveSpeed: 5
   verticalLaneRange: 1.5
   waveAmplitude: 0.2
   waveFrequency: 2.5
-  eatDuration: 3
+  eatDuration: 2
   animator: {fileID: 2022832606}
   spriteRenderers:
   - {fileID: 2022832607}
@@ -7788,11 +8039,11 @@ MonoBehaviour:
   rightBoundary: {fileID: 98616191}
   fallbackRadius: 8
   arahRenang: 0
-  moveSpeed: 1.5
+  moveSpeed: 5
   verticalLaneRange: 1.5
   waveAmplitude: 0.2
   waveFrequency: 2.5
-  eatDuration: 3
+  eatDuration: 2
   animator: {fileID: 2113295043}
   spriteRenderers: []
   speedAnimParameter: Speed
@@ -8035,9 +8286,9 @@ SceneRoots:
   - {fileID: 1507491096}
   - {fileID: 248115926}
   - {fileID: 1618637138}
-  - {fileID: 1047959135}
   - {fileID: 2113295047}
   - {fileID: 2022832609}
+  - {fileID: 1047959135}
   - {fileID: 664493666}
   - {fileID: 765173855}
   - {fileID: 1320801436}

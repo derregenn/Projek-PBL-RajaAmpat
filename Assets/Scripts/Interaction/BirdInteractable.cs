@@ -136,6 +136,21 @@ public class BirdInteractable : MonoBehaviour
         if (playerTarget != null && resetPoint != null)
         {
             playerTarget.position = resetPoint.position;
+            Rigidbody2D rb = playerTarget.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+            Player p = playerTarget.GetComponent<Player>();
+            if (p != null)
+            {
+                p.isMovementLocked = false;
+            }
+            Animator anim = playerTarget.GetComponentInChildren<Animator>();
+            if (anim != null && anim.enabled && anim.HasState(0, Animator.StringToHash("Player_Idle")))
+            {
+                anim.Play("Player_Idle");
+            }
         }
 
         // 2. Reset semua Trigger Area QTE agar aktif/muncul lagi

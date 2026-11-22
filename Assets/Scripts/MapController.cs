@@ -43,6 +43,17 @@ public class MapController : MonoBehaviour
         EnsureStandardMapPanelSetup();
         UpdateCurrentLocationMarker();
 
+        // Auto-bind minimapCanvasGroup jika belum diatur di Inspector
+        if (minimapCanvasGroup == null)
+        {
+            LevelMinimap lm = FindFirstObjectByType<LevelMinimap>();
+            if (lm != null)
+            {
+                minimapCanvasGroup = lm.GetComponent<CanvasGroup>();
+                if (minimapCanvasGroup == null) minimapCanvasGroup = lm.gameObject.AddComponent<CanvasGroup>();
+            }
+        }
+
         // Pastikan World Map tertutup di awal game
         if (worldMapCanvasGroup != null)
         {

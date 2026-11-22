@@ -119,20 +119,31 @@ public class BiotaMovement : MonoBehaviour
 
     private IEnumerator FeedRoutine(Vector3 baitPosition, Action onComplete)
     {
-        Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * 0.6f;
-        Vector2 finalBaitTarget = (Vector2)baitPosition + randomOffset;
+        Vector2 finalBaitTarget = baitPosition;
 
         FlipSprite(finalBaitTarget.x - transform.position.x);
 
         while (Vector2.Distance(transform.position, finalBaitTarget) > 0.05f)
         {
             transform.position = Vector2.MoveTowards(transform.position, finalBaitTarget, moveSpeed * Time.deltaTime);
-            if (animator != null) animator.SetFloat(speedAnimParameter, moveSpeed);
+
+            if (animator != null)
+            {
+                animator.SetFloat(speedAnimParameter, moveSpeed);
+            }
+
             yield return null;
         }
 
-        if (animator != null) animator.SetFloat(speedAnimParameter, 0f);
+        // Pastikan posisi tepat di titik umpan dan berhenti bergerak (Idle)
+        transform.position = finalBaitTarget;
+        if (animator != null)
+        {
+            animator.SetFloat(speedAnimParameter, 0f);
+        }
+
         yield return new WaitForSeconds(eatDuration);
+
         onComplete?.Invoke();
     }
 

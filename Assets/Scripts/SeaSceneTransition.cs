@@ -100,16 +100,7 @@ public class SeaSceneTransition : MonoBehaviour
             {
                 InteractionInputLock.ConsumeInteractKeyThisFrame();
                 SetWarningVisible(false);
-
-                Debug.Log($"[SeaSceneTransition] Player menekan {interactKey}. Transisi ke: {targetSceneName}");
-
-                // Persiapkan exit point dan stage pada teleporter tanpa memanggil LoadScene ganda
-                if (returnTeleporter != null)
-                {
-                    returnTeleporter.PrepareReturn();
-                }
-
-                StartCoroutine(FadeAndLoadScene());
+                TeleportKeSceneTujuan();
             }
         }
         else if (isShowingWarning)
@@ -220,5 +211,26 @@ public class SeaSceneTransition : MonoBehaviour
     {
         Debug.Log("[SeaSceneTransition] Interaksi Selesai!");
         onInteractComplete?.Invoke();
+    }
+
+    public void TeleportKeSceneTujuan()
+    {
+        if (isTransitioning) return;
+
+        if (string.IsNullOrWhiteSpace(targetSceneName))
+        {
+            Debug.LogError("[SeaSceneTransition] Nama scene tujuan belum diatur.", this);
+            return;
+        }
+
+        Debug.Log($"[SeaSceneTransition] Memulai transisi ke: {targetSceneName}");
+
+        if (returnTeleporter != null)
+        {
+            returnTeleporter.PrepareReturn();
+        }
+
+        SetWarningVisible(false);
+        StartCoroutine(FadeAndLoadScene());
     }
 }
