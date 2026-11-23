@@ -30,6 +30,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     // Sesuaikan dengan total sampah mentok yang ada di game kalian
     private int maxTrash = 20;
     private bool collectionInProgress;
+    private bool collected;
     public UnityEvent onInteractComplete; // Akan muncul di Inspector
 
     private void Awake()
@@ -47,7 +48,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (collectionInProgress) return;
+        if (collected || collectionInProgress) return;
         if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return;
 
         if (holdQTE != null)
@@ -85,6 +86,9 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     // Dipanggil otomatis saat QTE2 berhasil.
     private void CompleteCollection()
     {
+        if (collected) return;
+        collected = true;
+
         if (holdQTE != null)
         {
             holdQTE.onSuccess.RemoveListener(CompleteCollection);
