@@ -6,9 +6,13 @@ public class SeamlessLoopCrossfade : MonoBehaviour
     [Header("Audio Settings")]
     public AudioClip audioClip;
     public AudioMixerGroup outputMixerGroup;
-    [Range(0f, 1f)] public float maxVolume = 0.5f;
+    [Range(0f, 1f)] public float maxVolume = 0.55f;
     public float crossfadeDuration = 2.0f;
     public bool playOnStart = true;
+
+    [Header("Mid-Scene Trigger Settings (Khusus Pulau Gag)")]
+    [Tooltip("Durasi fade-in saat BGM pertama kali dipicu di tengah scene")]
+    public float initialFadeInDuration = 1.5f;
 
     [Header("3D Spatial Settings (Centang Khusus Ambience)")]
     public bool is3DSpatial = false;
@@ -17,8 +21,10 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 
     private AudioSource[] sources = new AudioSource[2];
     private int activeIndex = 0;
+    private double startTime;
     private double nextStartTime;
     private bool isPlaying = false;
+    private bool hasStarted = false;
 
     void Start()
     {
@@ -42,17 +48,22 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 
         if (playOnStart && audioClip != null)
         {
-            crossfadeDuration = Mathf.Min(crossfadeDuration, audioClip.length * 0.4f);
+            initialFadeInDuration = 0f; // Langsung masuk normal jika dari awal scene
             StartLoop();
         }
     }
 
+    // Fungsi ini bisa dipanggil dari Trigger Collider atau Script View Panning
     public void StartLoop()
     {
-        if (audioClip == null) return;
+        if (audioClip == null || hasStarted) return;
 
-        double startTime = AudioSettings.dspTime + 0.1;
-        sources[0].volume = maxVolume;
+        hasStarted = true;
+        crossfadeDuration = Mathf.Min(crossfadeDuration, audioClip.length * 0.4f);
+        initialFadeInDuration = Mathf.Min(initialFadeInDuration, audioClip.length - crossfadeDuration);
+
+        startTime = AudioSettings.dspTime + 0.1;
+        sources[0].volume = (initialFadeInDuration > 0f) ? 0f : maxVolume;
         sources[0].PlayScheduled(startTime);
 
         nextStartTime = startTime + audioClip.length - crossfadeDuration;
@@ -66,6 +77,18 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 
         double currentTime = AudioSettings.dspTime;
 
+        // Fade-in halus saat pertama kali dimulai di tengah scene
+        if (initialFadeInDuration > 0f && currentTime >= startTime && currentTime < startTime + initialFadeInDuration)
+        {
+            float fadeInProgress = Mathf.Clamp01((float)((currentTime - startTime) / initialFadeInDuration));
+            sources[0].volume = Mathf.Lerp(0f, maxVolume, fadeInProgress);
+        }
+        else if (currentTime < nextStartTime && sources[activeIndex].volume < maxVolume && activeIndex == 0)
+        {
+            sources[0].volume = maxVolume;
+        }
+
+        // Jadwalkan AudioSource kedua sebelum titik crossfade dimulai
         if (currentTime >= nextStartTime - 0.5 && !sources[1 - activeIndex].isPlaying)
         {
             int nextIndex = 1 - activeIndex;
@@ -73,6 +96,7 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             sources[nextIndex].PlayScheduled(nextStartTime);
         }
 
+        // Crossfade looping
         if (currentTime >= nextStartTime)
         {
             float progress = Mathf.Clamp01((float)((currentTime - nextStartTime) / crossfadeDuration));
