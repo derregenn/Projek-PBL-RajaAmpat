@@ -21,6 +21,12 @@ public class WaisaiLandSceneManager : MonoBehaviour
     [Tooltip("Trigger atau Teleporter di dermaga menuju pulau berikutnya")]
     [SerializeField] private GameObject dermagaTrigger;
 
+    [Tooltip("Tour Guide sambutan awal di pelabuhan (memberi Quest1_Waisai)")]
+    [SerializeField] private GameObject tourGuideIntro;
+
+    [Tooltip("Tour Guide setelah Petugas Hub (Trivia Waisai)")]
+    [SerializeField] private GameObject tourGuideTrivia;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -47,10 +53,21 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance != null)
         {
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Waisai);
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[WaisaiLandSceneManager] STAGE WAISAI SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 
         RefreshLandState();
+    }
+
+    private bool lastObservedHubUnlocked = false;
+
+    private static bool IsHubUnlocked(int stage, GameObject triviaObj)
+    {
+        if (stage >= 1) return true;
+        if (triviaObj != null && triviaObj.activeSelf) return true;
+        if (QuestJournalManager.HasCompletedQuestIDPersistent("01_Waisai")) return true;
+        return QuestController.Instance != null && QuestController.Instance.IsQuestActive("01_Waisai");
     }
 
     private void Update()
@@ -58,7 +75,8 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance == null) return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
-        if (stage != lastObservedStage)
+        bool hubUnlocked = IsHubUnlocked(stage, tourGuideTrivia);
+        if (stage != lastObservedStage || hubUnlocked != lastObservedHubUnlocked)
         {
             RefreshLandState();
         }
@@ -95,6 +113,55 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (dermagaTrigger != null)
         {
             dermagaTrigger.SetActive(stage >= 2);
+        }
+
+        if (tourGuideIntro == null) tourGuideIntro = GameObject.Find("TourGuide");
+        if (tourGuideTrivia == null) tourGuideTrivia = GameObject.Find("TourGuide_Trivia");
+
+        bool hubUnlocked = IsHubUnlocked(stage, tourGuideTrivia);
+        lastObservedHubUnlocked = hubUnlocked;
+        bool showIntro = (stage == 0) && !hubUnlocked;
+
+        if (petugasHub != null)
+        {
+            Collider2D hubCol = petugasHub.GetComponent<Collider2D>();
+            if (hubCol != null) hubCol.enabled = hubUnlocked;
+
+            Dialogue hubDlg = petugasHub.GetComponent<Dialogue>();
+            if (hubDlg != null) hubDlg.enabled = hubUnlocked;
+
+            if (!hubUnlocked)
+            {
+                Transform promptTr = petugasHub.transform.Find("DialogueCanvas/InteractPrompt");
+                if (promptTr != null) promptTr.gameObject.SetActive(false);
+            }
+        }
+
+        if (tourGuideIntro != null)
+        {
+            tourGuideIntro.SetActive(showIntro);
+        }
+
+        if (tourGuideTrivia != null && stage >= 1)
+        {
+            tourGuideTrivia.SetActive(stage == 1);
+        }
+
+        if (showIntro && QuestController.Instance != null && !QuestController.Instance.HasActiveQuest())
+        {
+            QuestUI ui = FindFirstObjectByType<QuestUI>();
+            if (ui != null)
+            {
+                ui.ShowStandalonePrompt("Temui Tour Guide di pelabuhan Waisai");
+            }
+        }
+    }
+
+    public void OnPetugasHubCompleted()
+    {
+        if (tourGuideIntro != null)
+        {
+            tourGuideIntro.SetActive(false);
         }
     }
 

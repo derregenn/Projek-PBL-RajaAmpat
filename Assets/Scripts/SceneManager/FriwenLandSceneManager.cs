@@ -4,6 +4,7 @@ public class FriwenLandSceneManager : MonoBehaviour
 {
     public static FriwenLandSceneManager Instance { get; private set; }
     private int lastObservedStage = -1;
+    private bool lastObservedMapUnlocked = false;
 
     [Header("Referensi Quest 1 (Tarik Perahu QTE)")]
     [Tooltip("Warlok 1 yang meminta bantuan menarik perahu")]
@@ -59,11 +60,8 @@ public class FriwenLandSceneManager : MonoBehaviour
     {
         if (MasterQuestManager.Instance != null)
         {
-            if (MasterQuestManager.Instance.CurrentStage < 1)
-            {
-                MasterQuestManager.Instance.AdvanceStageTo(1);
-            }
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Friwen);
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[FriwenLandSceneManager] STAGE FRIWEN SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 
@@ -75,7 +73,8 @@ public class FriwenLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance == null) return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
-        if (stage != lastObservedStage)
+        bool mapUnlocked = QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Friwen);
+        if (stage != lastObservedStage || mapUnlocked != lastObservedMapUnlocked)
         {
             RefreshLandState();
         }
@@ -90,12 +89,12 @@ public class FriwenLandSceneManager : MonoBehaviour
 
         Debug.Log($"<color=cyan>[FriwenLandSceneManager] Refresh State Friwen. Stage Aktif: {stage}</color>");
 
-        // Stage 1: QTE Tarik Perahu
-        if (warlok1Qte != null) warlok1Qte.SetActive(stage == 0 || stage == 1);
+        // Stage 1: QTE Tarik Perahu — Warlok 1 baru muncul setelah QTE perahu sukses via FriwenEventManager
+        if (warlok1Qte != null) warlok1Qte.SetActive(stage >= 2);
         if (triggerQtePerahu != null) triggerQtePerahu.SetActive(stage == 0 || stage <= 3);
 
-        // Stage 1 - 2: Trivia Friwen bersama Warlok 2
-        if (warlok2 != null) warlok2.SetActive(stage >= 1);
+        // Stage 1-2: Warlok 2 baru muncul ketika SignBoard UI dibuka (stage >= 3 saat revisit setelah trivia)
+        if (warlok2 != null) warlok2.SetActive(stage >= 3);
 
         // Stage 2 - 3: Foto Pasir Timbul
         if (tourGuidePasirTimbul != null) tourGuidePasirTimbul.SetActive(stage >= 2);
@@ -105,9 +104,10 @@ public class FriwenLandSceneManager : MonoBehaviour
         if (warlokOpsional2 != null) warlokOpsional2.SetActive(true);
 
         // NPC Locked / Unlocked
+        bool isUnlocked = QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Friwen);
+        lastObservedMapUnlocked = isUnlocked;
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 3; // Misal, NPC terbuka setelah stage
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

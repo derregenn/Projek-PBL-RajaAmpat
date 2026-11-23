@@ -75,6 +75,7 @@ public class BirdInteractable : MonoBehaviour
     private void Update()
     {
         // Poin 10: Player sudah dekat dan memencet tombol F
+        if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen) return;
         if (canTakePhoto && !isPhotoDone && Input.GetKeyDown(photoKey))
         {
             AmbilFoto();
@@ -126,6 +127,7 @@ public class BirdInteractable : MonoBehaviour
 
         currentQTEProgress = 0;
         canTakePhoto = false;
+        isPhotoDone = false;
         if (promptFotoUI != null) promptFotoUI.SetActive(false);
         if (birdAnimation != null) birdAnimation.SetActive(true);
         TampilkanAnimasiBurungDenganKamera();
@@ -134,6 +136,21 @@ public class BirdInteractable : MonoBehaviour
         if (playerTarget != null && resetPoint != null)
         {
             playerTarget.position = resetPoint.position;
+            Rigidbody2D rb = playerTarget.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+            Player p = playerTarget.GetComponent<Player>();
+            if (p != null)
+            {
+                p.isMovementLocked = false;
+            }
+            Animator anim = playerTarget.GetComponentInChildren<Animator>();
+            if (anim != null && anim.enabled && anim.HasState(0, Animator.StringToHash("Player_Idle")))
+            {
+                anim.Play("Player_Idle");
+            }
         }
 
         // 2. Reset semua Trigger Area QTE agar aktif/muncul lagi

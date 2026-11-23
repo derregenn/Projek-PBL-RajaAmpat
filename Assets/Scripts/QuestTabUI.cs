@@ -44,24 +44,107 @@ public class QuestTabUI : MonoBehaviour
     public Image awardSawinggrai;
     public Image awardRajaAmpat;
     public Image awardSecretEnding;
+    public Sprite awardRajaAmpatLockedSprite;
+    public Sprite awardRajaAmpatUnlockedSprite;
+    public Sprite awardSecretEndingLockedSprite;
+    public Sprite awardSecretEndingUnlockedSprite;
     public TMPro.TextMeshProUGUI trashStatusText;
 
     [Header("Canvas Sorting")]
     [Tooltip("Sorting order to ensure QuestTabUI renders above Canvas_HUD (order 0)")]
     public int journalSortingOrder = 30;
 
+    private void Awake()
+    {
+        EnsureStandardTransform();
+        EnsureCanvasSortingOrder();
+        RegisterToJournalManager();
+    }
+
+    private void Start()
+    {
+        EnsureStandardTransform();
+        EnsureCanvasSortingOrder();
+        RegisterToJournalManager();
+        StartCoroutine(RefreshStandardTransformNextFrame());
+    }
+
+    private void OnEnable()
+    {
+        EnsureStandardTransform();
+        EnsureCanvasSortingOrder();
+        RegisterToJournalManager();
+    }
+
+    private void OnRectTransformDimensionsChange()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            EnsureStandardTransform();
+        }
+    }
+
+    private System.Collections.IEnumerator RefreshStandardTransformNextFrame()
+    {
+        yield return null;
+        EnsureStandardTransform();
+    }
+
     public void EnsureStandardTransform()
     {
         RectTransform rt = GetComponent<RectTransform>();
-        if (rt != null)
+        if (rt == null) return;
+
+        float factor = ComputeParentCanvasScaleFactor();
+
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.sizeDelta = new Vector2(1197.1f, 566.82f);
+        rt.localScale = new Vector3(0.63567f * factor, 0.66664f * factor, 0.97687f * factor);
+        rt.anchoredPosition = new Vector2(0.45939f * factor, 7f * factor);
+    }
+
+    private float ComputeParentCanvasScaleFactor()
+    {
+        if (transform.parent == null) return 1f;
+
+        Canvas rootParentCanvas = transform.parent.GetComponentInParent<Canvas>(true);
+        if (rootParentCanvas == null) return 1f;
+
+        RectTransform canvasRt = rootParentCanvas.GetComponent<RectTransform>();
+        CanvasScaler scaler = rootParentCanvas.GetComponent<CanvasScaler>();
+
+        float canvasWidth = canvasRt != null ? canvasRt.rect.width : 0f;
+        float canvasHeight = canvasRt != null ? canvasRt.rect.height : 0f;
+
+        if (canvasWidth <= 10f || canvasHeight <= 10f)
         {
-            rt.anchorMin = new Vector2(0.5f, 0.5f);
-            rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(1197.1f, 566.82f);
-            rt.localScale = new Vector3(0.63567f, 0.66664f, 0.97687f);
-            rt.anchoredPosition = new Vector2(0.45939f, 7f);
+            float sw = Screen.width > 0 ? Screen.width : 1920f;
+            float sh = Screen.height > 0 ? Screen.height : 1080f;
+            float aspect = sw / sh;
+
+            if (scaler != null && scaler.uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize &&
+                scaler.referenceResolution.x > 0f && scaler.referenceResolution.y > 0f)
+            {
+                float wFromWidth = scaler.referenceResolution.x;
+                float wFromHeight = scaler.referenceResolution.y * aspect;
+                canvasWidth = Mathf.Lerp(wFromWidth, wFromHeight, scaler.matchWidthOrHeight);
+                canvasHeight = canvasWidth / aspect;
+            }
+            else
+            {
+                canvasWidth = sw;
+                canvasHeight = sh;
+            }
         }
+
+        if (canvasWidth > 10f && canvasHeight > 10f)
+        {
+            return Mathf.Clamp(Mathf.Min(canvasWidth / 800f, canvasHeight / 450f), 0.5f, 4f);
+        }
+
+        return 1f;
     }
 
     public void EnsureCanvasSortingOrder()
@@ -81,23 +164,11 @@ public class QuestTabUI : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        RegisterToJournalManager();
-    }
-
-    private void Start()
-    {
-        RegisterToJournalManager();
-    }
-
-    private void OnEnable()
-    {
-        RegisterToJournalManager();
-    }
-
     public void RegisterToJournalManager()
     {
+        EnsureCanvasSortingOrder();
+        EnsureSpecialAwardsInCollectibles();
+
         QuestJournalManager manager = QuestJournalManager.Instance;
         if (manager == null)
         {
@@ -119,6 +190,10 @@ public class QuestTabUI : MonoBehaviour
             if (completedText3 != null) manager.completedText3 = completedText3;
             if (awardRajaAmpat != null) manager.awardRajaAmpat = awardRajaAmpat;
             if (awardSecretEnding != null) manager.awardSecretEnding = awardSecretEnding;
+            if (awardRajaAmpatLockedSprite != null) manager.awardRajaAmpatLockedSprite = awardRajaAmpatLockedSprite;
+            if (awardRajaAmpatUnlockedSprite != null) manager.awardRajaAmpatUnlockedSprite = awardRajaAmpatUnlockedSprite;
+            if (awardSecretEndingLockedSprite != null) manager.awardSecretEndingLockedSprite = awardSecretEndingLockedSprite;
+            if (awardSecretEndingUnlockedSprite != null) manager.awardSecretEndingUnlockedSprite = awardSecretEndingUnlockedSprite;
             if (trashStatusText != null) manager.trashStatusText = trashStatusText;
             if (journalPageImage != null) manager.journalPageImage = journalPageImage;
             if (journalPhotoImage != null) manager.journalPhotoImage = journalPhotoImage;
@@ -158,6 +233,81 @@ public class QuestTabUI : MonoBehaviour
             AssignAwardImage(manager, IslandName.Sawinggrai, awardSawinggrai);
 
             manager.UpdateAllJournalSystems();
+        }
+    }
+
+    private void EnsureSpecialAwardsInCollectibles()
+    {
+        Transform collectiblesTransform = transform.Find("Collectibles");
+        if (collectiblesTransform == null && awardGag != null)
+        {
+            collectiblesTransform = awardGag.transform.parent;
+        }
+        if (collectiblesTransform == null && awardPiaynemo != null)
+        {
+            collectiblesTransform = awardPiaynemo.transform.parent;
+        }
+
+        if (awardSecretEnding == null && collectiblesTransform != null)
+        {
+            awardSecretEnding = FindOrCreateSpecialAward(
+                collectiblesTransform,
+                new[] { "Award_SecretEnding", "Award_Secret Ending" },
+                "Award_SecretEnding",
+                new Vector2(290f, 0f)
+            );
+        }
+
+        if (awardRajaAmpat == null && collectiblesTransform != null)
+        {
+            awardRajaAmpat = FindOrCreateSpecialAward(
+                collectiblesTransform,
+                new[] { "Award_Tampat", "Award_RajaAmpat" },
+                "Award_Tampat",
+                new Vector2(405f, 0f)
+            );
+        }
+
+        NormalizeSpecialAwardTransform(awardSecretEnding);
+        NormalizeSpecialAwardTransform(awardRajaAmpat);
+    }
+
+    private Image FindOrCreateSpecialAward(Transform parent, string[] candidateNames, string createName, Vector2 anchoredPosition)
+    {
+        for (int i = 0; i < candidateNames.Length; i++)
+        {
+            Transform existing = parent.Find(candidateNames[i]);
+            if (existing != null)
+            {
+                Image existingImage = existing.GetComponent<Image>();
+                if (existingImage != null) return existingImage;
+            }
+        }
+
+        GameObject awardObj = new GameObject(createName, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        awardObj.layer = parent.gameObject.layer;
+        awardObj.transform.SetParent(parent, false);
+
+        RectTransform rt = awardObj.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = anchoredPosition;
+        rt.sizeDelta = new Vector2(87f, 76f);
+        rt.localScale = new Vector3(1f, 4.65f, 1f);
+
+        Image img = awardObj.GetComponent<Image>();
+        img.preserveAspect = true;
+        return img;
+    }
+
+    private void NormalizeSpecialAwardTransform(Image img)
+    {
+        if (img == null) return;
+        img.preserveAspect = true;
+        if (img.rectTransform != null)
+        {
+            img.rectTransform.localScale = new Vector3(1f, 4.65f, 1f);
         }
     }
 

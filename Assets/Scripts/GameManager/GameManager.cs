@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
         }
         else if (_instance != this)
         {
+            TriviaQuizUI sceneTrivia = GetComponent<TriviaQuizUI>();
+            if (sceneTrivia != null)
+            {
+                TriviaQuizUI.AdoptOrAttachTo(_instance.gameObject, sceneTrivia);
+            }
             Destroy(gameObject);
             return;
         }
@@ -103,6 +108,8 @@ public class GameManager : MonoBehaviour
 
         if (foundUI != null)
         {
+            NormalizePauseCanvasLayout(foundUI);
+
             // Pastikan PauseMenuBinder terpasang agar event tombol tidak hilang saat ganti scene
             if (foundUI.GetComponent<PauseMenuBinder>() == null)
             {
@@ -119,19 +126,50 @@ public class GameManager : MonoBehaviour
         return foundUI;
     }
 
+    private void NormalizePauseCanvasLayout(GameObject target)
+    {
+        if (target == null) return;
+
+        Canvas canvas = target.GetComponentInParent<Canvas>(true);
+        if (canvas != null && canvas.name.Contains("Canvas_Pause"))
+        {
+            UnityEngine.UI.CanvasScaler scaler = canvas.GetComponent<UnityEngine.UI.CanvasScaler>();
+            if (scaler != null)
+            {
+                scaler.uiScaleMode = UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1920f, 1080f);
+                scaler.matchWidthOrHeight = 0.5f;
+            }
+        }
+
+        Transform scope = canvas != null ? canvas.transform : target.transform;
+        foreach (Transform t in scope.GetComponentsInChildren<Transform>(true))
+        {
+            if (t.name.StartsWith("TitleBackground") || t.name == "ControlHints" || t.name == "ControlsPanel")
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bool currentlyPaused = isPaused || (PauseManager.Instance != null && PauseManager.Instance.IsPaused);
-            if (currentlyPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            TogglePause();
+        }
+    }
+
+    public void TogglePause()
+    {
+        bool currentlyPaused = isPaused || (PauseManager.Instance != null && PauseManager.Instance.IsPaused);
+        if (currentlyPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
         }
     }
 
@@ -145,13 +183,16 @@ public class GameManager : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
-        if (pauseMenuUI == null)
+        DeactivateAllPauseUIInActiveScene();
+
+        if (pauseMenuUI == null || pauseMenuUI.name == "Canvas" || pauseMenuUI.name == "Canvas_HUD")
         {
             pauseMenuUI = FindPauseMenuUI();
         }
 
         if (pauseMenuUI != null)
         {
+            NormalizePauseCanvasLayout(pauseMenuUI);
             Transform parentCanvas = pauseMenuUI.transform.parent;
             if (parentCanvas != null && parentCanvas.GetComponent<Canvas>() != null)
             {
@@ -171,7 +212,7 @@ public class GameManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
 
-        if (pauseMenuUI != null)
+        if (pauseMenuUI != null && pauseMenuUI.name != "Canvas" && pauseMenuUI.name != "Canvas_HUD")
         {
             pauseMenuUI.SetActive(false);
             Transform parentCanvas = pauseMenuUI.transform.parent;
@@ -186,7 +227,9 @@ public class GameManager : MonoBehaviour
         if (PauseManager.Instance != null)
         {
             PauseManager.Instance.SetPausedState(false);
-            if (PauseManager.Instance.pauseMenuUI != null)
+            if (PauseManager.Instance.pauseMenuUI != null &&
+                PauseManager.Instance.pauseMenuUI.name != "Canvas" &&
+                PauseManager.Instance.pauseMenuUI.name != "Canvas_HUD")
             {
                 PauseManager.Instance.pauseMenuUI.SetActive(false);
             }
@@ -196,21 +239,41 @@ public class GameManager : MonoBehaviour
     private void DeactivateAllPauseUIInActiveScene()
     {
         Scene scene = SceneManager.GetActiveScene();
-        if (!scene.isLoaded) return;
-
-        foreach (GameObject root in scene.GetRootGameObjects())
+        if (scene.isLoaded)
         {
-            Transform[] descendants = root.GetComponentsInChildren<Transform>(true);
-            foreach (Transform child in descendants)
+            foreach (GameObject root in scene.GetRootGameObjects())
             {
-                if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                Transform[] descendants = root.GetComponentsInChildren<Transform>(true);
+                foreach (Transform child in descendants)
                 {
-                    child.gameObject.SetActive(false);
+                    if (child.name == "PauseMenuUI" || child.name == "PauseMenuPanel")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
+                    else if (child.name == "Canvas_Pause")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
                 }
-                else if (child.name == "Canvas_Pause")
-                {
-                    child.gameObject.SetActive(false);
-                }
+            }
+        }
+
+        // Matikan Canvas_Pause nyasar di DontDestroyOnLoad agar tidak pernah double
+        foreach (Canvas c in FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (c != null && c.name == "Canvas_Pause" && c.gameObject.scene != scene)
+            {
+                c.gameObject.SetActive(false);
+            }
+        }
+
+        // Matikan prefab pause hijau lama (Assets/Prefabs_Reg/PauseMenu.prefab) jika masih ada di scene
+        foreach (PauseMenu legacyPause in FindObjectsByType<PauseMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (legacyPause != null)
+            {
+                if (legacyPause.container != null) legacyPause.container.SetActive(false);
+                legacyPause.gameObject.SetActive(false);
             }
         }
     }

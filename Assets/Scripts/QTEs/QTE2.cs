@@ -24,6 +24,12 @@ public class QTE2 : MonoBehaviour
     [Header("Quest Objective")]
     [SerializeField] private string objectiveID = "perahu_friwen";
 
+    [Header("Audio SFX")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip successSfx;
+    [SerializeField] private AudioClip failSfx;
+    [SerializeField, Range(0f, 1f)] private float sfxVolume = 1f;
+
     [Header("Events")]
     public UnityEvent onSuccess;
     public UnityEvent onFail;
@@ -143,6 +149,8 @@ public class QTE2 : MonoBehaviour
         isActive = false;
         isCompleted = true;
 
+        PlayQteSfx(successSfx);
+
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, 1);
@@ -161,7 +169,20 @@ public class QTE2 : MonoBehaviour
 
         Debug.Log($"[QTE2] GAGAL! Alasan: {reason}");
 
+        PlayQteSfx(failSfx);
         onFail?.Invoke();
         gameObject.SetActive(false);
+    }
+
+    private void PlayQteSfx(AudioClip clip)
+    {
+        if (clip == null) return;
+        GameObject tempGo = new GameObject("QTE2_OneShotSFX");
+        AudioSource src = tempGo.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.volume = sfxVolume;
+        src.spatialBlend = 0f;
+        src.Play();
+        Destroy(tempGo, clip.length + 0.1f);
     }
 }

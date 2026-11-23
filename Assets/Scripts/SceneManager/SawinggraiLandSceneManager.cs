@@ -14,7 +14,9 @@ public class SawinggraiLandSceneManager : MonoBehaviour
 
     [Header("Referensi Quest 3 (Penjual Foto & Burung)")]
     [SerializeField] private GameObject penjualFotoQuest;  // NPC Penjual aktif di Stage 6
+    [SerializeField] private GameObject penjualFotoAfterQuest;  // NPC Penjual aktif di Stage 7 (Setelah Quest Selesai)
     [SerializeField] private GameObject burungCendrawasih; // Target QTE aktif di Stage 6
+    [SerializeField] private GameObject[] stepCendrawasih; // Langkah-langkah Cendrawasih, aktif hanya di Stage 6
 
     [Header("Referensi NPC Locked & Unlocked")]
     [Tooltip("NPC saat quest masih terkunci")]
@@ -32,6 +34,8 @@ public class SawinggraiLandSceneManager : MonoBehaviour
     private void Start()
     {
         if (MasterQuestManager.Instance == null) return;
+        MasterQuestManager.Instance.SetActiveIsland(IslandType.Sawinggrai);
+        MasterQuestManager.Instance.EnsureStageInitialized();
         Debug.Log("<color=cyan>STAGE SAAT INI ADALAH: " + MasterQuestManager.Instance.CurrentStage + "</color>");
         RefreshLandState();
 
@@ -73,9 +77,22 @@ public class SawinggraiLandSceneManager : MonoBehaviour
             penjualFotoQuest.SetActive(stage == 6); // Baru bisa diajak bicara saat disuruh Warlok 2
         }
 
+        if (penjualFotoAfterQuest != null)
+        {
+            penjualFotoAfterQuest.SetActive(stage >= 7); // Baru bisa diajak bicara setelah selesai quest
+        }
+
+        if (stepCendrawasih != null && stepCendrawasih.Length > 0)
+        {
+            for (int i = 0; i < stepCendrawasih.Length; i++)
+            {
+                stepCendrawasih[i].SetActive(stage == 6); // Semua langkah aktif saat stage 6, mati saat stage lain
+            }
+        }
+
         if (burungCendrawasih != null)
         {
-            burungCendrawasih.SetActive(stage >= 0 && stage <= 6); // Cendrawasih aktif saat pemain free roam, mati saat sudah disuruh Warlok 2
+            burungCendrawasih.SetActive(stage >= 6 && stage <= 7); // Cendrawasih aktif saat pemain free roam, mati saat sudah disuruh Warlok 2
         }
 
         // 3. PENGATURAN NPC LOCKED & UNLOCKED

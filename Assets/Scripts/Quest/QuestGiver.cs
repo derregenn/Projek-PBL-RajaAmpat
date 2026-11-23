@@ -13,10 +13,22 @@ public class QuestGiver : MonoBehaviour
     [Tooltip("ID Quest yang harus sudah selesai sebelum quest ini bisa diberikan (kosongkan jika tidak ada syarat).")]
     [SerializeField] private string requiredPrerequisiteQuestID = "";
 
+    [Header("Auto Trigger on Scene Start")]
+    [SerializeField] private bool giveQuestOnStart = false;
+
     [Header("Physical Collision (2D)")]
     public bool giveQuestOnPlayerCollision = false;
 
     private bool hasGivenQuest = false;
+
+    private System.Collections.IEnumerator Start()
+    {
+        if (giveQuestOnStart)
+        {
+            yield return null;
+            GiveQuest();
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -90,5 +102,109 @@ public class QuestGiver : MonoBehaviour
     public void ResetGiver()
     {
         hasGivenQuest = false;
+    }
+}
+
+public static class QuestProgressionGate
+{
+    private static bool IsQuestCompletedAnySource(string id)
+    {
+        return QuestJournalManager.HasCompletedQuestIDPersistent(id)
+            || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id))
+            || (QuestController.Instance != null && QuestController.Instance.IsQuestCompleted(id));
+    }
+
+    private static bool IsQuestActiveOrCompletedAnySource(string id)
+    {
+        return (QuestController.Instance != null && (QuestController.Instance.IsQuestActive(id) || QuestController.Instance.IsQuestCompleted(id)))
+            || QuestJournalManager.HasCompletedQuestIDPersistent(id)
+            || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id));
+    }
+
+    private static bool IsObjectiveActive(string objId)
+    {
+        if (QuestController.Instance == null || string.IsNullOrEmpty(objId)) return false;
+        var activeQuests = QuestController.Instance.ActiveQuests;
+        for (int i = 0; i < activeQuests.Count; i++)
+        {
+            var q = activeQuests[i];
+            if (q != null && q.GetObjective(objId) != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool Passes(string requiredActiveObjectiveID, string requiredActiveOrCompletedQuestID, string requiredCompletedQuestID)
+    {
+        if (!string.IsNullOrEmpty(requiredCompletedQuestID))
+        {
+            if (requiredCompletedQuestID.IndexOf(',') < 0)
+            {
+                string id = requiredCompletedQuestID.Trim();
+                if (!string.IsNullOrEmpty(id) && !IsQuestCompletedAnySource(id)) return false;
+            }
+            else
+            {
+                string[] reqs = requiredCompletedQuestID.Split(',');
+                for (int i = 0; i < reqs.Length; i++)
+                {
+                    string id = reqs[i].Trim();
+                    if (!string.IsNullOrEmpty(id) && !IsQuestCompletedAnySource(id)) return false;
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(requiredActiveOrCompletedQuestID))
+        {
+            if (requiredActiveOrCompletedQuestID.IndexOf(',') < 0)
+            {
+                string id = requiredActiveOrCompletedQuestID.Trim();
+                if (!string.IsNullOrEmpty(id) && !IsQuestActiveOrCompletedAnySource(id)) return false;
+            }
+            else
+            {
+                string[] anyIds = requiredActiveOrCompletedQuestID.Split(',');
+                bool matchedAny = false;
+                for (int i = 0; i < anyIds.Length; i++)
+                {
+                    string id = anyIds[i].Trim();
+                    if (!string.IsNullOrEmpty(id) && IsQuestActiveOrCompletedAnySource(id))
+                    {
+                        matchedAny = true;
+                        break;
+                    }
+                }
+                if (!matchedAny) return false;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(requiredActiveObjectiveID))
+        {
+            if (QuestController.Instance == null) return false;
+            if (requiredActiveObjectiveID.IndexOf(',') < 0)
+            {
+                string objId = requiredActiveObjectiveID.Trim();
+                if (!string.IsNullOrEmpty(objId) && !IsObjectiveActive(objId)) return false;
+            }
+            else
+            {
+                string[] objIds = requiredActiveObjectiveID.Split(',');
+                bool matchedObj = false;
+                for (int i = 0; i < objIds.Length; i++)
+                {
+                    string objId = objIds[i].Trim();
+                    if (!string.IsNullOrEmpty(objId) && IsObjectiveActive(objId))
+                    {
+                        matchedObj = true;
+                        break;
+                    }
+                }
+                if (!matchedObj) return false;
+            }
+        }
+
+        return true;
     }
 }

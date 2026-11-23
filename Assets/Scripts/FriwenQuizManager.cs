@@ -6,6 +6,8 @@ public class FriwenQuizManager : MonoBehaviour
     [Header("Referensi NPC & Panel")]
     public GameObject quizPanelUtama;    // GameObject kotak hitam Kuis
     public Dialogue scriptKuis;          // Skrip Dialogue NPC_Warlok2
+    [TextArea(2, 4)]
+    [SerializeField] private string triviaQuestionPrompt = "Mengapa kita dilarang keras menyenggol atau menginjak dinding karang saat berada di sekitar perairan Friwen Wall ?";
 
     [Header("Referensi Post-Trivia & Quest")]
     public Dialogue dialoguePostTrivia;  // Dialog "Nah kalau jalan terus..."
@@ -37,10 +39,10 @@ public class FriwenQuizManager : MonoBehaviour
         {
             quizPanelUtama.SetActive(true);
             
-            // 2. Munculkan teks pertanyaan trivia
+            // 2. Munculkan teks pertanyaan trivia dari Inspector
             if (scriptKuis != null)
             {
-                scriptKuis.ShowTriviaQuestion("Mengapa kita dilarang keras menyenggol atau menginjak dinding karang saat berada di sekitar perairan Friwen Wall ?");
+                scriptKuis.ShowTriviaQuestion(triviaQuestionPrompt);
             }
         }
     }

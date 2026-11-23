@@ -40,6 +40,20 @@ public class QuestController : MonoBehaviour
     public List<Quest> ActiveQuests { get; private set; }
         = new List<Quest>();
 
+    private readonly HashSet<string> completedQuestIDs = new HashSet<string>();
+
+    public bool IsQuestCompleted(string questID)
+    {
+        return !string.IsNullOrEmpty(questID) && completedQuestIDs.Contains(questID);
+    }
+
+    public void MarkQuestCompleted(string questID)
+    {
+        if (string.IsNullOrEmpty(questID)) return;
+        completedQuestIDs.Add(questID);
+        QuestJournalManager.InvalidatePersistentQuestCache();
+    }
+
     // Referensi untuk animasi panel
     [SerializeField] private QuestSlider questSliderAnim;
 
@@ -51,6 +65,11 @@ public class QuestController : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
+            TriviaQuizUI sceneTrivia = GetComponent<TriviaQuizUI>();
+            if (sceneTrivia != null)
+            {
+                TriviaQuizUI.AdoptOrAttachTo(_instance.gameObject, sceneTrivia);
+            }
             Destroy(gameObject);
             return;
         }
@@ -256,13 +275,27 @@ public class QuestController : MonoBehaviour
                 $"Objective Progress: {objective.ObjectiveID} {objective.CurrentAmount}/{objective.RequiredAmount}"
             );
 
-            // Update UI
-            if (questUI != null)
-                questUI.UpdateQuestUI();
+            // Update UI & tampilkan popup tracker untuk sub-objective berikutnya (jika quest belum selesai)
+            if (questUI == null)
+                questUI = FindFirstObjectByType<QuestUI>(FindObjectsInactive.Include);
 
-            // Cek quest selesai
-            if (IsQuestFinished(quest))
+            if (questSliderAnim == null)
+                questSliderAnim = FindFirstObjectByType<QuestSlider>(FindObjectsInactive.Include);
+
+            bool isFinished = IsQuestFinished(quest);
+
+            if (questUI != null)
+            {
+                if (!isFinished)
+                    questUI.SetQuest(quest);
+                else
+                    questUI.UpdateQuestUI();
+            }
+
+            if (isFinished)
                 CompleteQuest(quest);
+            else if (questSliderAnim != null)
+                questSliderAnim.ShowQuestPopup();
 
             return;
         }
@@ -385,6 +418,11 @@ public class QuestController : MonoBehaviour
 
         string completedQuestID = quest.QuestID;
         string completedQuestTitle = quest.QuestTitle;
+
+        if (!string.IsNullOrEmpty(completedQuestID))
+        {
+            completedQuestIDs.Add(completedQuestID);
+        }
 
         Debug.Log("================================");
         Debug.Log("QUEST COMPLETE: " + completedQuestTitle);

@@ -7,6 +7,8 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [Header("Quest Integration")]
     [SerializeField] private string objectiveID = "collect_trash";
     [SerializeField] private int amountToAdd = 1;
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
 
     [Header("Audio & FX (Opsional)")]
     [SerializeField] private AudioClip collectSound;
@@ -28,6 +30,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     // Sesuaikan dengan total sampah mentok yang ada di game kalian
     private int maxTrash = 20;
     private bool collectionInProgress;
+    private bool collected;
     public UnityEvent onInteractComplete; // Akan muncul di Inspector
 
     private void Awake()
@@ -45,7 +48,8 @@ public class TrashInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (collectionInProgress) return;
+        if (collected || collectionInProgress) return;
+        if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return;
 
         if (holdQTE != null)
         {
@@ -82,6 +86,9 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     // Dipanggil otomatis saat QTE2 berhasil.
     private void CompleteCollection()
     {
+        if (collected) return;
+        collected = true;
+
         if (holdQTE != null)
         {
             holdQTE.onSuccess.RemoveListener(CompleteCollection);
@@ -111,7 +118,19 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
         }
 
-        // 4. Update UI Progress Bar
+        // 4. Update UI Progress Bar & GlobalTrashManager (jika objek ini tidak memiliki TrashPickup)
+        if (GetComponent<TrashPickup>() == null)
+        {
+            // Hanya delegasi ke GlobalTrashManager jika tidak ada TrashPickup (sistem lama)
+            // Gunakan nama GameObject sebagai ID unik sementara
+            string legacyID = "Legacy_" + gameObject.scene.name + "_" + gameObject.GetInstanceID();
+            if (GlobalTrashManager.Instance != null)
+            {
+                GlobalTrashManager.Instance.CollectTrash(legacyID);
+                TrashCollectedHUD.Show();
+            }
+        }
+
         totalCollected += amountToAdd;
         PlayerPrefs.SetInt("TotalTrashCollected", totalCollected);
         PlayerPrefs.Save();
@@ -157,5 +176,9 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [Tooltip("Teks prompt saat didekati pemain. Biarkan kosong jika ingin default 'Ambil Sampah'")]
     [SerializeField] private string customPrompt = "";
 
-    public string GetPromptText() => string.IsNullOrEmpty(customPrompt) ? "Ambil Sampah" : customPrompt;
+    public string GetPromptText()
+    {
+        if (!QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID)) return "";
+        return string.IsNullOrEmpty(customPrompt) ? "Ambil Sampah" : customPrompt;
+    }
 }

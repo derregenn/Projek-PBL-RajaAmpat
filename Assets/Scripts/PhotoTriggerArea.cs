@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PhotoTriggerArea : MonoBehaviour
 {
@@ -21,16 +22,62 @@ public class PhotoTriggerArea : MonoBehaviour
     public KeyCode interactKey = KeyCode.F; // Tombol F sesuai permintaan
 
     [Header("Events")]
+    [Tooltip("Jika dicentang, onObjectiveEnd menunggu hingga popup Polaroid selesai tampil sebelum dipanggil.")]
+    [SerializeField] private bool waitForPolaroidBeforeEnd = false;
     [Tooltip("Dipanggil tepat setelah foto berhasil diambil & objective quest diproses")]
     public UnityEvent onObjectiveEnd;
 
     private bool isPlayerInRange = false;
     private bool isPhotoTaken = false;
+    private bool isShowingPrompt = false;
+
+    private void EnsurePromptReference()
+    {
+        if (photoPromptPanel != null) return;
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (!activeScene.isLoaded) return;
+        GameObject[] roots = activeScene.GetRootGameObjects();
+        GameObject fallback = null;
+        for (int r = 0; r < roots.Length; r++)
+        {
+            if (roots[r] == null) continue;
+            Transform[] all = roots[r].GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] == null) continue;
+                if (all[i].name == "PhotoPromptPanel")
+                {
+                    photoPromptPanel = all[i].gameObject;
+                    return;
+                }
+                if (fallback == null && all[i].name == "PromptPanelFoto")
+                {
+                    fallback = all[i].gameObject;
+                }
+            }
+        }
+        if (fallback != null) photoPromptPanel = fallback;
+    }
+
+    private void SetPromptVisible(bool visible)
+    {
+        if (visible)
+        {
+            EnsurePromptReference();
+            if (photoPromptPanel != null && !photoPromptPanel.activeSelf) photoPromptPanel.SetActive(true);
+            isShowingPrompt = photoPromptPanel != null;
+        }
+        else
+        {
+            if (isShowingPrompt && photoPromptPanel != null && photoPromptPanel.activeSelf) photoPromptPanel.SetActive(false);
+            isShowingPrompt = false;
+        }
+    }
 
     private void Start()
     {
-        // Sembunyikan UI Prompt Foto di awal game
-        if (photoPromptPanel != null)
+        EnsurePromptReference();
+        if (photoPromptPanel != null && !isPlayerInRange)
         {
             photoPromptPanel.SetActive(false);
         }
@@ -45,9 +92,22 @@ public class PhotoTriggerArea : MonoBehaviour
     private void Update()
     {
         // Menekan tombol F saat berada di area foto
-        if (isPlayerInRange && !isPhotoTaken && Input.GetKeyDown(interactKey))
+        if (isPlayerInRange && !isPhotoTaken)
         {
-            TakeAreaPhoto();
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen)
+            {
+                SetPromptVisible(false);
+                return;
+            }
+            SetPromptVisible(true);
+            if (Input.GetKeyDown(interactKey))
+            {
+                TakeAreaPhoto();
+            }
+        }
+        else if (isShowingPrompt)
+        {
+            SetPromptVisible(false);
         }
     }
 
@@ -58,10 +118,18 @@ public class PhotoTriggerArea : MonoBehaviour
             isPlayerInRange = true;
 
             // Munculkan UI Prompt Foto saat player mendekat ke area
-            if (!isPhotoTaken && photoPromptPanel != null)
+            if (!isPhotoTaken && !InteractionInputLock.IsAnyModalBlockingWorldInteract && !InteractionInputLock.IsSignboardOpen)
             {
-                photoPromptPanel.SetActive(true);
+                SetPromptVisible(true);
             }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") || (other.transform.root != null && other.transform.root.CompareTag("Player")))
+        {
+            isPlayerInRange = true;
         }
     }
 
@@ -72,11 +140,14 @@ public class PhotoTriggerArea : MonoBehaviour
             isPlayerInRange = false;
 
             // Sembunyikan UI Prompt Foto saat player menjauh
-            if (photoPromptPanel != null)
-            {
-                photoPromptPanel.SetActive(false);
-            }
+            SetPromptVisible(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        isPlayerInRange = false;
+        SetPromptVisible(false);
     }
 
     private void TakeAreaPhoto()
@@ -84,31 +155,42 @@ public class PhotoTriggerArea : MonoBehaviour
         isPhotoTaken = true;
 
         // Langsung matikan UI Prompt Foto saat tombol F ditekan
-        if (photoPromptPanel != null)
-        {
-            photoPromptPanel.SetActive(false);
-        }
-
-        // 1. Panggil QuestJournalManager untuk mengurus Flash, Polaroid Popup, dan Jurnal secara terpusat
-        if (QuestJournalManager.Instance != null)
-        {
-            QuestJournalManager.Instance.TakeSpecificPhoto(photoID);
-            QuestJournalManager.Instance.UnlockNewPage(pageIDToUnlock);
-            Debug.Log($"[PhotoTrigger] Foto ID {photoID} diambil & Halaman Jurnal ID {pageIDToUnlock} dibuka!");
-        }
-        else
-        {
-            Debug.LogWarning("[PhotoTrigger] QuestJournalManager.Instance tidak ditemukan di scene!");
-        }
+        SetPromptVisible(false);
 
         // 2. Progress Objective Quest
         if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
         {
             QuestController.Instance.ProgressObjective(objectiveID, 1);
+            if (objectiveID == "foto_friwen")
+            {
+                QuestController.Instance.MarkQuestCompleted("03_Friwen");
+                if (QuestJournalManager.Instance != null)
+                {
+                    QuestJournalManager.Instance.RecordCompletedQuest("03_Friwen", "Foto Friwen");
+                }
+            }
             Debug.Log($"[PhotoTrigger] Quest Objective '{objectiveID}' Berhasil!");
         }
 
-        // 3. Panggil Event Transisi Layar
-        onObjectiveEnd?.Invoke();
+        // 1 & 3. Panggil QuestJournalManager + Event Transisi Layar (tunggu Polaroid jika diaktifkan di Inspector)
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.UnlockNewPage(pageIDToUnlock);
+            if (waitForPolaroidBeforeEnd)
+            {
+                QuestJournalManager.Instance.TakeSpecificPhoto(photoID, () => onObjectiveEnd?.Invoke());
+            }
+            else
+            {
+                QuestJournalManager.Instance.TakeSpecificPhoto(photoID);
+                onObjectiveEnd?.Invoke();
+            }
+            Debug.Log($"[PhotoTrigger] Foto ID {photoID} diambil & Halaman Jurnal ID {pageIDToUnlock} dibuka!");
+        }
+        else
+        {
+            Debug.LogWarning("[PhotoTrigger] QuestJournalManager.Instance tidak ditemukan di scene!");
+            onObjectiveEnd?.Invoke();
+        }
     }
 }

@@ -24,6 +24,9 @@ public class PianemoLandSceneManager : MonoBehaviour
     [SerializeField] private GameObject petugasPengaman;
 
     [Header("Referensi Quest 4 & 5 (Panjat Tebing & Viewpoint Foto)")]
+    [Tooltip("Stage aktifnya trigger panjat tebing (default 4, setelah bicara dengan Petugas Pengaman)")]
+    [SerializeField] private int tebingClimbStage = 4;
+
     [Tooltip("Trigger interaksi panjat tebing")]
     [SerializeField] private GameObject tebingClimbTrigger;
 
@@ -63,12 +66,7 @@ public class PianemoLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance != null)
         {
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Piaynemo);
-
-            if (MasterQuestManager.Instance.CurrentStage < 1)
-            {
-                MasterQuestManager.Instance.AdvanceStageTo(1);
-            }
-
+            MasterQuestManager.Instance.EnsureStageInitialized();
             Debug.Log($"<color=cyan>[PianemoLandSceneManager] STAGE PIANEMO SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 
@@ -113,10 +111,10 @@ public class PianemoLandSceneManager : MonoBehaviour
             petugasPengaman.SetActive(stage >= 2);
         }
 
-        // Stage 4: Panjat tebing
+        // Stage 4: Panjat tebing (hanya aktif setelah bicara dengan Petugas Pengaman, nonaktif begitu sampai atas)
         if (tebingClimbTrigger != null)
         {
-            tebingClimbTrigger.SetActive(stage >= 3);
+            tebingClimbTrigger.SetActive(stage == tebingClimbStage);
         }
 
         // Stage 5: Foto viewpoint

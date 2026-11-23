@@ -34,6 +34,9 @@ public class Player : MonoBehaviour
     // Dictionary pencarian cepat (Key: Jenis Tanah -> Value: Audio Clip)
     private Dictionary<SurfaceKind, AudioClip> surfaceAudioDict = new Dictionary<SurfaceKind, AudioClip>();
     private AudioClip currentRunClip;
+    private Collider2D lastSurfaceCollider;
+    private bool isCrouching = false;
+    private bool isCrouchingGagVariant = false;
 
     void Start()
     {
@@ -65,11 +68,50 @@ public class Player : MonoBehaviour
         audioSource.playOnAwake = false;
         audioSource.loop = true;
         audioSource.pitch = audioPitch;
+
+        isCrouching = false;
+        isCrouchingGagVariant = false;
+        if (animator != null)
+        {
+            if (HasBoolParam("isCrouching")) animator.SetBool("isCrouching", false);
+            if (HasBoolParam("isCrouchingGag")) animator.SetBool("isCrouchingGag", false);
+            if (animator.HasState(0, Animator.StringToHash("Player_Idle")))
+            {
+                animator.Play("Player_Idle");
+            }
+        }
+
+        HideInactivePlayerDialogueBoxes();
+    }
+
+    private void HideInactivePlayerDialogueBoxes()
+    {
+        if (InteractionInputLock.IsDialogueActive) return;
+
+        Canvas[] canvases = GetComponentsInChildren<Canvas>(true);
+        for (int i = 0; i < canvases.Length; i++)
+        {
+            Canvas canvas = canvases[i];
+            if (canvas == null) continue;
+            if (canvas.gameObject.name.IndexOf("DialogueCanvas", System.StringComparison.OrdinalIgnoreCase) < 0) continue;
+
+            Transform[] children = canvas.GetComponentsInChildren<Transform>(true);
+            for (int j = 0; j < children.Length; j++)
+            {
+                Transform child = children[j];
+                if (child == null) continue;
+                string childName = child.name;
+                if (childName == "DialogueBox" || childName == "NextButton" || childName == "Btn_Next" || childName == "NextPrompt")
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 
     void Update()
     {
-        if (isMovementLocked)
+        if (isMovementLocked || isCrouching)
         {
             if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
             {
@@ -98,6 +140,29 @@ public class Player : MonoBehaviour
 
         SetAnimation(moveInput);
         UpdateMovementAudio(moveInput);
+    }
+
+    private void FixedUpdate()
+    {
+        if ((isMovementLocked || isCrouching) && rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    public void SetCrouching(bool crouching, bool gagVariant)
+    {
+        isCrouching = crouching;
+        isCrouchingGagVariant = crouching && gagVariant;
+
+        if (crouching)
+        {
+            if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+            UpdateMovementAudio(0f);
+        }
     }
 
     private void UpdateMovementAudio(float moveInput)
@@ -134,7 +199,17 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (other == lastSurfaceCollider) return;
+        lastSurfaceCollider = other;
         CheckSurface(other.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other == lastSurfaceCollider)
+        {
+            lastSurfaceCollider = null;
+        }
     }
 
     private void CheckSurface(GameObject obj)
@@ -164,6 +239,30 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (isCrouching && isCrouchingGagVariant)
+        {
+            if (animator.HasState(0, Animator.StringToHash("Player_Crouch_Gag")) &&
+                !animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Crouch_Gag"))
+            {
+                animator.Play("Player_Crouch_Gag");
+            }
+            return;
+        }
+
+        if (!isCrouching && HasBoolParam("isCrouchingGag") && animator.GetBool("isCrouchingGag"))
+        {
+            animator.SetBool("isCrouchingGag", false);
+        }
+
+        if (isCrouching || (HasBoolParam("isCrouching") && animator.GetBool("isCrouching")))
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Crouch"))
+            {
+                animator.Play("Player_Crouch");
+            }
+            return;
+        }
+
         if (moveInput == 0)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Idle"))
@@ -178,6 +277,23 @@ public class Player : MonoBehaviour
                 animator.Play("Player_Run");
             }
         }
+    }
+
+    private bool HasBoolParam(string paramName)
+    {
+        if (animator == null || string.IsNullOrEmpty(paramName)) return false;
+
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            if (parameters[i].type == AnimatorControllerParameterType.Bool &&
+                parameters[i].name == paramName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void StartSwimming()

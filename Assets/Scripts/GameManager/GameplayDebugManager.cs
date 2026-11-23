@@ -53,6 +53,7 @@ public class GameplayDebugManager : MonoBehaviour
         "09_Laut Sawinggrai",
         "10_Gag",
         "11_Waisai Ending",
+        "12_CutsceneAirstripEnding",
         "Cutscene_BoatToIsland"
     };
 

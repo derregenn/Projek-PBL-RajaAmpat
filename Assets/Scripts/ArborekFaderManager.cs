@@ -3,13 +3,23 @@ using UnityEngine;
 
 public class ArborekFaderManager : MonoBehaviour
 {
-    private bool isTransitioning = false; 
+    public static bool IsAnyTransitioning { get; private set; }
+    private bool isTransitioning = false;
 
     [Header("Pengaturan Durasi Fade")]
-    [Tooltip("Waktu dari layar terang sampai benar-benar hitam pekat.")]
-    public float durasiMenujuHitam = 1.0f; 
+    [Tooltip("Waktu tunggu menuju hitam jika ScreenFader tidak tersedia.")]
+    public float durasiMenujuHitam = 1.0f;
+    [Tooltip("Jeda layar hitam sebelum kembali terang (detik).")]
+    public float durasiTahanHitam = 0.5f;
     [Tooltip("Waktu dari layar hitam pekat sampai terang kembali.")]
     public float durasiMenujuTerang = 1.0f;
+
+    [Header("Stage Target Setelah Fade (Inspector)")]
+    [SerializeField] private int stageAfterTransition1 = 3;
+    [SerializeField] private int stageAfterSasi = 4;
+    [SerializeField] private int stageAfterTransition2 = 5;
+    [SerializeField] private int stageAfterTransition3 = 6;
+    [SerializeField] private int stageAfterTransition4 = 7;
 
     [Header("Transisi 1 (Awal -> Terima Karang)")]
     public GameObject npcMatiTransisi1;
@@ -77,46 +87,33 @@ public class ArborekFaderManager : MonoBehaviour
 
     // --- METHOD PEMANGGIL TRANSISI ---
 
+    private void Awake()
+    {
+        IsAnyTransitioning = false;
+    }
+
+    private void OnDestroy()
+    {
+        IsAnyTransitioning = false;
+    }
+
     public void PlayTransition1()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi1, npcHidupTransisi1, true, 1));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi1, npcHidupTransisi1, true, 1, stageAfterTransition1));
     }
 
     public void PlayTransitionSasi()
     {
         ResolveSasiNPCReferences();
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2, stageAfterSasi));
     }
 
     public void CompleteSasiImmediateAndTransition()
     {
         ResolveSasiNPCReferences();
-
-        // Langsung matikan NPC_TetuaAdat_Sasi_Before dan aktifkan NPC_TetuaAdat_Sasi_After begitu titik sasi kedua selesai
-        if (npcSasiBefore != null && !npcSasiBefore.name.Contains("TitikSasi"))
-        {
-            ResetNPCCamera(npcSasiBefore);
-            npcSasiBefore.SetActive(false);
-        }
-        if (npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
-        {
-            ResetNPCCamera(npcHidupTransisi1);
-            npcHidupTransisi1.SetActive(false);
-        }
-        if (npcSasiAfter != null)
-        {
-            QuestGiver enableGiver = npcSasiAfter.GetComponent<QuestGiver>();
-            if (enableGiver != null)
-            {
-                enableGiver.enabled = true;
-                enableGiver.giveQuestOnPlayerCollision = false;
-            }
-            npcSasiAfter.SetActive(true);
-        }
-
         if (!isTransitioning)
         {
-            StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2));
+            StartCoroutine(FadeAndSwap(npcSasiBefore, npcSasiAfter, true, 2, stageAfterSasi));
         }
     }
 
@@ -158,32 +155,35 @@ public class ArborekFaderManager : MonoBehaviour
 
     public void PlayTransition2()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi2, npcHidupTransisi2, true, 3));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcMatiTransisi2, npcHidupTransisi2, true, 3, stageAfterTransition2));
     }
 
     public void PlayTransition3()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcFotografi, npcTourGuide, false, 4));
+        if (!isTransitioning) StartCoroutine(FadeAndSwap(npcFotografi, npcTourGuide, false, 4, stageAfterTransition3));
     }
 
     // PANGGIL METHOD INI SETELAH QUEST FOTO / DIALOG TOUR GUIDE SELESAI
     public void PlayTransition4()
     {
-        if (!isTransitioning) StartCoroutine(FadeAndHideBoth(npcFotoToHide, npcTourGuideToHide));
+        if (!isTransitioning) StartCoroutine(FadeAndHideBoth(npcFotoToHide, npcTourGuideToHide, stageAfterTransition4));
     }
 
     // --- COROUTINES UTAMA ---
 
-    private IEnumerator FadeAndSwap(GameObject npcToDisable, GameObject npcToEnable, bool disableOldNpc, int transitionType = 0)
+    private IEnumerator FadeAndSwap(GameObject npcToDisable, GameObject npcToEnable, bool disableOldNpc, int transitionType = 0, int targetStageAfterFade = -1)
     {
-        isTransitioning = true; 
+        isTransitioning = true;
+        IsAnyTransitioning = true;
 
         if (ScreenFader.Instance != null)
         {
-            StartCoroutine(ScreenFader.Instance.FadeOutRoutine()); 
+            yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
         }
-
-        yield return new WaitForSecondsRealtime(durasiMenujuHitam);
+        else
+        {
+            yield return new WaitForSecondsRealtime(durasiMenujuHitam);
+        }
 
         CloseDialogueUI();
 
@@ -199,13 +199,13 @@ public class ArborekFaderManager : MonoBehaviour
             {
                 Collider2D col = npcToDisable.GetComponent<Collider2D>();
                 if (col != null) col.enabled = false;
-                
+
                 Dialogue oldDialogue = npcToDisable.GetComponentInChildren<Dialogue>();
                 if (oldDialogue != null) oldDialogue.enabled = false;
             }
         }
 
-        // Pada Transisi Sasi, pastikan NPC_TetuaAdat_Sasi_Before juga ikut disembunyikan
+        // Pada Transisi Sasi, pastikan NPC_TetuaAdat_Sasi_Before juga ikut disembunyikan saat layar sudah gelap
         if (transitionType == 2 && npcHidupTransisi1 != null && !npcHidupTransisi1.name.Contains("TitikSasi"))
         {
             ResetNPCCamera(npcHidupTransisi1);
@@ -261,28 +261,40 @@ public class ArborekFaderManager : MonoBehaviour
             SetTrackerHint("Bicara dengan Tour Guide");
         }
 
-        yield return new WaitForSecondsRealtime(0.5f); 
+        isTransitioning = false;
+        IsAnyTransitioning = false;
+
+        if (targetStageAfterFade >= 0 && MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < targetStageAfterFade)
+        {
+            MasterQuestManager.Instance.AdvanceStageTo(targetStageAfterFade);
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, durasiTahanHitam));
 
         if (ScreenFader.Instance != null)
         {
-            StartCoroutine(ScreenFader.Instance.FadeInRoutine());
+            yield return StartCoroutine(ScreenFader.Instance.FadeInRoutine());
         }
-
-        yield return new WaitForSecondsRealtime(durasiMenujuTerang);
-        isTransitioning = false; 
+        else
+        {
+            yield return new WaitForSecondsRealtime(durasiMenujuTerang);
+        }
     }
 
-    private IEnumerator FadeAndHideBoth(GameObject npc1, GameObject npc2)
+    private IEnumerator FadeAndHideBoth(GameObject npc1, GameObject npc2, int targetStageAfterFade = 7)
     {
         isTransitioning = true;
+        IsAnyTransitioning = true;
 
-        // 1. Fade ke hitam
+        // 1. Fade ke hitam hingga layar benar-benar gelap sebelum NPC hilang
         if (ScreenFader.Instance != null)
         {
-            StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
+            yield return StartCoroutine(ScreenFader.Instance.FadeOutRoutine());
         }
-
-        yield return new WaitForSecondsRealtime(durasiMenujuHitam);
+        else
+        {
+            yield return new WaitForSecondsRealtime(durasiMenujuHitam);
+        }
 
         // 2. Hilangkan kedua NPC & reset kamera saat layar hitam pekat
         CloseDialogueUI();
@@ -312,16 +324,25 @@ public class ArborekFaderManager : MonoBehaviour
         }
         SetTrackerHint("Kembali ke Dermaga Arborek");
 
-        yield return new WaitForSecondsRealtime(0.5f);
+        isTransitioning = false;
+        IsAnyTransitioning = false;
+
+        if (targetStageAfterFade >= 0 && MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < targetStageAfterFade)
+        {
+            MasterQuestManager.Instance.AdvanceStageTo(targetStageAfterFade);
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, durasiTahanHitam));
 
         // 3. Fade kembali terang
         if (ScreenFader.Instance != null)
         {
-            StartCoroutine(ScreenFader.Instance.FadeInRoutine());
+            yield return StartCoroutine(ScreenFader.Instance.FadeInRoutine());
         }
-
-        yield return new WaitForSecondsRealtime(durasiMenujuTerang);
-        isTransitioning = false;
+        else
+        {
+            yield return new WaitForSecondsRealtime(durasiMenujuTerang);
+        }
     }
 
     private void SetTrackerHint(string hintText)
