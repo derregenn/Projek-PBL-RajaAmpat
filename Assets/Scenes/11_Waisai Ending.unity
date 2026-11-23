@@ -537,6 +537,10 @@ MonoBehaviour:
   onInfographicClosed:
     m_PersistentCalls:
       m_Calls: []
+  voiceOverClip: {fileID: 0}
+  voiceOverAudioSource: {fileID: 0}
+  autoCloseAfterVoiceOver: 1
+  extraDelayAfterVoiceOver: 0.25
 --- !u!4 &49479234
 Transform:
   m_ObjectHideFlags: 0
@@ -2050,22 +2054,142 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1335368526}
     m_Modifications:
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1826519293}
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PindahKePulau
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapTeleport, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 07_Friwen
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1826519293}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PindahKePulau
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapTeleport, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 10_Gag
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
+    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PindahKePulau
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapTeleport, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 04_Misool
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1714499749916584301, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
     - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
+    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PindahKePulau
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapTeleport, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 02_Waisai
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2944844234315495321, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3008473203205209840, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4409511276344703766, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_Name
       value: MapMenuPanel
@@ -2075,13 +2199,65 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
+    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PindahKePulau
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapTeleport, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 05_Arborek
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PindahKePulau
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapTeleport, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 06_Sawinggrai
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253729619575513762, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8809055801580988383, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2175,57 +2351,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1826519293}
-    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936132833303202205, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2944844234315495321, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8253729619575513762, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PindahKePulau
-      objectReference: {fileID: 0}
-    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2504507495486008014, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 02_Waisai
-      objectReference: {fileID: 0}
-    - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2237,142 +2369,14 @@ PrefabInstance:
     - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: 03_Pianemo
       objectReference: {fileID: 0}
-    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PindahKePulau
-      objectReference: {fileID: 0}
-    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
+    - target: {fileID: 9060716533774147813, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1695845392888845263, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 04_Misool
-      objectReference: {fileID: 0}
-    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PindahKePulau
-      objectReference: {fileID: 0}
-    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 5116440964072705189, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 05_Arborek
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PindahKePulau
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772913476715460958, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 06_Sawinggrai
-      objectReference: {fileID: 0}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1826519293}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PindahKePulau
-      objectReference: {fileID: 0}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1080339175503950512, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 07_Friwen
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1826519293}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PindahKePulau
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MapTeleport, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306552396042003025, guid: 136341edc56074f4eb53e2410e49e9ee, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 10_Gag
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2571,15 +2575,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.06390625
+      value: 0.051125
       objectReference: {fileID: 0}
     - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.06390625
+      value: 0.051125
       objectReference: {fileID: 0}
     - target: {fileID: 5631512482485545516, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.7528224
+      value: 4.5965724
       objectReference: {fileID: 0}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: hasMap
@@ -2619,15 +2623,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7899907357164400543, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3100866956964956624, guid: d9eef132e72927948852f0a723f816bb, type: 3}
@@ -2761,6 +2765,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
       objectReference: {fileID: 8300000, guid: cdf77fc27ca77c24bb9450a19d2fe2d4, type: 3}
@@ -2811,7 +2819,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1018312838596912229, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1349388061}
   m_SourcePrefab: {fileID: 100100000, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
 --- !u!1 &681049216 stripped
 GameObject:
@@ -3294,6 +3305,7 @@ MonoBehaviour:
   questToGive: {fileID: 0}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 1
 --- !u!114 &756967812
 MonoBehaviour:
@@ -3314,6 +3326,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 346163010}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - ini quest ya
   DialogueLineSpeakers: 
@@ -3332,13 +3348,21 @@ MonoBehaviour:
   dialogueCamera: {fileID: 1410084802}
   npcLensSize: 2
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls: []
   postQuestLoopLines: []
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &756967813
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3431,7 +3455,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -72866051
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
@@ -4159,11 +4183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.22
+      value: 33.22001
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.74
+      value: -2.98
       objectReference: {fileID: 0}
     - target: {fileID: 4401933867901024693, guid: 5be7df9ae1ba0744b8af4505490f19e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4348,7 +4372,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[3]'
-      value: Gugusan bukit karst di Piaynemo, keramahan warga Arborek, sampai melihat Pari Manta di Misool
+      value: Gugusan bukit karst di Piaynemo, keramahan warga Arborek, sampai melihat
+        Pari Manta di Misool
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[4]'
@@ -4380,7 +4405,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[11]'
-      value: Tentang empati, dan mau peduli sama krisis yang terjadi di balik keindahan itu
+      value: Tentang empati, dan mau peduli sama krisis yang terjadi di balik keindahan
+        itu
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[12]'
@@ -4400,11 +4426,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[16]'
-      value: Disini tertulis kalau kamu memunguti semua sampah yang kamu temui di setiap pulau?
+      value: Disini tertulis kalau kamu memunguti semua sampah yang kamu temui di
+        setiap pulau?
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[17]'
-      value: Hehe, iya. Rasanya gatal saja kalau melihat ada sampah plastik mengotori pulau-pulau seindah ini.
+      value: Hehe, iya. Rasanya gatal saja kalau melihat ada sampah plastik mengotori
+        pulau-pulau seindah ini.
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[18]'
@@ -4412,11 +4440,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[19]'
-      value: Tapi sangat sedikit yang mau rela mengotori tangannya demi kebersihan laut disini
+      value: Tapi sangat sedikit yang mau rela mengotori tangannya demi kebersihan
+        laut disini
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[20]'
-      value: Tindakan kecilmu ini sangat berarti bagi keselamatan dan kelestarian lingkungan disini!
+      value: Tindakan kecilmu ini sangat berarti bagi keselamatan dan kelestarian
+        lingkungan disini!
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[21]'
@@ -4447,8 +4477,24 @@ PrefabInstance:
       value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: postQuestLoopLines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'postQuestLoopLines.Array.data[0]'
+      value: Nah, sebentar lagi pesawat berangkat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'postQuestLoopLines.Array.data[1]'
+      value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
@@ -4490,6 +4536,18 @@ PrefabInstance:
       propertyPath: 'DialogueLineSpeakers.Array.data[9]'
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[13]'
+      value: 
+      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[14]'
+      value: 
+      objectReference: {fileID: 1152562164777448990, guid: 5d9bf956ed39f924cb3a0c67042d7767, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[15]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[10]'
       value: 0
@@ -4562,34 +4620,6 @@ PrefabInstance:
       propertyPath: 'DialogueLineSpeakers.Array.data[27]'
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: postQuestLoopLines.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'postQuestLoopLines.Array.data[0]'
-      value: Nah, sebentar lagi pesawat berangkat
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'postQuestLoopLines.Array.data[1]'
-      value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: DialogueLineSprites.Array.size
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[13]'
-      value: 
-      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[14]'
-      value: 
-      objectReference: {fileID: 1152562164777448990, guid: 5d9bf956ed39f924cb3a0c67042d7767, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[15]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -5146,7 +5176,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1698487427
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 358285822986629120, guid: 701acbba5737f884e92b244cdc6882b9, type: 3}
@@ -5551,7 +5581,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[3]'
-      value: Gugusan bukit karst di Piaynemo, keramahan warga Arborek, sampai melihat Pari Manta di Misool
+      value: Gugusan bukit karst di Piaynemo, keramahan warga Arborek, sampai melihat
+        Pari Manta di Misool
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[4]'
@@ -5583,7 +5614,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[11]'
-      value: Tentang empati, dan mau peduli sama krisis yang terjadi di balik keindahan itu
+      value: Tentang empati, dan mau peduli sama krisis yang terjadi di balik keindahan
+        itu
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[12]'
@@ -5599,7 +5631,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[15]'
-      value: Semua cerita warga, foto-foto fauna, sampai sejarah pulau tercatat rapi di sini.
+      value: Semua cerita warga, foto-foto fauna, sampai sejarah pulau tercatat rapi
+        di sini.
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLines.Array.data[16]'
@@ -5626,8 +5659,20 @@ PrefabInstance:
       value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: postQuestLoopLines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'postQuestLoopLines.Array.data[0]'
+      value: Nah, sebentar lagi pesawat berangkat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'postQuestLoopLines.Array.data[1]'
+      value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
@@ -5716,18 +5761,6 @@ PrefabInstance:
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[21]'
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: postQuestLoopLines.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'postQuestLoopLines.Array.data[0]'
-      value: Nah, sebentar lagi pesawat berangkat
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'postQuestLoopLines.Array.data[1]'
-      value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.size
@@ -6311,7 +6344,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1698487427
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -332500332766784203, guid: eb08ec4aba0c3df48bad50536a88e8eb, type: 3}
@@ -6803,6 +6836,18 @@ MonoBehaviour:
   toggleKey: 113
   fadeDuration: 0.2
   worldMapCanvasGroup: {fileID: 647513608}
+  normalizeMapPanelToWaisaiLayout: 1
+  standardMapPanelScale: {x: 0.83738, y: 0.83738, z: 0.83738}
+  standardIslandsScaleOn800x600: 0.7
+  autoBindMissingIslandButtons: 1
+  currentLocationMarker: {fileID: 0}
+  currentLocationText: {fileID: 0}
+  currentLocationLabel: KAMU DI SINI
+  markerOffset: {x: 0, y: 52}
+  markerSize: {x: 154, y: 36}
+  markerBackgroundColor: {r: 0.86, g: 0.22, b: 0.16, a: 0.96}
+  markerTextColor: {r: 1, g: 1, b: 1, a: 1}
+  animateLocationMarker: 1
 --- !u!224 &1335368526
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6852,6 +6897,7 @@ MonoBehaviour:
   hudQuestTitle: {fileID: 2020895363}
   hudQuestDescription: {fileID: 2020895362}
   objectiveListText: {fileID: 2020895361}
+  normalizeTrackerTextLayout: 1
   currentActiveQuest: {fileID: 0}
 --- !u!114 &1335368528
 MonoBehaviour:
@@ -7073,6 +7119,7 @@ MonoBehaviour:
   questToGive: {fileID: 11400000, guid: 7d4f0c290d4a53743b1b0fc4e87aaa04, type: 2}
   waitForCurrentQuestToFinish: 1
   requiredPrerequisiteQuestID: 01_Waisai
+  giveQuestOnStart: 0
   giveQuestOnPlayerCollision: 0
 --- !u!114 &1343471194
 MonoBehaviour:
@@ -7093,6 +7140,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 680250238}
   NextPrompt: {fileID: 740392099}
   PlayerNextPrompt: {fileID: 680250237}
+  speaker2IsOtherNpc: 0
+  SecondaryNPCDialogueBox: {fileID: 0}
+  SecondaryNPCDialogueText: {fileID: 0}
+  SecondaryNPCNextPrompt: {fileID: 0}
   DialogueLines:
   - Terima kasih telah menjelajahi pulau-pulau Raja Ampat
   - Jangan lupa jaga kebersihan walau sudah tidak disini ya
@@ -7112,6 +7163,10 @@ MonoBehaviour:
   dialogueCamera: {fileID: 0}
   npcLensSize: 2.5
   zoomTransitionDuration: 1
+  matchGameplayCameraHeight: 1
+  preventDialogueBoxCameraOverlap: 1
+  requiredActiveOrCompletedQuestID: 
+  requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
@@ -7152,9 +7207,13 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   postQuestLoopLines: []
+  postQuestLoopSpeakers: 
+  loopTriggerQuestID: 
+  loopTriggerMinStage: -1
   isPostQuestLoop: 0
   interactDistance: 1.8
   allowManualInteract: 1
+  autoTriggerOnPlayerEnter: 0
 --- !u!61 &1343471195
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7247,7 +7306,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -605385043
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3392119709393341599, guid: 2ededcb6ce3a9724c8517c46c8a66d10, type: 3}
@@ -7276,6 +7335,31 @@ Transform:
   - {fileID: 1843084512}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1349388059 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1018312838596912229, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
+  m_PrefabInstance: {fileID: 681049215}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1349388061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349388059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
+  audioClip: {fileID: 8300000, guid: cdf77fc27ca77c24bb9450a19d2fe2d4, type: 3}
+  outputMixerGroup: {fileID: 0}
+  maxVolume: 0.2
+  crossfadeDuration: 0.15
+  playOnStart: 1
+  is3DSpatial: 0
+  minDistance: 5
+  maxDistance: 30
 --- !u!1001 &1353964357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7484,6 +7568,30 @@ PrefabInstance:
       value: CameraBounds
       objectReference: {fileID: 0}
     - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 22.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
@@ -7511,36 +7619,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 22.91
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.74
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784842624114027137, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
-      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
@@ -7550,6 +7630,10 @@ PrefabInstance:
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Offset.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.size
@@ -7662,6 +7746,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -7669,10 +7757,6 @@ PrefabInstance:
       propertyPath: BoundingShape2D
       value: 
       objectReference: {fileID: 1391180051}
-    - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
-      propertyPath: Damping
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7949072707519166169, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: SlowingDistance
       value: 0
@@ -7898,7 +7982,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1344894129
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4113638396058224006, guid: 0a9ab723fc1f83845b7a502e33fbb3e3, type: 3}
@@ -8150,6 +8234,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinemachineCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: Damping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 1391180051}
+    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
+      propertyPath: SlowingDistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
       propertyPath: Priority.m_Value
       value: 100
@@ -8162,22 +8262,6 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 680250236}
-    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: BoundingShape2D
-      value: 
-      objectReference: {fileID: 1391180051}
-    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: Damping
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7949072707519166168, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-      propertyPath: SlowingDistance
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8188,17 +8272,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8309373726845148413, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
   m_PrefabInstance: {fileID: 1608187688}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1608187690}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
---- !u!1 &1608187690 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4833609709971146027, guid: 2e0def0274bbe1f47be37cc4fba44cb3, type: 3}
-  m_PrefabInstance: {fileID: 1608187688}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1613377984
 GameObject:
   m_ObjectHideFlags: 0
@@ -9123,7 +9202,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1209922747
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 284763981467038995, guid: c304e2e970fb64b438034643d065d395, type: 3}
@@ -9317,6 +9396,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1335368526}
     m_Modifications:
+    - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_fontSize
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: hiddenPosition.x
+      value: -220
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: hiddenPosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: visiblePosition.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: visiblePosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
     - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_Name
       value: QuestHUDPanel 2
@@ -9324,6 +9427,54 @@ PrefabInstance:
     - target: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371388737094505655, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 615
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3125
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9354,6 +9505,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -18.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -9364,74 +9523,6 @@ PrefabInstance:
     - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: hiddenPosition.x
-      value: -220
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: hiddenPosition.y
-      value: -18.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: visiblePosition.x
-      value: 140
-      objectReference: {fileID: 0}
-    - target: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: visiblePosition.y
-      value: -18.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_Pivot.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 615
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 140
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -18.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
