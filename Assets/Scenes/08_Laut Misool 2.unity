@@ -3980,6 +3980,7 @@ MonoBehaviour:
   animator: {fileID: 1214336115}
   spriteRenderers: []
   speedAnimParameter: Speed
+  spriteFacesLeft: 0
 --- !u!95 &1214336115
 Animator:
   serializedVersion: 7
@@ -5628,7 +5629,7 @@ MonoBehaviour:
   rightBoundary: {fileID: 1987231612}
   fallbackRadius: 8
   arahRenang: -1
-  moveSpeed: 2
+  moveSpeed: 4
   verticalLaneRange: 2
   waveAmplitude: 0.2
   waveFrequency: 2.5
@@ -5637,6 +5638,7 @@ MonoBehaviour:
   spriteRenderers:
   - {fileID: 1716508178}
   speedAnimParameter: 
+  spriteFacesLeft: 1
 --- !u!95 &1716508175
 Animator:
   serializedVersion: 7
@@ -5714,7 +5716,7 @@ Transform:
   m_GameObject: {fileID: 1716508173}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.2, y: -62.9, z: 0}
+  m_LocalPosition: {x: 47.1, y: -62.9, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5812,6 +5814,7 @@ MonoBehaviour:
   - {fileID: 205531986}
   - {fileID: 1308628173}
   speedAnimParameter: 
+  spriteFacesLeft: 0
 --- !u!95 &1730227944
 Animator:
   serializedVersion: 7
@@ -6080,9 +6083,9 @@ MonoBehaviour:
   leftBoundary: {fileID: 2009022437}
   rightBoundary: {fileID: 1987231612}
   fallbackRadius: 8
-  arahRenang: 1
-  moveSpeed: 1
-  verticalLaneRange: 1.5
+  arahRenang: -1
+  moveSpeed: 2
+  verticalLaneRange: 2
   waveAmplitude: 0.2
   waveFrequency: 2.5
   eatDuration: 3
@@ -6090,6 +6093,7 @@ MonoBehaviour:
   spriteRenderers:
   - {fileID: 8483657296550052781}
   speedAnimParameter: Speed
+  spriteFacesLeft: 0
 --- !u!95 &1822948033
 Animator:
   serializedVersion: 7
@@ -6435,6 +6439,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1987231612}
+  - component: {fileID: 1987231613}
   m_Layer: 0
   m_Name: BatasIkan_Kanan
   m_TagString: Untagged
@@ -6451,12 +6456,58 @@ Transform:
   m_GameObject: {fileID: 1987231611}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 63.6, y: -42.3, z: 0}
+  m_LocalPosition: {x: 87.3, y: -42.3, z: 0}
   m_LocalScale: {x: 0.52, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1987231613
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987231611}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 11.358264, y: 3.7203026}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 23.716528, y: 39.592407}
+  m_EdgeRadius: 0
 --- !u!1 &1998491020
 GameObject:
   m_ObjectHideFlags: 0
@@ -6557,6 +6608,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2009022437}
+  - component: {fileID: 2009022438}
   m_Layer: 0
   m_Name: BatasIkan_Kiri
   m_TagString: Untagged
@@ -6573,12 +6625,58 @@ Transform:
   m_GameObject: {fileID: 2009022436}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -51.8, y: -42.3, z: 0}
+  m_LocalPosition: {x: -80.3, y: -42.3, z: 0}
   m_LocalScale: {x: 0.52, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &2009022438
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009022436}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -9.870201, y: 5.9077854}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 20.740402, y: 50.79365}
+  m_EdgeRadius: 0
 --- !u!1 &2044537715
 GameObject:
   m_ObjectHideFlags: 0
@@ -6905,7 +7003,7 @@ Transform:
   m_GameObject: {fileID: 7813349318335258387}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.5, y: -21.7, z: 0}
+  m_LocalPosition: {x: 52.5, y: -21.7, z: 0}
   m_LocalScale: {x: 6, y: 6, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []

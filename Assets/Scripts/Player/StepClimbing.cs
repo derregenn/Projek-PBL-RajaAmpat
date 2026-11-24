@@ -166,11 +166,6 @@ public class StepClimbing : MonoBehaviour
             targetPosition = activeSteps[currentStepIndex].position;
             isMovingToStep = true;
         }
-        else if (!isClimbingDown && topPlatformPoint != null)
-        {
-            targetPosition = topPlatformPoint.position;
-            isMovingToStep = true;
-        }
         else
         {
             StartCoroutine(FinishClimbingRoutine());
@@ -232,6 +227,7 @@ public class StepClimbing : MonoBehaviour
         if (!isClimbingDown)
         {
             DisableClimbUpTrigger();
+            ActivateTourGuide4();
             if (MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < 5)
             {
                 MasterQuestManager.Instance.AdvanceStageTo(5);
@@ -267,6 +263,21 @@ public class StepClimbing : MonoBehaviour
         }
 
         isClimbingSequenceActive = false;
+    }
+
+    private void ActivateTourGuide4()
+    {
+        Transform[] sceneTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Transform sceneTransform in sceneTransforms)
+        {
+            if (sceneTransform.name == "TourGuide4")
+            {
+                sceneTransform.gameObject.SetActive(true);
+                return;
+            }
+        }
+
+        Debug.LogWarning("TourGuide4 tidak ditemukan di scene setelah panjat tebing.");
     }
 
     private void ShowQTEOnce()

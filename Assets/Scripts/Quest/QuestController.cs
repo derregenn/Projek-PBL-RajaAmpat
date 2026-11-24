@@ -144,6 +144,12 @@ public class QuestController : MonoBehaviour
             return;
         }
 
+        if (QuestJournalManager.HasCompletedQuestIDPersistent(quest.QuestID))
+        {
+            Debug.Log("Quest already completed: " + quest.QuestID);
+            return;
+        }
+
         // Pastikan quest sebelumnya yang masih menggantung diselesaikan terlebih dahulu
         // agar tidak sekadar tertimpa (ketimpa doang) dan tetap tercatat di Completed Quests!
         if (ActiveQuests.Count > 0)
@@ -305,7 +311,9 @@ public class QuestController : MonoBehaviour
         QuestGiver[] givers1 = FindObjectsByType<QuestGiver>(FindObjectsSortMode.None);
         foreach (var g in givers1)
         {
-            if (g != null && g.QuestToGive != null && g.QuestToGive.GetObjective(objectiveID) != null)
+            if (g != null && g.QuestToGive != null &&
+                !QuestJournalManager.HasCompletedQuestIDPersistent(g.QuestToGive.QuestID) &&
+                g.QuestToGive.GetObjective(objectiveID) != null)
             {
                 foundQuest = g.QuestToGive;
                 break;
@@ -317,7 +325,9 @@ public class QuestController : MonoBehaviour
             QuestGiver2[] givers2 = FindObjectsByType<QuestGiver2>(FindObjectsSortMode.None);
             foreach (var g in givers2)
             {
-                if (g != null && g.QuestToGive != null && g.QuestToGive.GetObjective(objectiveID) != null)
+                if (g != null && g.QuestToGive != null &&
+                    !QuestJournalManager.HasCompletedQuestIDPersistent(g.QuestToGive.QuestID) &&
+                    g.QuestToGive.GetObjective(objectiveID) != null)
                 {
                     foundQuest = g.QuestToGive;
                     break;
@@ -329,7 +339,10 @@ public class QuestController : MonoBehaviour
         {
             Debug.Log($"[QuestController] Auto-accepting quest '{foundQuest.QuestTitle}' untuk objective '{objectiveID}' (Isolated scene testing fallback).");
             AcceptQuest(foundQuest);
-            ProgressObjective(objectiveID, amount);
+            if (IsQuestActive(foundQuest.QuestID))
+            {
+                ProgressObjective(objectiveID, amount);
+            }
             return;
         }
 
