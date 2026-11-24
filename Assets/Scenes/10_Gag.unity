@@ -5955,6 +5955,7 @@ GameObject:
   - component: {fileID: 505551481}
   - component: {fileID: 505551483}
   - component: {fileID: 505551482}
+  - component: {fileID: 505551484}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -5991,7 +5992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 505551483}
   defaultBGM: {fileID: 8300000, guid: 8ddb7b3c79adb08429956f888452d615, type: 3}
-  bgmVolume: 0.1
+  bgmVolume: 0
   audioLayers: []
 --- !u!82 &505551483
 AudioSource:
@@ -6090,6 +6091,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &505551484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505551480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
+  audioClip: {fileID: 8300000, guid: 8ddb7b3c79adb08429956f888452d615, type: 3}
+  outputMixerGroup: {fileID: 0}
+  maxVolume: 0.15
+  crossfadeDuration: 0.15
+  playOnStart: 0
+  watchLegacyBgmSource: {fileID: 0}
+  initialFadeInDuration: 0.1
+  is3DSpatial: 0
+  minDistance: 5
+  maxDistance: 30
 --- !u!1001 &507135976
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7508,7 +7531,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 110.69}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &665430388
 MonoBehaviour:
@@ -13176,10 +13199,10 @@ RectTransform:
   - {fileID: 305425635}
   m_Father: {fileID: 665430387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -84.69}
-  m_SizeDelta: {x: 276, y: 28}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1329722918
 MonoBehaviour:
@@ -15051,7 +15074,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -38.345}
-  m_SizeDelta: {x: 276, y: 52.69}
+  m_SizeDelta: {x: 276, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1487501439
 MonoBehaviour:
