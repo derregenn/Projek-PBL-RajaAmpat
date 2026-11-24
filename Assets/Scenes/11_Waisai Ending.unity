@@ -2766,12 +2766,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: cdf77fc27ca77c24bb9450a19d2fe2d4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: audioLayers.Array.size
       value: 0
@@ -7357,6 +7357,7 @@ MonoBehaviour:
   maxVolume: 0.2
   crossfadeDuration: 0.15
   playOnStart: 1
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30

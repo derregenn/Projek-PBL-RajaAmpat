@@ -11919,13 +11919,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899499005}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0da403df95b43704597d89c7683b3bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 1899499008}
-  defaultBGM: {fileID: 8300000, guid: 264462ffe176ed947be86e108a188f0e, type: 3}
+  defaultBGM: {fileID: 0}
   bgmVolume: 0.1
   audioLayers: []
 --- !u!82 &1899499008
@@ -12042,6 +12042,7 @@ MonoBehaviour:
   maxVolume: 0.1
   crossfadeDuration: 0.15
   playOnStart: 1
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30

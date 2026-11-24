@@ -5189,13 +5189,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505551480}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0da403df95b43704597d89c7683b3bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 505551483}
-  defaultBGM: {fileID: 8300000, guid: e15624dee0783f649b510986bd7f58d6, type: 3}
+  defaultBGM: {fileID: 0}
   bgmVolume: 0.1
   audioLayers: []
 --- !u!82 &505551483
@@ -5312,6 +5312,7 @@ MonoBehaviour:
   maxVolume: 0.1
   crossfadeDuration: 0.15
   playOnStart: 1
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30
@@ -8251,7 +8252,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 0}
+  m_SizeDelta: {x: 300, y: 110.69}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &934573082
 MonoBehaviour:
@@ -8671,7 +8672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812076858739178417, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: m_SortingLayer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7812076858739178417, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: m_SortingLayerID
@@ -11583,10 +11584,10 @@ RectTransform:
   - {fileID: 681914698}
   m_Father: {fileID: 934573081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -84.69}
+  m_SizeDelta: {x: 276, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1279433045
 GameObject:
@@ -18149,7 +18150,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -38.345}
-  m_SizeDelta: {x: 276, y: 0}
+  m_SizeDelta: {x: 276, y: 52.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1917431010
 MonoBehaviour:
