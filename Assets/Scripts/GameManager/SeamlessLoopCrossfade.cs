@@ -11,9 +11,9 @@ public class SeamlessLoopCrossfade : MonoBehaviour
     public bool playOnStart = true;
 
     [Header("Mid-Scene Trigger Settings (Khusus Pulau Gag)")]
-    [Tooltip("Masukkan komponen Audio Source lama yang awalnya dimatikan centangnya")]
+    [Tooltip("Otomatis mendeteksi Audio Source lama di objek ini jika dikosongkan")]
     public AudioSource watchLegacyBgmSource;
-    [Tooltip("Durasi fade-in saat BGM pertama kali dipicu di tengah scene")]
+    [Tooltip("Durasi fade-in saat BGM pertama kali muncul di tengah scene")]
     public float initialFadeInDuration = 1.5f;
 
     [Header("3D Spatial Settings (Centang Khusus Ambience)")]
@@ -28,8 +28,24 @@ public class SeamlessLoopCrossfade : MonoBehaviour
     private bool isPlaying = false;
     private bool hasStarted = false;
 
+    void Awake()
+    {
+        // Otomatis ambil komponen AudioSource lama yang sudah ada di GameObject ini
+        if (watchLegacyBgmSource == null)
+        {
+            watchLegacyBgmSource = GetComponent<AudioSource>();
+        }
+    }
+
     void Start()
     {
+        // Bisukan AudioSource lama agar tidak bunyi dobel saat diaktifkan trigger programmer
+        if (watchLegacyBgmSource != null)
+        {
+            watchLegacyBgmSource.mute = true;
+        }
+
+        // Buat 2 AudioSource baru; jika playOnStart mati, nonaktifkan centangnya di awal
         for (int i = 0; i < 2; i++)
         {
             sources[i] = gameObject.AddComponent<AudioSource>();
@@ -38,6 +54,7 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             sources[i].playOnAwake = false;
             sources[i].loop = false;
             sources[i].volume = 0f;
+            sources[i].enabled = playOnStart;
 
             if (is3DSpatial)
             {
@@ -60,10 +77,20 @@ public class SeamlessLoopCrossfade : MonoBehaviour
         if (audioClip == null || hasStarted) return;
 
         hasStarted = true;
+
+        // Aktifkan centang kedua AudioSource baru tepat saat momen trigger terjadi
+        for (int i = 0; i < 2; i++)
+        {
+            if (sources[i] != null)
+            {
+                sources[i].enabled = true;
+            }
+        }
+
         crossfadeDuration = Mathf.Min(crossfadeDuration, audioClip.length * 0.4f);
         initialFadeInDuration = Mathf.Min(initialFadeInDuration, audioClip.length - crossfadeDuration);
 
-        startTime = AudioSettings.dspTime + 0.1;
+        startTime = AudioSettings.dspTime + 0.05;
         sources[0].volume = (initialFadeInDuration > 0f) ? 0f : maxVolume;
         sources[0].PlayScheduled(startTime);
 
@@ -74,8 +101,8 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 
     void Update()
     {
-        // Otomatis mulai saat script View Panning mengaktifkan Audio Source lama
-        if (!hasStarted && watchLegacyBgmSource != null && watchLegacyBgmSource.enabled)
+        // Pantau AudioSource lama: begitu dicentang oleh trigger View Panning, langsung mulai!
+        if (!hasStarted && !playOnStart && watchLegacyBgmSource != null && watchLegacyBgmSource.enabled)
         {
             StartLoop();
         }
@@ -95,6 +122,7 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             sources[0].volume = maxVolume;
         }
 
+        // Jadwalkan AudioSource kedua sebelum titik crossfade dimulai
         if (currentTime >= nextStartTime - 0.5 && !sources[1 - activeIndex].isPlaying)
         {
             int nextIndex = 1 - activeIndex;
@@ -102,6 +130,7 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             sources[nextIndex].PlayScheduled(nextStartTime);
         }
 
+        // Crossfade looping
         if (currentTime >= nextStartTime)
         {
             float progress = Mathf.Clamp01((float)((currentTime - nextStartTime) / crossfadeDuration));
