@@ -8,6 +8,7 @@ public class SawinggraiLandSceneManager : MonoBehaviour
     [Header("Referensi Quest 2 (Warlok Bawah Rumah)")]
 
     [SerializeField] private GameObject warlok1;
+    [SerializeField] private GameObject pohonObstacle;     // Memberi quest
     [SerializeField] private GameObject warlok2Stage2;     // Memberi quest
     [SerializeField] private GameObject warlok2Stage5;     // Lapor selesai dari laut
     [SerializeField] private GameObject warlok2Stage6;     // Pasif (Free Roam)
@@ -61,6 +62,7 @@ public class SawinggraiLandSceneManager : MonoBehaviour
 
         // 1. PENGATURAN WARLOK 1
         if (warlok1 != null) warlok1.SetActive(stage == 0 || stage == 1 || stage == 2);
+        if (pohonObstacle != null) pohonObstacle.SetActive(stage == 0 || stage == 1 || stage == 2);
 
         // 1. PENGATURAN WARLOK 2
         if (warlok2Stage2 != null) warlok2Stage2.SetActive(stage == 0 || stage == 1 || stage == 2);
@@ -95,10 +97,10 @@ public class SawinggraiLandSceneManager : MonoBehaviour
             burungCendrawasih.SetActive(stage >= 6 && stage <= 7); // Cendrawasih aktif saat pemain free roam, mati saat sudah disuruh Warlok 2
         }
 
-        // 3. PENGATURAN NPC LOCKED & UNLOCKED
+        // 3. PENGATURAN NPC LOCKED & UNLOCKED (Baru terbuka setelah Quest 3 / Stage 7 selesai)
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 6; // Misal, NPC terbuka setelah stage
+            bool isUnlocked = stage >= 7;
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

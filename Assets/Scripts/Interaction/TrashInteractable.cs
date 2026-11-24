@@ -9,6 +9,8 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [SerializeField] private int amountToAdd = 1;
     [SerializeField] private string requiredActiveObjectiveID = "";
     [SerializeField] private string requiredCompletedQuestID = "";
+    [Tooltip("Centang hanya jika objek lama ini benar-benar sampah global (item quest seperti Sagu, Kerang, Umpan, Pohon, Bulu Seribu harus FALSE).")]
+    [SerializeField] private bool countsAsGlobalTrash = false;
 
     [Header("Audio & FX (Opsional)")]
     [SerializeField] private AudioClip collectSound;
@@ -118,8 +120,8 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
         }
 
-        // 4. Update UI Progress Bar & GlobalTrashManager (jika objek ini tidak memiliki TrashPickup)
-        if (GetComponent<TrashPickup>() == null)
+        // 4. Update UI Progress Bar & GlobalTrashManager (hanya jika benar-benar ditandai sebagai sampah global)
+        if (countsAsGlobalTrash && GetComponent<TrashPickup>() == null)
         {
             // Hanya delegasi ke GlobalTrashManager jika tidak ada TrashPickup (sistem lama)
             // Gunakan nama GameObject sebagai ID unik sementara

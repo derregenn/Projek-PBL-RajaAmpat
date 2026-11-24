@@ -73,6 +73,27 @@ public class FreeRoamManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Dipanggil oleh tombol Travel Journal di Main Menu setelah game tamat.
+    /// </summary>
+    public void OpenTravelJournal()
+    {
+        if (PlayerPrefs.GetInt("GameCompleted", 0) != 1) return;
+
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.UnlockJournal();
+            QuestJournalManager.Instance.ToggleJournalPanel();
+            return;
+        }
+
+        QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
+        if (tabUI != null)
+        {
+            tabUI.gameObject.SetActive(!tabUI.gameObject.activeSelf);
+        }
+    }
+
+    /// <summary>
     /// Nonaktifkan Free Roam (kembali ke menu utama / normal).
     /// </summary>
     public void ExitFreeRoam()

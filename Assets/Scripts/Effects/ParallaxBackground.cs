@@ -151,14 +151,14 @@ public class ParallaxBackground : MonoBehaviour
             {
                 if (isSeamlessLoop)
                 {
-                    // Untuk seamless tiling background (langit/laut), utamakan lebar sprite background utama
-                    width = maxSingleWidth;
-                    if (width <= 0f && manualWidth > 0f)
+                    // Gunakan rentang visual aktual seluruh child agar posisi cloneTile presisi tanpa celah atau overlap
+                    width = maxX - minX;
+                    if (width <= 0f)
                     {
-                        width = manualWidth;
+                        width = maxSingleWidth > 0f ? maxSingleWidth : manualWidth;
                     }
-                    localMin = -width * 0.5f;
-                    localMax = width * 0.5f;
+                    localMin = minX;
+                    localMax = maxX;
                 }
                 else
                 {

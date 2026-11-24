@@ -28,9 +28,15 @@ public class LevelMinimap : MonoBehaviour
     public List<Transform> questTargets = new List<Transform>();
     public List<Sprite> questTargetIcons = new List<Sprite>();
 
+    [Header("Smartphone Frame Padding (Normalized 0-0.45)")]
+    [Tooltip("Margin kiri/kanan agar icon berada di dalam jalur jalan layar HP, bukan di bezel hitam HP.")]
+    [SerializeField] private float phoneLeftMarginNormalized = 0.19f;
+    [SerializeField] private float phoneRightMarginNormalized = 0.17f;
+
     private float trackWidth;
     private List<QuestMarker> questMarkers = new List<QuestMarker>();
     private bool hasSpawnedIcons = false;
+    private RawImage cachedTrackRawImage;
 
     void Awake()
     {
@@ -85,9 +91,11 @@ public class LevelMinimap : MonoBehaviour
         float playerProgress = (player.position.x - startPoint.position.x) / totalDistance;
         playerProgress = Mathf.Clamp01(playerProgress);
 
+        GetUsableTrackRangeX(trackWidth, out float usableStartX, out float usableEndX);
         float iconHalfWidth = playerIcon.rect.width * Mathf.Abs(playerIcon.localScale.x) * 0.5f;
-        float iconOffset = Mathf.Min(iconHalfWidth, trackWidth * 0.5f);
-        float playerX = Mathf.Lerp(iconOffset, trackWidth - iconOffset, playerProgress);
+        float maxInset = Mathf.Max(0f, (usableEndX - usableStartX) * 0.45f);
+        float iconOffset = Mathf.Min(iconHalfWidth, maxInset);
+        float playerX = Mathf.Lerp(usableStartX + iconOffset, usableEndX - iconOffset, playerProgress);
 
         if (Mathf.Abs(playerIcon.anchoredPosition.x - playerX) > 0.01f)
         {
@@ -95,6 +103,29 @@ public class LevelMinimap : MonoBehaviour
         }
 
         CheckPassedQuests();
+    }
+
+    private void GetUsableTrackRangeX(float fullTrackWidth, out float usableStartX, out float usableEndX)
+    {
+        if (cachedTrackRawImage == null && trackBar != null)
+        {
+            cachedTrackRawImage = trackBar.GetComponent<RawImage>();
+        }
+
+        bool isPhoneFrameTexture = cachedTrackRawImage != null
+            && cachedTrackRawImage.texture != null
+            && cachedTrackRawImage.texture.name.IndexOf("Map Player", System.StringComparison.OrdinalIgnoreCase) >= 0;
+
+        float leftRatio = isPhoneFrameTexture ? Mathf.Clamp(phoneLeftMarginNormalized, 0f, 0.45f) : 0f;
+        float rightRatio = isPhoneFrameTexture ? Mathf.Clamp(phoneRightMarginNormalized, 0f, 0.45f) : 0f;
+
+        usableStartX = fullTrackWidth * leftRatio;
+        usableEndX = fullTrackWidth * (1f - rightRatio);
+        if (usableEndX < usableStartX + 1f)
+        {
+            usableStartX = 0f;
+            usableEndX = fullTrackWidth;
+        }
     }
 
     private void EnsureRequiredReferences()
@@ -166,6 +197,19 @@ public class LevelMinimap : MonoBehaviour
         if (currentTrackWidth <= 0.01f) return;
 
         hasSpawnedIcons = true;
+        GetUsableTrackRangeX(currentTrackWidth, out float usableStartX, out float usableEndX);
+
+        RectTransform containerRt = questContainer as RectTransform;
+        float containerLeftOffsetInTrack = 0f;
+        if (containerRt != null && trackBar != null && containerRt != trackBar)
+        {
+            // Konversi posisi ujung kiri trackBar (anchored (0, 0.5)) ke koordinat local questContainer (anchor (0, 0.5))
+            float trackLeftLocalX = -trackBar.pivot.x * currentTrackWidth;
+            Vector3 trackLeftWorld = trackBar.TransformPoint(new Vector3(trackLeftLocalX, 0f, 0f));
+            Vector3 trackLeftInContainer = containerRt.InverseTransformPoint(trackLeftWorld);
+            float containerLeftInContainer = -containerRt.pivot.x * containerRt.rect.width;
+            containerLeftOffsetInTrack = trackLeftInContainer.x - containerLeftInContainer;
+        }
 
         for (int i = 0; i < questTargets.Count; i++)
         {
@@ -188,8 +232,9 @@ public class LevelMinimap : MonoBehaviour
             iconRect.anchorMax = new Vector2(0, 0.5f);
             iconRect.pivot = new Vector2(0.5f, 0.5f);
 
+            float trackX = Mathf.Lerp(usableStartX, usableEndX, questProgress);
             float offsetY = (i % 2 == 0) ? 25f : -25f;
-            iconRect.anchoredPosition = new Vector2(questProgress * currentTrackWidth, offsetY);
+            iconRect.anchoredPosition = new Vector2(containerLeftOffsetInTrack + trackX, offsetY);
 
             // Set teks abjad (0 = 'A', 1 = 'B', 2 = 'C', dst.)
             TMP_Text label = iconObj.GetComponentInChildren<TMP_Text>();

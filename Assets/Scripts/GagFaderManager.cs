@@ -226,13 +226,11 @@ public class GagFaderManager : MonoBehaviour
         }
 
         PlayerPrefs.SetInt("Visited_10_Gag", 1);
-        PlayerPrefs.SetInt("GameCompleted", 1);
         PlayerPrefs.Save();
 
-        // Aktifkan mode Free Roam setelah game tamat
-        // (pemain bisa kembali lewat tombol Free Roam di Main Menu)
-        // GlobalTrashManager TIDAK diaktifkan otomatis — pemain harus memilihnya dari Main Menu
-        Debug.Log("<color=gold>[GagFaderManager] Game Selesai! Selamat Anda Telah Menamatkan Game!</color>");
+        // GameCompleted diset saat pemain menaiki pesawat di 12_CutsceneAirstripEnding,
+        // agar dialog ending di 11_Waisai Ending & 12_CutsceneAirstripEnding tidak ter-skip ke loop.
+        Debug.Log("<color=gold>[GagFaderManager] Pulau Gag selesai! Melanjutkan ke Waisai Ending.</color>");
     }
 
     private void ResetKamera(GameObject npc)

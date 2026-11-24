@@ -6020,6 +6020,7 @@ GameObject:
   - component: {fileID: 505551481}
   - component: {fileID: 505551483}
   - component: {fileID: 505551482}
+  - component: {fileID: 505551484}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -8361,6 +8362,22 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 214509650}
+    - target: {fileID: 3633169379679160979, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: questTargets.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633169379679160979, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: 'questTargets.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2022872707}
+    - target: {fileID: 3633169379679160979, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: 'questTargets.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1313240537}
+    - target: {fileID: 3633169379679160979, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: 'questTargets.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1665425518}
     - target: {fileID: 3757804527030803651, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -20508,6 +20525,28 @@ PolygonCollider2D:
       - {x: 28.61, y: 5.405}
       - {x: -28.61, y: 5.405}
   m_UseDelaunayMesh: 1
+--- !u!114 &505551484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505551480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
+  audioClip: {fileID: 8300000, guid: 8ddb7b3c79adb08429956f888452d615, type: 3}
+  outputMixerGroup: {fileID: 0}
+  maxVolume: 0.1
+  crossfadeDuration: 2
+  playOnStart: 1
+  watchLegacyBgmSource: {fileID: 505551483}
+  initialFadeInDuration: 1.5
+  is3DSpatial: 0
+  minDistance: 5
+  maxDistance: 30
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

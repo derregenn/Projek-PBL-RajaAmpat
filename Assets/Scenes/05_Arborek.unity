@@ -998,8 +998,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: photoID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: objectiveID
       value: foto_arborek
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: pageIDToUnlock
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2503633221608782098, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: photoPromptPanel
@@ -1067,7 +1075,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Size.x
-      value: 0.7606288
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
+      propertyPath: m_Size.y
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3300438555171278125, guid: 02e9f4f5d593b4844994034adea58e01, type: 3}
       propertyPath: m_Offset.x
@@ -1402,7 +1414,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 0c82768c4dca79d41b3869ce15ee06ad, type: 2}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: questsToGive.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: giveQuestOnPlayerCollision
@@ -1417,8 +1429,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 98c34b3d4d9684a4b9c32cd528d781fd, type: 2}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: objectiveID
-      value: foto_arborek
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 445717393653944770, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: OnObjectiveTriggered.m_PersistentCalls.m_Calls.Array.size
@@ -1554,6 +1570,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1562,6 +1582,18 @@ PrefabInstance:
       value: Momen langka seperti ini sayang banget kalau cuma diingat di kepala.
         Ayo, keluarkan kameramu!
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
       value: 0
@@ -1589,7 +1621,7 @@ PrefabInstance:
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 133442101}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: onDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -17992,19 +18024,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.50000006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.50000006
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_AnchorMin.x
@@ -18012,27 +18044,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -407.6245
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -290
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.1279999
+      value: 2.7072
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2407998
+      value: 2.97792
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18064,11 +18096,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.4593506
+      value: 460
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 8104664915891925555, guid: b01118e76311a72489169aa39650ede9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

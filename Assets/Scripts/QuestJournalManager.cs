@@ -1377,12 +1377,17 @@ public class QuestJournalManager : MonoBehaviour
 
     public static bool IsCurrentSceneIslandCompletedPersistent()
     {
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (sceneName.IndexOf("Ending", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return false;
+        }
+
         if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
         {
             return true;
         }
 
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         IslandName? island = GetIslandFromSceneName(sceneName);
         return island.HasValue && IsIslandCompletedPersistent(island.Value);
     }

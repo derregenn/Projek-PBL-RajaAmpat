@@ -164,8 +164,23 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
         FinishSuccess();
     }
 
+    private void AdvanceSuccessSetup()
+    {
+        if (playerScript != null)
+        {
+            playerScript.isMovementLocked = true;
+        }
+        if (hadRigidbody && playerRigidbody != null)
+        {
+            // Pastikan FreezePositionX dari SequenceQTE dibersihkan agar MovePosition / langkah mengendap halus
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            playerRigidbody.linearVelocity = Vector2.zero;
+        }
+    }
+
     private IEnumerator AdvancePlayerSmoothly()
     {
+        AdvanceSuccessSetup();
         Vector2 direction = advanceDirection.sqrMagnitude > 0f ? advanceDirection.normalized : Vector2.right;
 
         // Hadapkan sprite player ke arah langkah mengendap
@@ -189,10 +204,18 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
         Vector3 startPosition = playerTransform.position;
         Vector3 targetPosition = startPosition + (Vector3)(direction * advanceDistance);
         float elapsed = 0f;
+        WaitForFixedUpdate waitFixed = new WaitForFixedUpdate();
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            // Jaga lock selama langkah mengendap (mencegah SequenceQTE.FadeOutAndHide membuka lock lebih awal)
+            if (playerScript != null) playerScript.isMovementLocked = true;
+            if (playerRigidbody != null && (playerRigidbody.constraints & RigidbodyConstraints2D.FreezePositionX) != 0)
+            {
+                playerRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+
+            elapsed += Time.fixedDeltaTime;
             float progress = Mathf.Clamp01(elapsed / duration);
 
             // Cosine Ease-in-Out S-curve: akselerasi halus di awal & deselerasi lembut di akhir
@@ -202,7 +225,7 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
 
             if (playerRigidbody != null)
             {
-                // Gunakan MovePosition agar tetap merespon kontur tanah dan collider tanpa snapping
+                // Gunakan MovePosition di FixedUpdate agar fisik & kamera halus tanpa jitter/snapping
                 playerRigidbody.MovePosition(new Vector2(currentPos.x, currentPos.y));
             }
             else
@@ -210,7 +233,7 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
                 playerTransform.position = currentPos;
             }
 
-            yield return null;
+            yield return waitFixed;
         }
 
         // Pastikan posisi akhir tercapai tepat pada target
