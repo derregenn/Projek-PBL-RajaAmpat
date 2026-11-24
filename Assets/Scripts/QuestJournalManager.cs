@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class IslandAwardData
@@ -294,6 +295,8 @@ public class QuestJournalManager : MonoBehaviour
 
     private void InitializeUI()
     {
+        ConfigurePhotoPopup();
+
         if (questTabPanel == null)
         {
             QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
@@ -367,8 +370,8 @@ public class QuestJournalManager : MonoBehaviour
         if (sceneManager == null) return;
 
         if (sceneManager.cameraFlash != null) this.cameraFlash = sceneManager.cameraFlash;
-        if (sceneManager.polaroidPopup != null) this.polaroidPopup = sceneManager.polaroidPopup;
-        if (sceneManager.popupPhotoDisplay != null) this.popupPhotoDisplay = sceneManager.popupPhotoDisplay;
+        this.polaroidPopup = sceneManager.polaroidPopup;
+        this.popupPhotoDisplay = sceneManager.popupPhotoDisplay;
         if (sceneManager.polaroidDisplayDuration > 0f) this.polaroidDisplayDuration = sceneManager.polaroidDisplayDuration;
 
         if (sceneManager.questTabPanel != null) this.questTabPanel = sceneManager.questTabPanel;
@@ -427,6 +430,7 @@ public class QuestJournalManager : MonoBehaviour
         {
             this.allJournalDatabase = sceneManager.allJournalDatabase;
         }
+        this.allPhotoSpritesDatabase = sceneManager.allPhotoSpritesDatabase;
 
         QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
         if (tabUI != null)
@@ -447,6 +451,83 @@ public class QuestJournalManager : MonoBehaviour
             GamePhaseManager.Instance.OnPercentageUpdated.AddListener(OnGameProgressUpdated);
             GamePhaseManager.Instance.OnIslandCompleted.AddListener(OnIslandCompletedHandler);
         }
+    }
+
+    private void ConfigurePhotoPopup()
+    {
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (polaroidPopup == null || polaroidPopup.scene != activeScene)
+        {
+            string popupName = polaroidPopup != null ? polaroidPopup.name : "PolaroidPopup";
+            polaroidPopup = FindSceneObject(activeScene, popupName);
+        }
+
+        if (popupPhotoDisplay == null || popupPhotoDisplay.gameObject.scene != activeScene)
+        {
+            string displayName = popupPhotoDisplay != null ? popupPhotoDisplay.gameObject.name : null;
+            popupPhotoDisplay = null;
+
+            if (polaroidPopup != null)
+            {
+                Image[] images = polaroidPopup.GetComponentsInChildren<Image>(true);
+                if (!string.IsNullOrEmpty(displayName))
+                {
+                    foreach (Image image in images)
+                    {
+                        if (image.gameObject.name == displayName)
+                        {
+                            popupPhotoDisplay = image;
+                            break;
+                        }
+                    }
+                }
+
+                if (popupPhotoDisplay == null)
+                {
+                    foreach (Image image in images)
+                    {
+                        if (image.gameObject != polaroidPopup && image.gameObject.activeSelf && image.sprite != null)
+                        {
+                            popupPhotoDisplay = image;
+                            break;
+                        }
+                    }
+                }
+
+                if (popupPhotoDisplay == null)
+                {
+                    popupPhotoDisplay = polaroidPopup.GetComponent<Image>();
+                }
+            }
+        }
+
+        if (popupPhotoDisplay != null && popupPhotoDisplay.sprite != null &&
+            (allPhotoSpritesDatabase == null || allPhotoSpritesDatabase.Length <= 1))
+        {
+            allPhotoSpritesDatabase = new[] { popupPhotoDisplay.sprite };
+        }
+    }
+
+    private static GameObject FindSceneObject(Scene scene, string objectName)
+    {
+        if (!scene.IsValid() || string.IsNullOrEmpty(objectName))
+        {
+            return null;
+        }
+
+        foreach (GameObject root in scene.GetRootGameObjects())
+        {
+            Transform[] transforms = root.GetComponentsInChildren<Transform>(true);
+            foreach (Transform item in transforms)
+            {
+                if (item.name == objectName)
+                {
+                    return item.gameObject;
+                }
+            }
+        }
+
+        return null;
     }
 
     private void UnlistenGameEvents()
@@ -1273,12 +1354,10 @@ public class QuestJournalManager : MonoBehaviour
             case IslandName.Piaynemo:
                 return IsQuestDoneAny("06_Pianemo") || IsQuestDoneAny("06_Piaynemo") || IsQuestDoneAny("05_Piaynemo");
             case IslandName.Misool:
-                return IsQuestDoneAny("07_Misool")
-                    || IsQuestDoneAny("08_Misool")
-                    || PlayerPrefs.GetInt("Misool_QuestStage", 0) >= 8
+                return PlayerPrefs.GetInt("Misool_QuestStage", 0) >= 9
                     || (MasterQuestManager.Instance != null
                         && MasterQuestManager.Instance.CurrentIsland == IslandType.Misool
-                        && MasterQuestManager.Instance.CurrentStage >= 8);
+                        && MasterQuestManager.Instance.CurrentStage >= 9);
             case IslandName.Arborek:
                 return IsQuestDoneAny("06_Arborek") || IsQuestDoneAny("05_Arborek");
             case IslandName.Sawinggrai:

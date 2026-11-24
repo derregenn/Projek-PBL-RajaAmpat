@@ -38,6 +38,11 @@ public class MisoolSeaManager : MonoBehaviour
         int stage = MasterQuestManager.Instance.CurrentStage;
         lastStage = stage;
 
+        if (stage == 5)
+        {
+            MisoolQuestManager.ShowReturnToOfficerPrompt();
+        }
+
         // Poin 3: Trigger Monolog MC HANYA aktif saat Stage 2 (Menyelam Pertama)
         if (monologueTrigger != null)
         {

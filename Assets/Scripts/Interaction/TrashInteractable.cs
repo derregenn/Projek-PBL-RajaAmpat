@@ -118,19 +118,7 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
         }
 
-        // 4. Update UI Progress Bar & GlobalTrashManager (jika objek ini tidak memiliki TrashPickup)
-        if (GetComponent<TrashPickup>() == null)
-        {
-            // Hanya delegasi ke GlobalTrashManager jika tidak ada TrashPickup (sistem lama)
-            // Gunakan nama GameObject sebagai ID unik sementara
-            string legacyID = "Legacy_" + gameObject.scene.name + "_" + gameObject.GetInstanceID();
-            if (GlobalTrashManager.Instance != null)
-            {
-                GlobalTrashManager.Instance.CollectTrash(legacyID);
-                TrashCollectedHUD.Show();
-            }
-        }
-
+        // 4. Perbarui progress sampah lokal tanpa bergantung pada GlobalTrashManager.
         totalCollected += amountToAdd;
         PlayerPrefs.SetInt("TotalTrashCollected", totalCollected);
         PlayerPrefs.Save();

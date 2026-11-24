@@ -25,21 +25,29 @@ public class MainMenu : MonoBehaviour
 
     public void StartNewGame()
     {
-        PlayerPrefs.DeleteAll();
-
-        if (GamePhaseManager.Instance != null)
+        QuestJournalManager journalManager = QuestJournalManager.Instance;
+        if (journalManager != null)
         {
-            GamePhaseManager.Instance.ResetAllProgress();
+            journalManager.ResetAllProgress();
         }
-
-        if (StoryManager.Instance != null)
+        else
         {
-            StoryManager.Instance.ResetProgress();
-        }
+            PlayerPrefs.DeleteAll();
 
-        if (QuestController.Instance != null)
-        {
-            QuestController.Instance.ActiveQuests.Clear();
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.ResetAllProgress();
+            }
+
+            if (StoryManager.Instance != null)
+            {
+                StoryManager.Instance.ResetProgress();
+            }
+
+            if (QuestController.Instance != null)
+            {
+                QuestController.Instance.ActiveQuests.Clear();
+            }
         }
 
         // Reset sistem sampah global

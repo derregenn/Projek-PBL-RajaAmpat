@@ -238,7 +238,11 @@ public class MasterQuestManager : MonoBehaviour
                 break;
 
             case IslandType.Sawinggrai:
-                SawinggraiLandSceneManager.Instance?.RefreshLandState();
+                SawinggraiLandSceneManager sawinggraiManager = SawinggraiLandSceneManager.Instance;
+                if (sawinggraiManager != null)
+                {
+                    sawinggraiManager.RefreshLandState();
+                }
                 var sawSeaManager = FindFirstObjectByType<SawinggraiSeaManager>();
                 sawSeaManager?.RefreshSeaState();
                 break;

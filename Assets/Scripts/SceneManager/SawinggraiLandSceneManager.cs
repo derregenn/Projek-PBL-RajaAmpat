@@ -65,7 +65,7 @@ public class SawinggraiLandSceneManager : MonoBehaviour
         if (pohonObstacle != null) pohonObstacle.SetActive(stage == 0 || stage == 1 || stage == 2);
 
         // 1. PENGATURAN WARLOK 2
-        if (warlok2Stage2 != null) warlok2Stage2.SetActive(stage == 0 || stage == 1 || stage == 2);
+        if (warlok2Stage2 != null) warlok2Stage2.SetActive(stage == 0 || stage == 1 || stage <= 3);
         if (warlok2Stage5 != null) warlok2Stage5.SetActive(stage == 4 || stage == 5); // Lapor selesai dari laut
 
         // Aktif terus sebagai NPC pasif setelah quest ikan selesai
@@ -88,7 +88,10 @@ public class SawinggraiLandSceneManager : MonoBehaviour
         {
             for (int i = 0; i < stepCendrawasih.Length; i++)
             {
-                stepCendrawasih[i].SetActive(stage == 6); // Semua langkah aktif saat stage 6, mati saat stage lain
+                if (stepCendrawasih[i] != null)
+                {
+                    stepCendrawasih[i].SetActive(stage == 6); // Semua langkah aktif saat stage 6, mati saat stage lain
+                }
             }
         }
 
