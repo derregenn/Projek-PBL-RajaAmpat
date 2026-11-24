@@ -1538,11 +1538,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
-  audioClip: {fileID: 8300000, guid: 86dc07a2b25055741ab74791f33529a9, type: 3}
+  audioClip: {fileID: 8300000, guid: ad75e8e3621c94a40a1d18eb46de808e, type: 3}
   outputMixerGroup: {fileID: 0}
   maxVolume: 0.1
-  crossfadeDuration: 0.13
+  crossfadeDuration: 0.1
   playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
   initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
@@ -4049,7 +4050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: bgmVolume
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_Enabled
