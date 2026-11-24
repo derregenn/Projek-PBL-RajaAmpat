@@ -152,6 +152,14 @@ public class MasterQuestManager : MonoBehaviour
                 CurrentStage = 0;
             }
         }
+        else if (currentIsland == IslandType.Waisai)
+        {
+            // Scene Waisai dimulai dari stage 0 agar TourGuide intro muncul sebelum TourGuide_Trivia.
+            if (!PlayerPrefs.HasKey(StageKey))
+            {
+                CurrentStage = 0;
+            }
+        }
         else if (CurrentStage < 1)
         {
             AdvanceStageTo(1);

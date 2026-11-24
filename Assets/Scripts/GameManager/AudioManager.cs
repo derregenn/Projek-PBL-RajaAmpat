@@ -31,7 +31,12 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            if (GetComponent<SeamlessLoopCrossfade>() != null)
+            {
+                enabled = false;
+                return;
+            }
+            Destroy(this);
             return;
         }
 
@@ -40,8 +45,24 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        if (bgmSource != null && defaultBGM != null)
+        bool hasSeamlessBgm = false;
+        SeamlessLoopCrossfade[] crossfaders = FindObjectsByType<SeamlessLoopCrossfade>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        for (int i = 0; i < crossfaders.Length; i++)
         {
+            if (crossfaders[i] != null && crossfaders[i].enabled && crossfaders[i].audioClip != null &&
+                (crossfaders[i].playOnStart || crossfaders[i].gameObject == gameObject))
+            {
+                hasSeamlessBgm = true;
+                break;
+            }
+        }
+
+        if (!hasSeamlessBgm && bgmSource != null && defaultBGM != null)
+        {
+            if (defaultBGM.loadState == AudioDataLoadState.Unloaded)
+            {
+                defaultBGM.LoadAudioData();
+            }
             bgmSource.clip = defaultBGM;
             ApplyBGMVolume();
             bgmSource.Play();

@@ -1,4 +1,4 @@
-ÿþï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,7 +78,7 @@ public class CanvasHUDAutoBinder : MonoBehaviour
             Sprite[] allSprites = Resources.FindObjectsOfTypeAll<Sprite>();
             foreach (var s in allSprites)
             {
-                if (s == nullcontinue;
+                if (s == null) continue;
                 if (journalButtonSprite == null && s.name.Equals("Journal Button", System.StringComparison.OrdinalIgnoreCase))
                     journalButtonSprite = s;
                 else if (pauseButtonSprite == null && s.name.Equals("Pause Button", System.StringComparison.OrdinalIgnoreCase))
@@ -114,10 +114,10 @@ public class CanvasHUDAutoBinder : MonoBehaviour
 
     private static void ApplyControlHudLayout(RectTransform rt, Sprite sprite)
     {
-        if (rt == nullreturn;
+        if (rt == null) return;
         float w = sprite != null ? sprite.rect.width : 1067f;
         float h = sprite != null ? sprite.rect.height : 54f;
-        float sx = Mathf.Abs(rt.localScale.x> 0.001f ? Mathf.Abs(rt.localScale.x: 1f;
+        float sx = Mathf.Abs(rt.localScale.x) > 0.001f ? Mathf.Abs(rt.localScale.x) : 1f;
         float sy = Mathf.Abs(rt.localScale.y) > 0.001f ? Mathf.Abs(rt.localScale.y) : 1f;
         rt.anchorMin = new Vector2(0.5f, 0.5f);
         rt.anchorMax = new Vector2(0.5f, 0.5f);
@@ -130,7 +130,7 @@ public class CanvasHUDAutoBinder : MonoBehaviour
     {
         string sceneName = SceneManager.GetActiveScene().name;
         // Jangan pasang di MainMenu atau perahu transisi
-        if (sceneName.Contains("MainMenu"|| sceneName.Contains("BoatToIsland")) return;
+        if (sceneName.Contains("MainMenu") || sceneName.Contains("BoatToIsland")) return;
 
         EnsureCameraConfinerBound();
         LoadDefaultSprites();
@@ -149,7 +149,7 @@ public class CanvasHUDAutoBinder : MonoBehaviour
     private void EnsureCameraConfinerBound()
     {
         GameObject boundsObj = GameObject.Find("CameraBounds");
-        if (boundsObj == nullboundsObj = GameObject.Find("CameraBounds Variant");
+        if (boundsObj == null) boundsObj = GameObject.Find("CameraBounds Variant");
         if (boundsObj == null) return;
 
         PolygonCollider2D boundsPoly = boundsObj.GetComponent<PolygonCollider2D>();
@@ -213,7 +213,7 @@ public class CanvasHUDAutoBinder : MonoBehaviour
             if (journalButtonSprite != null)
             {
                 Image img = btnJournalTr.GetComponent<Image>();
-                if (img != null && img.sprite == nullimg.sprite = journalButtonSprite;
+                if (img != null && img.sprite == null) img.sprite = journalButtonSprite;
             }
             currentJournalButtonGo = btnJournalTr.gameObject;
         }
@@ -243,14 +243,14 @@ public class CanvasHUDAutoBinder : MonoBehaviour
             if (pauseButtonSprite != null)
             {
                 Image img = btnPauseTr.GetComponent<Image>();
-                if (img != null && img.sprite == nullimg.sprite = pauseButtonSprite;
+                if (img != null && img.sprite == null) img.sprite = pauseButtonSprite;
             }
         }
 
         // 5. Atur Control HUD tanpa menimpa sprite/posisi yang sudah dikonfigurasi di scene
         Transform ctrlTr = hudCanvas.transform.Find("Control Hud_All Pulau");
-        if (ctrlTr == nullctrlTr = hudCanvas.transform.Find("Control Hud_Underwater");
-        if (ctrlTr == nullctrlTr = hudCanvas.transform.Find("Control Hud_6 Pulau");
+        if (ctrlTr == null) ctrlTr = hudCanvas.transform.Find("Control Hud_Underwater");
+        if (ctrlTr == null) ctrlTr = hudCanvas.transform.Find("Control Hud_6 Pulau");
         if (ctrlTr == null)
         {
             for (int i = 0; i < hudCanvas.transform.childCount; i++)
@@ -334,7 +334,7 @@ public class CanvasHUDAutoBinder : MonoBehaviour
         rtPause.sizeDelta = new Vector2(127f, 139f);
 
         Image imgPause = pauseBtnGo.AddComponent<Image>();
-        if (pauseButtonSprite != nullimgPause.sprite = pauseButtonSprite;
+        if (pauseButtonSprite != null) imgPause.sprite = pauseButtonSprite;
         Button btnPause = pauseBtnGo.AddComponent<Button>();
         btnPause.onClick.AddListener(OnPauseButtonClicked);
 
@@ -381,7 +381,7 @@ public class CanvasHUDAutoBinder : MonoBehaviour
         else
         {
             QuestJournalManager qjm = FindFirstObjectByType<QuestJournalManager>();
-            if (qjm != nullqjm.ToggleQuestTab();
+            if (qjm != null) qjm.ToggleQuestTab();
         }
     }
 
@@ -396,9 +396,9 @@ public class CanvasHUDAutoBinder : MonoBehaviour
         PauseManager pm = FindFirstObjectByType<PauseManager>(FindObjectsInactive.Include);
         if (pm != null)
         {
-            if (pm.IsPausedpm.ResumeGame();
+            if (pm.IsPaused) pm.ResumeGame();
             else pm.PauseGame();
         }
     }
 }
-
+

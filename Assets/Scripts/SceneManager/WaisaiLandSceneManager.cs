@@ -46,6 +46,8 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (warlok == null) warlok = GameObject.Find("Warlok");
         if (dialogueAfterTrivia == null) dialogueAfterTrivia = GameObject.Find("DialogueAfterTrivia");
         if (dermagaTrigger == null) dermagaTrigger = GameObject.Find("Dermaga_Waisai");
+        if (tourGuideIntro == null) tourGuideIntro = GameObject.Find("TourGuide");
+        if (tourGuideTrivia == null) tourGuideTrivia = GameObject.Find("TourGuide_Trivia");
     }
 
     private void Start()
@@ -57,15 +59,14 @@ public class WaisaiLandSceneManager : MonoBehaviour
             Debug.Log($"<color=cyan>[WaisaiLandSceneManager] STAGE WAISAI SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 
-        RefreshLandState();
+        RefreshLandState(isInitialStart: true);
     }
 
     private bool lastObservedHubUnlocked = false;
 
-    private static bool IsHubUnlocked(int stage, GameObject triviaObj)
+    private static bool IsHubUnlocked(int stage)
     {
         if (stage >= 1) return true;
-        if (triviaObj != null && triviaObj.activeSelf) return true;
         if (QuestJournalManager.HasCompletedQuestIDPersistent("01_Waisai")) return true;
         return QuestController.Instance != null && QuestController.Instance.IsQuestActive("01_Waisai");
     }
@@ -75,14 +76,19 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (MasterQuestManager.Instance == null) return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
-        bool hubUnlocked = IsHubUnlocked(stage, tourGuideTrivia);
+        bool hubUnlocked = IsHubUnlocked(stage);
         if (stage != lastObservedStage || hubUnlocked != lastObservedHubUnlocked)
         {
-            RefreshLandState();
+            RefreshLandState(isInitialStart: false);
         }
     }
 
     public void RefreshLandState()
+    {
+        RefreshLandState(isInitialStart: false);
+    }
+
+    private void RefreshLandState(bool isInitialStart)
     {
         if (MasterQuestManager.Instance == null) return;
 
@@ -118,7 +124,8 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (tourGuideIntro == null) tourGuideIntro = GameObject.Find("TourGuide");
         if (tourGuideTrivia == null) tourGuideTrivia = GameObject.Find("TourGuide_Trivia");
 
-        bool hubUnlocked = IsHubUnlocked(stage, tourGuideTrivia);
+        bool hubUnlocked = IsHubUnlocked(stage);
+        bool introQuestCompleted = QuestJournalManager.HasCompletedQuestIDPersistent("01_Waisai");
         lastObservedHubUnlocked = hubUnlocked;
         bool showIntro = (stage == 0) && !hubUnlocked;
 
@@ -139,12 +146,20 @@ public class WaisaiLandSceneManager : MonoBehaviour
 
         if (tourGuideIntro != null)
         {
-            tourGuideIntro.SetActive(showIntro);
+            if (showIntro)
+            {
+                tourGuideIntro.SetActive(true);
+            }
+            else if (stage >= 1 || introQuestCompleted || isInitialStart)
+            {
+                // Saat 01_Waisai baru diterima di scene yang sama, biarkan FaderTrigger.onMidFade menonaktifkan TourGuide setelah fade hitam.
+                tourGuideIntro.SetActive(false);
+            }
         }
 
-        if (tourGuideTrivia != null && stage >= 1)
+        if (tourGuideTrivia != null)
         {
-            tourGuideTrivia.SetActive(stage == 1);
+            tourGuideTrivia.SetActive(stage >= 1);
         }
 
         if (showIntro && QuestController.Instance != null && !QuestController.Instance.HasActiveQuest())
@@ -162,6 +177,15 @@ public class WaisaiLandSceneManager : MonoBehaviour
         if (tourGuideIntro != null)
         {
             tourGuideIntro.SetActive(false);
+        }
+
+        if (MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < 1)
+        {
+            AdvanceStageTo(1);
+        }
+        else
+        {
+            RefreshLandState(isInitialStart: false);
         }
     }
 

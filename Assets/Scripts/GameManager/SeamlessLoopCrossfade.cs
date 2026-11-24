@@ -27,6 +27,7 @@ public class SeamlessLoopCrossfade : MonoBehaviour
     private double nextStartTime;
     private bool isPlaying = false;
     private bool hasStarted = false;
+    private bool waitingForClipLoad = false;
 
     void Awake()
     {
@@ -34,6 +35,11 @@ public class SeamlessLoopCrossfade : MonoBehaviour
         if (watchLegacyBgmSource == null)
         {
             watchLegacyBgmSource = GetComponent<AudioSource>();
+        }
+
+        if (audioClip != null && audioClip.loadState == AudioDataLoadState.Unloaded)
+        {
+            audioClip.LoadAudioData();
         }
     }
 
@@ -76,6 +82,21 @@ public class SeamlessLoopCrossfade : MonoBehaviour
     {
         if (audioClip == null || hasStarted) return;
 
+        if (audioClip.loadState == AudioDataLoadState.Unloaded)
+        {
+            audioClip.LoadAudioData();
+        }
+
+        if (audioClip.loadState != AudioDataLoadState.Loaded)
+        {
+            if (audioClip.loadState != AudioDataLoadState.Failed)
+            {
+                waitingForClipLoad = true;
+            }
+            return;
+        }
+
+        waitingForClipLoad = false;
         hasStarted = true;
 
         // Aktifkan centang kedua AudioSource baru tepat saat momen trigger terjadi
@@ -87,7 +108,7 @@ public class SeamlessLoopCrossfade : MonoBehaviour
             }
         }
 
-        crossfadeDuration = Mathf.Min(crossfadeDuration, audioClip.length * 0.4f);
+        crossfadeDuration = Mathf.Clamp(crossfadeDuration, 0.05f, audioClip.length * 0.4f);
         initialFadeInDuration = Mathf.Min(initialFadeInDuration, audioClip.length - crossfadeDuration);
 
         startTime = AudioSettings.dspTime + 0.05;
@@ -101,8 +122,21 @@ public class SeamlessLoopCrossfade : MonoBehaviour
 
     void Update()
     {
+        if (waitingForClipLoad && !hasStarted && audioClip != null)
+        {
+            if (audioClip.loadState == AudioDataLoadState.Loaded)
+            {
+                waitingForClipLoad = false;
+                StartLoop();
+            }
+            else if (audioClip.loadState == AudioDataLoadState.Failed)
+            {
+                waitingForClipLoad = false;
+            }
+        }
+
         // Pantau AudioSource lama: begitu dicentang oleh trigger View Panning, langsung mulai!
-        if (!hasStarted && !playOnStart && watchLegacyBgmSource != null && watchLegacyBgmSource.enabled)
+        if (!hasStarted && !waitingForClipLoad && !playOnStart && watchLegacyBgmSource != null && watchLegacyBgmSource.enabled)
         {
             StartLoop();
         }
