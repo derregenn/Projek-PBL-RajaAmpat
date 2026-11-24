@@ -91,7 +91,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         // Point 9 & 10: Akhir Quest (Tour Guide pindah ke kanan MC)
         bool isPoint9 = stage >= 9;
 
-        if (tourGuideStart != null) tourGuideStart.SetActive(stage >= 1 && stage < 8);
+        if (tourGuideStart != null) tourGuideStart.SetActive(stage >= 1 && stage <= 8);
         if (tourGuideEnd != null)
         {
             if (isPoint9)
