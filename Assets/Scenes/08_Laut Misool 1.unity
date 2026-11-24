@@ -2380,7 +2380,7 @@ MonoBehaviour:
   rightBoundary: {fileID: 0}
   fallbackRadius: 8
   arahRenang: 0
-  moveSpeed: 1.5
+  moveSpeed: 1
   verticalLaneRange: 1.5
   waveAmplitude: 0.2
   waveFrequency: 2.5
@@ -2396,6 +2396,7 @@ MonoBehaviour:
   - {fileID: 1448778401}
   - {fileID: 605296619}
   speedAnimParameter: Speed
+  spriteFacesLeft: 0
 --- !u!95 &592203802
 Animator:
   serializedVersion: 7
@@ -3306,7 +3307,7 @@ MonoBehaviour:
   objectiveCamera: {fileID: 1852837425}
   gameplayPriority: 10
   dialoguePriority: 20
-  objectivePriority: 30
+  objectivePriority: 0
   normalSize: 8.28
   zoomSize: 4.7
   zoomDuration: 0.5
@@ -5841,6 +5842,18 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1650328947}
+        m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
+        m_MethodName: GiveQuest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1650328946}
         m_TargetAssemblyTypeName: MisoolUnderwaterMonologue, Assembly-CSharp
         m_MethodName: OnMonologueComplete
@@ -6840,6 +6853,7 @@ MonoBehaviour:
   maxVolume: 0.1
   crossfadeDuration: 0.2
   playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
   initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
