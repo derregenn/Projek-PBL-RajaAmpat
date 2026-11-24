@@ -35,6 +35,8 @@ public class BiotaMovement : MonoBehaviour
     public Animator animator;
     public SpriteRenderer[] spriteRenderers;
     public string speedAnimParameter = "Speed";
+    [Tooltip("Centang jika sprite bawaan menghadap ke kiri")]
+    public bool spriteFacesLeft;
 
     private Vector2 originPosition;
     private int currentDirX = 1;
@@ -152,8 +154,8 @@ public class BiotaMovement : MonoBehaviour
         foreach (SpriteRenderer renderer in spriteRenderers)
         {
             if (renderer == null) continue;
-            if (directionX > 0.01f) renderer.flipX = false;
-            else if (directionX < -0.01f) renderer.flipX = true;
+            if (directionX > 0.01f) renderer.flipX = spriteFacesLeft;
+            else if (directionX < -0.01f) renderer.flipX = !spriteFacesLeft;
         }
     }
 

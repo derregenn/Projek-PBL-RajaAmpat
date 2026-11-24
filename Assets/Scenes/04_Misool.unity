@@ -4605,6 +4605,7 @@ MonoBehaviour:
   maxVolume: 0.1
   crossfadeDuration: 0.2
   playOnStart: 1
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30
@@ -5234,7 +5235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &582948189
 Transform:
   m_ObjectHideFlags: 0
@@ -12885,19 +12886,7 @@ MonoBehaviour:
   requiredCompletedQuestID: 
   onDialogueEnd:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 582948190}
-        m_TargetAssemblyTypeName: FaderTrigger, Assembly-CSharp
-        m_MethodName: TriggerFadeAndDoAction
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   postQuestLoopLines: []
   postQuestLoopSpeakers: 
   loopTriggerQuestID: 
@@ -14094,7 +14083,7 @@ MonoBehaviour:
   PlayerDialogueBox: {fileID: 1695990688}
   PlayerDialogueText: {fileID: 1360574304}
   NextPrompt: {fileID: 1813550121}
-  PlayerNextPrompt: {fileID: 1813550121}
+  PlayerNextPrompt: {fileID: 732993963}
   speaker2IsOtherNpc: 1
   SecondaryNPCDialogueBox: {fileID: 698352860}
   SecondaryNPCDialogueText: {fileID: 1021186074}
