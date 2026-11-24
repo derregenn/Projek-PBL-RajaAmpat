@@ -74,6 +74,15 @@ public class PhotoTriggerArea : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        EnsurePromptReference();
+        if (!QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        {
+            isPhotoTaken = false;
+        }
+    }
+
     private void Start()
     {
         EnsurePromptReference();
@@ -167,6 +176,14 @@ public class PhotoTriggerArea : MonoBehaviour
                 if (QuestJournalManager.Instance != null)
                 {
                     QuestJournalManager.Instance.RecordCompletedQuest("03_Friwen", "Foto Friwen");
+                }
+            }
+            else if (objectiveID == "foto_arborek")
+            {
+                QuestController.Instance.MarkQuestCompleted("05_Arborek");
+                if (QuestJournalManager.Instance != null)
+                {
+                    QuestJournalManager.Instance.RecordCompletedQuest("05_Arborek", "Ambil foto tradisi Sasi Arborek");
                 }
             }
             Debug.Log($"[PhotoTrigger] Quest Objective '{objectiveID}' Berhasil!");

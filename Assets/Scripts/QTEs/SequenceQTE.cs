@@ -347,21 +347,53 @@ public class SequenceQTE : MonoBehaviour
         }
     }
 
+    private bool wasPlayerLockedBeforeQTE = false;
+
     private void SetPlayerControl(bool enable)
     {
-        // Jika skrip di-drag manual di Inspector
+        Player player = playerMovementScript as Player;
+        if (player == null && playerMovementScript != null)
+        {
+            player = playerMovementScript.GetComponent<Player>();
+        }
+        if (player == null)
+        {
+            player = FindFirstObjectByType<Player>();
+        }
+
+        if (player != null)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (!enable)
+            {
+                wasPlayerLockedBeforeQTE = player.isMovementLocked;
+                player.isMovementLocked = true;
+                player.enabled = true;
+                if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    rb.angularVelocity = 0f;
+                    rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+                }
+            }
+            else
+            {
+                player.enabled = true;
+                if (!wasPlayerLockedBeforeQTE)
+                {
+                    player.isMovementLocked = false;
+                    if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+                    {
+                        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    }
+                }
+            }
+            return;
+        }
+
         if (playerMovementScript != null)
         {
             playerMovementScript.enabled = enable;
-        }
-        else
-        {
-            // Mencari skrip Player (Player.cs) di scene jika belum di-drag
-            Player player = FindFirstObjectByType<Player>();
-            if (player != null)
-            {
-                player.enabled = enable;
-            }
         }
     }
 }

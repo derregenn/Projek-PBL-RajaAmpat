@@ -115,11 +115,18 @@ public class Player : MonoBehaviour
         {
             if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
             {
-                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+                rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
             }
             SetAnimation(0f);
             UpdateMovementAudio(0f);
             return;
+        }
+
+        if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic && rb.constraints != RigidbodyConstraints2D.FreezeRotation)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
         float moveInput = Input.GetAxisRaw("Horizontal");
@@ -147,6 +154,29 @@ public class Player : MonoBehaviour
         if ((isMovementLocked || isCrouching) && rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
         {
             rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        }
+        UpdateMovementAudio(0f);
+    }
+
+    private void OnEnable()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic && !isMovementLocked && !isCrouching)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
@@ -160,8 +190,14 @@ public class Player : MonoBehaviour
             if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
             {
                 rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+                rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
             }
             UpdateMovementAudio(0f);
+        }
+        else if (!isMovementLocked && rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 

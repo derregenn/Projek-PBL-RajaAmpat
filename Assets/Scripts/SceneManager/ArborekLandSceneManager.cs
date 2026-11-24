@@ -36,6 +36,10 @@ public class ArborekLandSceneManager : MonoBehaviour
     [Tooltip("NPC saat quest sudah terbuka")]
     [SerializeField] private GameObject npcUnlocked;
 
+    [Header("Referensi Tour Guide & Area Foto Sasi (Stage 6)")]
+    [SerializeField] private GameObject tourGuide;
+    [SerializeField] private GameObject areaFotoSasi;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -60,6 +64,17 @@ public class ArborekLandSceneManager : MonoBehaviour
         if (npcArborek1 == null) npcArborek1 = GameObject.Find("NPC_Arborek");
         if (npcArborek2 == null) npcArborek2 = GameObject.Find("NPC_Arborek 2  ");
         if (npcArborek3 == null) npcArborek3 = GameObject.Find("NPC_Arborek 3");
+
+        if (tourGuide == null || areaFotoSasi == null)
+        {
+            GameObject[] allObjs = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < allObjs.Length; i++)
+            {
+                if (allObjs[i] == null) continue;
+                if (tourGuide == null && allObjs[i].name == "TourGuide") tourGuide = allObjs[i];
+                else if (areaFotoSasi == null && allObjs[i].name == "AreaFoto_Sasi") areaFotoSasi = allObjs[i];
+            }
+        }
     }
 
     private void Start()
@@ -124,12 +139,40 @@ public class ArborekLandSceneManager : MonoBehaviour
         {
             bool showFotoTetua = (stage == 5 || stage == 6);
             tetuaAdatFotografi.SetActive(showFotoTetua);
-            if (stage == 6)
+            if (stage == 5)
+            {
+                Collider2D col = tetuaAdatFotografi.GetComponent<Collider2D>();
+                if (col != null) col.enabled = true;
+                Dialogue dlg = tetuaAdatFotografi.GetComponentInChildren<Dialogue>(true);
+                if (dlg != null)
+                {
+                    dlg.enabled = true;
+                    dlg.RefreshPostQuestLoopState();
+                }
+            }
+            else if (stage == 6)
             {
                 Collider2D col = tetuaAdatFotografi.GetComponent<Collider2D>();
                 if (col != null) col.enabled = false;
                 Dialogue dlg = tetuaAdatFotografi.GetComponentInChildren<Dialogue>();
                 if (dlg != null) dlg.enabled = false;
+            }
+        }
+
+        if (tourGuide != null)
+        {
+            tourGuide.SetActive(stage == 6);
+        }
+
+        if (areaFotoSasi != null)
+        {
+            if (stage == 6 && QuestController.Instance != null && QuestController.Instance.IsQuestActive("05_Arborek"))
+            {
+                areaFotoSasi.SetActive(true);
+            }
+            else if (stage != 6)
+            {
+                areaFotoSasi.SetActive(false);
             }
         }
 

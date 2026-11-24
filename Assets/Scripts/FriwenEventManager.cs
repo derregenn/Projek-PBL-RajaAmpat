@@ -224,9 +224,13 @@ public class FriwenEventManager : MonoBehaviour
         playerScript.enabled = true;
 
         Rigidbody2D rb = playerScript.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
         {
             rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.constraints = freeze
+                ? (RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation)
+                : RigidbodyConstraints2D.FreezeRotation;
         }
 
         if (freeze)
