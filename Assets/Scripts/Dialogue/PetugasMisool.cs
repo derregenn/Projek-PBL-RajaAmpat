@@ -58,6 +58,12 @@ public class PetugasMisool : MonoBehaviour
                     MisoolQuestManager.Instance.ResetCotsCount();
                     MisoolQuestManager.Instance.AdvanceStageTo(4);
                 }
+
+                QuestGiver questGiver = GetComponent<QuestGiver>();
+                if (questGiver != null)
+                {
+                    questGiver.GiveQuest();
+                }
             });
         }
         else if (stage == 4)

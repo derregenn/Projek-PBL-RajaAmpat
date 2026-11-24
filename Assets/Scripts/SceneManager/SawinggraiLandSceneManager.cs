@@ -16,6 +16,7 @@ public class SawinggraiLandSceneManager : MonoBehaviour
     [SerializeField] private GameObject penjualFotoQuest;  // NPC Penjual aktif di Stage 6
     [SerializeField] private GameObject penjualFotoAfterQuest;  // NPC Penjual aktif di Stage 7 (Setelah Quest Selesai)
     [SerializeField] private GameObject burungCendrawasih; // Target QTE aktif di Stage 6
+    [SerializeField] private GameObject[] stepCendrawasih; // Langkah-langkah Cendrawasih, aktif hanya di Stage 6
 
     [Header("Referensi NPC Locked & Unlocked")]
     [Tooltip("NPC saat quest masih terkunci")]
@@ -79,6 +80,14 @@ public class SawinggraiLandSceneManager : MonoBehaviour
         if (penjualFotoAfterQuest != null)
         {
             penjualFotoAfterQuest.SetActive(stage >= 7); // Baru bisa diajak bicara setelah selesai quest
+        }
+
+        if (stepCendrawasih != null && stepCendrawasih.Length > 0)
+        {
+            for (int i = 0; i < stepCendrawasih.Length; i++)
+            {
+                stepCendrawasih[i].SetActive(stage == 6); // Semua langkah aktif saat stage 6, mati saat stage lain
+            }
         }
 
         if (burungCendrawasih != null)

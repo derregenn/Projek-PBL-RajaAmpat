@@ -40,18 +40,18 @@ public class GlobalTrashManager : MonoBehaviour
     // SAVE KEYS
     // =========================================================
 
-    private const string KeyCollectedSet   = "GTM_CollectedIDs";   // ID yang sudah diambil (pipa "|" sebagai pemisah)
-    private const string KeyTotalInGame    = "GTM_TotalInGame";    // Total sampah terdaftar di game ini
+    private const string KeyCollectedSet = "GTM_CollectedIDs";   // ID yang sudah diambil (pipa "|" sebagai pemisah)
+    private const string KeyTotalInGame = "GTM_TotalInGame";    // Total sampah terdaftar di game ini
     private const string KeyTotalCollected = "GTM_TotalCollected"; // Total yang sudah dikumpulkan
-    private const string KeyFreeRoamMode   = "GTM_FreeRoamMode";   // 1 = mode free roam aktif
+    private const string KeyFreeRoamMode = "GTM_FreeRoamMode";   // 1 = mode free roam aktif
 
     // =========================================================
     // STATE RUNTIME
     // =========================================================
 
-    private HashSet<string> collectedIDs     = new HashSet<string>();
-    private HashSet<string> registeredIDs    = new HashSet<string>();
-    private int totalInGameCount             = 0;   // Diisi dari Inspector masing-masing scene via RegisterTotal()
+    private HashSet<string> collectedIDs = new HashSet<string>();
+    private HashSet<string> registeredIDs = new HashSet<string>();
+    private int totalInGameCount = 0;   // Diisi dari Inspector masing-masing scene via RegisterTotal()
 
     // =========================================================
     // EVENTS
