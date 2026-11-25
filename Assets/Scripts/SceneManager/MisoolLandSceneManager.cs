@@ -118,7 +118,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         // NPC Locked & Unlocked
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 9;
+            bool isUnlocked = stage >= 9 || QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Misool);
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

@@ -111,6 +111,7 @@ public class MapController : MonoBehaviour
         }
 
         EnsureStandardMapPanelSetup();
+        RefreshGagButtonState();
         UpdateCurrentLocationMarker();
         if (worldMapFadeRoutine != null) StopCoroutine(worldMapFadeRoutine);
         worldMapFadeRoutine = StartCoroutine(FadeGroup(worldMapCanvasGroup, true, true));
@@ -124,8 +125,7 @@ public class MapController : MonoBehaviour
         ("Btn_Misool", "04_Misool"),
         ("Btn_Arborek", "05_Arborek"),
         ("Btn_Sawinggrai", "06_Sawinggrai"),
-        ("Btn_Friwen", "07_Friwen"),
-        ("Btn_Gag", "10_Gag")
+        ("Btn_Friwen", "07_Friwen")
     };
 
     private bool buttonsConfiguredOnce = false;
@@ -191,6 +191,28 @@ public class MapController : MonoBehaviour
                     btn.onClick.AddListener(() => LoadIslandScene(sceneTarget));
                 }
             }
+        }
+
+        RefreshGagButtonState();
+    }
+
+    private void RefreshGagButtonState()
+    {
+        if (worldMapCanvasGroup == null) return;
+
+        MapGagUnlocker gagUnlocker = worldMapCanvasGroup.GetComponentInChildren<MapGagUnlocker>(true);
+        if (gagUnlocker == null)
+        {
+            Transform gagTr = FindChildByName(worldMapCanvasGroup.transform, "Btn_Gag");
+            if (gagTr != null)
+            {
+                gagUnlocker = gagTr.gameObject.AddComponent<MapGagUnlocker>();
+            }
+        }
+
+        if (gagUnlocker != null)
+        {
+            gagUnlocker.RefreshGagState();
         }
     }
 

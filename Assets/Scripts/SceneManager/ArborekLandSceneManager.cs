@@ -190,7 +190,7 @@ public class ArborekLandSceneManager : MonoBehaviour
         // NPC Locked / Unlocked (terbuka setelah foto & transisi akhir di Stage 7+)
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 7;
+            bool isUnlocked = stage >= 7 || QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Arborek);
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

@@ -784,29 +784,18 @@ public class QuestJournalManager : MonoBehaviour
             // Jika persentase masih 0 atau GamePhaseManager belum menghitung, hitung secara mandiri dari aktivitas player
             if (percentage <= 0f)
             {
-                int completedCount = completedQuestTitles != null ? completedQuestTitles.Count : 0;
-                if (completedQuestIDs != null && completedQuestIDs.Count > completedCount)
+                float calculated = CalculateFallbackPercentageFromIslands();
+                if (calculated <= 0f)
                 {
-                    completedCount = completedQuestIDs.Count;
-                }
-
-                int islandCount = unlockedAwardIslands != null ? unlockedAwardIslands.Count : 0;
-                int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
-
-                // Perhitungan progres proporsional:
-                // Misi selesai (bobot ~3.5% per misi), Award pulau (3% per pulau), dan Sampah (hingga 10%)
-                float calculated = (completedCount * 3.5f) + (islandCount * 3f) + Mathf.Min(10f, (trashCount / 20f * 10f));
-                percentage = Mathf.Clamp(calculated, 0f, 100f);
-
-                // Buka pulau Gag jika quest selesai sudah cukup atau persentase mencapai target
-                if (percentage >= 25f || completedCount >= 3)
-                {
-                    if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.GetIsGagUnlocked())
+                    int completedCount = completedQuestTitles != null ? completedQuestTitles.Count : 0;
+                    if (completedQuestIDs != null && completedQuestIDs.Count > completedCount)
                     {
-                        GamePhaseManager.Instance.UnlockGag(true);
+                        completedCount = completedQuestIDs.Count;
                     }
-                    PlayerPrefs.SetInt("GPM_GagUnlocked", 1);
+                    int trashCountFallback = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
+                    calculated = Mathf.Clamp((completedCount * 2.1f) + Mathf.Min(10f, (trashCountFallback / 20f * 10f)), 0f, 84f);
                 }
+                percentage = Mathf.Clamp(calculated, 0f, 100f);
 
                 if (percentage > 0f &&
                     GamePhaseManager.Instance != null &&
@@ -1471,6 +1460,39 @@ public class QuestJournalManager : MonoBehaviour
         return island.HasValue && IsIslandCompletedPersistent(island.Value);
     }
 
+    private static float CalculateFallbackPercentageFromIslands()
+    {
+        float pct = 0f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Airstrip)) pct += 1f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Waisai)) pct += 9f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Piaynemo)) pct += 15f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Misool)) pct += 15f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Arborek)) pct += 15f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Sawinggrai)) pct += 15f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Friwen)) pct += 15f;
+        if (IsPrerequisiteIslandCompleted(IslandName.Gag)) pct += 15f;
+        return Mathf.Clamp(pct, 0f, 100f);
+    }
+
+    public static bool IsPrerequisiteIslandCompleted(IslandName island)
+    {
+        return IsIslandCompletedPersistent(island) || IsFinalQuestOfIslandDonePersistent(island);
+    }
+
+    /// <summary>
+    /// Mengecek apakah seluruh pulau prasyarat sebelum Pulau Gag (Waisai, Piaynemo, Misool, Arborek, Sawinggrai, Friwen)
+    /// telah dituntaskan quest-nya.
+    /// </summary>
+    public static bool AreAllPrerequisiteIslandsCompleted()
+    {
+        return IsPrerequisiteIslandCompleted(IslandName.Waisai)
+            && IsPrerequisiteIslandCompleted(IslandName.Piaynemo)
+            && IsPrerequisiteIslandCompleted(IslandName.Misool)
+            && IsPrerequisiteIslandCompleted(IslandName.Arborek)
+            && IsPrerequisiteIslandCompleted(IslandName.Sawinggrai)
+            && IsPrerequisiteIslandCompleted(IslandName.Friwen);
+    }
+
     /// <summary>
     /// Mengecek apakah seluruh quest wajib untuk sebuah pulau sudah tuntas sehingga pulau boleh ditamatkan / ditinggalkan.
     /// </summary>
@@ -1481,12 +1503,12 @@ public class QuestJournalManager : MonoBehaviour
             return true;
         }
 
-        if (IsIslandCompletedPersistent(island))
+        if (island != IslandName.Gag && AreAllPrerequisiteIslandsCompleted())
         {
             return true;
         }
 
-        return IsFinalQuestOfIslandDonePersistent(island);
+        return IsPrerequisiteIslandCompleted(island);
     }
 
     /// <summary>

@@ -188,13 +188,13 @@ public class GameplayDebugManager : MonoBehaviour
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Buka Gag (85%)"))
         {
+            GamePhaseManager.Instance?.UnlockGag(true, true);
             GamePhaseManager.Instance?.SetPercentageDirectly(85f);
-            GamePhaseManager.Instance?.UnlockGag(true);
         }
         if (GUILayout.Button("Tamat 100%"))
         {
+            GamePhaseManager.Instance?.UnlockGag(true, true);
             GamePhaseManager.Instance?.SetPercentageDirectly(100f);
-            GamePhaseManager.Instance?.UnlockGag(true);
             StoryManager.Instance?.CompleteIsland(6);
         }
         GUILayout.EndHorizontal();

@@ -67,6 +67,7 @@ public class WaisaiLandSceneManager : MonoBehaviour
     private static bool IsHubUnlocked(int stage)
     {
         if (stage >= 1) return true;
+        if (QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Waisai)) return true;
         if (QuestJournalManager.HasCompletedQuestIDPersistent("01_Waisai")) return true;
         return QuestController.Instance != null && QuestController.Instance.IsQuestActive("01_Waisai");
     }

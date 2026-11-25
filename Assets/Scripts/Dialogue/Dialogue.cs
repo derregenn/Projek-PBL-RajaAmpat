@@ -30,12 +30,12 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
     [SerializeField] private Sprite[] DialogueLineSprites;
     [SerializeField] private string triviaQuestionText;
-    [SerializeField] private float TypeSpeed = 0.02f;
+    [SerializeField] private float TypeSpeed = 0.04f;
 
     [Header("Typing Audio")]
     [SerializeField] private AudioSource typingAudioSource;
     [SerializeField] private AudioClip typingAudioClip;
-    [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 1f;
+    [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 0.3f;
     [SerializeField, Min(0f)] private float typingAudioInterval = 0.06f;
     private float nextTypingAudioTime;
 
@@ -1080,6 +1080,7 @@ public class Dialogue : MonoBehaviour
         EnsureInteractPromptHierarchy();
         EnsureDialogueCanvasSorting();
         EnsureWaisaiDialogueStandard();
+        EnsureTypingAudioSource();
 
         // Cari skrip Player pada objek ber-tag Player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -1099,6 +1100,7 @@ public class Dialogue : MonoBehaviour
         EnsureInteractPromptHierarchy();
         EnsureDialogueCanvasSorting();
         EnsureWaisaiDialogueStandard();
+        EnsureTypingAudioSource();
     }
 
     private void OnDisable()
@@ -1249,9 +1251,31 @@ public class Dialogue : MonoBehaviour
         }
     }
 
+    private void EnsureTypingAudioSource()
+    {
+        if (typingAudioSource == null || !typingAudioSource.gameObject.activeInHierarchy)
+        {
+            AudioSource localSource = GetComponent<AudioSource>();
+            if (localSource == null)
+            {
+                localSource = gameObject.AddComponent<AudioSource>();
+                localSource.playOnAwake = false;
+                localSource.loop = false;
+                localSource.spatialBlend = 0f;
+            }
+            typingAudioSource = localSource;
+        }
+
+        if (typingAudioClip != null && typingAudioClip.loadState == AudioDataLoadState.Unloaded)
+        {
+            typingAudioClip.LoadAudioData();
+        }
+    }
+
     private void StartTyping()
     {
         EnsureHierarchyActiveForCoroutine();
+        EnsureTypingAudioSource();
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         if (typingAudioSource != null) typingAudioSource.Stop();
         typingCoroutine = StartCoroutine(WriteLine());
@@ -1362,11 +1386,17 @@ public class Dialogue : MonoBehaviour
         {
             activeText.maxVisibleCharacters = i;
 
-            if (i < totalCharacters && typingAudioSource != null && typingAudioClip != null
-                && Time.time >= nextTypingAudioTime && !typingAudioSource.isPlaying)
+            if (i < totalCharacters && typingAudioClip != null)
             {
-                typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
-                nextTypingAudioTime = Time.time + typingAudioInterval;
+                if (typingAudioSource == null || !typingAudioSource.gameObject.activeInHierarchy)
+                {
+                    EnsureTypingAudioSource();
+                }
+                if (typingAudioSource != null && Time.time >= nextTypingAudioTime && !typingAudioSource.isPlaying)
+                {
+                    typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
+                    nextTypingAudioTime = Time.time + typingAudioInterval;
+                }
             }
 
             if (isNpcPrimary && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null && (lineSprite == null || lineSprite == idleSprite || lineSprite == talkingSprite1 || lineSprite == talkingSprite2))

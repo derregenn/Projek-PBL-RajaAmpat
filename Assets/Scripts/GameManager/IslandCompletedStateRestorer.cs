@@ -62,8 +62,10 @@ public class IslandCompletedStateRestorer : MonoBehaviour
         IslandName? island = QuestJournalManager.GetIslandFromSceneName(scene.name);
         if (!island.HasValue) return;
 
+        bool allPrereqDone = QuestJournalManager.AreAllPrerequisiteIslandsCompleted();
         bool isCompleted = QuestJournalManager.IsIslandCompletedPersistent(island.Value) ||
-                           PlayerPrefs.GetInt("GameCompleted", 0) == 1;
+                           PlayerPrefs.GetInt("GameCompleted", 0) == 1 ||
+                           (island.Value != IslandName.Gag && allPrereqDone);
         if (!isCompleted) return;
 
         switch (island.Value)
@@ -89,6 +91,12 @@ public class IslandCompletedStateRestorer : MonoBehaviour
             case IslandName.Gag:
                 ApplyGagCompletedState(scene);
                 break;
+        }
+
+        if (allPrereqDone || PlayerPrefs.GetInt("GameCompleted", 0) == 1 || QuestJournalManager.CanCompleteIslandOrOpenMap(island.Value))
+        {
+            SetObjectsActive(scene, true, "NPCMap");
+            SetObjectsActive(scene, false, "NPCMap_Locked");
         }
 
         RefreshAllSceneDialogueLoops(scene);

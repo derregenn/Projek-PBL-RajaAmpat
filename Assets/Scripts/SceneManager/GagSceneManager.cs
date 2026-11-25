@@ -109,7 +109,7 @@ public class GagSceneManager : MonoBehaviour
         // NPC Locked / Unlocked
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 4; // Misal, NPC terbuka setelah stage
+            bool isUnlocked = stage >= 4 || QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Gag);
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

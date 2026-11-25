@@ -133,7 +133,7 @@ public class PianemoLandSceneManager : MonoBehaviour
         // NPC Locked / Unlocked
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 5; // Misal, NPC terbuka setelah stage
+            bool isUnlocked = stage >= 5 || QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Piaynemo);
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }

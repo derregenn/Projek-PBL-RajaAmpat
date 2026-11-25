@@ -289,6 +289,12 @@ public class BoatTransitionController : MonoBehaviour
             return;
         }
 
+        if (ExtractBaseIslandName(sceneName) == "gag" && !GamePhaseManager.IsGagUnlockedPersistent())
+        {
+            Debug.LogWarning("[BoatTransition] Teleport ke 10_Gag dibatalkan karena seluruh pulau prasyarat belum selesai.");
+            return;
+        }
+
         if (!QuestJournalManager.CanLeaveCurrentIslandForMap())
         {
             Debug.LogWarning("[BoatTransition] Teleport dibatalkan karena seluruh quest pada pulau ini belum selesai.");

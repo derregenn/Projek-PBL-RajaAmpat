@@ -119,6 +119,7 @@ public class GamePhaseManager : MonoBehaviour
 
     private const string SaveKeyCompletedQuests = "GPM_CompletedQuests";
     private const string SaveKeyGagUnlocked = "GPM_GagUnlocked";
+    private const string SaveKeyGagDebugUnlocked = "GPM_GagDebugUnlocked";
     private const string SaveKeyTargetIsland = "TargetIsland";
 
     // =========================================================
@@ -186,10 +187,14 @@ public class GamePhaseManager : MonoBehaviour
             {
                 if (islandGroup == null || islandGroup.quests == null) continue;
 
+                bool islandDone = QuestJournalManager.IsPrerequisiteIslandCompleted(islandGroup.island);
                 foreach (var entry in islandGroup.quests)
                 {
-                    if (entry != null && completedQuestIDs.Contains(entry.questID))
+                    if (entry == null) continue;
+                    if (islandDone || IsQuestDoneForProgress(entry.questID, islandGroup.island))
+                    {
                         total += entry.percentageWeight;
+                    }
                 }
             }
         }
@@ -204,13 +209,15 @@ public class GamePhaseManager : MonoBehaviour
 
         total = Mathf.Clamp(total, 0f, 100f);
 
-        // Cek threshold 85% untuk membuka Pulau Gag
-        if (total >= 85f && !isGagUnlocked)
+        bool wasUnlocked = isGagUnlocked;
+        bool unlockedNow = IsGagUnlockedPersistent();
+        isGagUnlocked = unlockedNow;
+        PlayerPrefs.SetInt(SaveKeyGagUnlocked, unlockedNow ? 1 : 0);
+
+        if (unlockedNow && !wasUnlocked)
         {
-            isGagUnlocked = true;
-            PlayerPrefs.SetInt(SaveKeyGagUnlocked, 1);
             PlayerPrefs.Save();
-            Debug.Log("<color=green>[GamePhaseManager] 85% Tercapai! Pulau Gag Terbuka!</color>");
+            Debug.Log("<color=green>[GamePhaseManager] Semua pulau prasyarat selesai! Pulau Gag Terbuka!</color>");
             OnGagUnlocked?.Invoke();
         }
 
@@ -222,6 +229,34 @@ public class GamePhaseManager : MonoBehaviour
             Debug.Log("<color=gold>[GamePhaseManager] 100% Tercapai! Permainan Tamat!</color>");
             OnGameCompleted?.Invoke();
         }
+    }
+
+    private bool IsQuestDoneForProgress(string questID, IslandName island)
+    {
+        if (string.IsNullOrEmpty(questID)) return false;
+        if (completedQuestIDs.Contains(questID) || QuestJournalManager.HasCompletedQuestIDPersistent(questID))
+        {
+            return true;
+        }
+
+        if (questID == "06_Piaynemo")
+        {
+            return completedQuestIDs.Contains("06_Pianemo") || QuestJournalManager.HasCompletedQuestIDPersistent("06_Pianemo");
+        }
+        if (island == IslandName.Friwen)
+        {
+            if (questID == "01_Friwen") return completedQuestIDs.Contains("07") || QuestJournalManager.HasCompletedQuestIDPersistent("07");
+            if (questID == "02_Friwen") return completedQuestIDs.Contains("08") || QuestJournalManager.HasCompletedQuestIDPersistent("08");
+            if (questID == "03_Friwen") return completedQuestIDs.Contains("09") || QuestJournalManager.HasCompletedQuestIDPersistent("09");
+            if (questID == "04_Friwen") return completedQuestIDs.Contains("10") || QuestJournalManager.HasCompletedQuestIDPersistent("10");
+        }
+        if (island == IslandName.Gag && questID.EndsWith("_Gag", StringComparison.Ordinal))
+        {
+            string shortId = questID.Substring(0, 2);
+            return completedQuestIDs.Contains(shortId) || QuestJournalManager.HasCompletedQuestIDPersistent(shortId);
+        }
+
+        return false;
     }
 
     // =========================================================
@@ -250,7 +285,8 @@ public class GamePhaseManager : MonoBehaviour
             }
         }
 
-        isGagUnlocked = PlayerPrefs.GetInt(SaveKeyGagUnlocked, 0) == 1;
+        isGagUnlocked = IsGagUnlockedPersistent();
+        PlayerPrefs.SetInt(SaveKeyGagUnlocked, isGagUnlocked ? 1 : 0);
         Debug.Log($"[GamePhaseManager] Progress dimuat. Quest selesai: {completedQuestIDs.Count}, Gag Unlocked: {isGagUnlocked}");
     }
 
@@ -258,9 +294,28 @@ public class GamePhaseManager : MonoBehaviour
     // PUBLIC API
     // =========================================================
 
+    public static bool IsGagUnlockedPersistent()
+    {
+        if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
+        {
+            return true;
+        }
+
+        if (PlayerPrefs.GetInt(SaveKeyGagDebugUnlocked, 0) == 1)
+        {
+            return true;
+        }
+
+        return QuestJournalManager.AreAllPrerequisiteIslandsCompleted();
+    }
+
     public float GetCurrentPercentage() => currentCompletionPercentage;
 
-    public bool GetIsGagUnlocked() => isGagUnlocked;
+    public bool GetIsGagUnlocked()
+    {
+        isGagUnlocked = IsGagUnlockedPersistent();
+        return isGagUnlocked;
+    }
 
     public bool IsQuestCompleted(string questID) => completedQuestIDs.Contains(questID);
 
@@ -290,19 +345,44 @@ public class GamePhaseManager : MonoBehaviour
 
     public void UnlockGag(bool unlock = true)
     {
-        isGagUnlocked = unlock;
-        PlayerPrefs.SetInt(SaveKeyGagUnlocked, unlock ? 1 : 0);
+        UnlockGag(unlock, false);
+    }
+
+    public void UnlockGag(bool unlock, bool isDebugForce)
+    {
+        if (!unlock)
+        {
+            isGagUnlocked = false;
+            PlayerPrefs.DeleteKey(SaveKeyGagUnlocked);
+            PlayerPrefs.DeleteKey(SaveKeyGagDebugUnlocked);
+            PlayerPrefs.DeleteKey("GagUnlocked");
+            PlayerPrefs.Save();
+            Debug.Log("[GamePhaseManager] Status Pulau Gag dikunci.");
+            return;
+        }
+
+        if (isDebugForce)
+        {
+            PlayerPrefs.SetInt(SaveKeyGagDebugUnlocked, 1);
+        }
+
+        bool canUnlock = isDebugForce || IsGagUnlockedPersistent();
+        isGagUnlocked = canUnlock;
+        PlayerPrefs.SetInt(SaveKeyGagUnlocked, canUnlock ? 1 : 0);
         PlayerPrefs.Save();
-        if (unlock) OnGagUnlocked?.Invoke();
-        Debug.Log($"[GamePhaseManager] Status Pulau Gag diubah: {unlock}");
+        if (canUnlock) OnGagUnlocked?.Invoke();
+        Debug.Log($"[GamePhaseManager] Status Pulau Gag diubah: {canUnlock} (debugForce={isDebugForce})");
     }
 
     public void SetPercentageDirectly(float pct)
     {
         currentCompletionPercentage = Mathf.Clamp(pct, 0f, 100f);
-        if (currentCompletionPercentage >= 85f && !isGagUnlocked)
+        bool unlockedNow = IsGagUnlockedPersistent();
+        isGagUnlocked = unlockedNow;
+        PlayerPrefs.SetInt(SaveKeyGagUnlocked, unlockedNow ? 1 : 0);
+        if (unlockedNow)
         {
-            UnlockGag(true);
+            OnGagUnlocked?.Invoke();
         }
         OnPercentageUpdated?.Invoke(currentCompletionPercentage);
     }
@@ -319,6 +399,8 @@ public class GamePhaseManager : MonoBehaviour
 
         PlayerPrefs.DeleteKey(SaveKeyCompletedQuests);
         PlayerPrefs.DeleteKey(SaveKeyGagUnlocked);
+        PlayerPrefs.DeleteKey(SaveKeyGagDebugUnlocked);
+        PlayerPrefs.DeleteKey("GagUnlocked");
         PlayerPrefs.DeleteKey(SaveKeyTargetIsland);
         PlayerPrefs.Save();
         QuestJournalManager.InvalidatePersistentQuestCache();

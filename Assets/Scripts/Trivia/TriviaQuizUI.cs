@@ -85,6 +85,7 @@ public class TriviaQuizUI : MonoBehaviour
         canPressEToClose = false;
         onQuizCompleted = null;
         feedbackOutline = null;
+        questionBoxRoundedRect = null;
 
         if (source.choicesPanel != null) choicesPanel = source.choicesPanel;
         if (source.questionText != null) questionText = source.questionText;
@@ -125,8 +126,9 @@ public class TriviaQuizUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
-    [SerializeField] private Color correctBorderColor = new Color(0.2f, 0.82f, 0.48f);
-    [SerializeField] private Color wrongBorderColor = new Color(0.94f, 0.22f, 0.25f);
+    [SerializeField] private Color correctBorderColor = new Color(0.18f, 0.85f, 0.42f, 1f);
+    [SerializeField] private Color wrongBorderColor = new Color(0.95f, 0.22f, 0.24f, 1f);
+    [SerializeField] private float feedbackOutlineThickness = 14f;
 
     [Header("Audio Settings (Pattern Recognition & Feedback)")]
     [SerializeField] private AudioSource audioSource;
@@ -159,6 +161,7 @@ public class TriviaQuizUI : MonoBehaviour
     private bool canPressEToClose = false;
     private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
     private Outline feedbackOutline;
+    private ProceduralRoundedRect questionBoxRoundedRect;
 
     public static bool IsAnyQuizActive =>
         Instance != null
@@ -250,6 +253,7 @@ public class TriviaQuizUI : MonoBehaviour
         isShowingFeedback = false;
         canPressEToClose = false;
         feedbackOutline = null;
+        questionBoxRoundedRect = null;
 
         if (choicesPanel == null || HasInvalidButtonReferences() || HasInvalidTextReferences())
         {
@@ -391,6 +395,7 @@ public class TriviaQuizUI : MonoBehaviour
         }
 
         feedbackOutline = null;
+        questionBoxRoundedRect = null;
         SetupFeedbackOutline();
         SetupOptionButtonHovers();
     }
@@ -498,6 +503,7 @@ public class TriviaQuizUI : MonoBehaviour
             if (q.options != null && i < q.options.Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
+                optionButtons[i].interactable = true;
                 if (optionTexts != null && i < optionTexts.Length && optionTexts[i] != null)
                 {
                     optionTexts[i].text = q.options[i];
@@ -536,7 +542,7 @@ public class TriviaQuizUI : MonoBehaviour
             string successMsg = !string.IsNullOrWhiteSpace(q.correctFeedback)
                 ? q.correctFeedback
                 : GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
-            StartCoroutine(ShowFeedbackRoutine(successMsg, true));
+            StartCoroutine(ShowFeedbackRoutine(successMsg, true, selectedIndex));
         }
         else
         {
@@ -547,7 +553,7 @@ public class TriviaQuizUI : MonoBehaviour
             string wrongMsg = !string.IsNullOrWhiteSpace(q.wrongFeedback)
                 ? q.wrongFeedback
                 : GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
-            StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
+            StartCoroutine(ShowFeedbackRoutine(wrongMsg, false, selectedIndex));
         }
     }
 
@@ -561,24 +567,25 @@ public class TriviaQuizUI : MonoBehaviour
         return defaultMessage;
     }
 
-    private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect)
+    private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect, int selectedIndex)
     {
         isShowingFeedback = true;
-        SetFeedbackOutline(true, isCorrect);
+        SetFeedbackOutline(true, isCorrect, selectedIndex);
 
         if (questionText != null) questionText.text = feedbackMessage;
         if (optionButtons != null)
         {
             foreach (Button button in optionButtons)
             {
-                if (button != null) button.gameObject.SetActive(false);
+                if (button != null) button.interactable = false;
             }
         }
 
-        // Tunggu sebentar agar player sempat membaca feedback
+        // Tunggu sebentar agar player sempat membaca feedback dan melihat outline hijau/merah
         yield return new WaitForSeconds(1.5f);
 
         isShowingFeedback = false;
+        SetFeedbackOutline(false, false, -1);
 
         if (isCorrect)
         {
@@ -650,9 +657,28 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void SetupFeedbackOutline()
     {
-        if (questionText == null || questionText.transform.parent == null) return;
+        Transform boxTr = null;
+        if (questionText != null && questionText.transform.parent != null)
+        {
+            boxTr = questionText.transform.parent;
+        }
+        else if (choicesPanel != null)
+        {
+            boxTr = choicesPanel.transform.Find("QuestionBox");
+        }
 
-        Graphic borderGraphic = questionText.transform.parent.GetComponent<Graphic>();
+        if (boxTr == null) return;
+
+        questionBoxRoundedRect = boxTr.GetComponent<ProceduralRoundedRect>();
+        if (questionBoxRoundedRect != null)
+        {
+            questionBoxRoundedRect.SetOutline(false, Color.clear, 0f);
+            Outline oldOutline = boxTr.GetComponent<Outline>();
+            if (oldOutline != null) oldOutline.enabled = false;
+            return;
+        }
+
+        Graphic borderGraphic = boxTr.GetComponent<Graphic>();
         if (borderGraphic == null) return;
 
         feedbackOutline = borderGraphic.GetComponent<Outline>();
@@ -661,17 +687,67 @@ public class TriviaQuizUI : MonoBehaviour
             feedbackOutline = borderGraphic.gameObject.AddComponent<Outline>();
         }
 
-        feedbackOutline.effectDistance = new Vector2(6f, 6f);
+        feedbackOutline.effectDistance = new Vector2(10f, 10f);
         feedbackOutline.useGraphicAlpha = false;
         feedbackOutline.enabled = false;
     }
 
-    private void SetFeedbackOutline(bool visible, bool isCorrect)
+    private void SetButtonOutline(Button btn, bool visible, Color outlineColor)
     {
-        if (feedbackOutline == null) return;
+        if (btn == null) return;
 
-        feedbackOutline.effectColor = isCorrect ? correctBorderColor : wrongBorderColor;
-        feedbackOutline.enabled = visible;
+        ProceduralRoundedRect rounded = btn.GetComponent<ProceduralRoundedRect>();
+        if (rounded != null)
+        {
+            rounded.SetOutline(visible, outlineColor, feedbackOutlineThickness);
+            Outline oldOutline = btn.GetComponent<Outline>();
+            if (oldOutline != null) oldOutline.enabled = false;
+            return;
+        }
+
+        Graphic g = btn.targetGraphic != null ? btn.targetGraphic : btn.GetComponent<Graphic>();
+        if (g == null) return;
+
+        Outline outline = g.GetComponent<Outline>();
+        if (outline == null)
+        {
+            if (!visible) return;
+            outline = g.gameObject.AddComponent<Outline>();
+            outline.effectDistance = new Vector2(10f, 10f);
+            outline.useGraphicAlpha = false;
+        }
+
+        outline.effectColor = outlineColor;
+        outline.enabled = visible;
+    }
+
+    private void SetFeedbackOutline(bool visible, bool isCorrect, int selectedButtonIndex = -1)
+    {
+        if (questionBoxRoundedRect == null && feedbackOutline == null)
+        {
+            SetupFeedbackOutline();
+        }
+
+        Color targetColor = isCorrect ? correctBorderColor : wrongBorderColor;
+
+        if (questionBoxRoundedRect != null)
+        {
+            questionBoxRoundedRect.SetOutline(visible, targetColor, feedbackOutlineThickness);
+        }
+        else if (feedbackOutline != null)
+        {
+            feedbackOutline.effectColor = targetColor;
+            feedbackOutline.enabled = visible;
+        }
+
+        if (optionButtons != null)
+        {
+            for (int i = 0; i < optionButtons.Length; i++)
+            {
+                bool showOnThisButton = visible && i == selectedButtonIndex;
+                SetButtonOutline(optionButtons[i], showOnThisButton, targetColor);
+            }
+        }
     }
 
     public void PlaySFX(AudioClip clip)

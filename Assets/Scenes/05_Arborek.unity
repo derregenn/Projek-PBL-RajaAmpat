@@ -462,6 +462,7 @@ MonoBehaviour:
   amountToAdd: 1
   requiredActiveObjectiveID: 
   requiredCompletedQuestID: 
+  countsAsGlobalTrash: 0
   collectSound: {fileID: 0}
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
@@ -2137,7 +2138,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000001000000000000000000000000000000000000000000000000000000000000000000000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -3523,7 +3524,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000100000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -4222,7 +4223,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!114 &370301919 stripped
 MonoBehaviour:
@@ -5344,6 +5345,8 @@ MonoBehaviour:
   maxVolume: 0.2
   crossfadeDuration: 0.15
   playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30
@@ -8615,7 +8618,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 110.69}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &934573082
 MonoBehaviour:
@@ -8879,7 +8882,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &987503957
 PrefabInstance:
@@ -8889,6 +8892,62 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -24.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 786594774439226356, guid: 1511c852ecce3394dad341050a11508f, type: 3}
       propertyPath: m_Name
       value: NPCMap_Locked
@@ -9045,62 +9104,6 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 668213423308181977, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277424708996416077, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -24.59
-      objectReference: {fileID: 0}
-    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6779139200214658869, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5044695647541820758, guid: 1511c852ecce3394dad341050a11508f, type: 3}
@@ -12208,6 +12211,7 @@ MonoBehaviour:
   amountToAdd: 1
   requiredActiveObjectiveID: umpan_arborek
   requiredCompletedQuestID: 
+  countsAsGlobalTrash: 0
   collectSound: {fileID: 0}
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
@@ -13080,7 +13084,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0100000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -13614,6 +13618,8 @@ MonoBehaviour:
   npcArborek3: {fileID: 1779326721}
   npcLocked: {fileID: 987503958}
   npcUnlocked: {fileID: 507135977}
+  tourGuide: {fileID: 0}
+  areaFotoSasi: {fileID: 0}
 --- !u!1 &1434921109
 GameObject:
   m_ObjectHideFlags: 0
@@ -15240,7 +15246,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000010000000100000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -15485,7 +15491,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000000000000010000000000000000000000010000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -15952,7 +15958,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000000000000000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 2022872709}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -16618,7 +16624,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_fontSize
-      value: 26
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
@@ -16994,7 +17000,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 00000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -19755,7 +19761,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 0000000001000000000000000100000001000000000000000000000001000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 2022872709}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -20978,7 +20984,7 @@ MonoBehaviour:
   DialogueLineSpeakers: 010000000000000000000000000000000100000000000000010000000000000000000000010000000000000000000000000000000000000000000000
   DialogueLineSprites: []
   triviaQuestionText: 
-  TypeSpeed: 0.01
+  TypeSpeed: 0.04
   typingAudioSource: {fileID: 1388967374}
   typingAudioClip: {fileID: 8300000, guid: 7a9fd181d20e8c744a07354d6212707c, type: 3}
   typingAudioVolume: 0.3
@@ -21227,7 +21233,7 @@ SpriteRenderer:
   m_Size: {x: 14.14, y: 4.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!4 &2145643863
 Transform:
@@ -22764,9 +22770,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a14d65026874a48be98ba66e45e721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGagUnlocker
-  mapTeleport: {fileID: 0}
-  unlockedSprite: {fileID: 0}
-  lockedSprite: {fileID: 0}
+  mapTeleport: {fileID: 796517721}
+  unlockedSprite: {fileID: -2458172462140967797, guid: eb4a5e0c84d7ff442855a7db7e36faa1, type: 3}
+  lockedSprite: {fileID: 6864911931453170457, guid: b780e1447d29116488f8104a696583b1, type: 3}
 --- !u!222 &4495380738058824276
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23076,23 +23082,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7303767999439901926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 796517721}
-        m_TargetAssemblyTypeName: MapTeleport, Assembly-CSharp
-        m_MethodName: PindahKePulau
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &5004102870497445757
 MonoBehaviour:
   m_ObjectHideFlags: 0

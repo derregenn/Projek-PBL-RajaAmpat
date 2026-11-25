@@ -11928,9 +11928,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a14d65026874a48be98ba66e45e721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGagUnlocker
-  mapTeleport: {fileID: 0}
-  unlockedSprite: {fileID: 0}
-  lockedSprite: {fileID: 0}
+  mapTeleport: {fileID: 1715585886}
+  unlockedSprite: {fileID: -2458172462140967797, guid: eb4a5e0c84d7ff442855a7db7e36faa1, type: 3}
+  lockedSprite: {fileID: 6864911931453170457, guid: b780e1447d29116488f8104a696583b1, type: 3}
 --- !u!1 &4637163410332519759
 GameObject:
   m_ObjectHideFlags: 0
@@ -12397,23 +12397,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7488723554190527695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1715585886}
-        m_TargetAssemblyTypeName: MapTeleport, Assembly-CSharp
-        m_MethodName: PindahKePulau
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 06_Sawinggrai
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &5171079210971225940
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -103,7 +103,7 @@ public class SawinggraiLandSceneManager : MonoBehaviour
         // 3. PENGATURAN NPC LOCKED & UNLOCKED (Baru terbuka setelah Quest 3 / Stage 7 selesai)
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 7;
+            bool isUnlocked = stage >= 7 || QuestJournalManager.CanCompleteIslandOrOpenMap(IslandName.Sawinggrai);
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }
