@@ -63,6 +63,9 @@ public class QuestController : MonoBehaviour
 
     private void Awake()
     {
+        bool hasCoLocatedSceneManager = GetComponent<MisoolSeaManager>() != null
+            || GetComponent<SawinggraiSeaManager>() != null;
+
         if (_instance != null && _instance != this)
         {
             TriviaQuizUI sceneTrivia = GetComponent<TriviaQuizUI>();
@@ -70,7 +73,26 @@ public class QuestController : MonoBehaviour
             {
                 TriviaQuizUI.AdoptOrAttachTo(_instance.gameObject, sceneTrivia);
             }
-            Destroy(gameObject);
+            if (hasCoLocatedSceneManager)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            return;
+        }
+
+        if (hasCoLocatedSceneManager)
+        {
+            GameObject host = new GameObject("QuestController");
+            QuestController created = host.AddComponent<QuestController>();
+            created.questUI = questUI;
+            created.questSliderAnim = questSliderAnim;
+            _instance = created;
+            DontDestroyOnLoad(host);
+            Destroy(this);
             return;
         }
 

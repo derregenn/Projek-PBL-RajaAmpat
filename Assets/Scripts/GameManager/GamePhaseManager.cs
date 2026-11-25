@@ -54,6 +54,12 @@ public class GamePhaseManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindFirstObjectByType<GamePhaseManager>();
+                if (_instance == null && Application.isPlaying)
+                {
+                    GameObject go = new GameObject("GamePhaseManager");
+                    _instance = go.AddComponent<GamePhaseManager>();
+                    DontDestroyOnLoad(go);
+                }
             }
             return _instance;
         }
@@ -133,6 +139,7 @@ public class GamePhaseManager : MonoBehaviour
             _instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            EnsureDefaultQuestProgressMapping();
             LoadProgress();
             CalculatePercentage();
         }
@@ -140,6 +147,33 @@ public class GamePhaseManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void EnsureDefaultQuestProgressMapping()
+    {
+        if (questProgressByIsland != null && questProgressByIsland.Count > 0) return;
+
+        questProgressByIsland = new List<IslandQuestProgressGroup>
+        {
+            BuildIslandGroup(IslandName.Airstrip, ("01_Airstrip", 1f)),
+            BuildIslandGroup(IslandName.Waisai, ("01_Waisai", 3f), ("02_Waisai", 3f), ("03_Waisai", 3f)),
+            BuildIslandGroup(IslandName.Piaynemo, ("01_Piaynemo", 2.5f), ("02_Piaynemo", 2.5f), ("03_Piaynemo", 2.5f), ("04_Piaynemo", 2.5f), ("05_Piaynemo", 2.5f), ("06_Piaynemo", 2.5f)),
+            BuildIslandGroup(IslandName.Misool, ("01_Misool", 1.875f), ("02_Misool", 1.875f), ("03_Misool", 1.875f), ("04_Misool", 1.875f), ("05_Misool", 1.875f), ("06_Misool", 1.875f), ("07_Misool", 1.875f), ("08_Misool", 1.875f)),
+            BuildIslandGroup(IslandName.Arborek, ("01_Arborek", 2.5f), ("02_Arborek", 2.5f), ("03_Arborek", 2.5f), ("04_Arborek", 2.5f), ("05_Arborek", 2.5f), ("06_Arborek", 2.5f)),
+            BuildIslandGroup(IslandName.Sawinggrai, ("01_Sawinggrai", 3f), ("02_Sawinggrai", 3f), ("03_Sawinggrai", 3f), ("04_Sawinggrai", 3f), ("05_Sawinggrai", 3f)),
+            BuildIslandGroup(IslandName.Friwen, ("01_Friwen", 3.75f), ("02_Friwen", 3.75f), ("03_Friwen", 3.75f), ("04_Friwen", 3.75f)),
+            BuildIslandGroup(IslandName.Gag, ("01_Gag", 1.875f), ("02_Gag", 1.875f), ("03_Gag", 1.875f), ("04_Gag", 1.875f), ("05_Gag", 1.875f), ("06_Gag", 1.875f), ("07_Gag", 1.875f), ("08_Gag", 1.875f))
+        };
+    }
+
+    private static IslandQuestProgressGroup BuildIslandGroup(IslandName island, params (string id, float weight)[] entries)
+    {
+        var group = new IslandQuestProgressGroup { island = island };
+        for (int i = 0; i < entries.Length; i++)
+        {
+            group.quests.Add(new QuestProgressEntry { questID = entries[i].id, percentageWeight = entries[i].weight });
+        }
+        return group;
     }
 
     private void OnEnable()

@@ -11,6 +11,12 @@ public class StoryManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindFirstObjectByType<StoryManager>();
+                if (_instance == null && Application.isPlaying)
+                {
+                    GameObject go = new GameObject("StoryManager");
+                    _instance = go.AddComponent<StoryManager>();
+                    DontDestroyOnLoad(go);
+                }
             }
             return _instance;
         }
@@ -46,6 +52,7 @@ public class StoryManager : MonoBehaviour
             _instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            LoadProgress();
         }
         else if (_instance != this)
         {

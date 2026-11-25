@@ -1526,6 +1526,35 @@ public class QuestJournalManager : MonoBehaviour
         return CanCompleteIslandOrOpenMap(island.Value);
     }
 
+    public void DebugResetIslandCompletion(IslandName island)
+    {
+        unlockedAwardIslands.Remove(island);
+        PlayerPrefs.DeleteKey("QJM_Award_" + island.ToString());
+        PlayerPrefs.DeleteKey("GPM_Island_" + island.ToString());
+        PlayerPrefs.DeleteKey("Island_" + (int)island);
+        PlayerPrefs.DeleteKey("GameCompleted");
+
+        string suffix = "_" + island.ToString();
+        var toRemove = new List<string>();
+        foreach (string qid in completedQuestIDs)
+        {
+            if (qid.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)) toRemove.Add(qid);
+        }
+        foreach (string qid in toRemove) completedQuestIDs.Remove(qid);
+
+        if (island == IslandName.Piaynemo) completedQuestIDs.Remove("06_Pianemo");
+        else if (island == IslandName.Friwen) { completedQuestIDs.Remove("07"); completedQuestIDs.Remove("08"); completedQuestIDs.Remove("09"); completedQuestIDs.Remove("10"); }
+        else if (island == IslandName.Misool) PlayerPrefs.DeleteKey("Misool_QuestStage");
+        else if (island == IslandName.Gag)
+        {
+            for (int n = 1; n <= 8; n++) completedQuestIDs.Remove($"0{n}");
+        }
+
+        SaveJournalSaveData();
+        InvalidatePersistentQuestCache();
+        UpdateAllJournalSystems();
+    }
+
     /// <summary>
     /// Menyelesaikan seluruh progres pulau tertentu (quest, award, halaman jurnal terkait, dan state scene).
     /// </summary>
