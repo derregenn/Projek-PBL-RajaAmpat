@@ -1840,7 +1840,7 @@ PrefabInstance:
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'questsToGive.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: d63e6cfaea9125f47bac07b5a7664c67, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'questsToGive.Array.data[1]'
       value: 
@@ -6202,28 +6202,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &505551484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 505551480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
-  audioClip: {fileID: 8300000, guid: 8ddb7b3c79adb08429956f888452d615, type: 3}
-  outputMixerGroup: {fileID: 0}
-  maxVolume: 0.15
-  crossfadeDuration: 0.15
-  playOnStart: 0
-  watchLegacyBgmSource: {fileID: 0}
-  initialFadeInDuration: 0.2
-  is3DSpatial: 0
-  minDistance: 5
-  maxDistance: 30
 --- !u!1001 &507135976
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11586,7 +11564,7 @@ PrefabInstance:
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: runClip
       value: 
-      objectReference: {fileID: 8300000, guid: cf32ae5ab2b0d2e4e9c094051ea35a6a, type: 3}
+      objectReference: {fileID: 8300000, guid: ebb12b6d7bdf4654f9ec515bea256cd6, type: 3}
     - target: {fileID: 6393122351999611172, guid: d9eef132e72927948852f0a723f816bb, type: 3}
       propertyPath: moveSpeed
       value: 1.6
@@ -13261,12 +13239,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313240532}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 11400000, guid: 67621016052b1f44e93d128eba65693e, type: 2}
+  questToGive: {fileID: 0}
   waitForCurrentQuestToFinish: 0
   requiredPrerequisiteQuestID: 
   giveQuestOnStart: 0

@@ -4773,7 +4773,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6458833684960248102, guid: d44895378c4996c41a9fad378376c6e2, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5108,6 +5108,7 @@ GameObject:
   - component: {fileID: 1408034732}
   - component: {fileID: 1408034731}
   - component: {fileID: 1408034730}
+  - component: {fileID: 2147003001}
   m_Layer: 0
   m_Name: FishFeedZone
   m_TagString: Untagged
@@ -5163,6 +5164,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2147003001}
+        m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
+        m_MethodName: GiveQuest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!61 &1408034731
 BoxCollider2D:
@@ -7389,7 +7402,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: objectiveID
-      value: foto_sawinggrai
+      value: foto_ikan_sawinggrai
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: photoPromptPanel
@@ -8240,7 +8253,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113295041}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
   m_Name: 
@@ -8542,6 +8555,23 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7363241603794616512, guid: b75be76d319b52b4388e864931647b90, type: 3}
   m_PrefabInstance: {fileID: 3334376572355588919}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2147003001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408034729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  questToGive: {fileID: 11400000, guid: 07c67c2ea68fed24e98c45a31c6135db, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
+  giveQuestOnPlayerCollision: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
