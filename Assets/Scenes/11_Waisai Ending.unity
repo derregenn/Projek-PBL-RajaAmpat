@@ -536,7 +536,19 @@ MonoBehaviour:
   playerControlsToDisable: []
   onInfographicClosed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 804400370}
+        m_TargetAssemblyTypeName: FaderTrigger, Assembly-CSharp
+        m_MethodName: TriggerFadeAndDoAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   voiceOverClip: {fileID: 0}
   voiceOverAudioSource: {fileID: 0}
   autoCloseAfterVoiceOver: 1
@@ -2701,16 +2713,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: bgmVolume
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: cdf77fc27ca77c24bb9450a19d2fe2d4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: audioLayers.Array.size
       value: 0
@@ -7479,6 +7491,7 @@ MonoBehaviour:
   maxVolume: 0.2
   crossfadeDuration: 0.15
   playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
   initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
@@ -9576,7 +9589,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_fontSize
-      value: 26
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y

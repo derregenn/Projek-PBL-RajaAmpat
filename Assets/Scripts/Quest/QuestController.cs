@@ -98,25 +98,34 @@ public class QuestController : MonoBehaviour
     {
         yield return null; // tunggu satu frame
 
-        if (questUI == null)
+        // Selalu cari ulang QuestUI dan QuestSlider di scene aktif yang baru dimuat
+        questUI = FindFirstObjectByType<QuestUI>();
+        questSliderAnim = FindFirstObjectByType<QuestSlider>();
+
+        if (questUI != null)
         {
-            questUI = FindFirstObjectByType<QuestUI>();
-            if (questUI != null)
-                Debug.Log($"[QuestController] QuestUI ditemukan di scene '{SceneManager.GetActiveScene().name}'.");
+            questUI.EnsureStandardTrackerLayout();
+            Debug.Log($"[QuestController] QuestUI ditemukan & dinormalisasi di scene '{SceneManager.GetActiveScene().name}'.");
         }
 
-        if (questSliderAnim == null)
+        if (questSliderAnim != null)
         {
-            questSliderAnim = FindFirstObjectByType<QuestSlider>();
+            questSliderAnim.EnsureStandardTrackerLayout();
         }
 
-        // Jika ada quest aktif saat scene dimuat (misal Continue Game), perbarui HUD
+        // Jika ada quest aktif saat scene dimuat (misal Continue Game atau transisi pulau), perbarui HUD
         if (questUI != null && ActiveQuests.Count > 0)
         {
             Quest lastActive = ActiveQuests[ActiveQuests.Count - 1];
             questUI.SetQuest(lastActive);
             questUI.UpdateQuestUI();
-            Debug.Log($"[QuestController] HUD di-refresh untuk quest aktif: '{lastActive.QuestTitle}'.");
+
+            if (questSliderAnim != null)
+            {
+                questSliderAnim.ShowQuestPopup();
+            }
+
+            Debug.Log($"[QuestController] HUD di-refresh & ditampilkan untuk quest aktif: '{lastActive.QuestTitle}'.");
         }
     }
 

@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Lens.OrthographicSize
-      value: 20
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 1994520646389180241, guid: e49a59dc95a0d6946a5270481c61380c, type: 3}
       propertyPath: Target.TrackingTarget
@@ -1853,6 +1853,7 @@ MonoBehaviour:
   maxVolume: 0.1
   crossfadeDuration: 0.2
   playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
   initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
@@ -3395,6 +3396,55 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8508189980945275145, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
   m_PrefabInstance: {fileID: 948201697}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &948201699 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3717831131694615497, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+  m_PrefabInstance: {fileID: 948201697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948201703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf65d989ede40545bedc97e441d27c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestSlider
+--- !u!114 &948201700 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6665308479551155172, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+  m_PrefabInstance: {fileID: 948201697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &948201701 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5178083616762447677, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+  m_PrefabInstance: {fileID: 948201697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &948201702 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+  m_PrefabInstance: {fileID: 948201697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &948201703 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
+  m_PrefabInstance: {fileID: 948201697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &967757526
 GameObject:
   m_ObjectHideFlags: 0
@@ -4064,16 +4114,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: bgmVolume
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: c08fdee01810fe54e94f11f6c31e3e75, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.88412
@@ -4402,14 +4452,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7810871685573797222, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1293491030}
+    - targetCorrespondingSourceObject: {fileID: 5549832305837742063, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1293491031}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5cd4cda4e1a94da83e8482862cebf, type: 3}
 --- !u!1 &1293491029 stripped
 GameObject:
@@ -4432,6 +4484,20 @@ MonoBehaviour:
   fishPhotoTrigger: {fileID: 1969992512}
   returnToLandTeleporter: {fileID: 1302517382}
   kawananIkan: {fileID: 1047959131}
+--- !u!114 &1293491031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293491029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d613a07414eb44b49806142831c9120b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestController
+  questUI: {fileID: 1710121707}
+  questSliderAnim: {fileID: 948201699}
 --- !u!1 &1302517382
 GameObject:
   m_ObjectHideFlags: 0
@@ -5042,7 +5108,6 @@ GameObject:
   - component: {fileID: 1408034732}
   - component: {fileID: 1408034731}
   - component: {fileID: 1408034730}
-  - component: {fileID: 2147003001}
   m_Layer: 0
   m_Name: FishFeedZone
   m_TagString: Untagged
@@ -5098,18 +5163,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2147003001}
-        m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
-        m_MethodName: GiveQuest
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!61 &1408034731
 BoxCollider2D:
@@ -6395,7 +6448,7 @@ GameObject:
   - component: {fileID: 1710121706}
   - component: {fileID: 1710121705}
   - component: {fileID: 1710121704}
-  - component: {fileID: 2147003010}
+  - component: {fileID: 1710121707}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -6496,6 +6549,24 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1710121707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710121702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0405a126ead04c3439c4867f4b709258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestUI
+  panelHUD: {fileID: 948201703}
+  hudQuestTitle: {fileID: 948201702}
+  hudQuestDescription: {fileID: 948201701}
+  objectiveListText: {fileID: 948201700}
+  normalizeTrackerTextLayout: 1
+  currentActiveQuest: {fileID: 0}
 --- !u!1 &1774961900 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7347093790615255095, guid: 1ca2dd372d264984daf31fcd27f59948, type: 3}
@@ -6630,7 +6701,7 @@ MonoBehaviour:
   objectiveCamera: {fileID: 914860947}
   gameplayPriority: 10
   dialoguePriority: 20
-  objectivePriority: 30
+  objectivePriority: 0
   normalSize: 8.28
   zoomSize: 4.7
   zoomDuration: 0.5
@@ -7318,26 +7389,42 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: objectiveID
-      value: foto_ikan_sawinggrai
+      value: foto_sawinggrai
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: photoPromptPanel
       value: 
       objectReference: {fileID: 3551916076334541607}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
-      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: waitForPolaroidBeforeEnd
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1493145841}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1969992513}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
@@ -7345,15 +7432,31 @@ PrefabInstance:
       value: AdvanceStageTo
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: GiveQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: MasterQuestManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: QuestGiver, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
       propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753263863196256060, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      propertyPath: onObjectiveEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2974272008912433923, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
@@ -7423,13 +7526,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7128179589020074671, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1969992513}
   m_SourcePrefab: {fileID: 100100000, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
 --- !u!1 &1969992512 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7128179589020074671, guid: 91188e31f42706c49af2dbfeb737f388, type: 3}
   m_PrefabInstance: {fileID: 1969992511}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1969992513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969992512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  questToGive: {fileID: 11400000, guid: d1ffbaf0f03acda45bbbf720ac214cd6, type: 2}
+  waitForCurrentQuestToFinish: 0
+  requiredPrerequisiteQuestID: 
+  giveQuestOnStart: 0
+  giveQuestOnPlayerCollision: 0
 --- !u!1001 &1972549890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8117,7 +8240,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113295041}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
   m_Name: 
@@ -8419,79 +8542,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7363241603794616512, guid: b75be76d319b52b4388e864931647b90, type: 3}
   m_PrefabInstance: {fileID: 3334376572355588919}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2147003001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408034729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfe9a40260a3e646a574f61b58e54b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
-  questToGive: {fileID: 11400000, guid: 07c67c2ea68fed24e98c45a31c6135db, type: 2}
-  waitForCurrentQuestToFinish: 0
-  requiredPrerequisiteQuestID: 
-  giveQuestOnStart: 0
-  giveQuestOnPlayerCollision: 0
---- !u!1 &2147003006 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7538499383863569819, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-  m_PrefabInstance: {fileID: 948201697}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2147003007 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-  m_PrefabInstance: {fileID: 948201697}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &2147003008 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5178083616762447677, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-  m_PrefabInstance: {fileID: 948201697}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &2147003009 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6665308479551155172, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
-  m_PrefabInstance: {fileID: 948201697}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &2147003010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710121702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0405a126ead04c3439c4867f4b709258, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestUI
-  panelHUD: {fileID: 2147003006}
-  hudQuestTitle: {fileID: 2147003007}
-  hudQuestDescription: {fileID: 2147003008}
-  objectiveListText: {fileID: 2147003009}
-  normalizeTrackerTextLayout: 1
-  currentActiveQuest: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

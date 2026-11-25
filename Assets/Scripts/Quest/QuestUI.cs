@@ -33,6 +33,14 @@ public class QuestUI : MonoBehaviour
     {
         if (!normalizeTrackerTextLayout || hudQuestTitle == null) return;
 
+        // Nonaktifkan ContentSizeFitter dan VerticalLayoutGroup pada hudQuestTitle jika ada,
+        // agar tidak terjadi layout fighting atau teks menyusut secara tidak sengaja
+        UnityEngine.UI.ContentSizeFitter csf = hudQuestTitle.GetComponent<UnityEngine.UI.ContentSizeFitter>();
+        if (csf != null) csf.enabled = false;
+
+        UnityEngine.UI.VerticalLayoutGroup vlg = hudQuestTitle.GetComponent<UnityEngine.UI.VerticalLayoutGroup>();
+        if (vlg != null) vlg.enabled = false;
+
         RectTransform titleRt = hudQuestTitle.rectTransform;
         if (titleRt != null)
         {
@@ -40,16 +48,31 @@ public class QuestUI : MonoBehaviour
             titleRt.anchorMax = new Vector2(0.5f, 0.5f);
             titleRt.pivot = new Vector2(0.5f, 0.5f);
             titleRt.anchoredPosition = Vector2.zero;
-            titleRt.sizeDelta = new Vector2(540f, 120f);
+            // Di dalam panel 600x130: 530 lebar memberi margin nyaman dari sudut membulat, 105 tinggi untuk teks 1-2 baris
+            titleRt.sizeDelta = new Vector2(530f, 105f);
         }
 
-        hudQuestTitle.margin = Vector4.zero;
+        hudQuestTitle.margin = new Vector4(10f, 4f, 10f, 4f);
         hudQuestTitle.enableAutoSizing = true;
-        hudQuestTitle.fontSizeMin = 16f;
-        hudQuestTitle.fontSizeMax = 26f;
-        hudQuestTitle.fontSize = 24f;
+        hudQuestTitle.fontSizeMin = 18f;
+        hudQuestTitle.fontSizeMax = 30f;
+        hudQuestTitle.fontSize = 26f;
+        hudQuestTitle.fontStyle = FontStyles.Bold;
         hudQuestTitle.horizontalAlignment = HorizontalAlignmentOptions.Center;
         hudQuestTitle.verticalAlignment = VerticalAlignmentOptions.Middle;
+        hudQuestTitle.textWrappingMode = TextWrappingModes.Normal;
+        hudQuestTitle.overflowMode = TextOverflowModes.Ellipsis;
+        hudQuestTitle.color = Color.white;
+
+        // Nonaktifkan elemen teks sekunder jika tidak digunakan agar tidak menutupi tampilan
+        if (hudQuestDescription != null && hudQuestDescription.gameObject != null)
+        {
+            hudQuestDescription.gameObject.SetActive(false);
+        }
+        if (objectiveListText != null && objectiveListText.gameObject != null)
+        {
+            objectiveListText.gameObject.SetActive(false);
+        }
     }
 
     public void SetQuest(Quest quest)
@@ -64,7 +87,15 @@ public class QuestUI : MonoBehaviour
         if (hudQuestTitle != null) hudQuestTitle.text = title;
         if (hudQuestDescription != null) hudQuestDescription.text = description;
         if (objectiveListText != null) objectiveListText.text = "";
-        if (panelHUD != null) panelHUD.SetActive(true);
+        if (panelHUD != null)
+        {
+            panelHUD.SetActive(true);
+            QuestSlider slider = panelHUD.GetComponent<QuestSlider>();
+            if (slider != null)
+            {
+                slider.ShowQuestPopup();
+            }
+        }
     }
 
     public void UpdateQuestUI()
@@ -103,7 +134,7 @@ public class QuestUI : MonoBehaviour
 
                     if (obj.RequiredAmount > 1)
                     {
-                        activeTitle = $"{activeTitle?.Trim()} ({obj.CurrentAmount}/{obj.RequiredAmount})";
+                        activeTitle = $"{activeTitle?.Trim()} <color=#FFD700>({obj.CurrentAmount}/{obj.RequiredAmount})</color>";
                     }
                     break;
                 }
@@ -116,7 +147,9 @@ public class QuestUI : MonoBehaviour
         if (hudQuestDescription != null) hudQuestDescription.text = "";
         if (objectiveListText != null) objectiveListText.text = "";
 
-        SyncToJournal(activeTitle);
+        // Bersihkan tag rich text untuk penyimpanan di catatan Journal
+        string plainJournalTitle = System.Text.RegularExpressions.Regex.Replace(activeTitle, "<.*?>", string.Empty);
+        SyncToJournal(plainJournalTitle);
     }
 
     public void ClearQuest()

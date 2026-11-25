@@ -12,9 +12,8 @@ public class MisoolLandSceneManager : MonoBehaviour
     [SerializeField] private GameObject petugasStage3;
     [SerializeField] private GameObject petugasStage5;
     [SerializeField] private GameObject ibuIbuStage6;        // Point 7 (Ibu-Ibu Warga)
-    [SerializeField] private GameObject ibuIbuStage8;        // Point 9 (Ibu-Ibu Warga)
+    [SerializeField] private GameObject ibuIbuStage8;        // Point 9 & Free Roam (Menyala seterusnya >= 8)
     [SerializeField] private GameObject tourGuideEnd;      // Point 9 (Di sebelah kanan MC)
-    [SerializeField] private Transform tourGuideEndSpot;   // Titik koordinat sebelah kanan MC
 
     [Header("Referensi NPC Locked & Unlocked")]
     [Tooltip("NPC saat quest masih terkunci")]
@@ -31,6 +30,10 @@ public class MisoolLandSceneManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        // Pastikan tourGuideEnd selalu mati di awal sebelum stage dibaca
+        if (tourGuideEnd != null)
+            tourGuideEnd.SetActive(false);
     }
 
     private void Start()
@@ -63,11 +66,12 @@ public class MisoolLandSceneManager : MonoBehaviour
             return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
-        if (stage < 9 && QuestJournalManager.IsIslandCompletedPersistent(IslandName.Misool))
-        {
-            stage = 9;
-        }
         lastObservedStage = stage;
+
+        if (stage == 5)
+        {
+            MisoolQuestManager.ShowReturnToOfficerPrompt();
+        }
 
         // Aktifkan NPC yang sesuai dengan stage saat ini
         if (petugasStage1 != null) petugasStage1.SetActive(stage == 1 || stage == 2);
@@ -78,11 +82,11 @@ public class MisoolLandSceneManager : MonoBehaviour
         if (penyuInteractive != null)
             penyuInteractive.SetActive(stage == 0 || stage == 1);
 
-        // Tour Guide Awal (Aktif dari Stage 1 sampai sebelum Stage 9)
+        // Tour Guide Awal (Aktif dari Stage 1 sampai Stage 7)
         if (tourGuideStart != null)
             tourGuideStart.SetActive(stage >= 1 && stage < 8);
 
-        // Point 7 & 9: Ibu-Ibu Warga hanya aktif pada Stage 6, 7, dan 8
+        // Point 7 & 9: Ibu-Ibu Warga Stage 6-7, lalu Ibu-Ibu Stage 8 menyala seterusnya (>= 8)
         if (ibuIbuStage6 != null)
             ibuIbuStage6.SetActive(stage == 6 || stage == 7);
         if (ibuIbuStage8 != null)
@@ -91,25 +95,8 @@ public class MisoolLandSceneManager : MonoBehaviour
         // Point 9 & 10: Akhir Quest (Tour Guide pindah ke kanan MC)
         bool isPoint9 = stage >= 9;
 
-        if (tourGuideStart != null) tourGuideStart.SetActive(stage >= 1 && stage <= 8);
         if (tourGuideEnd != null)
-        {
-            if (isPoint9)
-            {
-                if (tourGuideEndSpot != null)
-                {
-                    tourGuideEnd.transform.position = tourGuideEndSpot.position;
-                }
-                tourGuideEnd.SetActive(true);
-
-                Dialogue endDialogue = tourGuideEnd.GetComponentInChildren<Dialogue>(true);
-                endDialogue?.RefreshPostQuestLoopState();
-            }
-            else
-            {
-                tourGuideEnd.SetActive(false);
-            }
-        }
+            tourGuideEnd.SetActive(isPoint9);
 
         if (isPoint9)
         {
@@ -120,7 +107,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         // NPC Locked & Unlocked
         if (npcLocked != null && npcUnlocked != null)
         {
-            bool isUnlocked = stage >= 9; // Misal, NPC terbuka setelah stage
+            bool isUnlocked = stage >= 9;
             npcLocked.SetActive(!isUnlocked);
             npcUnlocked.SetActive(isUnlocked);
         }
@@ -145,15 +132,13 @@ public class MisoolLandSceneManager : MonoBehaviour
 
     private void ExecutePoint9Transition()
     {
-        // 1. Hilangkan Ibu-Ibu & Tour Guide Awal
+        // 1. Hilangkan Ibu-Ibu Stage 6 & Tour Guide Awal (ibuIbuStage8 tetap dibiarkan menyala)
         if (ibuIbuStage6 != null) ibuIbuStage6.SetActive(false);
-        if (ibuIbuStage8 != null) ibuIbuStage8.SetActive(false);
         if (tourGuideStart != null) tourGuideStart.SetActive(false);
 
-        // 2. Pindahkan & Nyalakan Tour Guide di sebelah kanan Player
-        if (tourGuideEnd != null && tourGuideEndSpot != null)
+        // 2. Nyalakan Tour Guide di sebelah kanan Player
+        if (tourGuideEnd != null)
         {
-            tourGuideEnd.transform.position = tourGuideEndSpot.position;
             tourGuideEnd.SetActive(true);
         }
 

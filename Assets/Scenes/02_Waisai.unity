@@ -2616,6 +2616,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 238012894}
     - target: {fileID: 3050146572259751978, guid: b6a6418b27da4e145a27e303f81a7864, type: 3}
+      propertyPath: objectiveID
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3050146572259751978, guid: b6a6418b27da4e145a27e303f81a7864, type: 3}
       propertyPath: titleTextUI
       value: 
       objectReference: {fileID: 0}
@@ -5712,16 +5716,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: bgmVolume
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6789067782309285517, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: defaultBGM
       value: 
-      objectReference: {fileID: 8300000, guid: c8c56276c6af439478f9ec9f7d593162, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8099666383087376025, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.88412
@@ -8562,6 +8566,8 @@ MonoBehaviour:
   maxVolume: 0.1
   crossfadeDuration: 0.13
   playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30
@@ -12821,7 +12827,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_fontSize
-      value: 26
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y

@@ -50,29 +50,98 @@ public class QuestSlider : MonoBehaviour
         panelRect.anchorMin = new Vector2(0f, 1f);
         panelRect.anchorMax = new Vector2(0f, 1f);
         panelRect.pivot = new Vector2(0.5f, 1f);
-        panelRect.sizeDelta = new Vector2(615f, 150f);
 
+        // Ukuran standar dasar yang pas: proporsional, rapi, dan mudah dibaca
+        panelRect.sizeDelta = new Vector2(600f, 130f);
+
+        // Cari resolusi acuan dari CanvasScaler atau RectTransform Canvas
         UnityEngine.UI.CanvasScaler scaler = GetComponentInParent<UnityEngine.UI.CanvasScaler>();
-        bool isLowResCanvas = scaler != null &&
-                              scaler.uiScaleMode == UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize &&
-                              scaler.referenceResolution.x <= 1000f;
-
-        if (isLowResCanvas)
+        float refWidth = 1920f;
+        if (scaler != null && scaler.uiScaleMode == UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize)
         {
-            panelRect.localScale = new Vector3(0.3125f, 0.3125f, 0.3125f);
-            visiblePosition = new Vector2(140f, -18.75f);
-            hiddenPosition = new Vector2(-220f, -18.75f);
+            refWidth = scaler.referenceResolution.x;
         }
         else
         {
-            panelRect.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-            visiblePosition = new Vector2(336f, -45f);
-            hiddenPosition = new Vector2(-500f, -45f);
+            Canvas parentCanvas = GetComponentInParent<Canvas>();
+            if (parentCanvas != null)
+            {
+                RectTransform canvasRt = parentCanvas.GetComponent<RectTransform>();
+                if (canvasRt != null && canvasRt.rect.width > 0)
+                {
+                    refWidth = canvasRt.rect.width;
+                }
+            }
+        }
+
+        // Tentukan scale & posisi berdasarkan resolusi canvas
+        if (refWidth <= 1000f)
+        {
+            // Canvas Resolusi Rendah (misal 800x600):
+            // Scale 0.58 membuat panel berukuran efektif ~348x75 (~43% lebar 800px),
+            // proporsional, tidak terlalu mendominasi layar, dan teks tetap jelas terbaca.
+            float scaleFactor = 0.58f;
+            panelRect.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+
+            float effectiveHalfW = (600f * scaleFactor) * 0.5f; // ~174f
+            visiblePosition = new Vector2(effectiveHalfW + 16f, -16f);
+            hiddenPosition = new Vector2(-(effectiveHalfW + 45f), -16f);
+        }
+        else
+        {
+            // Canvas Resolusi Tinggi (1920x1080 Full HD, dll):
+            // Scale 1.0 penuh berukuran 600x130, pas di pojok kiri atas dan teks tajam.
+            panelRect.localScale = Vector3.one;
+
+            float effectiveHalfW = 600f * 0.5f; // 300f
+            visiblePosition = new Vector2(effectiveHalfW + 25f, -25f);
+            hiddenPosition = new Vector2(-(effectiveHalfW + 60f), -25f);
+        }
+
+        // Pastikan durasi tampil cukup lama agar pemain dapat membaca dengan tenang
+        if (displayDuration < 5f)
+        {
+            displayDuration = 5.5f;
+        }
+
+        // Pastikan rounded rect background memiliki corner radius yang pas dan kontras tinggi
+        ProceduralRoundedRect roundedRect = GetComponent<ProceduralRoundedRect>();
+        if (roundedRect != null)
+        {
+            roundedRect.cornerRadius = 45f;
+            roundedRect.cornerSegments = 20;
+            // Background gelap pekat untuk keterbacaan tinggi di berbagai latar belakang (air, pasir, rumput)
+            if (roundedRect.color.a < 0.85f)
+            {
+                roundedRect.color = new Color(0.06f, 0.07f, 0.10f, 0.94f);
+            }
         }
     }
 
     /// <summary>
-    /// Panggil fungsi ini dari skrip Quest atau Dialog ketika quest baru diterima
+    /// Menampilkan HUD Quest secara instan tanpa animasi slide (misal untuk testing/debugging)
+    /// </summary>
+    public void SnapToVisible()
+    {
+        if (panelRect == null) panelRect = GetComponent<RectTransform>();
+        EnsureStandardTrackerLayout();
+        if (slideCoroutine != null) StopCoroutine(slideCoroutine);
+        panelRect.anchoredPosition = visiblePosition;
+    }
+
+    /// <summary>
+    /// Menyembunyikan HUD Quest secara instan tanpa animasi slide
+    /// </summary>
+    public void SnapToHidden()
+    {
+        if (panelRect == null) panelRect = GetComponent<RectTransform>();
+        EnsureStandardTrackerLayout();
+        if (slideCoroutine != null) StopCoroutine(slideCoroutine);
+        panelRect.anchoredPosition = hiddenPosition;
+    }
+
+    /// <summary>
+    /// Panggil fungsi ini dari skrip Quest atau Dialog ketika quest baru diterima atau ada progres
     /// </summary>
     public void ShowQuestPopup()
     {
@@ -80,6 +149,9 @@ public class QuestSlider : MonoBehaviour
         {
             gameObject.SetActive(true);
         }
+
+        if (panelRect == null) panelRect = GetComponent<RectTransform>();
+        EnsureStandardTrackerLayout();
 
         if (!isActiveAndEnabled)
         {
@@ -102,6 +174,8 @@ public class QuestSlider : MonoBehaviour
 
     private IEnumerator SlideSequence()
     {
+        EnsureStandardTrackerLayout();
+
         // 1. SLIDE IN (Masuk ke layar)
         PlaySfx(slideInSfx);
         float time = 0;

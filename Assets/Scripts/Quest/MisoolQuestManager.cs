@@ -87,6 +87,18 @@ public class MisoolQuestManager : MonoBehaviour
         }
     }
 
+    public static void ShowReturnToOfficerPrompt()
+    {
+        QuestUI questUI = FindFirstObjectByType<QuestUI>(FindObjectsInactive.Include);
+        if (questUI == null)
+        {
+            Debug.LogWarning("[MisoolQuestManager] QuestUI tidak ditemukan; prompt kembali ke Petugas Misool tidak ditampilkan.");
+            return;
+        }
+
+        questUI.ShowStandalonePrompt("Kembali ke darat", "Bicara dengan Petugas Misool.");
+    }
+
     public void ResetCotsCount()
     {
         PlayerPrefs.SetInt(COTS_KEY, 0);
