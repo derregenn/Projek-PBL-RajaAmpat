@@ -66,10 +66,6 @@ public class MisoolLandSceneManager : MonoBehaviour
             return;
 
         int stage = MasterQuestManager.Instance.CurrentStage;
-        if (stage < 9 && QuestJournalManager.IsIslandCompletedPersistent(IslandName.Misool))
-        {
-            stage = 9;
-        }
         lastObservedStage = stage;
 
         if (stage == 5)
@@ -100,14 +96,7 @@ public class MisoolLandSceneManager : MonoBehaviour
         bool isPoint9 = stage >= 9;
 
         if (tourGuideEnd != null)
-        {
             tourGuideEnd.SetActive(isPoint9);
-            if (isPoint9)
-            {
-                Dialogue endDialogue = tourGuideEnd.GetComponentInChildren<Dialogue>(true);
-                endDialogue?.RefreshPostQuestLoopState();
-            }
-        }
 
         if (isPoint9)
         {
