@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     private Collider2D lastSurfaceCollider;
     private bool isCrouching = false;
     private bool isCrouchingGagVariant = false;
+    private bool isScriptedMovementActive;
 
     void Start()
     {
@@ -111,7 +112,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (isMovementLocked || isCrouching)
+        if (isCrouching || (isMovementLocked && !isScriptedMovementActive))
         {
             if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
             {
@@ -121,6 +122,16 @@ public class Player : MonoBehaviour
             }
             SetAnimation(0f);
             UpdateMovementAudio(0f);
+            return;
+        }
+
+        if (isMovementLocked && isScriptedMovementActive)
+        {
+            if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+            {
+                rb.angularVelocity = 0f;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
             return;
         }
 
@@ -151,7 +162,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if ((isMovementLocked || isCrouching) && rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+        if ((isCrouching || (isMovementLocked && !isScriptedMovementActive))
+            && rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
         {
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
@@ -169,6 +181,11 @@ public class Player : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
         UpdateMovementAudio(0f);
+    }
+
+    public void SetScriptedMovementActive(bool active)
+    {
+        isScriptedMovementActive = active;
     }
 
     private void OnEnable()
