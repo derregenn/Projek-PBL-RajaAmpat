@@ -7,7 +7,10 @@ public class FishFeedZone : MonoBehaviour
 {
     [Header("Interaction Settings")]
     [SerializeField] private KeyCode feedKey = KeyCode.E;
-    [SerializeField] private GameObject baitPrefab;
+    [SerializeField] private List<Sprite> baitSprites = new List<Sprite>(); // Daftar sprite umpan yang akan muncul saat memberi makan ikan
+    [SerializeField] private string baitSortingLayer = "Default";
+    [SerializeField] private int baitSortingOrder = 100;
+    [SerializeField] private Vector3 baitScale = Vector3.one;
 
     [Header("Prompt Panel")]
     [SerializeField] private GameObject promptPanel;
@@ -24,6 +27,7 @@ public class FishFeedZone : MonoBehaviour
     private bool allFishFedEventInvoked = false;
     private int fedCount = 0;
     private bool isShowingPrompt = false;
+    private int nextBaitSpriteIndex = 0;
 
     private void Awake()
     {
@@ -113,10 +117,7 @@ public class FishFeedZone : MonoBehaviour
         }
 
         Vector3 spawnPos = spot.GetBaitPosition();
-        if (baitPrefab != null)
-        {
-            Instantiate(baitPrefab, spawnPos, Quaternion.identity);
-        }
+        SpawnBaitSprite(spawnPos);
 
         if (spot.targetFish != null)
         {
@@ -157,6 +158,36 @@ public class FishFeedZone : MonoBehaviour
             }
             onAllFishFed?.Invoke();
         }
+    }
+
+    private void SpawnBaitSprite(Vector3 spawnPos)
+    {
+        if (baitSprites == null || baitSprites.Count == 0)
+        {
+            Debug.LogWarning("[FishFeedZone] baitSprites kosong. Tambahkan sprite umpan pada Inspector.", this);
+            return;
+        }
+
+        // Gunakan sprite berikutnya agar variasi umpan bergantian.
+        for (int i = 0; i < baitSprites.Count; i++)
+        {
+            int spriteIndex = (nextBaitSpriteIndex + i) % baitSprites.Count;
+            Sprite sprite = baitSprites[spriteIndex];
+            if (sprite == null) continue;
+
+            GameObject baitObject = new GameObject($"Bait_{sprite.name}");
+            baitObject.transform.position = spawnPos;
+            baitObject.transform.localScale = baitScale;
+            SpriteRenderer spriteRenderer = baitObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = sprite;
+            spriteRenderer.enabled = true;
+            spriteRenderer.sortingLayerName = baitSortingLayer;
+            spriteRenderer.sortingOrder = baitSortingOrder;
+            nextBaitSpriteIndex = (spriteIndex + 1) % baitSprites.Count;
+            return;
+        }
+
+        Debug.LogWarning("[FishFeedZone] Semua elemen baitSprites kosong. Isi sprite yang valid pada Inspector.", this);
     }
 
     public void NotifyPlayerEnteredSpot(FishFeedSpot spot)
