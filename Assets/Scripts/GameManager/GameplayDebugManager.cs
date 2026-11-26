@@ -279,6 +279,10 @@ public class GameplayDebugManager : MonoBehaviour
         {
             OpenWorldMapDebug();
         }
+        if (GUILayout.Button("Reset Boat Trivia"))
+        {
+            ResetBoatTriviaDebug();
+        }
         if (GUILayout.Button("Refresh Scene State"))
         {
             MasterQuestManager.Instance.DetectIslandFromActiveScene(currentScene);
@@ -562,6 +566,16 @@ public class GameplayDebugManager : MonoBehaviour
         cg.blocksRaycasts = true;
         Time.timeScale = 0f;
         SetStatus("World Map dibuka untuk testing.");
+    }
+
+    private void ResetBoatTriviaDebug()
+    {
+        foreach (IslandName isl in Enum.GetValues(typeof(IslandName)))
+        {
+            PlayerPrefs.DeleteKey("BoatTriviaDone_" + isl.ToString());
+        }
+        PlayerPrefs.Save();
+        SetStatus("BoatTriviaDone_* direset — semua pulau putar Boat Cutscene lagi.");
     }
 
     private void UnfreezePlayerAndCameraDebug()

@@ -187,6 +187,11 @@ public class MapController : MonoBehaviour
 
                 if (!HasValidPersistentIslandClick(btn, entry.sceneName))
                 {
+                    int persistentCount = btn.onClick.GetPersistentEventCount();
+                    for (int p = 0; p < persistentCount; p++)
+                    {
+                        btn.onClick.SetPersistentListenerState(p, UnityEngine.Events.UnityEventCallState.Off);
+                    }
                     string sceneTarget = entry.sceneName;
                     btn.onClick.AddListener(() => LoadIslandScene(sceneTarget));
                 }
@@ -237,12 +242,6 @@ public class MapController : MonoBehaviour
             string method = btn.onClick.GetPersistentMethodName(i);
             if (target != null && (method == "PindahKePulau" || method == "LoadIslandScene"))
             {
-                // Jangan anggap valid bila Btn_Gag masih mengarah ke 06_Sawinggrai atau null target
-                if (btn.name == "Btn_Gag" && target is MapTeleport)
-                {
-                    // Biarkan MapGagUnlocker tetap bekerja atau fallback jika masih kosong
-                    return true;
-                }
                 if (!string.IsNullOrEmpty(expectedScene))
                 {
                     return true;

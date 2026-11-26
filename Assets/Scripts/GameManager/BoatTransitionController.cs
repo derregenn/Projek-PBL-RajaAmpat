@@ -191,24 +191,13 @@ public class BoatTransitionController : MonoBehaviour
     }
 
     /// <summary>
-    /// Mengecek apakah cutscene boat trivia untuk pulau tujuan sudah pernah dimainkan atau pulaunya sudah selesai.
+    /// Mengecek apakah cutscene boat trivia untuk pulau tujuan sudah pernah diselesaikan.
     /// </summary>
     public static bool HasCompletedBoatTriviaOrVisited(string targetSceneOrIsland)
     {
         if (string.IsNullOrWhiteSpace(targetSceneOrIsland)) return false;
 
-        if (PlayerPrefs.GetInt("GameCompleted", 0) == 1)
-        {
-            return true;
-        }
-
         FindTargetSceneBuildIndex(targetSceneOrIsland, out string resolvedSceneName);
-
-        if (PlayerPrefs.GetInt("Visited_" + targetSceneOrIsland, 0) == 1 ||
-            (!string.IsNullOrEmpty(resolvedSceneName) && PlayerPrefs.GetInt("Visited_" + resolvedSceneName, 0) == 1))
-        {
-            return true;
-        }
 
         IslandName? island = QuestJournalManager.GetIslandFromSceneName(
             !string.IsNullOrEmpty(resolvedSceneName) ? resolvedSceneName : targetSceneOrIsland);
@@ -226,11 +215,6 @@ public class BoatTransitionController : MonoBehaviour
             }
 
             if (PlayerPrefs.GetInt("BoatTriviaDone_" + island.Value.ToString(), 0) == 1)
-            {
-                return true;
-            }
-
-            if (QuestJournalManager.IsIslandCompletedPersistent(island.Value))
             {
                 return true;
             }
