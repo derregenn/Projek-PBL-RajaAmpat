@@ -1465,6 +1465,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &986861686 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8874706184673691718, guid: 92d386d752fac9f4397d23628610136a, type: 3}
@@ -1475,8 +1477,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3906423076439996391, guid: b3ea2426c713ed4478fc14a2ee4897b0, type: 3}
   m_PrefabInstance: {fileID: 105397723}
   m_PrefabAsset: {fileID: 0}
-
-
 --- !u!1 &1032222521 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1018312838596912229, guid: 864ed1ecd3c9faf42ab58529361f2145, type: 3}
@@ -9345,7 +9345,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 719476841985229045, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_fontSize
-      value: 26
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1074630784301763734, guid: 3ea37c298b1f73a4cb5e5d285f1853dd, type: 3}
       propertyPath: m_SizeDelta.y
@@ -10081,6 +10081,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8420645763105147338, guid: 62afcba214a7edf40aa8d968e98441d2, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1982708257386083000}
+    - target: {fileID: 8902325056984612224, guid: 62afcba214a7edf40aa8d968e98441d2, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1982708257386083000}
     - target: {fileID: 8902325056984612224, guid: 62afcba214a7edf40aa8d968e98441d2, type: 3}
       propertyPath: m_SortingLayerID
       value: -1698487427
@@ -11368,6 +11376,10 @@ PrefabInstance:
       propertyPath: waitForCurrentQuestToFinish
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2500777514226262992, guid: fe516a91f7c137c47bc1b4594b6674ac, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1982708257386083000}
     - target: {fileID: 2680712380274245691, guid: fe516a91f7c137c47bc1b4594b6674ac, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.7137255
@@ -13351,6 +13363,10 @@ PrefabInstance:
       propertyPath: waitForCurrentQuestToFinish
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1400589169530299768, guid: 179a524b27695a144beba7db9270af13, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1982708257386083000}
     - target: {fileID: 2234339725698155879, guid: 179a524b27695a144beba7db9270af13, type: 3}
       propertyPath: npcLensSize
       value: 2

@@ -64,8 +64,8 @@ public class SeaSceneTransition : MonoBehaviour
 
     private void Start()
     {
-        // Memastikan tirai hitam transparan (Alpha = 0) saat awal scene
-        if (fadeBlackScreen != null)
+        // Memastikan tirai hitam transparan (Alpha = 0) saat awal scene (kecuali sedang transisi)
+        if (!isTransitioning && fadeBlackScreen != null)
         {
             Color c = fadeBlackScreen.color;
             c.a = 0f;
@@ -96,7 +96,9 @@ public class SeaSceneTransition : MonoBehaviour
 
             SetWarningVisible(true);
 
-            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(interactKey))
+            bool isReturnTransition = returnTeleporter != null;
+            if ((!InteractionInputLock.WasInteractKeyConsumedThisFrame || isReturnTransition)
+                && Input.GetKeyDown(interactKey))
             {
                 InteractionInputLock.ConsumeInteractKeyThisFrame();
                 SetWarningVisible(false);
@@ -165,8 +167,14 @@ public class SeaSceneTransition : MonoBehaviour
         // 1. Efek Memudar ke Layar Hitam (Fade Out)
         if (fadeBlackScreen != null)
         {
+            fadeBlackScreen.gameObject.SetActive(true);
+            CanvasGroup cg = fadeBlackScreen.GetComponent<CanvasGroup>();
+            if (cg != null) cg.alpha = 1f;
+
             float timer = 0f;
             Color c = fadeBlackScreen.color;
+            c.a = 0f;
+            fadeBlackScreen.color = c;
 
             while (timer < fadeDuration)
             {
