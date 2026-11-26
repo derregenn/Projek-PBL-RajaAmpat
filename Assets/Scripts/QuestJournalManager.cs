@@ -106,6 +106,8 @@ public class QuestJournalManager : MonoBehaviour
 
     private int currentJournalIndex = 0;
     private bool isFlashing = false;
+    private GamePhaseManager subscribedGamePhaseManager;
+    private bool isListeningToGameEvents;
 
     // Quest caching
     [HideInInspector] public string currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
@@ -444,13 +446,18 @@ public class QuestJournalManager : MonoBehaviour
 
     private void ListenToGameEvents()
     {
+        if (isListeningToGameEvents) return;
+
         QuestController.OnQuestCompleted += HandleQuestCompleted;
 
-        if (GamePhaseManager.Instance != null)
+        subscribedGamePhaseManager = GamePhaseManager.Instance;
+        if (subscribedGamePhaseManager != null)
         {
-            GamePhaseManager.Instance.OnPercentageUpdated.AddListener(OnGameProgressUpdated);
-            GamePhaseManager.Instance.OnIslandCompleted.AddListener(OnIslandCompletedHandler);
+            subscribedGamePhaseManager.OnPercentageUpdated?.AddListener(OnGameProgressUpdated);
+            subscribedGamePhaseManager.OnIslandCompleted?.AddListener(OnIslandCompletedHandler);
         }
+
+        isListeningToGameEvents = true;
     }
 
     private void ConfigurePhotoPopup()
@@ -532,13 +539,18 @@ public class QuestJournalManager : MonoBehaviour
 
     private void UnlistenGameEvents()
     {
+        if (!isListeningToGameEvents) return;
+
         QuestController.OnQuestCompleted -= HandleQuestCompleted;
 
-        if (GamePhaseManager.Instance != null)
+        if (subscribedGamePhaseManager != null)
         {
-            GamePhaseManager.Instance.OnPercentageUpdated.RemoveListener(OnGameProgressUpdated);
-            GamePhaseManager.Instance.OnIslandCompleted.RemoveListener(OnIslandCompletedHandler);
+            subscribedGamePhaseManager.OnPercentageUpdated?.RemoveListener(OnGameProgressUpdated);
+            subscribedGamePhaseManager.OnIslandCompleted?.RemoveListener(OnIslandCompletedHandler);
         }
+
+        subscribedGamePhaseManager = null;
+        isListeningToGameEvents = false;
     }
 
     // =========================================================

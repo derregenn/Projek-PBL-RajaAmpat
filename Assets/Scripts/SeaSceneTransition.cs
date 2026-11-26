@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Events;
 
+[DefaultExecutionOrder(-100)]
 public class SeaSceneTransition : MonoBehaviour
 {
     [Header("Pengaturan Scene")]
@@ -25,6 +27,7 @@ public class SeaSceneTransition : MonoBehaviour
     private bool isTransitioning = false;
     private bool isShowingWarning = false;
     private SeaToLandTeleporter returnTeleporter;
+    private readonly HashSet<Collider2D> playerCollidersInRange = new HashSet<Collider2D>();
     public UnityEvent onInteractComplete;
 
     private void SetWarningVisible(bool visible)
@@ -64,7 +67,6 @@ public class SeaSceneTransition : MonoBehaviour
 
     private void Start()
     {
-        // Memastikan tirai hitam transparan (Alpha = 0) saat awal scene (kecuali sedang transisi)
         if (!isTransitioning && fadeBlackScreen != null)
         {
             Color c = fadeBlackScreen.color;
@@ -83,6 +85,8 @@ public class SeaSceneTransition : MonoBehaviour
 
     private void Update()
     {
+        RefreshPlayerRange();
+
         // Cek jika pemain berada di area, belum transisi, memenuhi syarat quest, dan tidak ada modal aktif
         if (isPlayerInRange && !isTransitioning)
         {
@@ -117,7 +121,8 @@ public class SeaSceneTransition : MonoBehaviour
 
         if (IsPlayerCollider(collision))
         {
-            isPlayerInRange = true;
+            playerCollidersInRange.Add(collision);
+            RefreshPlayerRange();
             ResolveReturnTeleporter(collision);
 
             if (InteractionInputLock.IsAnyModalBlockingWorldInteract
@@ -138,7 +143,8 @@ public class SeaSceneTransition : MonoBehaviour
 
         if (IsPlayerCollider(collision))
         {
-            isPlayerInRange = true;
+            playerCollidersInRange.Add(collision);
+            RefreshPlayerRange();
             ResolveReturnTeleporter(collision);
         }
     }
@@ -147,17 +153,33 @@ public class SeaSceneTransition : MonoBehaviour
     {
         if (IsPlayerCollider(collision))
         {
-            isPlayerInRange = false;
-            returnTeleporter = null;
-            SetWarningVisible(false);
+            playerCollidersInRange.Remove(collision);
+            RefreshPlayerRange();
+            if (!isPlayerInRange)
+            {
+                returnTeleporter = null;
+                SetWarningVisible(false);
+            }
         }
     }
 
     private void OnDisable()
     {
         isPlayerInRange = false;
+        playerCollidersInRange.Clear();
         returnTeleporter = null;
         SetWarningVisible(false);
+    }
+
+    private void RefreshPlayerRange()
+    {
+        playerCollidersInRange.RemoveWhere(collision =>
+            collision == null || !collision.enabled || !collision.gameObject.activeInHierarchy);
+        isPlayerInRange = playerCollidersInRange.Count > 0;
+        if (!isPlayerInRange)
+        {
+            returnTeleporter = null;
+        }
     }
 
     private IEnumerator FadeAndLoadScene()
@@ -168,8 +190,11 @@ public class SeaSceneTransition : MonoBehaviour
         if (fadeBlackScreen != null)
         {
             fadeBlackScreen.gameObject.SetActive(true);
-            CanvasGroup cg = fadeBlackScreen.GetComponent<CanvasGroup>();
-            if (cg != null) cg.alpha = 1f;
+            CanvasGroup canvasGroup = fadeBlackScreen.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 1f;
+            }
 
             float timer = 0f;
             Color c = fadeBlackScreen.color;
@@ -229,6 +254,11 @@ public class SeaSceneTransition : MonoBehaviour
         {
             Debug.LogError("[SeaSceneTransition] Nama scene tujuan belum diatur.", this);
             return;
+        }
+
+        if (!gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(true);
         }
 
         Debug.Log($"[SeaSceneTransition] Memulai transisi ke: {targetSceneName}");

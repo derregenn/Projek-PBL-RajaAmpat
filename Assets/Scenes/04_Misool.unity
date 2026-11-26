@@ -13281,7 +13281,6 @@ GameObject:
   - component: {fileID: 1482452493}
   - component: {fileID: 1482452497}
   - component: {fileID: 1482452496}
-  - component: {fileID: 1482452499}
   - component: {fileID: 1482452500}
   m_Layer: 0
   m_Name: Petugas_Stage1
@@ -13342,18 +13341,6 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 836280601}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 1482452497}
         m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
         m_MethodName: GiveQuest
@@ -13374,6 +13361,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 836280601}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -13559,49 +13558,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4.914485, y: 7.7981186}
   m_EdgeRadius: 0
---- !u!114 &1482452499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482452492}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bfe88c776d6e8e47a5c0d2a3c8bf5ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PetugasMisool
-  dialogueSystem: {fileID: 1482452493}
-  dialogSuruhMenyelam:
-  - Mau melihat keindahan terumbu karang Misool dari dekat ya?
-  - Iya, air di pesisir ini saja bening sekali, pasti di bawah sana lebih luar biasa
-  - Pasti. Area terumbu karang di bawah dermaga ini masih sangat terjaga.
-  - Coba kamu menyelam sebentar, nikmati pemandangannya, lalu nanti kembali ke sini
-    kalau sudah selesai ya
-  dialogMintaBantuan:
-  - Pak! Di bawah sana ada sekumpulan hama Bulu Seribu yang menempel dan memakan
-    terumbu karang
-  - Aduh, benarkah? Wah, untung kamu cepat melapor!
-  - Mas, kebetulan kamu kan udah pakai perlengkapan selam lengkap dan jago menyelam
-  - Bisa minta tolong bantu kami sebentar nggak?
-  - Anggap aja jadi relawan konservasi dadakan sebentar buat angkat hama-hama itu
-    ke atas
-  - Jujur aja, tim kita di pos lagi kewalahan banget
-  - Kita benar-benar lagi kekurangan personel buat turun langsung hari ini
-  - Nanti saya pinjamkan capit penjepit dan wadah khususnya kok. Gimana, bisa bersedia
-    bantu?
-  - Boleh Pak, Kasihan karangnya kalau dibiarkan rusak
-  - "Sip, terima kasih banyak atas kepedulianmu ya, kawan\u2026"
-  dialogSedangKerja:
-  - Ini Pak, semua hama Bulu Seribunya sudah berhasil saya amankan dari terumbu karang
-  - "Luar biasa! Kerjamu sangat rapi, kawan\u2026"
-  dialogTerimaKasih:
-  - Jarang ada wisatawan yang mau ikut turun tangan menjaga alam seperti kamu
-  - Sebagai bentuk apresiasi dari kami, kalau kamu benar-benar mau melihat ikon keindahan
-    Misool yang sebenarnya
-  - Coba kamu jalan sedikit ke ujung pesisir sana
-  - Di sana ada spot perairan agak dalam, tempat kawanan Pari Manta biasa melintas.
-  - Silahkan Dinikmati!
 --- !u!82 &1482452500
 AudioSource:
   m_ObjectHideFlags: 0
