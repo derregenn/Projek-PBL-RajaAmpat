@@ -106,6 +106,8 @@ public class QuestJournalManager : MonoBehaviour
 
     private int currentJournalIndex = 0;
     private bool isFlashing = false;
+    private GamePhaseManager subscribedGamePhaseManager;
+    private bool isListeningToGameEvents;
 
     // Quest caching
     [HideInInspector] public string currentOngoingQuest = "Jelajahi keindahan Raja Ampat!";
@@ -252,17 +254,6 @@ public class QuestJournalManager : MonoBehaviour
 
     private void Update()
     {
-        string activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        if (activeScene == "01_MainMenu")
-        {
-            if (questTabPanel != null && questTabPanel.activeSelf &&
-                (Input.GetKeyDown(KeyCode.Escape) || (Input.GetKeyDown(KeyCode.Tab) && !isFlashing)))
-            {
-                CloseJournal();
-            }
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.Tab) && !isFlashing)
         {
             if (!IsJournalUnlocked()) return;
@@ -272,25 +263,18 @@ public class QuestJournalManager : MonoBehaviour
 
     public static bool IsJournalUnlockedPersistent()
     {
-        string activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        if (activeScene == "01_MainMenu")
-        {
-            return IsPrerequisiteIslandCompleted(IslandName.Waisai)
-                || PlayerPrefs.GetInt("NormalEndingReached", 0) == 1
-                || PlayerPrefs.GetInt("AltEndingReached", 0) == 1
-                || PlayerPrefs.GetInt("GameCompleted", 0) == 1;
-        }
-
         if (PlayerPrefs.GetInt(SaveKeyJournalUnlocked, 0) == 1) return true;
-        if (HasCompletedQuestIDPersistent("02_Waisai") ||
+        if (HasCompletedQuestIDPersistent("01_Waisai") ||
+            HasCompletedQuestIDPersistent("02_Waisai") ||
             HasCompletedQuestIDPersistent("03_Waisai"))
         {
             return true;
         }
 
+        string activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         if (string.IsNullOrEmpty(activeScene)) return false;
 
-        if (activeScene == "02_CutsceneAirstrip" || activeScene == "02_Waisai")
+        if (activeScene == "01_MainMenu" || activeScene == "02_CutsceneAirstrip" || activeScene == "02_Waisai")
         {
             return false;
         }
@@ -305,8 +289,6 @@ public class QuestJournalManager : MonoBehaviour
         PlayerPrefs.SetInt(SaveKeyJournalUnlocked, 1);
         PlayerPrefs.Save();
         CanvasHUDAutoBinder.Instance?.RefreshJournalButtonState();
-        FreeRoamManager.Instance?.RefreshMenuUnlockStates();
-        FindFirstObjectByType<MainMenu>()?.RefreshContinueButtonState();
     }
 
     // =========================================================
@@ -464,13 +446,18 @@ public class QuestJournalManager : MonoBehaviour
 
     private void ListenToGameEvents()
     {
+        if (isListeningToGameEvents) return;
+
         QuestController.OnQuestCompleted += HandleQuestCompleted;
 
-        if (GamePhaseManager.Instance != null)
+        subscribedGamePhaseManager = GamePhaseManager.Instance;
+        if (subscribedGamePhaseManager != null)
         {
-            GamePhaseManager.Instance.OnPercentageUpdated.AddListener(OnGameProgressUpdated);
-            GamePhaseManager.Instance.OnIslandCompleted.AddListener(OnIslandCompletedHandler);
+            subscribedGamePhaseManager.OnPercentageUpdated?.AddListener(OnGameProgressUpdated);
+            subscribedGamePhaseManager.OnIslandCompleted?.AddListener(OnIslandCompletedHandler);
         }
+
+        isListeningToGameEvents = true;
     }
 
     private void ConfigurePhotoPopup()
@@ -552,13 +539,18 @@ public class QuestJournalManager : MonoBehaviour
 
     private void UnlistenGameEvents()
     {
+        if (!isListeningToGameEvents) return;
+
         QuestController.OnQuestCompleted -= HandleQuestCompleted;
 
-        if (GamePhaseManager.Instance != null)
+        if (subscribedGamePhaseManager != null)
         {
-            GamePhaseManager.Instance.OnPercentageUpdated?.RemoveListener(OnGameProgressUpdated);
-            GamePhaseManager.Instance.OnIslandCompleted?.RemoveListener(OnIslandCompletedHandler);
+            subscribedGamePhaseManager.OnPercentageUpdated?.RemoveListener(OnGameProgressUpdated);
+            subscribedGamePhaseManager.OnIslandCompleted?.RemoveListener(OnIslandCompletedHandler);
         }
+
+        subscribedGamePhaseManager = null;
+        isListeningToGameEvents = false;
     }
 
     // =========================================================
@@ -611,7 +603,7 @@ public class QuestJournalManager : MonoBehaviour
     {
         RecordCompletedQuest(questID, null);
 
-        if (string.Equals(questID, "02_Waisai", System.StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(questID, "01_Waisai", System.StringComparison.OrdinalIgnoreCase))
         {
             UnlockJournal();
         }
@@ -763,16 +755,13 @@ public class QuestJournalManager : MonoBehaviour
 
         bool willOpen = !questTabPanel.activeSelf;
         questTabPanel.SetActive(willOpen);
-        string activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        Time.timeScale = (willOpen && activeScene != "01_MainMenu") ? 0f : 1f;
+        Time.timeScale = willOpen ? 0f : 1f;
 
         if (willOpen)
         {
-            questTabPanel.transform.SetAsLastSibling();
             QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
             if (tabUI != null)
             {
-                tabUI.EnsureDropShadow();
                 tabUI.EnsureStandardTransform();
                 tabUI.EnsureCanvasSortingOrder();
             }
@@ -2243,8 +2232,6 @@ public class QuestJournalManager : MonoBehaviour
         }
         PlayerPrefs.Save();
         CanvasHUDAutoBinder.Instance?.RefreshJournalButtonState();
-        FreeRoamManager.Instance?.RefreshMenuUnlockStates();
-        FindFirstObjectByType<MainMenu>()?.RefreshContinueButtonState();
 
         if (GamePhaseManager.Instance != null)
         {
