@@ -135,6 +135,7 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
         if (playerScript != null)
         {
             playerScript.isMovementLocked = false;
+            playerScript.SetScriptedMovementActive(false);
         }
 
         if (playerAnimator != null && animatorWasEnabled)
@@ -169,6 +170,7 @@ public class StealthQTEInteractable : MonoBehaviour, IInteractable
         if (playerScript != null)
         {
             playerScript.isMovementLocked = true;
+            playerScript.SetScriptedMovementActive(true);
         }
         if (hadRigidbody && playerRigidbody != null)
         {

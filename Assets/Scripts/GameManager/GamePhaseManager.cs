@@ -114,10 +114,10 @@ public class GamePhaseManager : MonoBehaviour
     // =========================================================
 
     [Header("Events")]
-    public UnityEvent<float> OnPercentageUpdated;
-    public UnityEvent OnGagUnlocked; // Event untuk membuka tombol Gag di UI Peta
-    public UnityEvent<IslandName> OnIslandCompleted;
-    public UnityEvent OnGameCompleted;
+    public UnityEvent<float> OnPercentageUpdated = new UnityEvent<float>();
+    public UnityEvent OnGagUnlocked = new UnityEvent();
+    public UnityEvent<IslandName> OnIslandCompleted = new UnityEvent<IslandName>();
+    public UnityEvent OnGameCompleted = new UnityEvent();
 
     // =========================================================
     // SAVE / LOAD KEYS
