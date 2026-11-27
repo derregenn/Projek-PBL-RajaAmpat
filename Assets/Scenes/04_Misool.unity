@@ -7285,27 +7285,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: 83.690834
+      value: 67.58628
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: -4.3745356
+      value: -4.2621865
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: 83.69084
+      value: 82.517876
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: -4.3745356
+      value: -4.1843247
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
-      value: 83.52722
+      value: 82.54393
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
-      value: 4.5767164
+      value: 4.591177
       objectReference: {fileID: 0}
     - target: {fileID: 1994720213843841691, guid: 092cfb63e83250c4094295626f50a922, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[4].x
@@ -9612,6 +9612,7 @@ GameObject:
   - component: {fileID: 1174263400}
   - component: {fileID: 1174263399}
   - component: {fileID: 1174263404}
+  - component: {fileID: 1174263405}
   m_Layer: 0
   m_Name: Ibu1
   m_TagString: Untagged
@@ -9728,6 +9729,18 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1174263405}
+        m_TargetAssemblyTypeName: FaderTrigger, Assembly-CSharp
+        m_MethodName: TriggerFadeAndDoAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 9
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 722736205263521839}
         m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
         m_MethodName: AdvanceStageTo
@@ -9950,6 +9963,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1174263405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174263397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
+  onMidFade:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2001680365}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  triggerOnEnter: 0
+  activatorTag: Player
 --- !u!1001 &1194423022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13031,6 +13073,7 @@ GameObject:
   - component: {fileID: 1446603230}
   - component: {fileID: 1446603229}
   - component: {fileID: 1446603234}
+  - component: {fileID: 1446603235}
   m_Layer: 0
   m_Name: Ibu2
   m_TagString: Untagged
@@ -13113,10 +13156,10 @@ MonoBehaviour:
   PlayerDialogueText: {fileID: 1724944627}
   NextPrompt: {fileID: 1621872369}
   PlayerNextPrompt: {fileID: 2075810290}
-  speaker2IsOtherNpc: 0
-  SecondaryNPCDialogueBox: {fileID: 0}
-  SecondaryNPCDialogueText: {fileID: 0}
-  SecondaryNPCNextPrompt: {fileID: 0}
+  speaker2IsOtherNpc: 1
+  SecondaryNPCDialogueBox: {fileID: 698352860}
+  SecondaryNPCDialogueText: {fileID: 1021186074}
+  SecondaryNPCNextPrompt: {fileID: 976487319}
   DialogueLines:
   - Sudah aman, Bu! Jaringnya sudah saya potong dan Pari Mantanya sudah berenang
     bebas lagi
@@ -13147,6 +13190,18 @@ MonoBehaviour:
   onDialogueEnd:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1446603235}
+        m_TargetAssemblyTypeName: FaderTrigger, Assembly-CSharp
+        m_MethodName: TriggerFadeAndDoAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 9
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 722736205263521839}
         m_TargetAssemblyTypeName: MasterQuestManager, Assembly-CSharp
         m_MethodName: AdvanceStageTo
@@ -13369,6 +13424,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1446603235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446603227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737693aee9ec2504e82c2e7a69222350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FaderTrigger
+  onMidFade:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2001680365}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  triggerOnEnter: 0
+  activatorTag: Player
 --- !u!1001 &1451620635
 PrefabInstance:
   m_ObjectHideFlags: 0
