@@ -1206,7 +1206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 114224180}
-  - component: {fileID: 114224179}
+  - component: {fileID: 114224181}
   m_Layer: 0
   m_Name: AmbienceSea
   m_TagString: Untagged
@@ -1214,103 +1214,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!82 &114224179
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114224178}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: ba5bbb00f069de74c8d535f962fd7e00, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 0
-  MinDistance: 10
-  MaxDistance: 40
-  Pan2D: 0
-  rolloffMode: 1
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!4 &114224180
 Transform:
   m_ObjectHideFlags: 0
@@ -1326,6 +1229,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114224181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114224178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
+  audioClip: {fileID: 8300000, guid: ba5bbb00f069de74c8d535f962fd7e00, type: 3}
+  outputMixerGroup: {fileID: 0}
+  maxVolume: 0.2
+  crossfadeDuration: 2
+  playOnStart: 1
+  watchLegacyBgmSource: {fileID: 0}
+  initialFadeInDuration: 0
+  is3DSpatial: 1
+  minDistance: 10
+  maxDistance: 40
 --- !u!1 &131827948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,6 +1541,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -1624,6 +1553,22 @@ PrefabInstance:
       value: Kamu terbukti turis yang bijak dan bertanggung jawab. Sekarang kamu
         sudah siap menjelajah.
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
       value: 0
@@ -2037,26 +1982,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -77.69
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: DialogueLineSprites.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[0]'
-      value: 
-      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[2]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[3]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
     m_RemovedGameObjects: []
@@ -2161,6 +2086,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &193927117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3260,6 +3187,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &377023894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3371,6 +3300,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &391419248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4786,6 +4717,7 @@ MonoBehaviour:
   - {fileID: 7036582999254525673}
   correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
   wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
+  feedbackOutlineThickness: 14
   audioSource: {fileID: 5549832305340053200}
   startQuizSFX: {fileID: 8300000, guid: 60c07e7e94f39a34db0b9a6a77bc8548, type: 3}
   buttonHoverSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
@@ -4917,17 +4849,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
---- !u!114 &638748628 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-  m_PrefabInstance: {fileID: 638748627}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbebe63c4dee958478698ac59bf2b3c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestJournalManager
 --- !u!1001 &647513607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5445,6 +5366,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &680819728
 GameObject:
   m_ObjectHideFlags: 0
@@ -5862,26 +5785,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: QuestTabUI
       objectReference: {fileID: 0}
-    - target: {fileID: 7227828034579128882, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7227828034579128882, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7910883502976963826, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8311087293714280274, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8311087293714280274, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5631455643028285764, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5965,6 +5868,26 @@ PrefabInstance:
     - target: {fileID: 5993519340487428895, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227828034579128882, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227828034579128882, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7910883502976963826, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311087293714280274, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311087293714280274, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -7207,9 +7130,33 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
       value: 0
@@ -7466,30 +7413,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: DialogueLineSprites.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[1]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[2]'
-      value: 
-      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[3]'
-      value: 
-      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[4]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
     - {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -7552,6 +7475,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &996707846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8471,6 +8396,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1240042229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10444,6 +10371,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1543002001 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7563776255713643221, guid: f9646009fe529ee4f80b64ec08ffd5ac, type: 3}
@@ -10940,6 +10869,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1575447500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11946,6 +11877,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1784821099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11994,17 +11927,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784821096}
   m_CullTransparentMesh: 1
---- !u!114 &1826519293 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3394214134717278930, guid: 7e7bb2b0f2c32904b844b09c8cd36539, type: 3}
-  m_PrefabInstance: {fileID: 4810813993924008793}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcc22b82083f09f4e83c6e45a5ca6317, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapTeleport
 --- !u!1 &1882896049
 GameObject:
   m_ObjectHideFlags: 0
