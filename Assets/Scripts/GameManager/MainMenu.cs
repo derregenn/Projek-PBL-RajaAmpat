@@ -5,58 +5,100 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [Header("Cutscene Assets")]
-    public Sprite[] arrivalPortraits; // Gambar jendela pesawat
-    
+    public Sprite[] arrivalPortraits; // Gambar portrait pesawat
+
+    [TextArea(2, 5)]
+    public string[] arrivalDialogues; // Teks cerita/dialogue untuk masing-masing gambar
+
     [Header("UI Buttons")]
-    public Button continueButton;     // Drag Btn_Continue ke sini
+    public Button continueButton;
 
     void Start()
     {
-        // Cek apakah ada data save sebelumnya. 
-        // (Misal kamu simpan nama scene terakhir di PlayerPrefs dengan key "SavedScene")
-        if (PlayerPrefs.HasKey("SavedScene"))
+        Time.timeScale = 1f;
+        RefreshContinueButtonState();
+    }
+
+    public void RefreshContinueButtonState()
+    {
+        FreeRoamManager.ApplyButtonUnlockVisual(continueButton, PlayerPrefs.HasKey("SavedScene"));
+    }
+
+    public void StartNewGame()
+    {
+        PlayerPrefs.DeleteAll();
+        QuestJournalManager.InvalidatePersistentQuestCache();
+
+        if (QuestJournalManager.Instance != null)
         {
-            continueButton.interactable = true; // Nyalakan tombol Continue
+            QuestJournalManager.Instance.ResetAllProgress(false);
+        }
+
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.ResetAllProgress();
+        }
+
+        if (StoryManager.Instance != null)
+        {
+            StoryManager.Instance.ResetProgress();
+        }
+
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.ResetAllProgress();
+        }
+
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ActiveQuests.Clear();
+        }
+
+        // Reset sistem sampah global
+        if (GlobalTrashManager.Instance != null)
+        {
+            GlobalTrashManager.Instance.ResetAll();
+        }
+
+        PlayerPrefs.SetString("SavedScene", "02_CutsceneAirstrip");
+        PlayerPrefs.Save();
+
+        if (CutsceneTransitionManager.Instance != null && arrivalPortraits != null && arrivalPortraits.Length > 0)
+        {
+            CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_CutsceneAirstrip");
         }
         else
         {
-            continueButton.interactable = false; // Matikan/Gelapkan jika belum ada save
+            Debug.Log("[MainMenu] Memuat 02_CutsceneAirstrip langsung.");
+            SceneManager.LoadScene("02_CutsceneAirstrip");
         }
     }
 
-    // 🔴 DIPANGGIL OLEH TOMBOL 'NEW GAME'
-    public void StartNewGame()
-    {
-        // 1. Hapus data save lama agar benar-benar dari nol
-        PlayerPrefs.DeleteAll(); 
-        
-        // 2. Set fase cerita ke awal
-        if (StoryManager.Instance != null) {
-            StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Arrival_Airstrip;
-        }
-
-        // 3. Putar Cutscene Arrival, lalu otomatis load Waisai (atau scene Airstrip)
-        CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, "02_Waisai"); 
-    }
-
-    // 🟢 DIPANGGIL OLEH TOMBOL 'CONTINUE'
     public void ContinueGame()
     {
-        // 1. Ambil nama scene terakhir yang disimpan (Default ke Waisai jika error)
         string sceneToLoad = PlayerPrefs.GetString("SavedScene", "02_Waisai");
 
-        // 2. Ambil data fase cerita terakhir yang disimpan
-        if (StoryManager.Instance != null) {
-            StoryManager.Instance.currentPhase = (StoryManager.StoryPhase)PlayerPrefs.GetInt("SavedStoryPhase", 0);
+        if (StoryManager.Instance != null)
+        {
+            StoryManager.Instance.LoadProgress();
         }
 
-        // 3. LANGSUNG LOAD SCENE, LEWATI CUTSCENE!
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.CalculatePercentage();
+        }
+
+        PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 1);
+        PlayerPrefs.Save();
+
+        Time.timeScale = 1f;
+        Debug.Log($"[MainMenu] Melanjutkan game ke scene: {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
 
     public void QuitGame()
     {
-        Debug.Log("Game Keluar!");
+        Debug.Log("Game Quit!");
         Application.Quit();
     }
 }

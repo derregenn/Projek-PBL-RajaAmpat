@@ -11,6 +11,7 @@ public class QuestObjective
 {
     public string ObjectiveID;
     public QuestObjectiveType Type;
+    public string ObjectiveTitle;
 
     [TextArea]
     public string Description;

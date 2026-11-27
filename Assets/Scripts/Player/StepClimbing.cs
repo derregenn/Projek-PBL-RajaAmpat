@@ -5,6 +5,7 @@ public class StepClimbing : MonoBehaviour
 {
     [Header("Climb Positions")]
     [SerializeField] private Transform[] climbSteps; // Titik-titik posisi pemanjatan
+    [SerializeField] private Transform[] climbDownSteps; // Titik-titik posisi turun
     [SerializeField] private Transform topPlatformPoint; // Titik akhir di atas tebing
     [SerializeField] private float moveSpeed = 2f;
 
@@ -20,8 +21,12 @@ public class StepClimbing : MonoBehaviour
 
     private int currentStepIndex = 0;
     private bool isClimbingMode = false;
+    private bool isClimbingSequenceActive = false;
     private bool isMovingToStep = false;
+    private bool isClimbingDown = false;
+    private Transform[] activeSteps;
     private Vector3 targetPosition;
+    private Vector3 climbPosition;
 
     private Rigidbody2D rb;
     private Collider2D playerCollider;
@@ -30,6 +35,13 @@ public class StepClimbing : MonoBehaviour
 
     private Sprite originalSprite;
     private bool isUsingSprite1 = true;
+
+    [Header("Platform Ground Settings")]
+    [SerializeField] private Collider2D topPlatformCollider; // Drag BoxCollider2D dari TopPlatformGround
+
+    [Header("Post-Climb Trigger Control")]
+    [Tooltip("Objek trigger panjat tebing (misal WallInteractionTrigger) yang dinonaktifkan otomatis setelah sampai atas")]
+    [SerializeField] private GameObject disableOnClimbUpComplete;
 
     private void Start()
     {
@@ -53,14 +65,16 @@ public class StepClimbing : MonoBehaviour
         // Pergerakan mulus antar step
         if (isMovingToStep)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            climbPosition = Vector3.MoveTowards(climbPosition, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = climbPosition;
 
-            if (Vector3.Distance(transform.position, targetPosition) < 0.05f)
+            if (Vector3.Distance(climbPosition, targetPosition) < 0.05f)
             {
-                transform.position = targetPosition;
+                climbPosition = targetPosition;
+                transform.position = climbPosition;
                 isMovingToStep = false;
 
-                if (currentStepIndex < climbSteps.Length)
+                if (currentStepIndex < activeSteps.Length)
                 {
                     ShowQTEOnce();
                 }
@@ -73,9 +87,34 @@ public class StepClimbing : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        // Kunci sumbu horizontal setelah semua input gerak diproses.
+        if (isClimbingSequenceActive)
+        {
+            Vector3 position = transform.position;
+            position.x = climbPosition.x;
+            transform.position = position;
+        }
+    }
+
     public void StartClimbSequence()
     {
+        StartClimb(climbSteps, false);
+    }
+
+    public void StartClimbDownSequence()
+    {
+        StartClimb(climbDownSteps, true);
+    }
+
+    private void StartClimb(Transform[] steps, bool climbingDown)
+    {
         isClimbingMode = true;
+        isClimbingSequenceActive = true;
+        climbPosition = transform.position;
+        isClimbingDown = climbingDown;
+        activeSteps = steps;
         currentStepIndex = 0;
         isUsingSprite1 = true;
 
@@ -86,16 +125,22 @@ public class StepClimbing : MonoBehaviour
         if (rb != null) rb.bodyType = RigidbodyType2D.Kinematic;
         if (playerCollider != null) playerCollider.enabled = false;
 
-        if (climbSteps != null && climbSteps.Length > 0)
+        if (activeSteps != null && activeSteps.Length > 0)
         {
             UpdateClimbSprite();
-            targetPosition = climbSteps[0].position;
+            targetPosition = activeSteps[0].position;
             isMovingToStep = true;
             HideQTE();
         }
         else
         {
             StartCoroutine(FinishClimbingRoutine());
+        }
+
+        // Matikan collider platform atas agar tidak menabrak player saat naik
+        if (topPlatformCollider != null)
+        {
+            topPlatformCollider.enabled = false;
         }
     }
 
@@ -116,14 +161,9 @@ public class StepClimbing : MonoBehaviour
         isUsingSprite1 = !isUsingSprite1;
         UpdateClimbSprite();
 
-        if (currentStepIndex < climbSteps.Length)
+        if (currentStepIndex < activeSteps.Length)
         {
-            targetPosition = climbSteps[currentStepIndex].position;
-            isMovingToStep = true;
-        }
-        else if (topPlatformPoint != null)
-        {
-            targetPosition = topPlatformPoint.position;
+            targetPosition = activeSteps[currentStepIndex].position;
             isMovingToStep = true;
         }
         else
@@ -158,15 +198,40 @@ public class StepClimbing : MonoBehaviour
         }
 
         // 2. Pindahkan Posisi ke Puncak Bukit jika ada
-        if (topPlatformPoint != null)
+        if (!isClimbingDown && topPlatformPoint != null)
         {
-            transform.position = topPlatformPoint.position;
+            climbPosition = topPlatformPoint.position;
+            transform.position = climbPosition;
         }
 
-        // 3. Laporkan Progres Quest 2 (Cliff Hiking)
-        if (QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
+        // TAMBAHKAN BARIS INI: Nyalakan collider lantai agar player bisa berdiri
+        if (topPlatformCollider != null)
         {
-            QuestController.Instance.ProgressObjective(questObjectiveID);
+            topPlatformCollider.enabled = true;
+        }
+
+        // 3. Laporkan Progres Quest 2 (Cliff Hiking) atau Quest 4 (Turun Bukit)
+        if (QuestController.Instance != null)
+        {
+            if (!isClimbingDown && !string.IsNullOrEmpty(questObjectiveID))
+            {
+                QuestController.Instance.ProgressObjective(questObjectiveID);
+            }
+            else if (isClimbingDown)
+            {
+                QuestController.Instance.ProgressObjective("turun_bukit", 1);
+            }
+        }
+
+        // Matikan trigger panjat tebing atas setelah selesai memanjat ke atas agar MC tidak memanjat ulang di puncak
+        if (!isClimbingDown)
+        {
+            DisableClimbUpTrigger();
+            ActivateTourGuide4();
+            if (MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < 5)
+            {
+                MasterQuestManager.Instance.AdvanceStageTo(5);
+            }
         }
 
         // 4. Kembalikan fisik & gravitasi ke normal
@@ -182,7 +247,11 @@ public class StepClimbing : MonoBehaviour
         if (anim != null)
         {
             anim.enabled = true;
-            anim.Play("Idle");
+            int idleStateHash = Animator.StringToHash("Idle");
+            if (anim.runtimeAnimatorController != null && anim.layerCount > 0 && anim.HasState(0, idleStateHash))
+            {
+                anim.Play(idleStateHash, 0);
+            }
         }
 
         yield return new WaitForSeconds(0.2f);
@@ -192,12 +261,32 @@ public class StepClimbing : MonoBehaviour
         {
             yield return ScreenFader.Instance.FadeInRoutine();
         }
+
+        isClimbingSequenceActive = false;
+    }
+
+    private void ActivateTourGuide4()
+    {
+        Transform[] sceneTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Transform sceneTransform in sceneTransforms)
+        {
+            if (sceneTransform.name == "TourGuide4")
+            {
+                sceneTransform.gameObject.SetActive(true);
+                return;
+            }
+        }
+
+        Debug.LogWarning("TourGuide4 tidak ditemukan di scene setelah panjat tebing.");
     }
 
     private void ShowQTEOnce()
     {
         if (qte2Script != null)
         {
+            // TAMBAHKAN BARIS INI: Nyalakan dulu GameObject-nya sebelum di-reset
+            qte2Script.gameObject.SetActive(true);
+
             qte2Script.ResetQTE();
         }
     }
@@ -207,6 +296,26 @@ public class StepClimbing : MonoBehaviour
         if (qte2Script != null)
         {
             qte2Script.gameObject.SetActive(false);
+        }
+    }
+
+    private void DisableClimbUpTrigger()
+    {
+        isClimbingMode = false;
+
+        if (disableOnClimbUpComplete != null)
+        {
+            disableOnClimbUpComplete.SetActive(false);
+            return;
+        }
+
+        WallInteractable[] walls = FindObjectsByType<WallInteractable>(FindObjectsSortMode.None);
+        foreach (WallInteractable w in walls)
+        {
+            if (w != null && !w.IsClimbDown)
+            {
+                w.gameObject.SetActive(false);
+            }
         }
     }
 }
