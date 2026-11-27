@@ -642,8 +642,6 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
-  outlineThickness: 0
-  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &211116400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,9 +768,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IslandSceneTransition
   targetSceneName: 12_CutsceneAirstripEnding
   fadeDuration: 1
-  markGameCompletedOnTransition: 0
-  showEndCreditsBeforeLoad: 0
-  creditsDuration: 6
   fadeBlackScreen: {fileID: 3003023007336954598}
   requirePressE: 1
   promptPanel: {fileID: 446037415}
@@ -1860,7 +1855,6 @@ MonoBehaviour:
   - {fileID: 7036582999254525673}
   correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
   wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
-  feedbackOutlineThickness: 14
   audioSource: {fileID: 5549832305340053200}
   startQuizSFX: {fileID: 8300000, guid: 60c07e7e94f39a34db0b9a6a77bc8548, type: 3}
   buttonHoverSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
@@ -2448,8 +2442,6 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
-  outlineThickness: 0
-  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &680819728
 GameObject:
   m_ObjectHideFlags: 0
@@ -4024,10 +4016,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: DialogueLineSprites.Array.size
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 28
       objectReference: {fileID: 0}
@@ -4039,46 +4027,6 @@ PrefabInstance:
       propertyPath: 'postQuestLoopLines.Array.data[1]'
       value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[1]'
-      value: 
-      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[2]'
-      value: 
-      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[3]'
-      value: 
-      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[4]'
-      value: 
-      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[5]'
-      value: 
-      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[6]'
-      value: 
-      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[7]'
-      value: 
-      objectReference: {fileID: -2783760578965171434, guid: 93a04917c4de8e9469a562080cd3e369, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[8]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[9]'
-      value: 
-      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
       value: 0
@@ -4119,78 +4067,6 @@ PrefabInstance:
       propertyPath: 'DialogueLineSpeakers.Array.data[9]'
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[10]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[11]'
-      value: 
-      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[12]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[13]'
-      value: 
-      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[14]'
-      value: 
-      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[15]'
-      value: 
-      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[16]'
-      value: 
-      objectReference: {fileID: 1152562164777448990, guid: 5d9bf956ed39f924cb3a0c67042d7767, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[17]'
-      value: 
-      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[18]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[19]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[20]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[21]'
-      value: 
-      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[22]'
-      value: 
-      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[23]'
-      value: 
-      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[24]'
-      value: 
-      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[25]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[26]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[27]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[10]'
       value: 0
@@ -4511,6 +4387,122 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -84.69
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[7]'
+      value: 
+      objectReference: {fileID: -2783760578965171434, guid: 93a04917c4de8e9469a562080cd3e369, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[8]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[9]'
+      value: 
+      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[10]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[11]'
+      value: 
+      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[12]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[13]'
+      value: 
+      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[14]'
+      value: 
+      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[15]'
+      value: 
+      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[16]'
+      value: 
+      objectReference: {fileID: 1152562164777448990, guid: 5d9bf956ed39f924cb3a0c67042d7767, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[17]'
+      value: 
+      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[18]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[19]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[20]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[21]'
+      value: 
+      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[22]'
+      value: 
+      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[23]'
+      value: 
+      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[24]'
+      value: 
+      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[25]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[26]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[27]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
     - {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -4700,8 +4692,6 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
-  outlineThickness: 0
-  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &804400372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5312,10 +5302,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: DialogueLineSprites.Array.size
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: DialogueLineSpeakers.Array.size
       value: 22
       objectReference: {fileID: 0}
@@ -5327,46 +5313,6 @@ PrefabInstance:
       propertyPath: 'postQuestLoopLines.Array.data[1]'
       value: Yuk, kita jalan ke bandara sekarang. Biar aku antar sampai depan pesawat
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[1]'
-      value: 
-      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[2]'
-      value: 
-      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[3]'
-      value: 
-      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[4]'
-      value: 
-      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[5]'
-      value: 
-      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[6]'
-      value: 
-      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[7]'
-      value: 
-      objectReference: {fileID: -2783760578965171434, guid: 93a04917c4de8e9469a562080cd3e369, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[8]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[9]'
-      value: 
-      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[0]'
       value: 0
@@ -5407,54 +5353,6 @@ PrefabInstance:
       propertyPath: 'DialogueLineSpeakers.Array.data[9]'
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[10]'
-      value: 
-      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[11]'
-      value: 
-      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[12]'
-      value: 
-      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[13]'
-      value: 
-      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[14]'
-      value: 
-      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[15]'
-      value: 
-      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[16]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[17]'
-      value: 
-      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[18]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[19]'
-      value: 
-      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[20]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
-    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
-      propertyPath: 'DialogueLineSprites.Array.data[21]'
-      value: 
-      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: 'DialogueLineSpeakers.Array.data[10]'
       value: 0
@@ -5755,6 +5653,98 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -84.69
       objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: DialogueLineSprites.Array.size
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3832069379100271649, guid: 14830df1ac9fc9b45bc4ad458cd9eca6, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: 4493647031061033812, guid: 7e97969ae274c68498bab21981b9987f, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8777177893170179931, guid: 968555f331a2a234db7d62e1f035e369, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[7]'
+      value: 
+      objectReference: {fileID: -2783760578965171434, guid: 93a04917c4de8e9469a562080cd3e369, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[8]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[9]'
+      value: 
+      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[10]'
+      value: 
+      objectReference: {fileID: 347250365169215157, guid: 67e39db1b8c0d864fbe3ad79f5bc5f7e, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[11]'
+      value: 
+      objectReference: {fileID: 5007425876917199656, guid: 0923b46070936b84fa54a74ec7391f03, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[12]'
+      value: 
+      objectReference: {fileID: 2127518470855077318, guid: bc0db40fe75a32743ab62271751eb215, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[13]'
+      value: 
+      objectReference: {fileID: 4658603622932732354, guid: 7de11915613d7de4192960ed66d8c8ec, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[14]'
+      value: 
+      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[15]'
+      value: 
+      objectReference: {fileID: -5671570173343429547, guid: d2f7bb9b47918d74cb47ab37a1fd93bf, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[16]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[17]'
+      value: 
+      objectReference: {fileID: 4208073258084492716, guid: 69579bd9436daf246b43211183749b94, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[18]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[19]'
+      value: 
+      objectReference: {fileID: 2105954743538501683, guid: 712b2772884ec9e4da3bf616a6213104, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[20]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
+    - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: 'DialogueLineSprites.Array.data[21]'
+      value: 
+      objectReference: {fileID: 8958368667242779132, guid: 7c4e4793dde04ea4fa392f1d8d87d210, type: 3}
     m_RemovedComponents:
     - {fileID: 5107507044596767422, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
     - {fileID: 4579622479448150967, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -5775,6 +5765,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 996707845}
   m_SourcePrefab: {fileID: 100100000, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+--- !u!114 &996707840 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+  m_PrefabInstance: {fileID: 996707839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996707844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3025d55badd1ca545ae364f27b457d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
 --- !u!114 &996707841 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
@@ -5818,8 +5819,6 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
-  outlineThickness: 0
-  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &996707846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7071,13 +7070,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
-  audioClip: {fileID: 8300000, guid: 1113563d82871214bb710e5620ae7026, type: 3}
+  audioClip: {fileID: 8300000, guid: cdf77fc27ca77c24bb9450a19d2fe2d4, type: 3}
   outputMixerGroup: {fileID: 0}
-  maxVolume: 1
-  crossfadeDuration: 1
+  maxVolume: 0.2
+  crossfadeDuration: 0.15
   playOnStart: 1
   watchLegacyBgmSource: {fileID: 0}
-  initialFadeInDuration: 0
+  initialFadeInDuration: 1.5
   is3DSpatial: 0
   minDistance: 5
   maxDistance: 30
