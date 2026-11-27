@@ -87,6 +87,9 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private int loopTriggerMinStage = -1;
     [SerializeField] private bool isPostQuestLoop = false;
 
+    public bool IsPostQuestLoop => isPostQuestLoop;
+    public bool HasPostQuestLoopLines => postQuestLoopLines != null && postQuestLoopLines.Length > 0;
+
     private int lineIndex = 0;
     private bool isInteracting = false;
     private bool canInteract = false;
@@ -1167,7 +1170,7 @@ public class Dialogue : MonoBehaviour
             StartDialogue();
         }
         // 2. Lanjut dialog
-        else if (isInteracting && !InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E)
+        else if (isInteracting && !InteractionInputLock.IsCutscenePlaying && !InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E)
             && ((NextPrompt != null && NextPrompt.activeInHierarchy)
                 || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)
                 || (SecondaryNPCNextPrompt != null && SecondaryNPCNextPrompt.activeInHierarchy)))
@@ -2038,7 +2041,11 @@ public class Dialogue : MonoBehaviour
             {
                 return cam;
             }
-            if (gameplayCam == null && cam.name.IndexOf("Dialogue", StringComparison.OrdinalIgnoreCase) < 0)
+            if (gameplayCam == null
+                && cam.name.IndexOf("Dialogue", StringComparison.OrdinalIgnoreCase) < 0
+                && cam.name.IndexOf("View", StringComparison.OrdinalIgnoreCase) < 0
+                && cam.name.IndexOf("Tambang", StringComparison.OrdinalIgnoreCase) < 0
+                && cam.name.IndexOf("Cutscene", StringComparison.OrdinalIgnoreCase) < 0)
             {
                 gameplayCam = cam;
             }

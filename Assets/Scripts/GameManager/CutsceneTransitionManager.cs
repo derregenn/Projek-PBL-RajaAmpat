@@ -44,6 +44,12 @@ public class CutsceneTransitionManager : MonoBehaviour
     private bool isTransitioning = false;
     private Vector3 dialogueBoxInitialScale = Vector3.one;
     private bool hasCachedInitialScale = false;
+    private int cutsceneStartFrame = -1;
+    private Coroutine activeFadeCoroutine;
+    private bool isEndingCutscene = false;
+
+    public static bool IsCutsceneActive =>
+        Instance != null && (Instance.isTransitioning || (Instance.cutsceneCanvas != null && Instance.cutsceneCanvas.activeInHierarchy));
 
     // Status Efek Ketikan
     private bool isTyping = false;
@@ -90,13 +96,21 @@ public class CutsceneTransitionManager : MonoBehaviour
 
     public void StartPortraitCutscene(Sprite[] portraits, string[] dialogues, string sceneToLoad)
     {
+        if ((isTransitioning || (cutsceneCanvas != null && cutsceneCanvas.activeSelf)) && nextSceneName == sceneToLoad)
+        {
+            Debug.Log($"[CutsceneTransitionManager] Cutscene menuju '{sceneToLoad}' sudah berjalan, abaikan pemicu ganda.");
+            return;
+        }
+
         CacheDialogueBoxInitialScale();
+        cutsceneStartFrame = Time.frameCount;
 
         currentPortraits = portraits;
         currentDialogues = dialogues;
         nextSceneName = sceneToLoad;
         portraitIndex = 0;
         isTransitioning = false;
+        isEndingCutscene = false;
 
         SetFadeAlpha(0f);
 
@@ -117,22 +131,24 @@ public class CutsceneTransitionManager : MonoBehaviour
 
     void Update()
     {
-        if (isTransitioning) return;
+        if (isEndingCutscene || Time.frameCount == cutsceneStartFrame) return;
 
-        // BISA KLIK KIRI / SPACE / ENTER
-        if (cutsceneCanvas.activeSelf && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
+        // Cutscene hanya menggunakan Left Click (Mouse0) dan langsung pindah seketika
+        if (cutsceneCanvas != null && cutsceneCanvas.activeSelf && Input.GetMouseButtonDown(0))
         {
-            // 🔴 Logika Pintar: 
-            // Jika teks SEDANG diketik -> Selesaikan teks seketika
-            // Jika teks SUDAH selesai -> Lanjut ke portrait berikutnya
-            if (isTyping)
+            if (activeFadeCoroutine != null)
             {
-                CompleteTyping();
+                StopCoroutine(activeFadeCoroutine);
+                activeFadeCoroutine = null;
             }
-            else
+            if (typingCoroutine != null)
             {
-                ShowNextPortrait();
+                StopCoroutine(typingCoroutine);
+                typingCoroutine = null;
             }
+            isTyping = false;
+            isTransitioning = false;
+            ShowNextPortrait();
         }
     }
 
@@ -142,7 +158,7 @@ public class CutsceneTransitionManager : MonoBehaviour
         {
             int currentIndex = portraitIndex;
             string txt = (currentDialogues != null && portraitIndex < currentDialogues.Length) ? currentDialogues[portraitIndex] : "";
-            StartCoroutine(FadeToNextPortrait(currentPortraits[portraitIndex], txt, currentIndex));
+            activeFadeCoroutine = StartCoroutine(FadeToNextPortrait(currentPortraits[portraitIndex], txt, currentIndex));
             portraitIndex++;
         }
         else
@@ -230,6 +246,7 @@ public class CutsceneTransitionManager : MonoBehaviour
         }
 
         isTransitioning = false;
+        activeFadeCoroutine = null;
 
         // 🔴 Mulai Efek Ketikan setelah Gambar & Pop-Out DialogueBox Selesai
         if (shouldShowBox && dialogueText != null && !string.IsNullOrEmpty(nextText))
@@ -288,6 +305,7 @@ public class CutsceneTransitionManager : MonoBehaviour
 
     private IEnumerator EndCutsceneAndLoadScene()
     {
+        isEndingCutscene = true;
         isTransitioning = true;
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
@@ -341,6 +359,7 @@ public class CutsceneTransitionManager : MonoBehaviour
         }
         cutsceneCanvas.SetActive(false);
         isTransitioning = false;
+        isEndingCutscene = false;
     }
 
     private IEnumerator FadeAlpha(Image img, float startAlpha, float targetAlpha, float duration)

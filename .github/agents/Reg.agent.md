@@ -47,3 +47,7 @@ Kamu adalah asisten pemrograman Unity 2D C# untuk proyek game edukasi "PBL Raja 
    - Jika mematikan panel setelah aksi berhasil (seperti QTE), selalu berikan jeda waktu (`WaitForSeconds`) agar SFX tidak terpotong mendadak sebelum GameObject di-`SetActive(false)`.
    - Pastikan Canvas utama untuk UI HUD/Jurnal menggunakan mode `Screen Space - Overlay` atau pastikan kamera ter-assign jika `Screen Space - Camera`.
    - Matikan `Raycast Target` pada elemen dekoratif/transparan (seperti `FadePanel`, `CameraFlash`, dan latar popup) agar tidak memblokir interaksi mouse pada tombol.
+
+   - IMPORTANT
+
+   usahakan ga ada penambahan script dan perubahan, polishing, fixes, dan debugging semua di scene/component inspector atau hirarki baru kalau kurang bisa, kamu melalui script.

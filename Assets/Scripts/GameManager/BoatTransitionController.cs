@@ -135,11 +135,23 @@ public class BoatTransitionController : MonoBehaviour
         }
     }
 
+    public static bool DebugForceNextBoatTrivia = false;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetDebugForceFlag()
+    {
+        DebugForceNextBoatTrivia = false;
+    }
+
     private void LoadIslandDataAndStart()
     {
-        if (HasCompletedBoatTriviaOrVisited(currentTarget))
+        if (DebugForceNextBoatTrivia)
         {
-            Debug.Log($"[BoatTransition] Target '{currentTarget}' sudah pernah melewati boat trivia / sudah selesai. Langsung menuju pulau.");
+            DebugForceNextBoatTrivia = false;
+        }
+        else if (HasCompletedBoatTriviaOrVisited(currentTarget))
+        {
+            Debug.Log($"[BoatTransition] Target '{currentTarget}' sudah pernah melewati boat trivia / pulau sudah selesai / mode Free Roam aktif. Langsung menuju pulau.");
             FinishTransition();
             return;
         }
@@ -191,11 +203,19 @@ public class BoatTransitionController : MonoBehaviour
     }
 
     /// <summary>
-    /// Mengecek apakah cutscene boat trivia untuk pulau tujuan sudah pernah diselesaikan.
+    /// Mengecek apakah cutscene boat trivia untuk pulau tujuan sudah pernah diselesaikan,
+    /// pulau sudah selesai/award terbuka, atau mode Free Roam sudah aktif.
     /// </summary>
     public static bool HasCompletedBoatTriviaOrVisited(string targetSceneOrIsland)
     {
         if (string.IsNullOrWhiteSpace(targetSceneOrIsland)) return false;
+
+        if (PlayerPrefs.GetInt("GTM_FreeRoamMode", 0) == 1 ||
+            (GlobalTrashManager.Instance != null && GlobalTrashManager.Instance.IsFreeRoamMode) ||
+            FreeRoamManager.IsFreeRoamUnlocked())
+        {
+            return true;
+        }
 
         FindTargetSceneBuildIndex(targetSceneOrIsland, out string resolvedSceneName);
 
@@ -216,6 +236,14 @@ public class BoatTransitionController : MonoBehaviour
 
             if (PlayerPrefs.GetInt("BoatTriviaDone_" + island.Value.ToString(), 0) == 1)
             {
+                return true;
+            }
+
+            if (QuestJournalManager.IsIslandCompletedPersistent(island.Value) ||
+                QuestJournalManager.IsPrerequisiteIslandCompleted(island.Value))
+            {
+                PlayerPrefs.SetInt("BoatTriviaDone_" + island.Value.ToString(), 1);
+                PlayerPrefs.Save();
                 return true;
             }
         }

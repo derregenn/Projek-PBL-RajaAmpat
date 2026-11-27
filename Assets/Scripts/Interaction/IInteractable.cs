@@ -21,12 +21,13 @@ public static class InteractionInputLock
     public static bool IsInfographicOpen => InfographicUI.IsAnyInfographicOpen;
     public static bool IsTriviaActive => TriviaQuizUI.IsAnyQuizActive;
     public static bool IsWorldMapOpen => NPCMapTrigger.IsAnyMapOpen;
+    public static bool IsCutscenePlaying => CutsceneTransitionManager.IsCutsceneActive;
 
     public static bool IsAnyModalBlockingWorldInteract =>
-        IsDialogueActive || IsTriviaActive || IsInfographicOpen || IsWorldMapOpen;
+        IsDialogueActive || IsTriviaActive || IsInfographicOpen || IsWorldMapOpen || IsCutscenePlaying;
 
     public static bool IsAnyOverlayBlockingDialogue =>
-        IsSignboardOpen || IsInfographicOpen || IsTriviaActive || IsWorldMapOpen;
+        IsSignboardOpen || IsInfographicOpen || IsTriviaActive || IsWorldMapOpen || IsCutscenePlaying;
 
     public static void ConsumeInteractKeyThisFrame()
     {

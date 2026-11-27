@@ -128,7 +128,9 @@ public class CanvasHUDAutoBinder : MonoBehaviour
 
     public void EnsureHUDInCurrentScene()
     {
-        string sceneName = SceneManager.GetActiveScene().name;
+        Scene activeScene = SceneManager.GetActiveScene();
+        string sceneName = activeScene.name;
+        StandardizePromptPanelAndQTE2(activeScene);
         // Jangan pasang di MainMenu atau perahu transisi
         if (sceneName.Contains("MainMenu") || sceneName.Contains("BoatToIsland")) return;
 
@@ -370,6 +372,67 @@ public class CanvasHUDAutoBinder : MonoBehaviour
         {
             currentJournalButtonGo.SetActive(unlocked);
         }
+    }
+
+    private static void StandardizePromptPanelAndQTE2(Scene scene)
+    {
+        if (!scene.IsValid() || scene.name == "10_Gag" || scene.name == "01_MainMenu") return;
+
+        GameObject[] roots = scene.GetRootGameObjects();
+        for (int r = 0; r < roots.Length; r++)
+        {
+            if (roots[r] == null) continue;
+            Transform[] descendants = roots[r].GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < descendants.Length; i++)
+            {
+                Transform tr = descendants[i];
+                if (tr == null) continue;
+
+                if (tr.name == "PromptPanel")
+                {
+                    RectTransform rt = tr as RectTransform;
+                    if (rt != null)
+                    {
+                        float ratio = GetCanvasReferenceWidthRatio(tr);
+                        rt.anchorMin = new Vector2(0.5f, 0.5f);
+                        rt.anchorMax = new Vector2(0.5f, 0.5f);
+                        rt.pivot = new Vector2(0.5f, 0.5f);
+                        rt.sizeDelta = new Vector2(1152f, 558f);
+                        rt.anchoredPosition = new Vector2(122.3f * ratio, 21.3f * ratio);
+                        rt.localScale = new Vector3(0.20485361f * ratio, 0.20485361f * ratio, 1f);
+                    }
+                }
+            }
+
+            QTE2[] qtes = roots[r].GetComponentsInChildren<QTE2>(true);
+            for (int i = 0; i < qtes.Length; i++)
+            {
+                if (qtes[i] == null) continue;
+                Transform parent = qtes[i].transform.parent;
+                if (parent == null || parent.GetComponent<Canvas>() == null) continue;
+
+                RectTransform rt = qtes[i].transform as RectTransform;
+                if (rt != null)
+                {
+                    float ratio = GetCanvasReferenceWidthRatio(qtes[i].transform);
+                    rt.anchorMin = new Vector2(0.5f, 0.5f);
+                    rt.anchorMax = new Vector2(0.5f, 0.5f);
+                    rt.pivot = new Vector2(0.5f, 0.5f);
+                    rt.anchoredPosition = new Vector2(107f * ratio, -41f * ratio);
+                    rt.localScale = new Vector3(1.0731555f * ratio, 1.0731555f * ratio, 1f);
+                }
+            }
+        }
+    }
+
+    private static float GetCanvasReferenceWidthRatio(Transform target)
+    {
+        CanvasScaler scaler = target != null ? target.GetComponentInParent<CanvasScaler>(true) : null;
+        if (scaler != null && scaler.uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize && scaler.referenceResolution.x > 0f)
+        {
+            return scaler.referenceResolution.x / 800f;
+        }
+        return 1f;
     }
 
     private void OnJournalButtonClicked()

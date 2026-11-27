@@ -36,12 +36,27 @@ public class GagFaderManager : MonoBehaviour
             "NPC_Tetua_Lemas",
             "NPC_Tetua_Lemas2",
             "NPC_Tetua_Lemas3",
-            "Item_Sagu",
-            "Area_ViewTambang");
+            "Item_Sagu");
 
         IslandCompletedStateRestorer.SetObjectsActive(scene, true,
             "NPC_Tetua_Lemas4",
-            "TourGuide");
+            "TourGuide",
+            "Area_ViewTambang",
+            "NPCMap");
+
+        GameObject tourGuideObj = IslandCompletedStateRestorer.FindObjectInScene(scene, "TourGuide");
+        if (tourGuideObj != null)
+        {
+            Dialogue dlg = tourGuideObj.GetComponent<Dialogue>();
+            if (dlg != null && !dlg.HasPostQuestLoopLines)
+            {
+                dlg.SetPostQuestLoopLines(new string[]
+                {
+                    "Semua urusan kita di Pulau Gag sudah selesai, kawan.",
+                    "Kalau mau kembali ke Pelabuhan Waisai atau mampir ke pulau lain, langsung bicara ke Supir Perahu di dermaga ya!"
+                });
+            }
+        }
 
         IslandCompletedStateRestorer.RefreshAllSceneDialogueLoops(scene);
     }
@@ -84,7 +99,15 @@ public class GagFaderManager : MonoBehaviour
     // 2. Panggil ini di On Dialogue End TourGuide di Dermaga
     public void PindahKeWaisai()
     {
+        if (FreeRoamManager.IsFreeRoamUnlocked())
+        {
+            CloseDialogueUI();
+            return;
+        }
+        if (isTransitioning || CutsceneTransitionManager.IsCutsceneActive) return;
+
         CloseDialogueUI();
+        DisableTourGuideReentry();
         RecordGagCompletion();
 
         string targetScene = ResolveEndingScene();
@@ -93,11 +116,12 @@ public class GagFaderManager : MonoBehaviour
 
         if (ctm != null && sunsetPortraits != null && sunsetPortraits.Length > 0)
         {
+            isTransitioning = true;
             Player p = FindFirstObjectByType<Player>();
             if (p != null) p.isMovementLocked = true;
             ctm.StartPortraitCutscene(sunsetPortraits, sunsetDialogues, targetScene);
         }
-        else if (!isTransitioning)
+        else
         {
             StartCoroutine(RoutinePindahScene(targetScene));
         }
@@ -106,7 +130,15 @@ public class GagFaderManager : MonoBehaviour
     // 3. Panggil ini saat cerita Pulau Gag dan seluruh quest tamat
     public void TamatGame()
     {
+        if (FreeRoamManager.IsFreeRoamUnlocked())
+        {
+            CloseDialogueUI();
+            return;
+        }
+        if (isTransitioning || CutsceneTransitionManager.IsCutsceneActive) return;
+
         CloseDialogueUI();
+        DisableTourGuideReentry();
         RecordGagCompletion();
 
         string targetScene = ResolveEndingScene();
@@ -115,13 +147,36 @@ public class GagFaderManager : MonoBehaviour
 
         if (ctm != null && sunsetPortraits != null && sunsetPortraits.Length > 0)
         {
+            isTransitioning = true;
             Player p = FindFirstObjectByType<Player>();
             if (p != null) p.isMovementLocked = true;
             ctm.StartPortraitCutscene(sunsetPortraits, sunsetDialogues, targetScene);
         }
-        else if (!isTransitioning)
+        else
         {
             StartCoroutine(RoutineTamatGame());
+        }
+    }
+
+    private void DisableTourGuideReentry()
+    {
+        GameObject[] roots = gameObject.scene.GetRootGameObjects();
+        for (int r = 0; r < roots.Length; r++)
+        {
+            if (roots[r] == null) continue;
+            if (roots[r].name == "TourGuide")
+            {
+                Dialogue[] dialogues = roots[r].GetComponentsInChildren<Dialogue>(true);
+                for (int i = 0; i < dialogues.Length; i++)
+                {
+                    if (dialogues[i] != null) dialogues[i].enabled = false;
+                }
+                Collider2D[] cols = roots[r].GetComponentsInChildren<Collider2D>(true);
+                for (int i = 0; i < cols.Length; i++)
+                {
+                    if (cols[i] != null) cols[i].enabled = false;
+                }
+            }
         }
     }
 

@@ -96,8 +96,18 @@ public class FreeRoamManager : MonoBehaviour
 
         GlobalTrashManager.Instance?.ActivateFreeRoamMode();
 
+        string targetHub = string.IsNullOrEmpty(freeRoamStartScene) ? "02_Waisai" : freeRoamStartScene;
+        PlayerPrefs.SetInt("GTM_FreeRoamMode", 1);
+        PlayerPrefs.SetString("SavedScene", targetHub);
+        PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 0);
+        PlayerPrefs.DeleteKey("PlayerX");
+        PlayerPrefs.DeleteKey("PlayerY");
+        PlayerPrefs.DeleteKey("PlayerZ");
+        PlayerPrefs.Save();
+
+        Time.timeScale = 1f;
         // Muat ke Waisai sebagai hub
-        SceneManager.LoadScene(freeRoamStartScene);
+        SceneManager.LoadScene(targetHub);
         Debug.Log("[FreeRoamManager] Free Roam dimulai.");
     }
 

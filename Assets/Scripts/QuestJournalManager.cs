@@ -214,6 +214,8 @@ public class QuestJournalManager : MonoBehaviour
             Instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             CheckFreshTestPlayReset();
             LoadJournalSaveData();
         }
@@ -224,6 +226,56 @@ public class QuestJournalManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (this != Instance) return;
+        RebindSceneJournalUI(scene);
+        StartCoroutine(RebindSceneJournalUINextFrame(scene));
+    }
+
+    private IEnumerator RebindSceneJournalUINextFrame(Scene scene)
+    {
+        yield return null;
+        if (this == Instance && scene.IsValid() && scene.isLoaded)
+        {
+            RebindSceneJournalUI(scene);
+        }
+    }
+
+    private void RebindSceneJournalUI(Scene scene)
+    {
+        ConfigurePhotoPopup();
+        QuestTabUI tabUI = FindSceneQuestTabUI(scene) ?? FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
+        if (tabUI != null)
+        {
+            bool wasOpen = tabUI.gameObject.activeSelf;
+            questTabPanel = tabUI.gameObject;
+            tabUI.EnsureDropShadow();
+            tabUI.EnsureStandardTransform();
+            tabUI.EnsureCanvasSortingOrder();
+            tabUI.EnsureStandardPageIndicator();
+            tabUI.RegisterToJournalManager();
+            if (!wasOpen && questTabPanel != null)
+            {
+                questTabPanel.SetActive(false);
+            }
+        }
+        UpdateAllJournalSystems();
+    }
+
+    private static QuestTabUI FindSceneQuestTabUI(Scene scene)
+    {
+        if (!scene.IsValid()) return null;
+        GameObject[] roots = scene.GetRootGameObjects();
+        for (int i = 0; i < roots.Length; i++)
+        {
+            if (roots[i] == null) continue;
+            QuestTabUI found = roots[i].GetComponentInChildren<QuestTabUI>(true);
+            if (found != null) return found;
+        }
+        return null;
     }
 
     private void CheckFreshTestPlayReset()
@@ -247,6 +299,10 @@ public class QuestJournalManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
         UnlistenGameEvents();
     }
 
@@ -452,7 +508,8 @@ public class QuestJournalManager : MonoBehaviour
         }
         this.allPhotoSpritesDatabase = sceneManager.allPhotoSpritesDatabase;
 
-        QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
+        QuestTabUI tabUI = FindSceneQuestTabUI(sceneManager.gameObject.scene)
+                        ?? FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
         if (tabUI != null)
         {
             tabUI.RegisterToJournalManager();
@@ -683,6 +740,7 @@ public class QuestJournalManager : MonoBehaviour
         PlayerPrefs.SetInt("QJM_Award_" + island.ToString(), 1);
         PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
         PlayerPrefs.SetInt("Island_" + (int)island, 1);
+        PlayerPrefs.SetInt("BoatTriviaDone_" + island.ToString(), 1);
         PlayerPrefs.Save();
         SaveJournalSaveData();
         CheckIslandPageUnlocks(island);
@@ -1936,12 +1994,28 @@ public class QuestJournalManager : MonoBehaviour
 
     private void UpdateJournalPageUI()
     {
+        if (questTabPanel != null)
+        {
+            QuestTabUI tabUI = questTabPanel.GetComponent<QuestTabUI>();
+            if (tabUI != null)
+            {
+                tabUI.EnsureStandardPageIndicator();
+                if (pageNumberText == null) pageNumberText = tabUI.pageNumberText;
+                if (journalPageImage == null) journalPageImage = tabUI.journalPageImage;
+                if (journalPhotoImage == null) journalPhotoImage = tabUI.journalPhotoImage;
+            }
+        }
+
         if (allJournalDatabase == null || allJournalDatabase.Length == 0)
         {
             if (journalPageImage != null) journalPageImage.gameObject.SetActive(false);
             if (journalPhotoImage != null) journalPhotoImage.gameObject.SetActive(false);
             if (noPhotoWarning != null) noPhotoWarning.SetActive(false);
-            if (pageNumberText != null) pageNumberText.text = "Page 0";
+            if (pageNumberText != null)
+            {
+                if (!pageNumberText.gameObject.activeSelf) pageNumberText.gameObject.SetActive(true);
+                pageNumberText.text = "Page 1";
+            }
             return;
         }
 
@@ -1955,6 +2029,8 @@ public class QuestJournalManager : MonoBehaviour
 
         if (pageNumberText != null)
         {
+            if (!pageNumberText.gameObject.activeSelf) pageNumberText.gameObject.SetActive(true);
+            pageNumberText.enabled = true;
             pageNumberText.text = $"Page {currentJournalIndex + 1}";
         }
 

@@ -396,8 +396,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -77.69}
-  m_SizeDelta: {x: 280, y: 10}
+  m_AnchoredPosition: {x: 150, y: -84.69}
+  m_SizeDelta: {x: 276, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &37062027
 GameObject:
@@ -1830,6 +1830,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 169338056923266015, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: questToGive
       value: 
       objectReference: {fileID: 11400000, guid: 0c82768c4dca79d41b3869ce15ee06ad, type: 2}
@@ -1931,12 +1935,12 @@ PrefabInstance:
       objectReference: {fileID: 297274498}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: npcLensSize
-      value: 3
+      value: 2.6
       objectReference: {fileID: 0}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: dialogueCamera
       value: 
-      objectReference: {fileID: 847063624}
+      objectReference: {fileID: 1491334919}
     - target: {fileID: 3861689419981878179, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: typingAudioClip
       value: 
@@ -2235,15 +2239,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655081219680238191, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.049245328
+      value: 0.042679284
       objectReference: {fileID: 0}
     - target: {fileID: 5655081219680238191, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.047634944
+      value: 0.04128362
       objectReference: {fileID: 0}
     - target: {fileID: 5655081219680238191, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.5023346
+      value: 4.4246902
       objectReference: {fileID: 0}
     - target: {fileID: 6232492195556223108, guid: 6b1d1205fca65b54f80052f8b622d4d1, type: 3}
       propertyPath: m_Size.x
@@ -2464,6 +2468,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &133442105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2541,6 +2547,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &144092203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2922,6 +2930,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &197800521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3865,6 +3875,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &271163427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4247,6 +4259,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &310180256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4580,6 +4594,7 @@ GameObject:
   - component: {fileID: 333385657}
   - component: {fileID: 333385656}
   - component: {fileID: 333385655}
+  - component: {fileID: 333385662}
   m_Layer: 0
   m_Name: NPC_Peneliti_Quest3
   m_TagString: Untagged
@@ -4761,7 +4776,7 @@ MonoBehaviour:
   typingAudioInterval: 0.06
   npcSpriteRenderer: {fileID: 333385659}
   talkingSprite1: {fileID: 6457530456130810093, guid: 29aa2092d2f195646a43addcda2678a3, type: 3}
-  talkingSprite2: {fileID: -1006406569031344999, guid: a54a3b9b9f549db4eade6cbd604031fb, type: 3}
+  talkingSprite2: {fileID: 0}
   idleSprite: {fileID: 6457530456130810093, guid: 29aa2092d2f195646a43addcda2678a3, type: 3}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
@@ -4941,6 +4956,29 @@ Transform:
   - {fileID: 787395136}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &333385662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333385654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b44280526774043a87d5027f7f1b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
+  objectiveID: bicara_peneliti
+  amountToAdd: 1
+  requireObjectiveActive: 1
+  triggerOnce: 1
+  progressObjectiveOnTrigger: 1
+  OnObjectiveTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &362797721
 GameObject:
   m_ObjectHideFlags: 0
@@ -6202,6 +6240,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &505551484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505551480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
+  audioClip: {fileID: 8300000, guid: 8ddb7b3c79adb08429956f888452d615, type: 3}
+  outputMixerGroup: {fileID: 0}
+  maxVolume: 0.15
+  crossfadeDuration: 2
+  playOnStart: 0
+  watchLegacyBgmSource: {fileID: 505551483}
+  initialFadeInDuration: 1.5
+  is3DSpatial: 0
+  minDistance: 5
+  maxDistance: 30
 --- !u!1001 &507135976
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7696,6 +7756,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &640842423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7807,6 +7869,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &665430389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8393,7 +8457,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: objectiveID
-      value: sasi_arborek
+      value: ambil_sampel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: holdDuration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: holdFillImage
@@ -8401,7 +8469,7 @@ PrefabInstance:
       objectReference: {fileID: 1230046333}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: requiredHolds
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2329610769744442974, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: randomizePosition
@@ -8488,12 +8556,24 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2462207009992240916, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0731555
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462207009992240916, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0731555
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462207009992240916, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.79493
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462207009992240916, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 139
+      value: 107
       objectReference: {fileID: 0}
     - target: {fileID: 2462207009992240916, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 56
+      value: -41
       objectReference: {fileID: 0}
     - target: {fileID: 3071219970874048567, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -8533,31 +8613,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 72.9895
+      value: 67.6567
       objectReference: {fileID: 0}
     - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 73.4475
-      objectReference: {fileID: 0}
-    - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.1344286
-      objectReference: {fileID: 0}
-    - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.1344286
-      objectReference: {fileID: 0}
-    - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1344286
+      value: 66.0609
       objectReference: {fileID: 0}
     - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.5682
+      value: -3.7658
       objectReference: {fileID: 0}
     - target: {fileID: 3379269324264161201, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.9242
+      value: 4.3003
       objectReference: {fileID: 0}
     - target: {fileID: 3633169379679160979, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: player
@@ -8594,22 +8662,6 @@ PrefabInstance:
     - target: {fileID: 3757804527030803651, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3866145011264372550, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 120.1141
-      objectReference: {fileID: 0}
-    - target: {fileID: 3866145011264372550, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 120.3863
-      objectReference: {fileID: 0}
-    - target: {fileID: 3866145011264372550, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 3.6862
-      objectReference: {fileID: 0}
-    - target: {fileID: 3866145011264372550, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -3.8105
       objectReference: {fileID: 0}
     - target: {fileID: 3918571229033141237, guid: 5283b8c8bbcc67c40a48f2cb6421930c, type: 3}
       propertyPath: m_Layer
@@ -11030,7 +11082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: Antarkan Air
   amountToAdd: 1
-  requireObjectiveActive: 1
+  requireObjectiveActive: 0
   triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
@@ -11162,6 +11214,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 740654966}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 519875267}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -12088,7 +12152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: minta_air
   amountToAdd: 1
-  requireObjectiveActive: 1
+  requireObjectiveActive: 0
   triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
@@ -12741,6 +12805,18 @@ PrefabInstance:
       value: 558
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.20485361
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.20485361
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.40970722
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -12770,11 +12846,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 10
+      value: 122.3
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13163,6 +13239,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1302035810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13261,18 +13339,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e78b24d05d42d47be8898e419b418a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrashInteractable
-  objectiveID: ambil_sagu
+  objectiveID: ambil_air
   amountToAdd: 1
-  requiredActiveObjectiveID: ambil_sagu
+  requiredActiveObjectiveID: ambil_air
   requiredCompletedQuestID: 
+  countsAsGlobalTrash: 0
   collectSound: {fileID: 0}
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 1739672215}
   unlockJournalID: -1
+  nextStandaloneObjectivePrompt: Berikan sagu ke Tetua Adat
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
-  customPrompt: 
+  customPrompt: Ambil Sagu
 --- !u!61 &1313240535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13317,7 +13397,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.2805405, y: 2.449578}
+  m_Size: {x: 3.6, y: 3.8}
   m_EdgeRadius: 0
 --- !u!212 &1313240536
 SpriteRenderer:
@@ -13407,24 +13487,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: Berikan sagu
   amountToAdd: 1
-  requireObjectiveActive: 1
+  requireObjectiveActive: 0
   triggerOnce: 1
-  progressObjectiveOnTrigger: 1
+  progressObjectiveOnTrigger: 0
   OnObjectiveTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1313240533}
-        m_TargetAssemblyTypeName: QuestGiver, Assembly-CSharp
-        m_MethodName: GiveQuest
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1665425512}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -14579,6 +14647,7 @@ MonoBehaviour:
   - {fileID: 1619692030}
   correctBorderColor: {r: 0.2, g: 0.82, b: 0.48, a: 1}
   wrongBorderColor: {r: 0.94, g: 0.22, b: 0.25, a: 1}
+  feedbackOutlineThickness: 14
   audioSource: {fileID: 2080000100}
   startQuizSFX: {fileID: 8300000, guid: 60c07e7e94f39a34db0b9a6a77bc8548, type: 3}
   buttonHoverSFX: {fileID: 8300000, guid: c66c460d0784eca47b97bc086baae086, type: 3}
@@ -14869,7 +14938,7 @@ MonoBehaviour:
   OnSasiCompleted:
     m_PersistentCalls:
       m_Calls: []
-  requiredActiveObjectiveID: ambil_sampel,ambil_air
+  requiredActiveObjectiveID: ambil_sampel
   requiredCompletedQuestID: 
 --- !u!114 &1454387972
 MonoBehaviour:
@@ -14957,6 +15026,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1464736902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16010,6 +16081,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1528728195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16420,7 +16493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: serahkan_air
   amountToAdd: 1
-  requireObjectiveActive: 1
+  requireObjectiveActive: 0
   triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
@@ -16877,6 +16950,8 @@ MonoBehaviour:
       m_Calls: []
   cornerRadius: 25
   cornerSegments: 8
+  outlineThickness: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1698952720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17370,17 +17445,13 @@ PrefabInstance:
       propertyPath: m_ActiveFontFeatures.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 918273645000000051, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -272
+      objectReference: {fileID: 0}
     - target: {fileID: 5631455643028285764, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_Name
       value: QuestTabUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8793732647567530615, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -13
-      objectReference: {fileID: 0}
-    - target: {fileID: 8793732647567530615, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 74
       objectReference: {fileID: 0}
     - target: {fileID: 5631455643028285764, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_IsActive
@@ -17465,6 +17536,14 @@ PrefabInstance:
     - target: {fileID: 5993519340487428895, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8793732647567530615, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8793732647567530615, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 74
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18105,7 +18184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestObjectiveTrigger
   objectiveID: Bicara
   amountToAdd: 1
-  requireObjectiveActive: 1
+  requireObjectiveActive: 0
   triggerOnce: 1
   progressObjectiveOnTrigger: 1
   OnObjectiveTriggered:
@@ -18164,15 +18243,7 @@ MonoBehaviour:
   - Terima kasih sudah mau datang, melihat, dan mendengarkan cerita kami.
   - Bawa kisah ini pulang, agar dunia tahu bahwa surga ini butuh dijaga bersama
   DialogueLineSpeakers: 0100000000000000000000000000000000000000000000000000000000000000
-  DialogueLineSprites:
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
-  - {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
+  DialogueLineSprites: []
   triviaQuestionText: 
   TypeSpeed: 0.04
   typingAudioSource: {fileID: 1827736612}
@@ -18182,7 +18253,7 @@ MonoBehaviour:
   npcSpriteRenderer: {fileID: 1827736610}
   talkingSprite1: {fileID: 0}
   talkingSprite2: {fileID: 0}
-  idleSprite: {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
+  idleSprite: {fileID: 0}
   spriteToggleInterval: 3
   dialogueCamera: {fileID: 1491334919}
   npcLensSize: 3
@@ -18266,7 +18337,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.71, y: 4.51}
+    oldSize: {x: 2.36, y: 3.63}
     newSize: {x: 3.87, y: 8.86}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -18323,7 +18394,7 @@ SpriteRenderer:
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1453844228701412247, guid: 791ff8ef82f416e41bf3c4f7b5eb9e4c, type: 3}
+  m_Sprite: {fileID: -4024923865321596019, guid: 4af0e22b311e14c46b975dd3d1c583cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -19644,7 +19715,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.5843928}
+  m_AnchoredPosition: {x: 0, y: 2.144394}
   m_SizeDelta: {x: 300, y: 102.69}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2010884243
@@ -20169,7 +20240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -46.345}
+  m_AnchoredPosition: {x: 150, y: -38.345}
   m_SizeDelta: {x: 280, y: 52.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2026021272
@@ -21036,28 +21107,6 @@ PolygonCollider2D:
       - {x: 28.61, y: 5.405}
       - {x: -28.61, y: 5.405}
   m_UseDelaunayMesh: 1
---- !u!114 &505551484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 505551480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ec8a9c6571b29f448b32590507915de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SeamlessLoopCrossfade
-  audioClip: {fileID: 8300000, guid: 8ddb7b3c79adb08429956f888452d615, type: 3}
-  outputMixerGroup: {fileID: 0}
-  maxVolume: 0.15
-  crossfadeDuration: 2
-  playOnStart: 0
-  watchLegacyBgmSource: {fileID: 505551483}
-  initialFadeInDuration: 1.5
-  is3DSpatial: 0
-  minDistance: 5
-  maxDistance: 30
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

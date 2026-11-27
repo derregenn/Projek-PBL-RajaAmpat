@@ -77,6 +77,21 @@ public class MainMenu : MonoBehaviour
     public void ContinueGame()
     {
         string sceneToLoad = PlayerPrefs.GetString("SavedScene", "02_Waisai");
+        bool shouldRestorePos = true;
+
+        if (FreeRoamManager.IsFreeRoamUnlocked() &&
+            (string.IsNullOrEmpty(sceneToLoad) ||
+             sceneToLoad == "11_Waisai Ending" ||
+             sceneToLoad == "12_CutsceneAirstripEnding" ||
+             sceneToLoad == "02_CutsceneAirstrip"))
+        {
+            sceneToLoad = "02_Waisai";
+            shouldRestorePos = false;
+            PlayerPrefs.SetString("SavedScene", "02_Waisai");
+            PlayerPrefs.DeleteKey("PlayerX");
+            PlayerPrefs.DeleteKey("PlayerY");
+            PlayerPrefs.DeleteKey("PlayerZ");
+        }
 
         if (StoryManager.Instance != null)
         {
@@ -88,7 +103,7 @@ public class MainMenu : MonoBehaviour
             GamePhaseManager.Instance.CalculatePercentage();
         }
 
-        PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 1);
+        PlayerPrefs.SetInt("ShouldRestoreSavedPosition", shouldRestorePos ? 1 : 0);
         PlayerPrefs.Save();
 
         Time.timeScale = 1f;

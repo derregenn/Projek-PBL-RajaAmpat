@@ -103,6 +103,8 @@ public class QTE2 : MonoBehaviour
 
     public void ResetQTE()
     {
+        AutoBindIfNeeded();
+
         currentHoldCount = 0;
         currentHoldTimer = 0f;
         timeRemaining = timeLimit;
@@ -118,6 +120,24 @@ public class QTE2 : MonoBehaviour
     {
         ResetQTE();
         isActive = true;
+    }
+
+    private void AutoBindIfNeeded()
+    {
+        if (holdFillImage == null)
+        {
+            Transform ringTr = transform.Find("Inner_Ring/Outer_Ring");
+            if (ringTr == null) ringTr = transform.Find("Outer_Ring");
+            if (ringTr != null) holdFillImage = ringTr.GetComponent<Image>();
+        }
+
+        if (keyText == null)
+        {
+            Transform keyTr = transform.Find("Inner_Ring/Key");
+            if (keyTr == null) keyTr = transform.Find("Outer_Ring/Inner_Ring/Key");
+            if (keyTr == null) keyTr = transform.Find("Key");
+            if (keyTr != null) keyText = keyTr.GetComponent<TMP_Text>();
+        }
     }
 
     private void CompleteOneHold()

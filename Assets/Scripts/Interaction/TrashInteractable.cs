@@ -26,6 +26,9 @@ public class TrashInteractable : MonoBehaviour, IInteractable
     [Tooltip("Isi ID Jurnal jika sampah ini ngebuka cerita baru. Biarkan -1 jika tidak.")]
     public int unlockJournalID = -1;
 
+    [Tooltip("Opsional: tampilkan prompt objective berikutnya di QuestHUDPanel setelah item non-sampah diambil (mis. Item_Sagu).")]
+    [SerializeField] private string nextStandaloneObjectivePrompt = "";
+
     // Total sampah global yang sudah diambil pemain
     public static int totalCollected = 0;
 
@@ -120,20 +123,23 @@ public class TrashInteractable : MonoBehaviour, IInteractable
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
         }
 
-        // 4. Perbarui progress sampah lokal tanpa bergantung pada GlobalTrashManager.
-        totalCollected += amountToAdd;
-        PlayerPrefs.SetInt("TotalTrashCollected", totalCollected);
-        PlayerPrefs.Save();
-
-        if (QuestJournalManager.Instance != null)
+        // 4. Perbarui progress sampah lokal hanya jika objek ini dihitung sebagai sampah global
+        if (countsAsGlobalTrash)
         {
-            QuestJournalManager.Instance.UpdateAwardsUI();
-        }
+            totalCollected += amountToAdd;
+            PlayerPrefs.SetInt("TotalTrashCollected", totalCollected);
+            PlayerPrefs.Save();
 
-        if (collectibleUIText != null)
-        {
-            float persentase = ((float)totalCollected / maxTrash) * 100f;
-            collectibleUIText.text = "Progress: " + persentase.ToString("F0") + "%";
+            if (QuestJournalManager.Instance != null)
+            {
+                QuestJournalManager.Instance.UpdateAwardsUI();
+            }
+
+            if (collectibleUIText != null)
+            {
+                float persentase = ((float)totalCollected / maxTrash) * 100f;
+                collectibleUIText.text = "Progress: " + persentase.ToString("F0") + "%";
+            }
         }
 
         // 5. Buka halaman jurnal baru jika sampah ini punya cerita (Integrasi UI Kanan)
@@ -150,6 +156,15 @@ public class TrashInteractable : MonoBehaviour, IInteractable
         if (objectiveTrigger != null)
         {
             objectiveTrigger.ForceTrigger();
+        }
+
+        if (!string.IsNullOrWhiteSpace(nextStandaloneObjectivePrompt))
+        {
+            QuestUI qui = FindFirstObjectByType<QuestUI>(FindObjectsInactive.Include);
+            if (qui != null)
+            {
+                qui.ShowStandalonePrompt(nextStandaloneObjectivePrompt);
+            }
         }
 
         // 7. Hapus sampah/hama dari layar

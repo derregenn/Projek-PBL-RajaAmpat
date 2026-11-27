@@ -665,6 +665,7 @@ public class GameplayDebugManager : MonoBehaviour
 
         if (useBoatCutsceneOnTeleport)
         {
+            BoatTransitionController.DebugForceNextBoatTrivia = true;
             PlayerPrefs.SetInt("Visited_" + sceneName, 0);
             IslandName? isl = QuestJournalManager.GetIslandFromSceneName(sceneName);
             if (isl.HasValue) PlayerPrefs.SetInt("BoatTriviaDone_" + isl.Value.ToString(), 0);
@@ -682,6 +683,7 @@ public class GameplayDebugManager : MonoBehaviour
         PlayerPrefs.SetInt("QJM_Award_" + island.ToString(), 1);
         PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
         PlayerPrefs.SetInt("Island_" + (int)island, 1);
+        PlayerPrefs.SetInt("BoatTriviaDone_" + island.ToString(), 1);
 
         int storyIdx = StoryManager.IslandNameToStoryIndex(island);
         if (storyIdx >= 0)
