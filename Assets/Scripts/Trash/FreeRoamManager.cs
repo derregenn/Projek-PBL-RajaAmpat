@@ -40,46 +40,19 @@ public class FreeRoamManager : MonoBehaviour
 
     private void Start()
     {
-        RefreshMenuUnlockStates();
-    }
+        bool gameCompleted = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
 
-    public static bool IsFreeRoamUnlocked()
-    {
-        return PlayerPrefs.GetInt("NormalEndingReached", 0) == 1 ||
-               PlayerPrefs.GetInt("AltEndingReached", 0) == 1 ||
-               PlayerPrefs.GetInt("GameCompleted", 0) == 1;
-    }
-
-    public static bool IsMainMenuJournalUnlocked()
-    {
-        return IsFreeRoamUnlocked() || QuestJournalManager.IsPrerequisiteIslandCompleted(IslandName.Waisai);
-    }
-
-    public static void ApplyButtonUnlockVisual(UnityEngine.UI.Button button, bool isUnlocked)
-    {
-        if (button == null) return;
-
-        if (!button.gameObject.activeSelf)
-            button.gameObject.SetActive(true);
-
-        button.interactable = isUnlocked;
-
-        // Avoid double-multiplying disabledColor alpha with Image.color alpha.
-        UnityEngine.UI.ColorBlock cb = button.colors;
-        cb.disabledColor = Color.white;
-        button.colors = cb;
-
-        UnityEngine.UI.Image img = button.GetComponent<UnityEngine.UI.Image>();
-        if (img != null)
+        if (btnFreeRoam != null)
         {
-            img.color = isUnlocked ? Color.white : new Color(0.55f, 0.55f, 0.55f, 0.5f);
+            btnFreeRoam.gameObject.SetActive(gameCompleted);
+            btnFreeRoam.interactable = gameCompleted;
         }
-    }
 
-    public void RefreshMenuUnlockStates()
-    {
-        ApplyButtonUnlockVisual(btnFreeRoam, IsFreeRoamUnlocked());
-        ApplyButtonUnlockVisual(btnTravelJournal, IsMainMenuJournalUnlocked());
+        if (btnTravelJournal != null)
+        {
+            btnTravelJournal.gameObject.SetActive(gameCompleted);
+            btnTravelJournal.interactable = gameCompleted;
+        }
     }
 
     // =========================================================
@@ -92,8 +65,6 @@ public class FreeRoamManager : MonoBehaviour
     /// </summary>
     public void StartFreeRoam()
     {
-        if (!IsFreeRoamUnlocked()) return;
-
         GlobalTrashManager.Instance?.ActivateFreeRoamMode();
 
         // Muat ke Waisai sebagai hub
@@ -101,16 +72,12 @@ public class FreeRoamManager : MonoBehaviour
         Debug.Log("[FreeRoamManager] Free Roam dimulai.");
     }
 
-    private float lastJournalToggleTime = -10f;
-
     /// <summary>
-    /// Dipanggil oleh tombol Travel Journal di Main Menu setelah Pulau Waisai selesai.
+    /// Dipanggil oleh tombol Travel Journal di Main Menu setelah game tamat.
     /// </summary>
     public void OpenTravelJournal()
     {
-        if (!IsMainMenuJournalUnlocked()) return;
-        if (Time.unscaledTime - lastJournalToggleTime < 0.08f) return;
-        lastJournalToggleTime = Time.unscaledTime;
+        if (PlayerPrefs.GetInt("GameCompleted", 0) != 1) return;
 
         if (QuestJournalManager.Instance != null)
         {
@@ -122,11 +89,7 @@ public class FreeRoamManager : MonoBehaviour
         QuestTabUI tabUI = FindFirstObjectByType<QuestTabUI>(FindObjectsInactive.Include);
         if (tabUI != null)
         {
-            bool willOpen = !tabUI.gameObject.activeSelf;
-            tabUI.EnsureStandardTransform();
-            tabUI.EnsureCanvasSortingOrder();
-            if (willOpen) tabUI.transform.SetAsLastSibling();
-            tabUI.gameObject.SetActive(willOpen);
+            tabUI.gameObject.SetActive(!tabUI.gameObject.activeSelf);
         }
     }
 

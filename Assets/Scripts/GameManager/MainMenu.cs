@@ -16,12 +16,11 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
-        RefreshContinueButtonState();
-    }
 
-    public void RefreshContinueButtonState()
-    {
-        FreeRoamManager.ApplyButtonUnlockVisual(continueButton, PlayerPrefs.HasKey("SavedScene"));
+        if (continueButton != null)
+        {
+            continueButton.interactable = PlayerPrefs.HasKey("SavedScene");
+        }
     }
 
     public void StartNewGame()
