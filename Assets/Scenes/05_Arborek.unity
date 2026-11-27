@@ -467,6 +467,7 @@ MonoBehaviour:
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  nextStandaloneObjectivePrompt: 
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -3058,10 +3059,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1359922639}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: noPhotoWarning
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: pageNumberText
       value: 
       objectReference: {fileID: 530993217}
@@ -3082,17 +3079,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 405927870}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: pianemoActiveSprite
-      value: 
-      objectReference: {fileID: -8746646610199593172, guid: d0c8869451512474396a33ef6e333e56, type: 3}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: totalQuestsInIsland
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
-      propertyPath: pianemoDisableSprite
-      value: 
-      objectReference: {fileID: 1859755152165305383, guid: 42b1d6bf782c4434d9267bf1423b84cc, type: 3}
     - target: {fileID: 21438560835643747, guid: f5f8e1fe87624fb47966c026ed769178, type: 3}
       propertyPath: progressPercentageText
       value: 
@@ -11357,11 +11346,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22066
+      value: 0.20485361
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.22066
+      value: 0.20485361
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11393,11 +11382,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 96
+      value: 122.3
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 8766438711616159800, guid: 8f7491de1464db044a08ff6e00a897a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -12341,6 +12330,7 @@ MonoBehaviour:
   holdQTE: {fileID: 0}
   collectibleUIText: {fileID: 0}
   unlockJournalID: -1
+  nextStandaloneObjectivePrompt: 
   onInteractComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -17302,6 +17292,10 @@ PrefabInstance:
     - target: {fileID: 918273645000000033, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 918273645000000051, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -272
       objectReference: {fileID: 0}
     - target: {fileID: 5631455643028285764, guid: d2aece6feb5024345b1b546076faaf47, type: 3}
       propertyPath: m_Name
@@ -22303,7 +22297,7 @@ RectTransform:
   m_GameObject: {fileID: 1686674359191424397}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0731555, y: 1.0731555, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3866145010522178398}
@@ -22311,7 +22305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 187, y: 0}
+  m_AnchoredPosition: {x: 107, y: -41}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2469608796383935647
@@ -22676,15 +22670,15 @@ RectTransform:
   m_GameObject: {fileID: 192758338507267288}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1186558, y: 1.1186558, z: 1.1186558}
+  m_LocalScale: {x: 1.1186559, y: 1.1186559, z: 1.1186558}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3866145010522178398}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.6267, y: 3.7066}
-  m_SizeDelta: {x: 58.4697, y: 57.4328}
+  m_AnchoredPosition: {x: -3.7658, y: 4.3003}
+  m_SizeDelta: {x: 67.6567, y: 66.0609}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3757804527782977755
 GameObject:

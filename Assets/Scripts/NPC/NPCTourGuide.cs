@@ -34,7 +34,7 @@ public class NPCTourGuide : MonoBehaviour
     /// </summary>
     public void StartQuizAfterDialogue()
     {
-        if (isQuizFinished) return;
+        if (isQuizFinished || (dialogueSystem != null && dialogueSystem.IsPostQuestLoop)) return;
 
         // Jika quest memiliki sub-objective pertama "temui/bicara dengan NPC" sebelum trivia, selesaikan sub-objective pertama
         if (QuestController.Instance != null)

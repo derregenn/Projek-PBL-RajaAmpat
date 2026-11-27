@@ -59,6 +59,7 @@ public class QuestTabUI : MonoBehaviour
         EnsureDropShadow();
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
+        EnsureStandardPageIndicator();
         RegisterToJournalManager();
     }
 
@@ -67,6 +68,7 @@ public class QuestTabUI : MonoBehaviour
         EnsureDropShadow();
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
+        EnsureStandardPageIndicator();
         RegisterToJournalManager();
         StartCoroutine(RefreshStandardTransformNextFrame());
     }
@@ -76,6 +78,7 @@ public class QuestTabUI : MonoBehaviour
         EnsureDropShadow();
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
+        EnsureStandardPageIndicator();
         RegisterToJournalManager();
     }
 
@@ -192,15 +195,125 @@ public class QuestTabUI : MonoBehaviour
         }
     }
 
+    public void EnsureStandardPageIndicator()
+    {
+        Transform rightPanel = transform.Find("RightPanel");
+        if (rightPanel == null && journalPageImage != null)
+        {
+            rightPanel = journalPageImage.transform.parent;
+        }
+        if (rightPanel == null) return;
+
+        if (pageStatusBg == null)
+        {
+            Transform pillTr = rightPanel.Find("PageStatusPill");
+            if (pillTr != null) pageStatusBg = pillTr.GetComponent<Image>();
+        }
+
+        if (pageStatusBg != null)
+        {
+            if (!pageStatusBg.gameObject.activeSelf) pageStatusBg.gameObject.SetActive(true);
+            pageStatusBg.enabled = true;
+            pageStatusBg.color = Color.white;
+            pageStatusBg.raycastTarget = false;
+
+            RectTransform pillRt = pageStatusBg.rectTransform;
+            if (pillRt != null)
+            {
+                pillRt.anchorMin = new Vector2(0.5f, 0.5f);
+                pillRt.anchorMax = new Vector2(0.5f, 0.5f);
+                pillRt.pivot = new Vector2(0.5f, 0.5f);
+                pillRt.anchoredPosition = new Vector2(-40f, -141.46f);
+                pillRt.sizeDelta = new Vector2(88f, 24f);
+                pillRt.localScale = Vector3.one;
+            }
+        }
+
+        if (pageNumberText == null)
+        {
+            Transform pageTextTr = rightPanel.Find("PageNumberText");
+            if (pageTextTr != null)
+            {
+                pageNumberText = pageTextTr.GetComponent<TMPro.TextMeshProUGUI>();
+            }
+        }
+
+        if (pageNumberText == null)
+        {
+            GameObject pageGo = new GameObject("PageNumberText", typeof(RectTransform), typeof(CanvasRenderer), typeof(TMPro.TextMeshProUGUI));
+            pageGo.layer = rightPanel.gameObject.layer;
+            pageGo.transform.SetParent(rightPanel, false);
+            pageNumberText = pageGo.GetComponent<TMPro.TextMeshProUGUI>();
+
+            TMPro.TextMeshProUGUI fontRef = progressPercentageText != null
+                ? progressPercentageText
+                : (ongoingQuestText != null ? ongoingQuestText : trashStatusText);
+            if (fontRef != null)
+            {
+                if (fontRef.font != null) pageNumberText.font = fontRef.font;
+                if (fontRef.fontSharedMaterial != null) pageNumberText.fontSharedMaterial = fontRef.fontSharedMaterial;
+            }
+            pageNumberText.text = "Page 1";
+        }
+
+        if (pageNumberText != null)
+        {
+            if (!pageNumberText.gameObject.activeSelf) pageNumberText.gameObject.SetActive(true);
+            pageNumberText.enabled = true;
+
+            if (pageStatusBg != null && pageNumberText.transform.parent == pageStatusBg.transform.parent)
+            {
+                int pillIndex = pageStatusBg.transform.GetSiblingIndex();
+                if (pageNumberText.transform.GetSiblingIndex() <= pillIndex)
+                {
+                    pageNumberText.transform.SetSiblingIndex(pillIndex + 1);
+                }
+            }
+
+            RectTransform textRt = pageNumberText.rectTransform;
+            if (textRt != null)
+            {
+                textRt.anchorMin = new Vector2(0.5f, 0.5f);
+                textRt.anchorMax = new Vector2(0.5f, 0.5f);
+                textRt.pivot = new Vector2(0.5f, 0.5f);
+                textRt.anchoredPosition = new Vector2(-40f, -141.46f);
+                textRt.sizeDelta = new Vector2(84f, 22f);
+                textRt.localScale = Vector3.one;
+            }
+
+            pageNumberText.color = Color.white;
+            pageNumberText.fontStyle = TMPro.FontStyles.Bold;
+            pageNumberText.alignment = TMPro.TextAlignmentOptions.Center;
+            pageNumberText.textWrappingMode = TMPro.TextWrappingModes.NoWrap;
+            pageNumberText.overflowMode = TMPro.TextOverflowModes.Overflow;
+            pageNumberText.enableAutoSizing = true;
+            pageNumberText.fontSizeMin = 10f;
+            pageNumberText.fontSizeMax = 13.5f;
+            pageNumberText.fontSize = 13f;
+            pageNumberText.margin = Vector4.zero;
+            pageNumberText.raycastTarget = false;
+
+            if (string.IsNullOrWhiteSpace(pageNumberText.text))
+            {
+                pageNumberText.text = "Page 1";
+            }
+        }
+    }
+
     public void RegisterToJournalManager()
     {
         EnsureCanvasSortingOrder();
+        EnsureStandardPageIndicator();
         EnsureSpecialAwardsInCollectibles();
 
         QuestJournalManager manager = QuestJournalManager.Instance;
         if (manager == null)
         {
-            manager = FindFirstObjectByType<QuestJournalManager>();
+            manager = FindFirstObjectByType<QuestJournalManager>(FindObjectsInactive.Include);
+            if (manager != null && !manager.gameObject.activeInHierarchy)
+            {
+                manager.gameObject.SetActive(true);
+            }
         }
 
         if (manager != null)

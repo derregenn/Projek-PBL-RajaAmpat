@@ -297,6 +297,20 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (currentScene == "11_Waisai Ending" || currentScene == "12_CutsceneAirstripEnding" || currentScene == "02_CutsceneAirstrip")
+        {
+            if (FreeRoamManager.IsFreeRoamUnlocked())
+            {
+                PlayerPrefs.SetString("SavedScene", "02_Waisai");
+                PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 0);
+                PlayerPrefs.DeleteKey("PlayerX");
+                PlayerPrefs.DeleteKey("PlayerY");
+                PlayerPrefs.DeleteKey("PlayerZ");
+                PlayerPrefs.Save();
+            }
+            return;
+        }
+
         PlayerPrefs.SetString("SavedScene", currentScene);
 
         if (StoryManager.Instance != null)

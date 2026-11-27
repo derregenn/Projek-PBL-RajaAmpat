@@ -56,6 +56,11 @@ public class WaisaiLandSceneManager : MonoBehaviour
         {
             MasterQuestManager.Instance.SetActiveIsland(IslandType.Waisai);
             MasterQuestManager.Instance.EnsureStageInitialized();
+            if ((FreeRoamManager.IsFreeRoamUnlocked() || QuestJournalManager.IsIslandCompletedPersistent(IslandName.Waisai)) &&
+                MasterQuestManager.Instance.CurrentStage < 2)
+            {
+                MasterQuestManager.Instance.AdvanceStageTo(2);
+            }
             Debug.Log($"<color=cyan>[WaisaiLandSceneManager] STAGE WAISAI SAAT INI: {MasterQuestManager.Instance.CurrentStage}</color>");
         }
 

@@ -43,14 +43,36 @@ public class EndingBranchController : MonoBehaviour
         }
     }
 
+    private static bool IsEndingScene(string sceneName)
+    {
+        return sceneName == "11_Waisai Ending" || sceneName == "12_CutsceneAirstripEnding";
+    }
+
+    private static bool RedirectIfEndgameLocked(Scene scene)
+    {
+        if (IsEndingScene(scene.name) && FreeRoamManager.IsFreeRoamUnlocked())
+        {
+            PlayerPrefs.SetString("SavedScene", "02_Waisai");
+            PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 0);
+            PlayerPrefs.DeleteKey("PlayerX");
+            PlayerPrefs.DeleteKey("PlayerY");
+            PlayerPrefs.DeleteKey("PlayerZ");
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("02_Waisai");
+            return true;
+        }
+        return false;
+    }
+
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (RedirectIfEndgameLocked(scene)) return;
+
         // Jika di scene tujuan (misal 12_CutsceneAirstripEnding) belum dipasang EndingBranchController,
         // tetap sinkronkan TourGuide_NormalEnding & TourGuide_AltEnding secara otomatis.
         if (scene.name == "12_CutsceneAirstripEnding" && FindFirstObjectByType<EndingBranchController>() == null)
         {
             bool is100Percent = ResolveIsAltEnding(false);
-            MarkEndingReachedPersistent(is100Percent);
             GameObject normalGuide = FindInSceneByName(scene, "TourGuide_NormalEnding");
             GameObject altGuide = FindInSceneByName(scene, "TourGuide_AltEnding");
 
@@ -61,13 +83,6 @@ public class EndingBranchController : MonoBehaviour
                 Debug.Log($"[EndingBranchController] Auto-sync scene '{scene.name}' -> AltEnding: {is100Percent}");
             }
         }
-    }
-
-    private static void MarkEndingReachedPersistent(bool isAltEnding)
-    {
-        PlayerPrefs.SetInt(isAltEnding ? "AltEndingReached" : "NormalEndingReached", 1);
-        PlayerPrefs.SetInt("GameCompleted", 1);
-        PlayerPrefs.Save();
     }
 
     [Header("Referensi Tour Guide (Check & Uncheck)")]
@@ -84,6 +99,10 @@ public class EndingBranchController : MonoBehaviour
     [Tooltip("Jika dicentang, otomatis mulai dialog pada Tour Guide yang aktif setelah dicek.")]
     public bool autoStartDialogueOnCheck = false;
 
+    [Header("Objective Tracker Awal Scene (Opsional)")]
+    [SerializeField] private bool showInitialObjectiveOnCheck = true;
+    [SerializeField] private string initialObjectiveText = "Temui Tour Guide";
+
     [Header("Mode Testing (Editor Only)")]
     [Tooltip("Centang ini untuk menguji Alternative Ending secara langsung di Unity Editor tanpa harus mengumpulkan sampah.")]
     public bool testForceAltEnding = false;
@@ -94,6 +113,8 @@ public class EndingBranchController : MonoBehaviour
 
     private void Awake()
     {
+        if (RedirectIfEndgameLocked(gameObject.scene)) return;
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -106,6 +127,8 @@ public class EndingBranchController : MonoBehaviour
 
     private void Start()
     {
+        if (RedirectIfEndgameLocked(gameObject.scene)) return;
+
         if (autoCheckOnStart)
         {
             CheckAndBranchEnding();
@@ -174,10 +197,11 @@ public class EndingBranchController : MonoBehaviour
     /// </summary>
     public void CheckAndBranchEnding()
     {
+        if (RedirectIfEndgameLocked(gameObject.scene)) return;
+
         AutoFindTourGuidesIfEmpty();
 
         bool is100Percent = ResolveIsAltEnding(testForceAltEnding);
-        MarkEndingReachedPersistent(is100Percent);
 
         // Terapkan Check & Uncheck (Active / Inactive) pada GameObject Tour Guide
         if (tourGuideNormal != null)
@@ -214,6 +238,23 @@ public class EndingBranchController : MonoBehaviour
                     dialogue.StartDialogue();
                 }
             }
+        }
+        else if (showInitialObjectiveOnCheck && !string.IsNullOrWhiteSpace(initialObjectiveText))
+        {
+            StartCoroutine(ShowInitialObjectiveDelayedRoutine(initialObjectiveText));
+        }
+    }
+
+    private System.Collections.IEnumerator ShowInitialObjectiveDelayedRoutine(string objectiveText)
+    {
+        // Tunggu 2 frame agar QuestController.ReconnectUINextFrame() dan UI siap lebih dulu
+        yield return null;
+        yield return null;
+
+        QuestUI qui = FindFirstObjectByType<QuestUI>(FindObjectsInactive.Include);
+        if (qui != null && qui.currentActiveQuest == null)
+        {
+            qui.ShowStandalonePrompt(objectiveText);
         }
     }
 }

@@ -252,10 +252,25 @@ public class IslandCompletedStateRestorer : MonoBehaviour
             "NPC_Tetua_Lemas",
             "NPC_Tetua_Lemas2",
             "NPC_Tetua_Lemas3",
-            "Item_Sagu",
-            "Area_ViewTambang");
+            "Item_Sagu");
         SetObjectsActive(scene, true,
             "NPC_Tetua_Lemas4",
-            "TourGuide");
+            "TourGuide",
+            "Area_ViewTambang",
+            "NPCMap");
+
+        GameObject tourGuideObj = FindObjectInScene(scene, "TourGuide");
+        if (tourGuideObj != null)
+        {
+            Dialogue dlg = tourGuideObj.GetComponent<Dialogue>();
+            if (dlg != null && !dlg.HasPostQuestLoopLines)
+            {
+                dlg.SetPostQuestLoopLines(new string[]
+                {
+                    "Semua urusan kita di Pulau Gag sudah selesai, kawan.",
+                    "Kalau mau kembali ke Pelabuhan Waisai atau mampir ke pulau lain, langsung bicara ke Supir Perahu di dermaga ya!"
+                });
+            }
+        }
     }
 }

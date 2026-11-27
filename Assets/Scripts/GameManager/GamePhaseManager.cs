@@ -361,6 +361,7 @@ public class GamePhaseManager : MonoBehaviour
         Debug.Log($"[GamePhaseManager] CompleteIsland({island}) diproses.");
         PlayerPrefs.SetInt("GPM_Island_" + island.ToString(), 1);
         PlayerPrefs.SetInt("Island_" + (int)island, 1);
+        PlayerPrefs.SetInt("BoatTriviaDone_" + island.ToString(), 1);
         PlayerPrefs.Save();
 
         if (StoryManager.Instance != null)
