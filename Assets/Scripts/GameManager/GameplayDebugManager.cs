@@ -502,6 +502,7 @@ public class GameplayDebugManager : MonoBehaviour
         PlayerPrefs.SetInt("QJM_JournalUnlocked", 1);
         PlayerPrefs.Save();
         CanvasHUDAutoBinder.Instance?.RefreshJournalButtonState();
+        FreeRoamManager.Instance?.RefreshMenuUnlockStates();
 
         GamePhaseManager.Instance.UnlockGag(true, true);
         GamePhaseManager.Instance.CalculatePercentage();
@@ -529,6 +530,8 @@ public class GameplayDebugManager : MonoBehaviour
         PlayerPrefs.SetInt("Sasi_Count", 2);
         PlayerPrefs.SetInt("Visited_10_Gag", 1);
         PlayerPrefs.SetInt("GameCompleted", 1);
+        PlayerPrefs.SetInt("NormalEndingReached", 1);
+        PlayerPrefs.SetInt("AltEndingReached", 1);
         PlayerPrefs.SetInt("QJM_JournalUnlocked", 1);
         PlayerPrefs.Save();
 
@@ -541,6 +544,8 @@ public class GameplayDebugManager : MonoBehaviour
         GamePhaseManager.Instance.SetPercentageDirectly(100f);
         StoryManager.Instance.CompleteIsland(6);
         CanvasHUDAutoBinder.Instance?.RefreshJournalButtonState();
+        FreeRoamManager.Instance?.RefreshMenuUnlockStates();
+        FreeRoamManager.Instance?.RefreshMenuUnlockStates();
         UnlockSceneNPCMap();
         RefreshAllGagUnlockers();
         SetStatus("Semua pulau 100%, Journal & Secret Ending terbuka!");
