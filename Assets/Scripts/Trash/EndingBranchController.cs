@@ -50,7 +50,6 @@ public class EndingBranchController : MonoBehaviour
         if (scene.name == "12_CutsceneAirstripEnding" && FindFirstObjectByType<EndingBranchController>() == null)
         {
             bool is100Percent = ResolveIsAltEnding(false);
-            MarkEndingReachedPersistent(is100Percent);
             GameObject normalGuide = FindInSceneByName(scene, "TourGuide_NormalEnding");
             GameObject altGuide = FindInSceneByName(scene, "TourGuide_AltEnding");
 
@@ -61,13 +60,6 @@ public class EndingBranchController : MonoBehaviour
                 Debug.Log($"[EndingBranchController] Auto-sync scene '{scene.name}' -> AltEnding: {is100Percent}");
             }
         }
-    }
-
-    private static void MarkEndingReachedPersistent(bool isAltEnding)
-    {
-        PlayerPrefs.SetInt(isAltEnding ? "AltEndingReached" : "NormalEndingReached", 1);
-        PlayerPrefs.SetInt("GameCompleted", 1);
-        PlayerPrefs.Save();
     }
 
     [Header("Referensi Tour Guide (Check & Uncheck)")]
@@ -177,7 +169,6 @@ public class EndingBranchController : MonoBehaviour
         AutoFindTourGuidesIfEmpty();
 
         bool is100Percent = ResolveIsAltEnding(testForceAltEnding);
-        MarkEndingReachedPersistent(is100Percent);
 
         // Terapkan Check & Uncheck (Active / Inactive) pada GameObject Tour Guide
         if (tourGuideNormal != null)

@@ -56,7 +56,6 @@ public class QuestTabUI : MonoBehaviour
 
     private void Awake()
     {
-        EnsureDropShadow();
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
@@ -64,7 +63,6 @@ public class QuestTabUI : MonoBehaviour
 
     private void Start()
     {
-        EnsureDropShadow();
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
@@ -73,7 +71,6 @@ public class QuestTabUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EnsureDropShadow();
         EnsureStandardTransform();
         EnsureCanvasSortingOrder();
         RegisterToJournalManager();
@@ -93,31 +90,6 @@ public class QuestTabUI : MonoBehaviour
         EnsureStandardTransform();
     }
 
-    private static void ClearPersistentListeners(UnityEngine.Events.UnityEvent evt)
-    {
-        if (evt == null) return;
-        int count = evt.GetPersistentEventCount();
-        for (int i = 0; i < count; i++)
-        {
-            evt.SetPersistentListenerState(i, UnityEngine.Events.UnityEventCallState.Off);
-        }
-    }
-
-    public void EnsureDropShadow()
-    {
-        if (backgroundImage == null) backgroundImage = GetComponent<Image>();
-        if (backgroundImage == null) return;
-
-        Shadow shadow = backgroundImage.GetComponent<Shadow>();
-        if (shadow == null)
-        {
-            shadow = backgroundImage.gameObject.AddComponent<Shadow>();
-        }
-        shadow.effectColor = new Color(0f, 0f, 0f, 0.45f);
-        shadow.effectDistance = new Vector2(10f, -12f);
-        shadow.useGraphicAlpha = true;
-    }
-
     public void EnsureStandardTransform()
     {
         RectTransform rt = GetComponent<RectTransform>();
@@ -129,8 +101,8 @@ public class QuestTabUI : MonoBehaviour
         rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(1197.1f, 566.82f);
-        rt.localScale = new Vector3(0.6356795f * factor, 0.6666441f * factor, 0.9768732f * factor);
-        rt.anchoredPosition = new Vector2(0.45938f * factor, 0f);
+        rt.localScale = new Vector3(0.63567f * factor, 0.66664f * factor, 0.97687f * factor);
+        rt.anchoredPosition = new Vector2(0.45939f * factor, 7f * factor);
     }
 
     private float ComputeParentCanvasScaleFactor()
@@ -230,28 +202,24 @@ public class QuestTabUI : MonoBehaviour
             if (nextPageButton != null) manager.btnNextPage = nextPageButton;
             if (closeButton != null) manager.btnCloseJournal = closeButton;
 
-            // Sambungkan button OnClick (matikan persistent scene listeners lama agar tidak double/stale)
+            // Sambungkan button OnClick
             if (closeButton != null)
             {
-                ClearPersistentListeners(closeButton.onClick);
                 closeButton.onClick.RemoveListener(manager.CloseJournal);
                 closeButton.onClick.AddListener(manager.CloseJournal);
             }
             if (prevPageButton != null)
             {
-                ClearPersistentListeners(prevPageButton.onClick);
                 prevPageButton.onClick.RemoveListener(manager.PrevPage);
                 prevPageButton.onClick.AddListener(manager.PrevPage);
             }
             if (nextPageButton != null)
             {
-                ClearPersistentListeners(nextPageButton.onClick);
                 nextPageButton.onClick.RemoveListener(manager.NextPage);
                 nextPageButton.onClick.AddListener(manager.NextPage);
             }
             if (tabSwitchButton != null)
             {
-                ClearPersistentListeners(tabSwitchButton.onClick);
                 tabSwitchButton.onClick.RemoveListener(manager.ToggleQuestTab);
                 tabSwitchButton.onClick.AddListener(manager.ToggleQuestTab);
             }
