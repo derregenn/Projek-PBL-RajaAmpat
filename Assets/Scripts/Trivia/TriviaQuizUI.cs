@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
@@ -7,11 +8,144 @@ public class TriviaQuizUI : MonoBehaviour
 {
     public static TriviaQuizUI Instance { get; private set; }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        Instance = null;
+    }
+
+    public static TriviaQuizUI FindOrActivateInstance()
+    {
+        if (Instance != null)
+        {
+            if (!Instance.gameObject.activeSelf)
+            {
+                Instance.gameObject.SetActive(true);
+            }
+            Instance.EnsureUIReferencesValid();
+            return Instance;
+        }
+
+        TriviaQuizUI[] candidates = FindObjectsByType<TriviaQuizUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        TriviaQuizUI best = null;
+        for (int i = 0; i < candidates.Length; i++)
+        {
+            TriviaQuizUI candidate = candidates[i];
+            if (candidate == null) continue;
+            if (best == null || (candidate.choicesPanel != null && best.choicesPanel == null))
+            {
+                best = candidate;
+            }
+        }
+
+        if (best != null)
+        {
+            if (!best.gameObject.activeSelf)
+            {
+                best.gameObject.SetActive(true);
+            }
+            if (Instance == null)
+            {
+                Instance = best;
+            }
+            Instance.EnsureUIReferencesValid();
+        }
+        return Instance;
+    }
+
+    public static void AdoptOrAttachTo(GameObject persistentHost, TriviaQuizUI sceneSource)
+    {
+        if (sceneSource == null) return;
+
+        if (Instance != null && Instance != sceneSource)
+        {
+            Instance.AdoptSceneReferences(sceneSource);
+            return;
+        }
+
+        if (persistentHost != null && persistentHost != sceneSource.gameObject)
+        {
+            TriviaQuizUI hostTrivia = persistentHost.GetComponent<TriviaQuizUI>();
+            if (hostTrivia == null)
+            {
+                hostTrivia = persistentHost.AddComponent<TriviaQuizUI>();
+            }
+            Instance = hostTrivia;
+            hostTrivia.AdoptSceneReferences(sceneSource);
+        }
+    }
+
+    public void AdoptSceneReferences(TriviaQuizUI source)
+    {
+        if (source == null || source == this) return;
+
+        StopAllCoroutines();
+        isQuizActive = false;
+        isShowingFeedback = false;
+        canPressEToClose = false;
+        onQuizCompleted = null;
+        feedbackOutline = null;
+        questionBoxRoundedRect = null;
+
+        if (source.choicesPanel != null) choicesPanel = source.choicesPanel;
+        if (source.questionText != null) questionText = source.questionText;
+        if (source.optionButtons != null && source.optionButtons.Length > 0) optionButtons = source.optionButtons;
+        if (source.optionTexts != null && source.optionTexts.Length > 0) optionTexts = source.optionTexts;
+
+        correctBorderColor = source.correctBorderColor;
+        wrongBorderColor = source.wrongBorderColor;
+        sfxVolume = source.sfxVolume;
+        enableButtonHover = source.enableButtonHover;
+        hoverScale = source.hoverScale;
+        hoverTransitionSpeed = source.hoverTransitionSpeed;
+        closeKey = source.closeKey;
+
+        if (source.startQuizSFX != null) { startQuizSFX = source.startQuizSFX; PreloadAndTrimClip(ref startQuizSFX); }
+        if (source.buttonHoverSFX != null) { buttonHoverSFX = source.buttonHoverSFX; PreloadAndTrimClip(ref buttonHoverSFX); }
+        if (source.correctAnswerSFX != null) { correctAnswerSFX = source.correctAnswerSFX; PreloadAndTrimClip(ref correctAnswerSFX); }
+        if (source.wrongAnswerSFX != null) { wrongAnswerSFX = source.wrongAnswerSFX; PreloadAndTrimClip(ref wrongAnswerSFX); }
+        if (source.correctFeedbackMessages != null && source.correctFeedbackMessages.Length > 0)
+        {
+            correctFeedbackMessages = source.correctFeedbackMessages;
+        }
+        if (source.wrongFeedbackMessages != null && source.wrongFeedbackMessages.Length > 0)
+        {
+            wrongFeedbackMessages = source.wrongFeedbackMessages;
+        }
+
+        EnsureAudioSourceValid();
+
+        if (choicesPanel != null) choicesPanel.SetActive(false);
+        SetupFeedbackOutline();
+        SetupOptionButtonHovers();
+        EnsureUIReferencesValid();
+    }
+
     [Header("References")]
-    [SerializeField] private Dialogue dialogueSystem;     // Drag NPC/Dialogue ke sini
     [SerializeField] private GameObject choicesPanel;      // Panel penampung 3 tombol di bawah
+    [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private Button[] optionButtons;       // 3 Tombol Jawaban
     [SerializeField] private TextMeshProUGUI[] optionTexts;// Teks pada 3 tombol
+    [SerializeField] private Color correctBorderColor = new Color(0.18f, 0.85f, 0.42f, 1f);
+    [SerializeField] private Color wrongBorderColor = new Color(0.95f, 0.22f, 0.24f, 1f);
+    [SerializeField] private float feedbackOutlineThickness = 14f;
+
+    [Header("Audio Settings (Pattern Recognition & Feedback)")]
+    [SerializeField] private AudioSource audioSource;
+    [Tooltip("SFX/Jingle yang diputar saat kuis dimulai agar player mengenali pattern masuknya state trivia")]
+    [SerializeField] private AudioClip startQuizSFX;
+    [Tooltip("SFX saat tombol pilihan jawaban di-hover oleh kursor/navigasi")]
+    [SerializeField] private AudioClip buttonHoverSFX;
+    [Tooltip("SFX saat jawaban benar")]
+    [SerializeField] private AudioClip correctAnswerSFX;
+    [Tooltip("SFX saat jawaban salah")]
+    [SerializeField] private AudioClip wrongAnswerSFX;
+    [Range(0f, 1f)][SerializeField] private float sfxVolume = 1f;
+
+    [Header("Button Hover Settings")]
+    [SerializeField] private bool enableButtonHover = true;
+    [SerializeField] private float hoverScale = 1.06f;
+    [SerializeField] private float hoverTransitionSpeed = 14f;
 
     [Header("Feedback per Question")]
     [SerializeField] private string[] correctFeedbackMessages;
@@ -26,31 +160,308 @@ public class TriviaQuizUI : MonoBehaviour
     private bool isQuizActive = false;
     private bool canPressEToClose = false;
     private bool isShowingFeedback = false; // Flag agar tombol tidak bisa ditekan saat feedback muncul
+    private Outline feedbackOutline;
+    private ProceduralRoundedRect questionBoxRoundedRect;
+
+    public static bool IsAnyQuizActive =>
+        Instance != null
+        && Instance.isQuizActive
+        && Instance.gameObject.activeInHierarchy
+        && (Instance.choicesPanel == null || Instance.choicesPanel.activeInHierarchy);
+    public bool IsQuizActive => isQuizActive;
+
+    private bool IsDuplicatePersistentSingleton(out GameObject survivingHost)
+    {
+        QuestController qc = GetComponent<QuestController>();
+        if (qc != null && QuestController.Instance != null && QuestController.Instance != qc)
+        {
+            survivingHost = QuestController.Instance.gameObject;
+            return true;
+        }
+
+        GameManager gm = GetComponent<GameManager>();
+        if (gm != null && GameManager.Instance != null && GameManager.Instance != gm)
+        {
+            survivingHost = GameManager.Instance.gameObject;
+            return true;
+        }
+
+        survivingHost = null;
+        return false;
+    }
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (IsDuplicatePersistentSingleton(out GameObject survivingHost))
+        {
+            AdoptOrAttachTo(survivingHost, this);
+            return;
+        }
+
+        // Selesaikan quiz pada instance lama sebelum mengganti Instance agar callback-nya tidak hilang.
+        if (Instance != null && Instance != this)
+        {
+            Instance.EndQuiz();
+        }
+
+        Instance = this;
 
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText == null && choicesPanel != null)
+        {
+            Transform questionTransform = choicesPanel.transform.Find("QuestionText");
+            if (questionTransform != null)
+            {
+                questionText = questionTransform.GetComponent<TextMeshProUGUI>();
+            }
+        }
+
+        SetupFeedbackOutline();
+        EnsureAudioSourceValid();
+
+        PreloadAndTrimClip(ref startQuizSFX);
+        PreloadAndTrimClip(ref buttonHoverSFX);
+        PreloadAndTrimClip(ref correctAnswerSFX);
+        PreloadAndTrimClip(ref wrongAnswerSFX);
+
+        SetupOptionButtonHovers();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        isQuizActive = false;
+        isShowingFeedback = false;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        isQuizActive = false;
+        isShowingFeedback = false;
+        canPressEToClose = false;
+        feedbackOutline = null;
+        questionBoxRoundedRect = null;
+
+        if (choicesPanel == null || HasInvalidButtonReferences() || HasInvalidTextReferences())
+        {
+            EnsureUIReferencesValid();
+        }
+    }
+
+    private void EnsureAudioSourceValid()
+    {
+        if (audioSource == null || audioSource.gameObject != gameObject)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+            }
+        }
+    }
+
+    private bool HasInvalidButtonReferences()
+    {
+        if (optionButtons == null || optionButtons.Length == 0) return true;
+        for (int i = 0; i < optionButtons.Length; i++)
+        {
+            if (optionButtons[i] == null) return true;
+        }
+        return false;
+    }
+
+    private bool HasInvalidTextReferences()
+    {
+        if (optionTexts == null || optionTexts.Length == 0) return true;
+        for (int i = 0; i < optionTexts.Length; i++)
+        {
+            if (optionTexts[i] == null) return true;
+        }
+        return false;
+    }
+
+    public void EnsureUIReferencesValid()
+    {
+        EnsureAudioSourceValid();
+
+        if (choicesPanel != null
+            && questionText != null
+            && !HasInvalidButtonReferences()
+            && !HasInvalidTextReferences())
+        {
+            return;
+        }
+
+        if (choicesPanel == null)
+        {
+            Scene activeScene = SceneManager.GetActiveScene();
+            if (activeScene.isLoaded)
+            {
+                GameObject[] roots = activeScene.GetRootGameObjects();
+                for (int r = 0; r < roots.Length && choicesPanel == null; r++)
+                {
+                    if (roots[r] == null) continue;
+                    Transform[] all = roots[r].GetComponentsInChildren<Transform>(true);
+                    for (int i = 0; i < all.Length; i++)
+                    {
+                        if (all[i] != null && string.Equals(all[i].name, "QuizPanel", System.StringComparison.OrdinalIgnoreCase))
+                        {
+                            choicesPanel = all[i].gameObject;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (choicesPanel == null) return;
+
+        Transform panelTr = choicesPanel.transform;
+
+        if (questionText == null)
+        {
+            Transform qTr = panelTr.Find("QuestionBox/QuestionText") ?? panelTr.Find("QuestionText");
+            if (qTr != null) questionText = qTr.GetComponent<TextMeshProUGUI>();
+
+            if (questionText == null)
+            {
+                TextMeshProUGUI[] tmps = choicesPanel.GetComponentsInChildren<TextMeshProUGUI>(true);
+                for (int i = 0; i < tmps.Length; i++)
+                {
+                    if (tmps[i] == null) continue;
+                    bool isQuestionName = tmps[i].name.IndexOf("Question", System.StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool isQuestionParent = tmps[i].transform.parent != null
+                        && tmps[i].transform.parent.name.IndexOf("Question", System.StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (isQuestionName || isQuestionParent)
+                    {
+                        questionText = tmps[i];
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (HasInvalidButtonReferences())
+        {
+            Transform[] allTr = choicesPanel.GetComponentsInChildren<Transform>(true);
+            Button btn1 = null, btn2 = null, btn3 = null;
+            for (int i = 0; i < allTr.Length; i++)
+            {
+                Transform t = allTr[i];
+                if (t == null) continue;
+                if (t.name == "Button1") btn1 = t.GetComponent<Button>();
+                else if (t.name == "Button2") btn2 = t.GetComponent<Button>();
+                else if (t.name == "Button3") btn3 = t.GetComponent<Button>();
+            }
+
+            if (btn1 != null || btn2 != null || btn3 != null)
+            {
+                var list = new System.Collections.Generic.List<Button>(3);
+                if (btn1 != null) list.Add(btn1);
+                if (btn2 != null) list.Add(btn2);
+                if (btn3 != null) list.Add(btn3);
+                optionButtons = list.ToArray();
+            }
+            else
+            {
+                optionButtons = choicesPanel.GetComponentsInChildren<Button>(true);
+            }
+        }
+
+        if (optionButtons != null && HasInvalidTextReferences())
+        {
+            optionTexts = new TextMeshProUGUI[optionButtons.Length];
+            for (int i = 0; i < optionButtons.Length; i++)
+            {
+                if (optionButtons[i] != null)
+                {
+                    optionTexts[i] = optionButtons[i].GetComponentInChildren<TextMeshProUGUI>(true);
+                }
+            }
+        }
+
+        feedbackOutline = null;
+        questionBoxRoundedRect = null;
+        SetupFeedbackOutline();
+        SetupOptionButtonHovers();
+    }
+
+    private static void PreloadAndTrimClip(ref AudioClip clip)
+    {
+        if (clip == null) return;
+        if (!string.IsNullOrEmpty(clip.name) && clip.name.EndsWith("_Instant", System.StringComparison.Ordinal)) return;
+        if (clip.loadState != AudioDataLoadState.Loaded)
+        {
+            clip.LoadAudioData();
+        }
+        try
+        {
+            if (clip.loadState != AudioDataLoadState.Loaded || clip.samples <= 1024 || clip.channels <= 0) return;
+            int totalSamples = clip.samples * clip.channels;
+            float[] samples = new float[totalSamples];
+            if (!clip.GetData(samples, 0)) return;
+
+            int firstLoudSample = -1;
+            for (int i = 0; i < totalSamples; i++)
+            {
+                if (Mathf.Abs(samples[i]) > 0.01f)
+                {
+                    firstLoudSample = (i / clip.channels) * clip.channels;
+                    break;
+                }
+            }
+
+            int minTrimFrames = 80;
+            if (firstLoudSample > minTrimFrames * clip.channels && totalSamples - firstLoudSample > 512 * clip.channels)
+            {
+                int remainingSamples = totalSamples - firstLoudSample;
+                int remainingFrames = remainingSamples / clip.channels;
+                AudioClip trimmed = AudioClip.Create(clip.name + "_Instant", remainingFrames, clip.channels, clip.frequency, false);
+                float[] trimmedData = new float[remainingSamples];
+                System.Array.Copy(samples, firstLoudSample, trimmedData, 0, remainingSamples);
+                trimmed.SetData(trimmedData, 0);
+                clip = trimmed;
+            }
+        }
+        catch (System.Exception)
+        {
+            // Streaming/compressed clips yang tidak mendukung GetData tetap menggunakan preload LoadAudioData
+        }
     }
 
     private void Update()
     {
         if (isQuizActive && canPressEToClose && Input.GetKeyDown(closeKey) && !isShowingFeedback)
         {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
             CloseQuiz();
         }
     }
 
     public void StartQuiz(TriviaQuestion[] questions, System.Action onComplete)
     {
+        EnsureUIReferencesValid();
         currentQuestions = questions;
         currentQuestionIndex = 0;
         onQuizCompleted = onComplete;
         isQuizActive = true;
         isShowingFeedback = false;
 
+        SetupOptionButtonHovers();
         StartCoroutine(EnableCloseDelay());
         ShowQuestion();
     }
@@ -64,7 +475,10 @@ public class TriviaQuizUI : MonoBehaviour
 
     private void ShowQuestion()
     {
-        if (currentQuestionIndex >= currentQuestions.Length)
+        EnsureUIReferencesValid();
+        SetFeedbackOutline(false, false);
+
+        if (currentQuestions == null || currentQuestionIndex >= currentQuestions.Length)
         {
             EndQuiz();
             return;
@@ -72,27 +486,35 @@ public class TriviaQuizUI : MonoBehaviour
 
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
 
-        // 1. Tampilkan teks pertanyaan di kotak dialog NPC
-        if (dialogueSystem != null)
-        {
-            dialogueSystem.ShowTriviaQuestion(q.questionText);
-        }
+        // Mainkan SFX setiap kali pertanyaan ditampilkan.
+        PlaySFX(startQuizSFX);
 
-        // 2. Tampilkan panel tombol opsi jawaban
+        if (questionText != null) questionText.text = q.questionText;
+
+        // Tampilkan panel soal dan opsi jawaban.
         if (choicesPanel != null) choicesPanel.SetActive(true);
 
-        // 3. Tampilkan Opsi Jawaban pada 3 Tombol Horizontal di Bawah
+        if (optionButtons == null) return;
+
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            if (i < q.options.Length)
+            if (optionButtons[i] == null) continue;
+
+            if (q.options != null && i < q.options.Length)
             {
                 optionButtons[i].gameObject.SetActive(true);
-                if (i < optionTexts.Length && optionTexts[i] != null)
+                optionButtons[i].interactable = true;
+                if (optionTexts != null && i < optionTexts.Length && optionTexts[i] != null)
                 {
                     optionTexts[i].text = q.options[i];
                 }
 
                 int buttonIndex = i;
+                int persistentCount = optionButtons[i].onClick.GetPersistentEventCount();
+                for (int p = 0; p < persistentCount; p++)
+                {
+                    optionButtons[i].onClick.SetPersistentListenerState(p, UnityEngine.Events.UnityEventCallState.Off);
+                }
                 optionButtons[i].onClick.RemoveAllListeners();
                 optionButtons[i].onClick.AddListener(() => OnOptionSelected(buttonIndex));
             }
@@ -107,19 +529,31 @@ public class TriviaQuizUI : MonoBehaviour
     {
         if (isShowingFeedback) return;
 
+        ResetButtonScales();
+
         TriviaQuestion q = currentQuestions[currentQuestionIndex];
 
         if (selectedIndex == q.correctAnswerIndex)
         {
-            // Jawaban Benar -> Tampilkan feedback di dialogue NPC lalu lanjut ke pertanyaan berikutnya
-            string successMsg = GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
-            StartCoroutine(ShowFeedbackRoutine(successMsg, true));
+            // SFX Jawaban Benar
+            PlaySFX(correctAnswerSFX);
+
+            // Prioritaskan feedback spesifik per pertanyaan dari Inspector, baru fallback ke array/default
+            string successMsg = !string.IsNullOrWhiteSpace(q.correctFeedback)
+                ? q.correctFeedback
+                : GetFeedbackMessage(correctFeedbackMessages, currentQuestionIndex, "Naise, jawaban kamu benar!");
+            StartCoroutine(ShowFeedbackRoutine(successMsg, true, selectedIndex));
         }
         else
         {
-            // Jawaban Salah -> Tampilkan feedback di dialogue NPC lalu ulangi pertanyaan
-            string wrongMsg = GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
-            StartCoroutine(ShowFeedbackRoutine(wrongMsg, false));
+            // SFX Jawaban Salah
+            PlaySFX(wrongAnswerSFX);
+
+            // Prioritaskan feedback spesifik per pertanyaan dari Inspector, baru fallback ke array/default
+            string wrongMsg = !string.IsNullOrWhiteSpace(q.wrongFeedback)
+                ? q.wrongFeedback
+                : GetFeedbackMessage(wrongFeedbackMessages, currentQuestionIndex, "Salah, coba lagi ya!");
+            StartCoroutine(ShowFeedbackRoutine(wrongMsg, false, selectedIndex));
         }
     }
 
@@ -133,23 +567,25 @@ public class TriviaQuizUI : MonoBehaviour
         return defaultMessage;
     }
 
-    private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect)
+    private IEnumerator ShowFeedbackRoutine(string feedbackMessage, bool isCorrect, int selectedIndex)
     {
         isShowingFeedback = true;
+        SetFeedbackOutline(true, isCorrect, selectedIndex);
 
-        // Sembunyikan panel pilihan jawaban saat feedback ditampilkan di kotak dialog
-        if (choicesPanel != null) choicesPanel.SetActive(false);
-
-        // Kirim teks feedback langsung ke dialogue box NPC
-        if (dialogueSystem != null)
+        if (questionText != null) questionText.text = feedbackMessage;
+        if (optionButtons != null)
         {
-            dialogueSystem.ShowTriviaQuestion(feedbackMessage);
+            foreach (Button button in optionButtons)
+            {
+                if (button != null) button.interactable = false;
+            }
         }
 
-        // Tunggu sebentar agar player sempat membaca feedback
+        // Tunggu sebentar agar player sempat membaca feedback dan melihat outline hijau/merah
         yield return new WaitForSeconds(1.5f);
 
         isShowingFeedback = false;
+        SetFeedbackOutline(false, false, -1);
 
         if (isCorrect)
         {
@@ -165,19 +601,166 @@ public class TriviaQuizUI : MonoBehaviour
 
     public void CloseQuiz()
     {
+        ResetButtonScales();
+        SetFeedbackOutline(false, false);
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText != null) questionText.text = string.Empty;
     }
 
     private void EndQuiz()
     {
+        StopAllCoroutines();
+        ResetButtonScales();
+        SetFeedbackOutline(false, false);
         isQuizActive = false;
         canPressEToClose = false;
         isShowingFeedback = false;
         if (choicesPanel != null) choicesPanel.SetActive(false);
+        if (questionText != null) questionText.text = string.Empty;
 
-        onQuizCompleted?.Invoke();
+        System.Action completed = onQuizCompleted;
+        onQuizCompleted = null;
+        completed?.Invoke();
+    }
+
+    private void SetupOptionButtonHovers()
+    {
+        if (!enableButtonHover || optionButtons == null) return;
+
+        foreach (var btn in optionButtons)
+        {
+            if (btn == null) continue;
+
+            TriviaButtonHover hoverComp = btn.GetComponent<TriviaButtonHover>();
+            if (hoverComp == null)
+            {
+                hoverComp = btn.gameObject.AddComponent<TriviaButtonHover>();
+            }
+
+            hoverComp.Initialize(hoverScale, hoverTransitionSpeed, buttonHoverSFX, audioSource, sfxVolume);
+        }
+    }
+
+    private void ResetButtonScales()
+    {
+        if (optionButtons == null) return;
+        foreach (var btn in optionButtons)
+        {
+            if (btn == null) continue;
+            var hoverComp = btn.GetComponent<TriviaButtonHover>();
+            if (hoverComp != null) hoverComp.ResetScaleInstant();
+        }
+    }
+
+    private void SetupFeedbackOutline()
+    {
+        Transform boxTr = null;
+        if (questionText != null && questionText.transform.parent != null)
+        {
+            boxTr = questionText.transform.parent;
+        }
+        else if (choicesPanel != null)
+        {
+            boxTr = choicesPanel.transform.Find("QuestionBox");
+        }
+
+        if (boxTr == null) return;
+
+        questionBoxRoundedRect = boxTr.GetComponent<ProceduralRoundedRect>();
+        if (questionBoxRoundedRect != null)
+        {
+            questionBoxRoundedRect.SetOutline(false, Color.clear, 0f);
+            Outline oldOutline = boxTr.GetComponent<Outline>();
+            if (oldOutline != null) oldOutline.enabled = false;
+            return;
+        }
+
+        Graphic borderGraphic = boxTr.GetComponent<Graphic>();
+        if (borderGraphic == null) return;
+
+        feedbackOutline = borderGraphic.GetComponent<Outline>();
+        if (feedbackOutline == null)
+        {
+            feedbackOutline = borderGraphic.gameObject.AddComponent<Outline>();
+        }
+
+        feedbackOutline.effectDistance = new Vector2(10f, 10f);
+        feedbackOutline.useGraphicAlpha = false;
+        feedbackOutline.enabled = false;
+    }
+
+    private void SetButtonOutline(Button btn, bool visible, Color outlineColor)
+    {
+        if (btn == null) return;
+
+        ProceduralRoundedRect rounded = btn.GetComponent<ProceduralRoundedRect>();
+        if (rounded != null)
+        {
+            rounded.SetOutline(visible, outlineColor, feedbackOutlineThickness);
+            Outline oldOutline = btn.GetComponent<Outline>();
+            if (oldOutline != null) oldOutline.enabled = false;
+            return;
+        }
+
+        Graphic g = btn.targetGraphic != null ? btn.targetGraphic : btn.GetComponent<Graphic>();
+        if (g == null) return;
+
+        Outline outline = g.GetComponent<Outline>();
+        if (outline == null)
+        {
+            if (!visible) return;
+            outline = g.gameObject.AddComponent<Outline>();
+            outline.effectDistance = new Vector2(10f, 10f);
+            outline.useGraphicAlpha = false;
+        }
+
+        outline.effectColor = outlineColor;
+        outline.enabled = visible;
+    }
+
+    private void SetFeedbackOutline(bool visible, bool isCorrect, int selectedButtonIndex = -1)
+    {
+        if (questionBoxRoundedRect == null && feedbackOutline == null)
+        {
+            SetupFeedbackOutline();
+        }
+
+        Color targetColor = isCorrect ? correctBorderColor : wrongBorderColor;
+
+        if (questionBoxRoundedRect != null)
+        {
+            questionBoxRoundedRect.SetOutline(visible, targetColor, feedbackOutlineThickness);
+        }
+        else if (feedbackOutline != null)
+        {
+            feedbackOutline.effectColor = targetColor;
+            feedbackOutline.enabled = visible;
+        }
+
+        if (optionButtons != null)
+        {
+            for (int i = 0; i < optionButtons.Length; i++)
+            {
+                bool showOnThisButton = visible && i == selectedButtonIndex;
+                SetButtonOutline(optionButtons[i], showOnThisButton, targetColor);
+            }
+        }
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(clip, sfxVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(clip, Camera.main != null ? Camera.main.transform.position : Vector3.zero, sfxVolume);
+        }
     }
 }

@@ -1,98 +1,414 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class SasiInteractable : MonoBehaviour
 {
-    [Header("Referensi QTE & UI")]
-    [SerializeField] private QTE2 qteToTrigger;
-    public GameObject uiPromptGroup;
+    [Header("UI References")]
+    [Tooltip("Drag PromptPanel (Tombol E di atas kepala MC) ke sini")]
+    public GameObject uiPrompt;
 
-    [Header("Referensi Objek Patok Sasi")]
-    public GameObject patokSasiObject;
+    [Tooltip("Drag QTE Panel (Lingkaran QTE Biru / QTE1 / QTE2) ke sini")]
+    public GameObject qtePanel;
 
-    [Header("Animasi Karakter (Opsional)")]
+    [Header("Animation Setup")]
+    [Tooltip("Drag GameObject Player atau Animator MC ke sini (Boleh kosong, script akan auto-find tag Player)")]
     public Animator playerAnimator;
-    public string crouchAnimParameter = "isCrouching";
+    [Tooltip("Nama parameter Bool di Animator Player untuk jongkok")]
+    public string crouchBoolName = "isCrouching";
 
-    private bool isPlayerInRange = false;
+    [Header("Events")]
+    public UnityEvent OnSasiCompleted; // Dipanggil saat QTE sukses
+
+    [Header("Quest Progression Gate (Opsional)")]
+    [SerializeField] private string requiredActiveObjectiveID = "";
+    [SerializeField] private string requiredCompletedQuestID = "";
+
+    private bool isPlayerInArea = false;
+    private bool isQTEActive = false;
     private bool isCompleted = false;
+    private bool isShowingPrompt = false;
+    public bool IsCompleted => isCompleted;
+
+    private void EnsurePromptReference()
+    {
+        if (uiPrompt != null) return;
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (!activeScene.isLoaded) return;
+        GameObject[] roots = activeScene.GetRootGameObjects();
+        for (int r = 0; r < roots.Length; r++)
+        {
+            if (roots[r] == null) continue;
+            Transform[] all = roots[r].GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] != null && all[i].name == "PromptPanel")
+                {
+                    uiPrompt = all[i].gameObject;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void SetPromptVisible(bool visible)
+    {
+        if (visible)
+        {
+            EnsurePromptReference();
+            if (uiPrompt != null && !uiPrompt.activeSelf) uiPrompt.SetActive(true);
+            isShowingPrompt = uiPrompt != null;
+        }
+        else
+        {
+            if (isShowingPrompt && uiPrompt != null && uiPrompt.activeSelf) uiPrompt.SetActive(false);
+            isShowingPrompt = false;
+        }
+    }
 
     private void Start()
     {
-        if (uiPromptGroup != null) uiPromptGroup.SetActive(false);
-        if (patokSasiObject != null) patokSasiObject.SetActive(false);
-        if (qteToTrigger != null) qteToTrigger.gameObject.SetActive(false);
+        // Pastikan QTE mati di awal
+        if (qtePanel != null) qtePanel.SetActive(false);
+        EnsurePromptReference();
+        ResolvePlayerAnimator();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void ResolvePlayerAnimator()
+    {
+        if (playerAnimator != null) return;
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            playerAnimator = playerObj.GetComponentInChildren<Animator>();
+        }
+    }
+
+    private void Update()
+    {
+        if (isPlayerInArea && !isQTEActive && !isCompleted)
+        {
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            {
+                SetPromptVisible(false);
+                return;
+            }
+            SetPromptVisible(true);
+            if (!InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E))
+            {
+                InteractionInputLock.ConsumeInteractKeyThisFrame();
+                MulaiQTE();
+            }
+        }
+        else if (isShowingPrompt)
+        {
+            SetPromptVisible(false);
+        }
+    }
+
+    private void MulaiQTE()
+    {
+        isQTEActive = true;
+
+        // 1. Sembunyikan prompt tombol E di atas kepala
+        SetPromptVisible(false);
+
+        // 2. Pemicu Animasi Jongkok MC
+        SetPlayerCrouch(true);
+
+        // 3. Tampilkan UI QTE (mendukung QTE2 maupun QTE1) & sambungkan callback secara dinamis
+        if (qtePanel != null)
+        {
+            QTE2 qte2 = qtePanel.GetComponent<QTE2>();
+            QTE1 qte1 = qte2 == null ? qtePanel.GetComponent<QTE1>() : null;
+
+            if (qte2 != null)
+            {
+                qte2.onSuccess.RemoveListener(FinishQTE);
+                qte2.onSuccess.AddListener(FinishQTE);
+                qte2.onFail.RemoveListener(CancelQTE);
+                qte2.onFail.AddListener(CancelQTE);
+            }
+            else if (qte1 != null)
+            {
+                qte1.onSuccess.RemoveListener(FinishQTE);
+                qte1.onSuccess.AddListener(FinishQTE);
+                qte1.onFail.RemoveListener(CancelQTE);
+                qte1.onFail.AddListener(CancelQTE);
+            }
+
+            qtePanel.SetActive(true);
+
+            if (qte2 != null)
+            {
+                qte2.BeginQTE();
+            }
+            else if (qte1 != null)
+            {
+                qte1.InitQTE();
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[SasiInteractable] qtePanel belum di-assign di Inspector pada '{gameObject.name}'!", this);
+        }
+    }
+
+    public void CancelQTE()
+    {
+        if (qtePanel != null)
+        {
+            QTE2 qte2 = qtePanel.GetComponent<QTE2>();
+            if (qte2 != null)
+            {
+                qte2.onSuccess.RemoveListener(FinishQTE);
+                qte2.onFail.RemoveListener(CancelQTE);
+            }
+            QTE1 qte1 = qtePanel.GetComponent<QTE1>();
+            if (qte1 != null)
+            {
+                qte1.onSuccess.RemoveListener(FinishQTE);
+                qte1.onFail.RemoveListener(CancelQTE);
+            }
+            qtePanel.SetActive(false);
+        }
+
+        isQTEActive = false;
+        SetPlayerCrouch(false);
+
+        if (isPlayerInArea)
+        {
+            SetPromptVisible(true);
+        }
+    }
+
+    // Panggil fungsi ini dari Event / Manager QTE saat QTE Selesai / Berhasil
+    public void FinishQTE()
     {
         if (isCompleted) return;
-
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerInRange = true;
-
-            if (playerAnimator == null)
-            {
-                playerAnimator = collision.GetComponent<Animator>();
-            }
-
-            if (uiPromptGroup != null) uiPromptGroup.SetActive(true);
-
-            if (qteToTrigger != null)
-            {
-                // Hubungkan listener sukses dan gagal
-                qteToTrigger.onSuccess.RemoveAllListeners();
-                qteToTrigger.onSuccess.AddListener(OnQTESuccess);
-
-                // Tambahkan listener gagal jika script QTE2 memiliki event onFailure
-                // qteToTrigger.onFailure.RemoveAllListeners();
-                // qteToTrigger.onFailure.AddListener(OnQTEFailed);
-
-                // Jalankan animasi jongkok sekali saja di awal QTE
-                SetCrouchAnimation(true);
-                qteToTrigger.BeginQTE();
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerInRange = false;
-
-            if (uiPromptGroup != null) uiPromptGroup.SetActive(false);
-            if (qteToTrigger != null) qteToTrigger.gameObject.SetActive(false);
-
-            SetCrouchAnimation(false);
-        }
-    }
-
-    private void OnQTESuccess()
-    {
         isCompleted = true;
+        isQTEActive = false;
+        isPlayerInArea = false;
 
-        SetCrouchAnimation(false);
+        QTE2 qte2 = qtePanel != null ? qtePanel.GetComponent<QTE2>() : null;
+        if (qte2 != null)
+        {
+            qte2.onSuccess.RemoveListener(FinishQTE);
+            qte2.onFail.RemoveListener(CancelQTE);
+        }
+        QTE1 qte1 = qtePanel != null ? qtePanel.GetComponent<QTE1>() : null;
+        if (qte1 != null)
+        {
+            qte1.onSuccess.RemoveListener(FinishQTE);
+            qte1.onFail.RemoveListener(CancelQTE);
+        }
 
-        if (qteToTrigger != null) qteToTrigger.gameObject.SetActive(false);
-        if (uiPromptGroup != null) uiPromptGroup.SetActive(false);
-        if (patokSasiObject != null) patokSasiObject.SetActive(true);
+        // 1. Kembalikan Animasi MC ke berdiri
+        SetPlayerCrouch(false);
 
+        // 2. Sembunyikan QTE Biru & Prompt
+        if (qtePanel != null) qtePanel.SetActive(false);
+        SetPromptVisible(false);
+
+        // 3. Matikan Collider2D saja (JANGAN matikan gameObject parent karena Batu Sasi & Sasi Laut1_Quest Item_Midground_0 adalah child dari TitikSasi!)
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
-    }
 
-    private void OnQTEFailed()
-    {
-        SetCrouchAnimation(false);
-        if (uiPromptGroup != null) uiPromptGroup.SetActive(true);
-    }
-
-    private void SetCrouchAnimation(bool isCrouching)
-    {
-        if (playerAnimator != null && !string.IsNullOrEmpty(crouchAnimParameter))
+        // 4. Aktifkan seluruh child objek visual Sasi (Batu Sasi & Sasi Laut1_Quest Item_Midground_0)
+        foreach (Transform child in transform)
         {
-            playerAnimator.SetBool(crouchAnimParameter, isCrouching);
+            if (child != null)
+            {
+                child.gameObject.SetActive(true);
+            }
         }
+
+        // 5. Jalankan event sukses & objective trigger
+        QuestObjectiveTrigger trig = GetComponent<QuestObjectiveTrigger>();
+        if (trig != null)
+        {
+            trig.OnObjectiveTriggered?.Invoke();
+            if (qte2 == null && QuestController.Instance != null && !string.IsNullOrEmpty(trig.objectiveID))
+            {
+                QuestController.Instance.ProgressObjective(trig.objectiveID, trig.amountToAdd);
+            }
+            trig.OnObjectiveCompleted?.Invoke();
+        }
+
+        OnSasiCompleted?.Invoke();
+
+        // Pastikan ulang child tetap aktif jika ada event Inspector yang tidak sengaja mematikan parent
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+        foreach (Transform child in transform)
+        {
+            if (child != null) child.gameObject.SetActive(true);
+        }
+
+        // 6. Cek apakah semua titik Sasi di scene sudah selesai
+        SasiInteractable[] allSasi = FindObjectsByType<SasiInteractable>(FindObjectsSortMode.None);
+        bool allSasiDone = true;
+        if (allSasi != null && allSasi.Length > 0)
+        {
+            foreach (var s in allSasi)
+            {
+                if (s != null && !s.IsCompleted)
+                {
+                    allSasiDone = false;
+                    break;
+                }
+            }
+        }
+
+        if (allSasiDone)
+        {
+            // Cari QuestGiver pada TitikSasi ini atau TitikSasi lainnya untuk memberikan Quest06_Arborek
+            QuestGiver giver = GetComponent<QuestGiver>();
+            if (giver == null && allSasi != null)
+            {
+                foreach (var s in allSasi)
+                {
+                    if (s != null)
+                    {
+                        giver = s.GetComponent<QuestGiver>();
+                        if (giver != null) break;
+                    }
+                }
+            }
+            if (giver != null)
+            {
+                giver.GiveQuest();
+            }
+
+            ArborekFaderManager fader = FindFirstObjectByType<ArborekFaderManager>();
+            if (fader != null)
+            {
+                fader.CompleteSasiImmediateAndTransition();
+            }
+        }
+    }
+
+    private void SetPlayerCrouch(bool isCrouching)
+    {
+        GameObject playerObj = playerAnimator != null ? playerAnimator.gameObject : GameObject.FindGameObjectWithTag("Player");
+        Player playerScript = playerObj != null ? playerObj.GetComponentInParent<Player>() : null;
+        if (playerScript == null) playerScript = FindFirstObjectByType<Player>();
+
+        string activeSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        bool isGagScene = activeSceneName.IndexOf("Gag", System.StringComparison.OrdinalIgnoreCase) >= 0;
+
+        if (playerScript != null)
+        {
+            playerScript.enabled = true;
+            playerScript.isMovementLocked = isCrouching;
+            playerScript.SetCrouching(isCrouching, isGagScene);
+            if (isCrouching)
+            {
+                Rigidbody2D rb = playerScript.GetComponent<Rigidbody2D>();
+                if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                }
+            }
+        }
+
+        if (playerAnimator == null && playerObj != null)
+        {
+            playerAnimator = playerObj.GetComponentInChildren<Animator>();
+        }
+
+        if (playerAnimator != null)
+        {
+            if (isGagScene)
+            {
+                if (HasAnimatorBoolParameter(playerAnimator, "isCrouchingGag"))
+                {
+                    playerAnimator.SetBool("isCrouchingGag", isCrouching);
+                }
+
+                if (crouchBoolName != "isCrouchingGag" && HasAnimatorBoolParameter(playerAnimator, crouchBoolName))
+                {
+                    playerAnimator.SetBool(crouchBoolName, false);
+                }
+
+                if (isCrouching)
+                {
+                    int gagHash = Animator.StringToHash("Player_Crouch_Gag");
+                    if (playerAnimator.HasState(0, gagHash))
+                    {
+                        playerAnimator.Play("Player_Crouch_Gag");
+                    }
+                }
+                else
+                {
+                    playerAnimator.Play("Player_Idle");
+                }
+                return;
+            }
+
+            if (HasAnimatorBoolParameter(playerAnimator, crouchBoolName))
+            {
+                playerAnimator.SetBool(crouchBoolName, isCrouching);
+            }
+            playerAnimator.Play(isCrouching ? "Player_Crouch" : "Player_Idle");
+        }
+    }
+
+    private static bool HasAnimatorBoolParameter(Animator anim, string paramName)
+    {
+        if (anim == null || string.IsNullOrEmpty(paramName)) return false;
+
+        AnimatorControllerParameter[] parameters = anim.parameters;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            if (parameters[i].type == AnimatorControllerParameterType.Bool &&
+                parameters[i].name == paramName)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") && !isQTEActive && !isCompleted)
+        {
+            isPlayerInArea = true;
+            if (InteractionInputLock.IsAnyModalBlockingWorldInteract
+                || InteractionInputLock.IsSignboardOpen
+                || !QuestProgressionGate.Passes(requiredActiveObjectiveID, string.Empty, requiredCompletedQuestID))
+            {
+                SetPromptVisible(false);
+                return;
+            }
+            SetPromptVisible(true);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") && !isQTEActive && !isCompleted)
+        {
+            isPlayerInArea = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInArea = false;
+            SetPromptVisible(false);
+        }
+    }
+
+    private void OnDisable()
+    {
+        isPlayerInArea = false;
+        SetPromptVisible(false);
     }
 }

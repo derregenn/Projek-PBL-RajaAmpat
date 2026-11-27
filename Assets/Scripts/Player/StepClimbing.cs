@@ -36,6 +36,13 @@ public class StepClimbing : MonoBehaviour
     private Sprite originalSprite;
     private bool isUsingSprite1 = true;
 
+    [Header("Platform Ground Settings")]
+    [SerializeField] private Collider2D topPlatformCollider; // Drag BoxCollider2D dari TopPlatformGround
+
+    [Header("Post-Climb Trigger Control")]
+    [Tooltip("Objek trigger panjat tebing (misal WallInteractionTrigger) yang dinonaktifkan otomatis setelah sampai atas")]
+    [SerializeField] private GameObject disableOnClimbUpComplete;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -129,6 +136,12 @@ public class StepClimbing : MonoBehaviour
         {
             StartCoroutine(FinishClimbingRoutine());
         }
+
+        // Matikan collider platform atas agar tidak menabrak player saat naik
+        if (topPlatformCollider != null)
+        {
+            topPlatformCollider.enabled = false;
+        }
     }
 
     public void OnQTESuccess()
@@ -151,11 +164,6 @@ public class StepClimbing : MonoBehaviour
         if (currentStepIndex < activeSteps.Length)
         {
             targetPosition = activeSteps[currentStepIndex].position;
-            isMovingToStep = true;
-        }
-        else if (!isClimbingDown && topPlatformPoint != null)
-        {
-            targetPosition = topPlatformPoint.position;
             isMovingToStep = true;
         }
         else
@@ -196,10 +204,34 @@ public class StepClimbing : MonoBehaviour
             transform.position = climbPosition;
         }
 
-        // 3. Laporkan Progres Quest 2 (Cliff Hiking)
-        if (!isClimbingDown && QuestController.Instance != null && !string.IsNullOrEmpty(questObjectiveID))
+        // TAMBAHKAN BARIS INI: Nyalakan collider lantai agar player bisa berdiri
+        if (topPlatformCollider != null)
         {
-            QuestController.Instance.ProgressObjective(questObjectiveID);
+            topPlatformCollider.enabled = true;
+        }
+
+        // 3. Laporkan Progres Quest 2 (Cliff Hiking) atau Quest 4 (Turun Bukit)
+        if (QuestController.Instance != null)
+        {
+            if (!isClimbingDown && !string.IsNullOrEmpty(questObjectiveID))
+            {
+                QuestController.Instance.ProgressObjective(questObjectiveID);
+            }
+            else if (isClimbingDown)
+            {
+                QuestController.Instance.ProgressObjective("turun_bukit", 1);
+            }
+        }
+
+        // Matikan trigger panjat tebing atas setelah selesai memanjat ke atas agar MC tidak memanjat ulang di puncak
+        if (!isClimbingDown)
+        {
+            DisableClimbUpTrigger();
+            ActivateTourGuide4();
+            if (MasterQuestManager.Instance != null && MasterQuestManager.Instance.CurrentStage < 5)
+            {
+                MasterQuestManager.Instance.AdvanceStageTo(5);
+            }
         }
 
         // 4. Kembalikan fisik & gravitasi ke normal
@@ -215,7 +247,11 @@ public class StepClimbing : MonoBehaviour
         if (anim != null)
         {
             anim.enabled = true;
-            anim.Play("Idle");
+            int idleStateHash = Animator.StringToHash("Idle");
+            if (anim.runtimeAnimatorController != null && anim.layerCount > 0 && anim.HasState(0, idleStateHash))
+            {
+                anim.Play(idleStateHash, 0);
+            }
         }
 
         yield return new WaitForSeconds(0.2f);
@@ -229,10 +265,28 @@ public class StepClimbing : MonoBehaviour
         isClimbingSequenceActive = false;
     }
 
+    private void ActivateTourGuide4()
+    {
+        Transform[] sceneTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Transform sceneTransform in sceneTransforms)
+        {
+            if (sceneTransform.name == "TourGuide4")
+            {
+                sceneTransform.gameObject.SetActive(true);
+                return;
+            }
+        }
+
+        Debug.LogWarning("TourGuide4 tidak ditemukan di scene setelah panjat tebing.");
+    }
+
     private void ShowQTEOnce()
     {
         if (qte2Script != null)
         {
+            // TAMBAHKAN BARIS INI: Nyalakan dulu GameObject-nya sebelum di-reset
+            qte2Script.gameObject.SetActive(true);
+
             qte2Script.ResetQTE();
         }
     }
@@ -242,6 +296,26 @@ public class StepClimbing : MonoBehaviour
         if (qte2Script != null)
         {
             qte2Script.gameObject.SetActive(false);
+        }
+    }
+
+    private void DisableClimbUpTrigger()
+    {
+        isClimbingMode = false;
+
+        if (disableOnClimbUpComplete != null)
+        {
+            disableOnClimbUpComplete.SetActive(false);
+            return;
+        }
+
+        WallInteractable[] walls = FindObjectsByType<WallInteractable>(FindObjectsSortMode.None);
+        foreach (WallInteractable w in walls)
+        {
+            if (w != null && !w.IsClimbDown)
+            {
+                w.gameObject.SetActive(false);
+            }
         }
     }
 }

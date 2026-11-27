@@ -2,68 +2,209 @@ using UnityEngine;
 
 public class QuestGiver : MonoBehaviour
 {
-    [Header("Quest")]
+    [Header("Quest Configuration")]
     [SerializeField] private Quest questToGive;
+    public Quest QuestToGive => questToGive;
+
+    [Header("Prerequisite & Condition")]
+    [Tooltip("Jika dicentang, NPC tidak akan memberikan quest baru jika masih ada quest lain yang belum diselesaikan pemain.")]
+    [SerializeField] private bool waitForCurrentQuestToFinish = false;
+
+    [Tooltip("ID Quest yang harus sudah selesai sebelum quest ini bisa diberikan (kosongkan jika tidak ada syarat).")]
+    [SerializeField] private string requiredPrerequisiteQuestID = "";
+
+    [Header("Auto Trigger on Scene Start")]
+    [SerializeField] private bool giveQuestOnStart = false;
 
     [Header("Physical Collision (2D)")]
-    [SerializeField] private bool giveQuestOnPlayerCollision = true;
-    [SerializeField] private bool requireBoxCollider2D;
+    public bool giveQuestOnPlayerCollision = false;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private bool hasGivenQuest = false;
+
+    private System.Collections.IEnumerator Start()
     {
-        if (!giveQuestOnPlayerCollision || collision == null)
+        if (giveQuestOnStart)
         {
-            return;
+            yield return null;
+            GiveQuest();
         }
+    }
 
-        if (!collision.gameObject.CompareTag("Player"))
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!giveQuestOnPlayerCollision || hasGivenQuest) return;
+
+        if (collision.CompareTag("Player") || (collision.transform.root != null && collision.transform.root.CompareTag("Player")))
         {
-            return;
+            GiveQuest();
         }
-
-        if (requireBoxCollider2D && !(collision.collider is BoxCollider2D))
-        {
-            return;
-        }
-
-        GiveQuest();
     }
 
     public void GiveQuest()
     {
         if (questToGive == null)
         {
-            Debug.LogWarning(
-                "QuestGiver: Quest To Give belum diisi."
-            );
+            Debug.LogWarning("[QuestGiver] Quest To Give belum diisi di Inspector!");
             return;
         }
 
-        if (QuestController.Instance == null)
+        QuestController controller = QuestController.Instance;
+        if (controller == null)
         {
-            Debug.LogError(
-                "QuestGiver: QuestController tidak ditemukan."
-            );
-            return;
+            controller = FindFirstObjectByType<QuestController>();
         }
 
-        if (QuestController.Instance.IsQuestActive(
-            questToGive.QuestID))
+        if (controller == null)
         {
-            Debug.Log(
-                "Quest sudah aktif: " +
-                questToGive.QuestID
-            );
+            Debug.LogError("[QuestGiver] QuestController tidak ditemukan di scene!");
             return;
         }
 
-        QuestController.Instance.AcceptQuest(
-            questToGive
-        );
+        // 1. Cek apakah quest ini sendiri sudah aktif atau sudah pernah diselesaikan
+        if (controller.IsQuestActive(questToGive.QuestID) ||
+            QuestJournalManager.HasCompletedQuestIDPersistent(questToGive.QuestID) ||
+            QuestJournalManager.IsCurrentSceneIslandCompletedPersistent())
+        {
+            hasGivenQuest = true;
+            Debug.Log($"[QuestGiver] Quest '{questToGive.QuestID}' sudah aktif atau pulau/quest selesai, tidak diberikan lagi.");
+            return;
+        }
 
-        Debug.Log(
-            "NPC memberikan quest: " +
-            questToGive.QuestTitle
-        );
+        // 2. Cek apakah ada syarat quest prasyarat yang belum tuntas
+        if (!string.IsNullOrEmpty(requiredPrerequisiteQuestID))
+        {
+            bool isPrereqDone = false;
+            if (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(requiredPrerequisiteQuestID))
+            {
+                isPrereqDone = true;
+            }
+
+            if (!isPrereqDone)
+            {
+                Debug.LogWarning($"[QuestGiver] Quest '{questToGive.QuestTitle}' belum bisa diambil. Wajib menyelesaikan quest '{requiredPrerequisiteQuestID}' terlebih dahulu.");
+                return;
+            }
+        }
+
+        // 3. Cek apakah ada opsi menunggu quest aktif sebelumnya selesai
+        if (waitForCurrentQuestToFinish && controller.HasActiveQuest())
+        {
+            Debug.LogWarning($"[QuestGiver] Tidak dapat menerima '{questToGive.QuestTitle}' karena masih ada quest lain yang aktif.");
+            return;
+        }
+
+        hasGivenQuest = true;
+        controller.AcceptQuest(questToGive);
+
+        Debug.Log($"[QuestGiver] Quest '{questToGive.QuestTitle}' berhasil diberikan ke pemain!");
+    }
+
+    public void ResetGiver()
+    {
+        hasGivenQuest = false;
+    }
+}
+
+public static class QuestProgressionGate
+{
+    private static bool IsQuestCompletedAnySource(string id)
+    {
+        return QuestJournalManager.HasCompletedQuestIDPersistent(id)
+            || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id))
+            || (QuestController.Instance != null && QuestController.Instance.IsQuestCompleted(id));
+    }
+
+    private static bool IsQuestActiveOrCompletedAnySource(string id)
+    {
+        return (QuestController.Instance != null && (QuestController.Instance.IsQuestActive(id) || QuestController.Instance.IsQuestCompleted(id)))
+            || QuestJournalManager.HasCompletedQuestIDPersistent(id)
+            || (GamePhaseManager.Instance != null && GamePhaseManager.Instance.IsQuestCompleted(id));
+    }
+
+    private static bool IsObjectiveActive(string objId)
+    {
+        if (QuestController.Instance == null || string.IsNullOrEmpty(objId)) return false;
+        var activeQuests = QuestController.Instance.ActiveQuests;
+        for (int i = 0; i < activeQuests.Count; i++)
+        {
+            var q = activeQuests[i];
+            if (q != null && q.GetObjective(objId) != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool Passes(string requiredActiveObjectiveID, string requiredActiveOrCompletedQuestID, string requiredCompletedQuestID)
+    {
+        if (!string.IsNullOrEmpty(requiredCompletedQuestID))
+        {
+            if (requiredCompletedQuestID.IndexOf(',') < 0)
+            {
+                string id = requiredCompletedQuestID.Trim();
+                if (!string.IsNullOrEmpty(id) && !IsQuestCompletedAnySource(id)) return false;
+            }
+            else
+            {
+                string[] reqs = requiredCompletedQuestID.Split(',');
+                for (int i = 0; i < reqs.Length; i++)
+                {
+                    string id = reqs[i].Trim();
+                    if (!string.IsNullOrEmpty(id) && !IsQuestCompletedAnySource(id)) return false;
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(requiredActiveOrCompletedQuestID))
+        {
+            if (requiredActiveOrCompletedQuestID.IndexOf(',') < 0)
+            {
+                string id = requiredActiveOrCompletedQuestID.Trim();
+                if (!string.IsNullOrEmpty(id) && !IsQuestActiveOrCompletedAnySource(id)) return false;
+            }
+            else
+            {
+                string[] anyIds = requiredActiveOrCompletedQuestID.Split(',');
+                bool matchedAny = false;
+                for (int i = 0; i < anyIds.Length; i++)
+                {
+                    string id = anyIds[i].Trim();
+                    if (!string.IsNullOrEmpty(id) && IsQuestActiveOrCompletedAnySource(id))
+                    {
+                        matchedAny = true;
+                        break;
+                    }
+                }
+                if (!matchedAny) return false;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(requiredActiveObjectiveID))
+        {
+            if (QuestController.Instance == null) return false;
+            if (requiredActiveObjectiveID.IndexOf(',') < 0)
+            {
+                string objId = requiredActiveObjectiveID.Trim();
+                if (!string.IsNullOrEmpty(objId) && !IsObjectiveActive(objId)) return false;
+            }
+            else
+            {
+                string[] objIds = requiredActiveObjectiveID.Split(',');
+                bool matchedObj = false;
+                for (int i = 0; i < objIds.Length; i++)
+                {
+                    string objId = objIds[i].Trim();
+                    if (!string.IsNullOrEmpty(objId) && IsObjectiveActive(objId))
+                    {
+                        matchedObj = true;
+                        break;
+                    }
+                }
+                if (!matchedObj) return false;
+            }
+        }
+
+        return true;
     }
 }

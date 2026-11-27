@@ -36,6 +36,15 @@ public class WorldMapManager : MonoBehaviour
 
     public void ToggleMap()
     {
+        if (!isMapOpen && !QuestJournalManager.CanLeaveCurrentIslandForMap())
+        {
+            isMapOpen = false;
+            MapController.HideCanvasGroupImmediate(mapCanvasGroup);
+            Time.timeScale = 1f;
+            Debug.Log("[WorldMapManager] MapMenuPanel belum bisa dibuka sebelum semua quest pulau selesai.");
+            return;
+        }
+
         isMapOpen = !isMapOpen;
 
         if (currentFadeRoutine != null)

@@ -15,26 +15,63 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("SavedScene"))
-        {
-            continueButton.interactable = true;
-        }
-        else
-        {
-            continueButton.interactable = false;
-        }
+        Time.timeScale = 1f;
+        RefreshContinueButtonState();
+    }
+
+    public void RefreshContinueButtonState()
+    {
+        FreeRoamManager.ApplyButtonUnlockVisual(continueButton, PlayerPrefs.HasKey("SavedScene"));
     }
 
     public void StartNewGame()
     {
         PlayerPrefs.DeleteAll();
+        QuestJournalManager.InvalidatePersistentQuestCache();
+
+        if (QuestJournalManager.Instance != null)
+        {
+            QuestJournalManager.Instance.ResetAllProgress(false);
+        }
+
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.ResetAllProgress();
+        }
 
         if (StoryManager.Instance != null)
         {
-            StoryManager.Instance.currentPhase = StoryManager.StoryPhase.Arrival_Airstrip;
+            StoryManager.Instance.ResetProgress();
         }
 
-        CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_CutsceneAirstrip");
+        if (MasterQuestManager.Instance != null)
+        {
+            MasterQuestManager.Instance.ResetAllProgress();
+        }
+
+        if (QuestController.Instance != null)
+        {
+            QuestController.Instance.ActiveQuests.Clear();
+        }
+
+        // Reset sistem sampah global
+        if (GlobalTrashManager.Instance != null)
+        {
+            GlobalTrashManager.Instance.ResetAll();
+        }
+
+        PlayerPrefs.SetString("SavedScene", "02_CutsceneAirstrip");
+        PlayerPrefs.Save();
+
+        if (CutsceneTransitionManager.Instance != null && arrivalPortraits != null && arrivalPortraits.Length > 0)
+        {
+            CutsceneTransitionManager.Instance.StartPortraitCutscene(arrivalPortraits, arrivalDialogues, "02_CutsceneAirstrip");
+        }
+        else
+        {
+            Debug.Log("[MainMenu] Memuat 02_CutsceneAirstrip langsung.");
+            SceneManager.LoadScene("02_CutsceneAirstrip");
+        }
     }
 
     public void ContinueGame()
@@ -43,9 +80,19 @@ public class MainMenu : MonoBehaviour
 
         if (StoryManager.Instance != null)
         {
-            StoryManager.Instance.currentPhase = (StoryManager.StoryPhase)PlayerPrefs.GetInt("SavedStoryPhase", 0);
+            StoryManager.Instance.LoadProgress();
         }
 
+        if (GamePhaseManager.Instance != null)
+        {
+            GamePhaseManager.Instance.CalculatePercentage();
+        }
+
+        PlayerPrefs.SetInt("ShouldRestoreSavedPosition", 1);
+        PlayerPrefs.Save();
+
+        Time.timeScale = 1f;
+        Debug.Log($"[MainMenu] Melanjutkan game ke scene: {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
 
