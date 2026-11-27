@@ -1,0 +1,825 @@
+using UnityEngine;
+using TMPro;
+using System.Collections;
+using Unity.Cinemachine;
+using UnityEngine.Events;
+using System;
+using UnityEngine.UI;
+
+public class Dialogue2 : MonoBehaviour
+{
+    [Header("UI")]
+    [SerializeField] private GameObject InteractPrompt;
+    [SerializeField] private GameObject DialogueBox;
+    [SerializeField] private TMP_Text DialogueText;
+    [SerializeField] private GameObject PlayerDialogueBox;
+    [SerializeField] private TMP_Text PlayerDialogueText;
+    [SerializeField] private GameObject NextPrompt;
+    [SerializeField] private GameObject PlayerNextPrompt;
+
+    [Header("Dialogue")]
+    [SerializeField] private string[] DialogueLines;
+    [SerializeField] private DialogueSpeaker[] DialogueLineSpeakers;
+    [SerializeField] private string triviaQuestionText;
+    [SerializeField] private float TypeSpeed = 0.04f;
+
+    [Header("Typing Audio")]
+    [SerializeField] private AudioSource typingAudioSource;
+    [SerializeField] private AudioClip typingAudioClip;
+    [SerializeField, Range(0f, 1f)] private float typingAudioVolume = 0.3f;
+    [SerializeField, Min(0f)] private float typingAudioInterval = 0.06f;
+    private float nextTypingAudioTime;
+
+    private enum DialogueSpeaker
+    {
+        NPC,
+        Player
+    }
+
+    [Header("NPC Sprite Settings")]
+    [SerializeField] private SpriteRenderer npcSpriteRenderer;
+    [SerializeField] private Sprite talkingSprite1; // Drag sprite talking1_V1 di Inspector
+    [SerializeField] private Sprite talkingSprite2; // Drag sprite talking2_V1 di Inspector
+    [SerializeField] private Sprite idleSprite;      // Sprite default saat NPC diam (opsional)
+    [SerializeField] private int spriteToggleInterval = 3; // Berganti sprite tiap N karakter
+
+    [Header("Camera Zoom Settings")]
+    public CinemachineCamera dialogueCamera;
+    [SerializeField] private float npcLensSize = 4.5f;
+
+    [Header("Dialogue Events")]
+    [SerializeField] private UnityEvent onDialogueEnd;
+
+    [Header("Post Quest / Free Roam Loop Dialogue")]
+    [Tooltip("Dialog berulang yang dimainkan terus saat berinteraksi setelah quest selesai atau di mode free roam")]
+    [SerializeField] private string[] postQuestLoopLines;
+    [SerializeField] private bool isPostQuestLoop = false;
+
+    private int lineIndex = 0;
+    private bool isInteracting = false;
+    private bool canInteract = false;
+    private bool isTyping = false;
+    private bool hasBeenTriggered = false;
+
+    private QuestGiver questGiver;
+    private Coroutine typingCoroutine;
+    private Action onDialogueCompleteCallback;
+
+
+
+    [Header("Interaction Settings")]
+    [SerializeField] private float interactDistance = 2.5f;
+
+    private static Dialogue2 activeDialogue2Instance;
+    public static bool IsAnyDialogueActive =>
+        activeDialogue2Instance != null
+        && activeDialogue2Instance.isInteracting
+        && activeDialogue2Instance.gameObject.activeInHierarchy;
+
+    private GameObject cachedPlayerObj;
+    private Canvas cachedNpcCanvas;
+    private Canvas cachedPlayerCanvas;
+    private float lastAppliedOrtho = -1f;
+    private Player cachedPlayerComp;
+    private PlayerSwim cachedPlayerSwim;
+    private Rigidbody2D cachedPlayerRb;
+    private Animator cachedPlayerAnim;
+
+    private void EnsureInteractPrompt()
+    {
+        if (InteractPrompt == null)
+        {
+            Transform[] all = GetComponentsInChildren<Transform>(true);
+            foreach (Transform t in all)
+            {
+                if (t.name == "InteractPrompt")
+                {
+                    InteractPrompt = t.gameObject;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void EnsureDialogueCanvasSorting()
+    {
+        Canvas[] canvases = GetComponentsInChildren<Canvas>(true);
+        foreach (Canvas c in canvases)
+        {
+            if (c.renderMode == RenderMode.WorldSpace)
+            {
+                c.overrideSorting = true;
+                c.sortingLayerName = "Foreground";
+                c.sortingOrder = 100;
+                if (c.worldCamera == null)
+                {
+                    c.worldCamera = Camera.main;
+                }
+            }
+        }
+
+        if (InteractPrompt != null)
+        {
+            Canvas promptCanvas = InteractPrompt.GetComponent<Canvas>();
+            if (promptCanvas == null)
+            {
+                promptCanvas = InteractPrompt.AddComponent<Canvas>();
+            }
+            promptCanvas.overrideSorting = true;
+            promptCanvas.sortingLayerName = "Foreground";
+            promptCanvas.sortingOrder = 110;
+        }
+    }
+
+    private void CheckProximity()
+    {
+        if (isInteracting) return;
+        if (InteractionInputLock.IsAnyOverlayBlockingDialogue || InteractionInputLock.IsDialogueActive)
+        {
+            canInteract = false;
+            if (InteractPrompt != null && InteractPrompt.activeSelf)
+            {
+                InteractPrompt.SetActive(false);
+            }
+            return;
+        }
+
+        if (cachedPlayerObj == null)
+        {
+            cachedPlayerObj = GameObject.FindGameObjectWithTag("Player");
+            if (cachedPlayerObj == null) cachedPlayerObj = GameObject.Find("Player");
+        }
+
+        // Cegah interaksi jika skrip Dialogue2 berada pada objek Player (misal saat berenang / PlayerDiving)
+        if (cachedPlayerObj != null && (gameObject == cachedPlayerObj || transform.IsChildOf(cachedPlayerObj.transform)))
+        {
+            canInteract = false;
+            if (InteractPrompt != null && InteractPrompt.activeSelf) InteractPrompt.SetActive(false);
+            return;
+        }
+
+        if (GetComponent<Player>() != null || GetComponent<PlayerSwim>() != null || GetComponent<PlayerDiving>() != null)
+        {
+            canInteract = false;
+            if (InteractPrompt != null && InteractPrompt.activeSelf) InteractPrompt.SetActive(false);
+            return;
+        }
+
+        if (DialogueLines == null || DialogueLines.Length == 0)
+        {
+            canInteract = false;
+            if (InteractPrompt != null && InteractPrompt.activeSelf) InteractPrompt.SetActive(false);
+            return;
+        }
+
+        if (cachedPlayerObj != null)
+        {
+            float dist = Vector2.Distance(transform.position, cachedPlayerObj.transform.position);
+            bool inProximity = dist <= interactDistance;
+
+            if (inProximity)
+            {
+                canInteract = true;
+                if (hasBeenTriggered && InteractPrompt != null && !InteractPrompt.activeSelf)
+                {
+                    InteractPrompt.SetActive(true);
+                }
+            }
+            else
+            {
+                if (canInteract)
+                {
+                    canInteract = false;
+                    if (InteractPrompt != null && InteractPrompt.activeSelf)
+                    {
+                        InteractPrompt.SetActive(false);
+                    }
+                }
+            }
+        }
+    }
+
+    private void CachePlayerComponents(GameObject pObj)
+    {
+        if (pObj == null) return;
+        if (cachedPlayerObj != pObj || cachedPlayerComp == null)
+        {
+            cachedPlayerObj = pObj;
+            cachedPlayerComp = pObj.GetComponent<Player>();
+            cachedPlayerSwim = pObj.GetComponent<PlayerSwim>();
+            cachedPlayerRb = pObj.GetComponent<Rigidbody2D>();
+            cachedPlayerAnim = pObj.GetComponent<Animator>();
+        }
+    }
+
+    private void SetPlayerMovementLock(bool isLocked)
+    {
+        GameObject pObj = cachedPlayerObj != null ? cachedPlayerObj : GameObject.FindGameObjectWithTag("Player");
+        if (pObj == null) pObj = GameObject.Find("Player");
+        if (pObj != null)
+        {
+            CachePlayerComponents(pObj);
+
+            if (cachedPlayerComp != null)
+            {
+                cachedPlayerComp.isMovementLocked = isLocked;
+                cachedPlayerComp.enabled = true;
+            }
+
+            if (cachedPlayerSwim != null)
+            {
+                cachedPlayerSwim.isMovementLocked = isLocked;
+            }
+
+            if (cachedPlayerRb != null)
+            {
+                cachedPlayerRb.linearVelocity = Vector2.zero;
+            }
+
+            if (cachedPlayerAnim != null && isLocked)
+            {
+                AnimatorStateInfo st = cachedPlayerAnim.GetCurrentAnimatorStateInfo(0);
+                if (cachedPlayerComp != null && cachedPlayerComp.isSwimming)
+                {
+                    if (!st.IsName("Player_swim")) cachedPlayerAnim.Play("Player_swim");
+                }
+                else
+                {
+                    if (!st.IsName("Player_Idle")) cachedPlayerAnim.Play("Player_Idle");
+                }
+            }
+        }
+    }
+
+    private void Awake()
+    {
+        questGiver = GetComponent<QuestGiver>();
+
+        EnsureInteractPrompt();
+        EnsureDialogueCanvasSorting();
+
+        // Auto-assign SpriteRenderer jika belum diisi di Inspector
+        if (npcSpriteRenderer == null)
+        {
+            npcSpriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        // Simpan sprite default jika idleSprite belum di-set
+        if (npcSpriteRenderer != null && idleSprite == null)
+        {
+            idleSprite = npcSpriteRenderer.sprite;
+        }
+        EnsureTypingAudioSource();
+    }
+
+    private void EnsureTypingAudioSource()
+    {
+        if (typingAudioSource == null || !typingAudioSource.gameObject.activeInHierarchy)
+        {
+            AudioSource localSource = GetComponent<AudioSource>();
+            if (localSource == null)
+            {
+                localSource = gameObject.AddComponent<AudioSource>();
+                localSource.playOnAwake = false;
+                localSource.loop = false;
+                localSource.spatialBlend = 0f;
+            }
+            typingAudioSource = localSource;
+        }
+
+        if (typingAudioClip != null && typingAudioClip.loadState == AudioDataLoadState.Unloaded)
+        {
+            typingAudioClip.LoadAudioData();
+        }
+    }
+
+    private Canvas FindDialogueCanvas()
+    {
+        Transform t = transform.Find("DialogueCanvas");
+        if (t != null)
+        {
+            Canvas c = t.GetComponent<Canvas>();
+            if (c != null) return c;
+        }
+        if (DialogueBox != null && DialogueBox.transform.parent != null)
+        {
+            Canvas c = DialogueBox.transform.parent.GetComponent<Canvas>();
+            if (c != null) return c;
+        }
+        Canvas[] all = GetComponentsInChildren<Canvas>(true);
+        foreach (var c in all)
+        {
+            if (c.gameObject.name.IndexOf("DialogueCanvas", StringComparison.OrdinalIgnoreCase) >= 0)
+                return c;
+        }
+        return all.Length > 0 ? all[0] : null;
+    }
+
+    private void UpdateActiveDialogueCanvasScale()
+    {
+        float targetWorldScale = Dialogue.GetCameraCompensatedWorldScale(dialogueCamera, npcLensSize, isInteracting);
+        float activeOrtho = (targetWorldScale / 0.00818f) * 2.0f;
+
+        if (Mathf.Abs(activeOrtho - lastAppliedOrtho) <= 0.001f)
+        {
+            return;
+        }
+        lastAppliedOrtho = activeOrtho;
+
+        if (cachedNpcCanvas == null) cachedNpcCanvas = FindDialogueCanvas();
+        if (cachedNpcCanvas != null)
+        {
+            Dialogue.ApplyStandardCanvasTransform(gameObject, cachedNpcCanvas, targetWorldScale, activeOrtho);
+        }
+
+        if (cachedPlayerObj == null)
+        {
+            cachedPlayerObj = GameObject.FindGameObjectWithTag("Player");
+            if (cachedPlayerObj == null) cachedPlayerObj = GameObject.Find("Player");
+        }
+
+        if (cachedPlayerObj != null)
+        {
+            if (cachedPlayerCanvas == null)
+            {
+                Transform pCanvasTr = cachedPlayerObj.transform.Find("DialogueCanvas");
+                if (pCanvasTr != null) cachedPlayerCanvas = pCanvasTr.GetComponent<Canvas>();
+            }
+            if (cachedPlayerCanvas != null)
+            {
+                Dialogue.ApplyStandardCanvasTransform(cachedPlayerObj, cachedPlayerCanvas, targetWorldScale, activeOrtho);
+            }
+        }
+    }
+
+    private void EnsureDialogueStandardLayout()
+    {
+        float targetWorldScale = Dialogue.GetCameraCompensatedWorldScale(dialogueCamera, npcLensSize, isInteracting);
+        float activeOrtho = (targetWorldScale / 0.00818f) * 2.0f;
+        lastAppliedOrtho = activeOrtho;
+
+        Canvas npcCanvas = cachedNpcCanvas != null ? cachedNpcCanvas : FindDialogueCanvas();
+        cachedNpcCanvas = npcCanvas;
+        if (npcCanvas != null)
+        {
+            Dialogue.ApplyStandardCanvasTransform(gameObject, npcCanvas, targetWorldScale, activeOrtho);
+        }
+
+        Dialogue.ConfigureDialogueBoxLayout(DialogueBox, DialogueText, NextPrompt);
+
+        if (cachedPlayerObj == null)
+        {
+            cachedPlayerObj = GameObject.FindGameObjectWithTag("Player");
+            if (cachedPlayerObj == null) cachedPlayerObj = GameObject.Find("Player");
+        }
+
+        if (cachedPlayerObj != null)
+        {
+            Transform pCanvasTr = cachedPlayerObj.transform.Find("DialogueCanvas");
+            if (pCanvasTr != null)
+            {
+                Canvas pCanvas = pCanvasTr.GetComponent<Canvas>();
+                if (pCanvas != null)
+                {
+                    cachedPlayerCanvas = pCanvas;
+                    if (pCanvas.renderMode == RenderMode.WorldSpace)
+                    {
+                        pCanvas.overrideSorting = true;
+                        pCanvas.sortingLayerName = "Foreground";
+                        pCanvas.sortingOrder = 100;
+                        if (pCanvas.worldCamera == null) pCanvas.worldCamera = Camera.main;
+                    }
+                    Dialogue.ApplyStandardCanvasTransform(cachedPlayerObj, pCanvas, targetWorldScale, activeOrtho);
+                }
+
+                Transform pBoxTr = pCanvasTr.Find("DialogueBox");
+                if (PlayerDialogueBox == null && pBoxTr != null) PlayerDialogueBox = pBoxTr.gameObject;
+            }
+
+            Dialogue.ConfigureDialogueBoxLayout(PlayerDialogueBox, PlayerDialogueText, PlayerNextPrompt);
+        }
+    }
+
+    private void ConfigureNextPromptVisual(GameObject nextObj)
+    {
+        Dialogue.ConfigureNextPromptVisual(nextObj);
+    }
+
+    private void Start()
+    {
+        EnsureInteractPrompt();
+        EnsureDialogueCanvasSorting();
+        EnsureDialogueStandardLayout();
+        ConfigureNextPromptVisual(NextPrompt);
+        ConfigureNextPromptVisual(PlayerNextPrompt);
+
+        if (dialogueCamera != null)
+        {
+            dialogueCamera.Priority.Value = 0;
+        }
+
+        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        {
+            bool isFreeRoam = PlayerPrefs.GetInt("GameCompleted", 0) == 1;
+            if (isFreeRoam)
+            {
+                SwitchToLoopDialogue();
+            }
+        }
+
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+        if (DialogueBox != null) DialogueBox.SetActive(false);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
+        if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (isInteracting)
+        {
+            SetPlayerMovementLock(true);
+            UpdateActiveDialogueCanvasScale();
+        }
+
+        CheckProximity();
+
+        if (canInteract && !isInteracting && hasBeenTriggered
+            && !InteractionInputLock.IsAnyOverlayBlockingDialogue
+            && !InteractionInputLock.WasInteractKeyConsumedThisFrame
+            && Input.GetKeyDown(KeyCode.E))
+        {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
+            StartDialogue();
+        }
+        else if (isInteracting && !InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E)
+            && ((NextPrompt != null && NextPrompt.activeInHierarchy)
+                || (PlayerNextPrompt != null && PlayerNextPrompt.activeInHierarchy)))
+        {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
+            NextLine();
+        }
+    }
+
+    public void StartDialogue()
+    {
+        if (isInteracting) return;
+        if (cachedPlayerObj != null && (gameObject == cachedPlayerObj || transform.IsChildOf(cachedPlayerObj.transform))) return;
+        if (GetComponent<Player>() != null || GetComponent<PlayerSwim>() != null || GetComponent<PlayerDiving>() != null) return;
+        if (DialogueLines == null || DialogueLines.Length == 0) return;
+        if (InteractionInputLock.IsAnyOverlayBlockingDialogue) return;
+
+        canInteract = false;
+        isInteracting = true;
+        activeDialogue2Instance = this;
+        lineIndex = 0;
+        lastAppliedOrtho = -1f;
+        InteractionInputLock.ConsumeInteractKeyThisFrame();
+
+        if (dialogueCamera != null)
+        {
+            dialogueCamera.Target.TrackingTarget = this.transform;
+            dialogueCamera.Lens.OrthographicSize = npcLensSize;
+            dialogueCamera.Priority.Value = 20;
+
+            CinemachineConfiner2D confiner = dialogueCamera.GetComponent<CinemachineConfiner2D>();
+            if (confiner != null) confiner.InvalidateBoundingShapeCache();
+        }
+
+        if (InteractPrompt != null) InteractPrompt.SetActive(false);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
+        if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        SetPlayerMovementLock(true);
+        EnsureDialogueStandardLayout();
+
+        StartTyping();
+    }
+
+    public void StartDialogue(string[] npcDialogueLines, Action onComplete)
+    {
+        onDialogueCompleteCallback = onComplete;
+        DialogueLines = npcDialogueLines;
+
+        DialogueLineSpeakers = new DialogueSpeaker[npcDialogueLines.Length];
+        for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+        {
+            DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+        }
+
+        lineIndex = 0;
+        StartDialogue();
+    }
+
+    private void StartTyping()
+    {
+        EnsureTypingAudioSource();
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (typingAudioSource != null) typingAudioSource.Stop();
+        typingCoroutine = StartCoroutine(WriteLine());
+    }
+
+    private IEnumerator WriteLine()
+    {
+        isTyping = true;
+        lastAppliedOrtho = -1f;
+
+        if (DialogueLines == null || DialogueLines.Length == 0)
+        {
+            EndDialogue();
+            yield break;
+        }
+
+        bool isPlayerLine = DialogueLineSpeakers != null
+            && lineIndex < DialogueLineSpeakers.Length
+            && DialogueLineSpeakers[lineIndex] == DialogueSpeaker.Player;
+        TMP_Text activeText = isPlayerLine ? PlayerDialogueText : DialogueText;
+
+        if (DialogueBox != null) DialogueBox.SetActive(!isPlayerLine);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(isPlayerLine);
+        if (activeText == null)
+        {
+            isTyping = false;
+            EndDialogue();
+            yield break;
+        }
+
+        activeText.text = DialogueLines[lineIndex];
+        activeText.maxVisibleCharacters = 0;
+
+        EnsureDialogueStandardLayout();
+        Canvas.ForceUpdateCanvases();
+        if (DialogueBox != null && DialogueBox.activeSelf)
+        {
+            RectTransform bRt = DialogueBox.GetComponent<RectTransform>();
+            if (bRt != null) LayoutRebuilder.ForceRebuildLayoutImmediate(bRt);
+        }
+        if (PlayerDialogueBox != null && PlayerDialogueBox.activeSelf)
+        {
+            RectTransform pbRt = PlayerDialogueBox.GetComponent<RectTransform>();
+            if (pbRt != null) LayoutRebuilder.ForceRebuildLayoutImmediate(pbRt);
+        }
+
+        int totalCharacters = DialogueLines[lineIndex].Length;
+        bool toggleSprite = false;
+
+        for (int i = 0; i <= totalCharacters; i++)
+        {
+            activeText.maxVisibleCharacters = i;
+
+            if (i < totalCharacters && typingAudioClip != null)
+            {
+                if (typingAudioSource == null || !typingAudioSource.gameObject.activeInHierarchy)
+                {
+                    EnsureTypingAudioSource();
+                }
+                if (typingAudioSource != null && Time.time >= nextTypingAudioTime && !typingAudioSource.isPlaying)
+                {
+                    typingAudioSource.PlayOneShot(typingAudioClip, typingAudioVolume);
+                    nextTypingAudioTime = Time.time + typingAudioInterval;
+                }
+            }
+
+            // Animasi pergantian sprite bicaranya NPC saat teks diketik
+            if (!isPlayerLine && npcSpriteRenderer != null && talkingSprite1 != null && talkingSprite2 != null)
+            {
+                if (i % spriteToggleInterval == 0)
+                {
+                    toggleSprite = !toggleSprite;
+                    npcSpriteRenderer.sprite = toggleSprite ? talkingSprite1 : talkingSprite2;
+                }
+            }
+
+            if (i < totalCharacters)
+            {
+                yield return new WaitForSeconds(TypeSpeed);
+            }
+        }
+
+        isTyping = false;
+        if (typingAudioSource != null) typingAudioSource.Stop();
+
+        // Kembalikan ke sprite idle/talking1 saat pengetikan selesai
+        ResetNPCSprite();
+
+        if (isPlayerLine)
+        {
+            if (PlayerNextPrompt != null)
+            {
+                ConfigureNextPromptVisual(PlayerNextPrompt);
+                PlayerNextPrompt.SetActive(true);
+            }
+        }
+        else if (NextPrompt != null)
+        {
+            ConfigureNextPromptVisual(NextPrompt);
+            NextPrompt.SetActive(true);
+        }
+    }
+
+    private void NextLine()
+    {
+        if (isTyping) return;
+
+        if (lineIndex < DialogueLines.Length - 1)
+        {
+            lineIndex++;
+            if (NextPrompt != null) NextPrompt.SetActive(false);
+            if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+            StartTyping();
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(triviaQuestionText))
+            {
+                if (questGiver != null)
+                {
+                    questGiver.GiveQuest();
+                }
+
+                if (NextPrompt != null) NextPrompt.SetActive(false);
+                if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+                ShowTriviaQuestion(triviaQuestionText);
+                return;
+            }
+
+            if (questGiver != null)
+            {
+                questGiver.GiveQuest();
+            }
+
+            lineIndex = 0;
+            EndDialogue();
+        }
+    }
+
+    private void EndDialogue()
+    {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+        if (typingAudioSource != null) typingAudioSource.Stop();
+
+        isTyping = false;
+        isInteracting = false;
+        InteractionInputLock.ConsumeInteractKeyThisFrame();
+        if (activeDialogue2Instance == this)
+        {
+            activeDialogue2Instance = null;
+        }
+
+        SetPlayerMovementLock(false);
+
+        ResetNPCSprite();
+
+        if (DialogueBox != null) DialogueBox.SetActive(false);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
+        if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        if (dialogueCamera != null)
+        {
+            dialogueCamera.Priority.Value = 0;
+        }
+
+        CheckProximity();
+
+        if (!isPostQuestLoop)
+        {
+            onDialogueEnd?.Invoke();
+            if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+            {
+                SwitchToLoopDialogue();
+            }
+        }
+
+        onDialogueCompleteCallback?.Invoke();
+        onDialogueCompleteCallback = null;
+    }
+
+    public void SwitchToLoopDialogue()
+    {
+        if (postQuestLoopLines != null && postQuestLoopLines.Length > 0)
+        {
+            DialogueLines = postQuestLoopLines;
+            DialogueLineSpeakers = new DialogueSpeaker[postQuestLoopLines.Length];
+            for (int i = 0; i < DialogueLineSpeakers.Length; i++)
+            {
+                DialogueLineSpeakers[i] = DialogueSpeaker.NPC;
+            }
+            isPostQuestLoop = true;
+        }
+    }
+
+    public void SetPostQuestLoopLines(string[] loopLines)
+    {
+        postQuestLoopLines = loopLines;
+        SwitchToLoopDialogue();
+    }
+
+    private void ResetNPCSprite()
+    {
+        if (npcSpriteRenderer != null && idleSprite != null)
+        {
+            npcSpriteRenderer.sprite = idleSprite;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (activeDialogue2Instance == this) activeDialogue2Instance = null;
+        isInteracting = false;
+        isTyping = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            if (InteractionInputLock.IsAnyOverlayBlockingDialogue)
+            {
+                canInteract = false;
+                if (InteractPrompt != null && InteractPrompt.activeSelf) InteractPrompt.SetActive(false);
+                return;
+            }
+            canInteract = true;
+
+            if (!isInteracting)
+            {
+                if (!hasBeenTriggered)
+                {
+                    hasBeenTriggered = true;
+                    StartDialogue();
+                }
+                else if (InteractPrompt != null && !InteractPrompt.activeSelf)
+                {
+                    InteractPrompt.SetActive(true);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            if (InteractionInputLock.IsAnyOverlayBlockingDialogue)
+            {
+                canInteract = false;
+                if (InteractPrompt != null && InteractPrompt.activeSelf) InteractPrompt.SetActive(false);
+                return;
+            }
+            if (!isInteracting)
+            {
+                canInteract = true;
+                if (hasBeenTriggered && InteractPrompt != null && !InteractPrompt.activeSelf)
+                {
+                    InteractPrompt.SetActive(true);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            canInteract = false;
+
+            if (InteractPrompt != null) InteractPrompt.SetActive(false);
+            if (isInteracting) EndDialogue();
+        }
+    }
+
+    public void ShowTriviaQuestion(string questionText)
+    {
+        if (string.IsNullOrEmpty(questionText))
+        {
+            return;
+        }
+
+        if (DialogueBox != null) DialogueBox.SetActive(true);
+        if (PlayerDialogueBox != null) PlayerDialogueBox.SetActive(false);
+        if (NextPrompt != null) NextPrompt.SetActive(false);
+        if (PlayerNextPrompt != null) PlayerNextPrompt.SetActive(false);
+
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+        if (typingAudioSource != null) typingAudioSource.Stop();
+
+        if (DialogueText != null)
+        {
+            DialogueText.text = questionText;
+            DialogueText.maxVisibleCharacters = questionText.Length;
+        }
+
+        // Gunakan sprite bicara saat pertanyaan trivia ditampilkan
+        if (npcSpriteRenderer != null && talkingSprite1 != null)
+        {
+            npcSpriteRenderer.sprite = talkingSprite1;
+        }
+    }
+
+}

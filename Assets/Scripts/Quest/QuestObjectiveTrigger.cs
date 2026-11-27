@@ -3,79 +3,188 @@ using UnityEngine.Events;
 
 public class QuestObjectiveTrigger : MonoBehaviour
 {
-    [Header("Objective")]
-    [SerializeField] private string objectiveID;
+    [Header("Objective Settings")]
+    [Tooltip("ID Objective pada ScriptableObject Quest yang ingin dipicu.")]
+    public string objectiveID = "press_interact";
+
+    [Tooltip("Jumlah penambahan progress saat trigger terpicu.")]
+    public int amountToAdd = 1;
+
+    [Header("Trigger Conditions")]
+    [Tooltip("Jika dicentang, trigger HANYA akan bereaksi jika objective ini sedang aktif di quest pemain.")]
+    [SerializeField] private bool requireObjectiveActive = true;
+
+    [Tooltip("Jika dicentang, trigger hanya bisa terpicu sekali lalu non-aktif.")]
+    [SerializeField] private bool triggerOnce = true;
+
+    [Header("Progress Mode")]
+    [Tooltip("Centang jika trigger ini langsung menambah progres/menyelesaikan objective saat disentuh. " +
+             "Hilangkan centang jika progres quest diselesaikan oleh mekanisme lain seperti QTE/interaksi tombol.")]
+    public bool progressObjectiveOnTrigger = false;
 
     [Header("Events")]
-    [SerializeField] private UnityEvent onObjectiveTriggered;
+    [Tooltip("Dipanggil saat trigger berhasil disentuh oleh player (misal untuk memunculkan QTE, dialog, atau efek suara).")]
+    public UnityEvent OnObjectiveTriggered;
+
+    [Tooltip("HANYA dipanggil jika objective ini telah BENAR-BENAR SELESAI (CurrentAmount >= RequiredAmount). " +
+             "Gunakan event ini jika ingin memicu dialog kelanjutan atau quest berikutnya agar tidak menimpa quest sebelum tuntas!")]
+    public UnityEvent OnObjectiveCompleted;
 
     private bool hasTriggered = false;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        TryTriggerObjective(collision.gameObject);
-    }
+        if (hasTriggered && triggerOnce) return;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        TryTriggerObjective(collision.gameObject);
-    }
+        // Deteksi player fleksibel (termasuk jika collider ada di child object player)
+        bool isPlayer = other.CompareTag("Player") ||
+                        (other.transform.root != null && other.transform.root.CompareTag("Player")) ||
+                        other.name.ToLower().Contains("player");
 
-    private void TryTriggerObjective(GameObject other)
-    {
-        if (!other.CompareTag("Player"))
-            return;
+        if (!isPlayer) return;
 
-        if (hasTriggered)
-            return;
-
-        if (QuestController.Instance == null)
+        // Jangan picu otomatis saat sekadar lewat jika objek ini adalah item interaksi (TrashInteractable),
+        // titik Sasi/QTE (SasiInteractable), atau NPC yang harus diajak bicara dulu (Dialogue)!
+        if (GetComponent<TrashInteractable>() != null || GetComponent<SasiInteractable>() != null)
         {
-            Debug.LogWarning(
-                "QuestObjectiveTrigger: QuestController tidak ditemukan."
-            );
             return;
         }
 
-        if (!HasActiveObjective())
+        Dialogue dlg = GetComponent<Dialogue>();
+        if (dlg != null && dlg.enabled)
         {
-            Debug.Log(
-                "Objective belum aktif: " +
-                objectiveID
-            );
             return;
         }
 
-        hasTriggered = true;
+        // Cari apakah objective ini aktif di quest yang sedang berjalan
+        Quest targetQuest = null;
+        QuestObjective targetObj = null;
 
-        Debug.Log(
-            "Objective Triggered: " +
-            objectiveID
-        );
-
-        onObjectiveTriggered?.Invoke();
-    }
-
-    private bool HasActiveObjective()
-    {
-        foreach (Quest quest in QuestController.Instance.ActiveQuests)
+        if (QuestController.Instance != null)
         {
-            if (quest == null)
-                continue;
-
-            QuestObjective objective =
-                quest.GetObjective(objectiveID);
-
-            if (objective != null &&
-                !objective.IsComplete)
+            foreach (var q in QuestController.Instance.ActiveQuests)
             {
-                return true;
+                if (q == null) continue;
+                var obj = q.GetObjective(objectiveID);
+                if (obj != null)
+                {
+                    targetQuest = q;
+                    targetObj = obj;
+                    break;
+                }
             }
         }
 
-        return false;
+        bool isObjectiveActive = (targetObj != null);
+
+        // Jika requireObjectiveActive aktif dan quest/objective belum berjalan, jangan eksekusi trigger
+        if (requireObjectiveActive && !isObjectiveActive)
+        {
+            Debug.Log($"[QuestObjectiveTrigger] Player menyentuh '{gameObject.name}', tetapi objective '{objectiveID}' belum aktif di quest yang berjalan. Trigger diabaikan.");
+            return;
+        }
+
+        Debug.Log($"[QuestObjectiveTrigger] Player menyentuh area '{gameObject.name}' untuk objective '{objectiveID}'.");
+
+        if (triggerOnce)
+        {
+            hasTriggered = true;
+        }
+
+        // Jalankan event sentuhan awal (misal untuk QTE atau pergantian NPC)
+        OnObjectiveTriggered?.Invoke();
+
+        // Tambah progress jika mode progress on trigger aktif
+        if (isObjectiveActive && progressObjectiveOnTrigger && QuestController.Instance != null)
+        {
+            if (!targetObj.IsComplete)
+            {
+                QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+            }
+
+            // Cek apakah objective telah tuntas setelah ditambahkan
+            if (targetObj.IsComplete)
+            {
+                Debug.Log($"[QuestObjectiveTrigger] Objective '{objectiveID}' telah SELESAI! Menjalankan OnObjectiveCompleted.");
+                OnObjectiveCompleted?.Invoke();
+            }
+        }
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (hasTriggered && triggerOnce) return;
+        OnTriggerEnter2D(other);
+    }
+
+    /// <summary>
+    /// Panggil trigger secara paksa dari script interaksi (misal saat item diambil oleh TrashInteractable).
+    /// </summary>
+    public void ForceTrigger()
+    {
+        if (hasTriggered && triggerOnce) return;
+
+        if (triggerOnce)
+        {
+            hasTriggered = true;
+        }
+
+        Debug.Log($"[QuestObjectiveTrigger] ForceTrigger dipanggil pada '{gameObject.name}' untuk objective '{objectiveID}'.");
+        OnObjectiveTriggered?.Invoke();
+
+        if (progressObjectiveOnTrigger && QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        {
+            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+        }
+
+        OnObjectiveCompleted?.Invoke();
+    }
+
+    /// <summary>
+    /// Dipanggil saat dialog dengan NPC selesai untuk menyelesaikan objective penyerahan barang / bicara dengan NPC.
+    /// </summary>
+    public void CompleteFromDialogue()
+    {
+        if (hasTriggered && triggerOnce) return;
+
+        QuestObjective targetObj = null;
+        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        {
+            foreach (var q in QuestController.Instance.ActiveQuests)
+            {
+                if (q == null) continue;
+                var obj = q.GetObjective(objectiveID);
+                if (obj != null)
+                {
+                    targetObj = obj;
+                    break;
+                }
+            }
+        }
+
+        if (requireObjectiveActive && targetObj == null)
+        {
+            return;
+        }
+
+        if (triggerOnce)
+        {
+            hasTriggered = true;
+        }
+
+        OnObjectiveTriggered?.Invoke();
+
+        if (QuestController.Instance != null && !string.IsNullOrEmpty(objectiveID))
+        {
+            QuestController.Instance.ProgressObjective(objectiveID, amountToAdd);
+        }
+
+        OnObjectiveCompleted?.Invoke();
+    }
+
+    /// <summary>
+    /// Reset trigger agar bisa disentuh kembali (jika diperlukan dari script lain).
+    /// </summary>
     public void ResetTrigger()
     {
         hasTriggered = false;

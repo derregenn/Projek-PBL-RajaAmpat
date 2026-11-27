@@ -11,8 +11,14 @@ public class NPCGuide : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerNearby && (InteractionInputLock.IsAnyModalBlockingWorldInteract || InteractionInputLock.IsSignboardOpen))
         {
+            if (interactUI != null && interactUI.activeSelf) interactUI.SetActive(false);
+            return;
+        }
+        if (isPlayerNearby && !InteractionInputLock.WasInteractKeyConsumedThisFrame && Input.GetKeyDown(KeyCode.E))
+        {
+            InteractionInputLock.ConsumeInteractKeyThisFrame();
             if (playerScript != null)
             {
                 if (playerScript.hasMap)

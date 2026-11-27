@@ -1,9 +1,27 @@
 using UnityEngine;
-using TMPro; // Untuk update Text UI
+using TMPro;
 
 public class StoryManager : MonoBehaviour
 {
-    public static StoryManager Instance;
+    private static StoryManager _instance;
+    public static StoryManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<StoryManager>();
+                if (_instance == null && Application.isPlaying)
+                {
+                    GameObject go = new GameObject("StoryManager");
+                    _instance = go.AddComponent<StoryManager>();
+                    DontDestroyOnLoad(go);
+                }
+            }
+            return _instance;
+        }
+        set => _instance = value;
+    }
 
     // Fase Cerita sesuai urutan
     public enum StoryPhase
@@ -29,26 +47,50 @@ public class StoryManager : MonoBehaviour
 
     void Awake()
     {
-        // Setup Singleton & Jangan Hancurkan saat pindah pulau
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            LoadProgress();
         }
-        else
+        else if (_instance != this)
         {
             Destroy(gameObject);
+            return;
         }
     }
 
     void Start()
     {
-        LoadProgress(); // Muat data saat game baru dimulai
+        LoadProgress();
         UpdateJournalUI();
     }
 
-    // 🔴 PANGGIL FUNGSI INI SETIAP KALI PEMAIN SELESAI QUEST DI SEBUAH PULAU
+    public static int IslandNameToStoryIndex(IslandName island)
+    {
+        switch (island)
+        {
+            case IslandName.Waisai: return 0;
+            case IslandName.Piaynemo: return 1;
+            case IslandName.Misool: return 2;
+            case IslandName.Arborek: return 3;
+            case IslandName.Sawinggrai: return 4;
+            case IslandName.Friwen: return 5;
+            case IslandName.Gag: return 6;
+            default: return -1;
+        }
+    }
+
+    public void CompleteIsland(IslandName island)
+    {
+        int idx = IslandNameToStoryIndex(island);
+        if (idx >= 0)
+        {
+            CompleteIsland(idx);
+        }
+    }
+
     public void CompleteIsland(int islandIndex)
     {
         if (islandIndex >= 0 && islandIndex < islandsCompleted.Length)
@@ -57,12 +99,11 @@ public class StoryManager : MonoBehaviour
             SaveProgress();
             UpdateJournalUI();
             
-            Debug.Log("Pulau ke-" + islandIndex + " Selesai! Progress: " + CalculateProgressPercentage() + "%");
+            Debug.Log($"[StoryManager] Pulau ke-{islandIndex} Selesai! Progress: {CalculateProgressPercentage()}%");
         }
     }
 
-    // Fungsi matematika untuk menghitung persen (Max 100%)
-    private int CalculateProgressPercentage()
+    public int CalculateProgressPercentage()
     {
         int completedCount = 0;
         foreach (bool completed in islandsCompleted)
@@ -70,29 +111,36 @@ public class StoryManager : MonoBehaviour
             if (completed) completedCount++;
         }
 
-        // Rumus: (Jumlah pulau selesai / Total 7 Pulau) * 100
         float percentage = ((float)completedCount / islandsCompleted.Length) * 100f;
         return Mathf.RoundToInt(percentage);
     }
 
-    // Fungsi untuk mengubah angka di UI Travel Journal
     public void UpdateJournalUI()
     {
         if (progressPercentageText != null)
         {
+            if (progressPercentageText.transform.parent != null && progressPercentageText.transform.parent.name.Contains("ProgressUI"))
+            {
+                progressPercentageText.transform.parent.gameObject.SetActive(false);
+            }
             progressPercentageText.text = CalculateProgressPercentage() + "%";
         }
     }
 
-    // --- SISTEM SAVE / LOAD KHUSUS PROGRESS JURNAL ---
     public void SaveProgress()
     {
         PlayerPrefs.SetInt("SavedStoryPhase", (int)currentPhase);
         
-        // Simpan status tiap pulau menjadi 1 (True) atau 0 (False)
         for (int i = 0; i < islandsCompleted.Length; i++)
         {
-            PlayerPrefs.SetInt("Island_" + i, islandsCompleted[i] ? 1 : 0);
+            if (islandsCompleted[i])
+            {
+                PlayerPrefs.SetInt("Story_Island_" + i, 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Story_Island_" + i, 0);
+            }
         }
         PlayerPrefs.Save();
     }
@@ -106,20 +154,20 @@ public class StoryManager : MonoBehaviour
 
         for (int i = 0; i < islandsCompleted.Length; i++)
         {
-            // Ambil data, defaultnya 0 (belum selesai)
-            islandsCompleted[i] = PlayerPrefs.GetInt("Island_" + i, 0) == 1; 
+            islandsCompleted[i] = PlayerPrefs.GetInt("Story_Island_" + i, 0) == 1; 
         }
     }
     
-    // (Opsional) Panggil ini dari MainMenu.StartNewGame() untuk reset
     public void ResetProgress()
     {
         for (int i = 0; i < islandsCompleted.Length; i++)
         {
             islandsCompleted[i] = false;
+            PlayerPrefs.DeleteKey("Story_Island_" + i);
         }
         currentPhase = StoryPhase.Arrival_Airstrip;
         SaveProgress();
         UpdateJournalUI();
+        Debug.LogWarning("[StoryManager] Seluruh progress StoryManager telah direset.");
     }
 }

@@ -30,10 +30,13 @@ public class ScreenFader : MonoBehaviour
         }
     }
 
+    public bool FadeInOnStart => fadeInOnStart;
+
     private void Start()
     {
         if (fadeInOnStart && canvasGroup != null)
         {
+            EnsureGraphicOpaqueAlpha();
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             FadeIn();
@@ -42,12 +45,26 @@ public class ScreenFader : MonoBehaviour
 
     public void FadeOut()
     {
+        EnsureGraphicOpaqueAlpha();
         StartFade(1f);
     }
 
     public void FadeIn()
     {
+        EnsureGraphicOpaqueAlpha();
         StartFade(0f);
+    }
+
+    private void EnsureGraphicOpaqueAlpha()
+    {
+        if (canvasGroup == null) return;
+        UnityEngine.UI.Graphic g = canvasGroup.GetComponent<UnityEngine.UI.Graphic>();
+        if (g != null && g.color.a < 1f)
+        {
+            Color c = g.color;
+            c.a = 1f;
+            g.color = c;
+        }
     }
 
     public void FadeOutAndLoadScene(string sceneName)
