@@ -1690,7 +1690,27 @@ public class Dialogue : MonoBehaviour
             {
                 npcSpriteRenderer.transform.localScale = initialNpcLocalScale;
             }
+            return;
         }
+
+        // Samakan ukuran visual sprite DialogueLineSprites dengan scale awal di Hierarchy
+        // (mengatasi sprite ekspresi tambahan yang resolusi/PPU-nya berbeda dengan sprite idle)
+        if (idleSprite != null && targetSprite != idleSprite)
+        {
+            float baseHeight = idleSprite.bounds.size.y;
+            float targetHeight = targetSprite.bounds.size.y;
+            if (baseHeight > 0.0001f && targetHeight > 0.0001f)
+            {
+                float ratio = baseHeight / targetHeight;
+                npcSpriteRenderer.transform.localScale = new Vector3(
+                    initialNpcLocalScale.x * ratio,
+                    initialNpcLocalScale.y * ratio,
+                    initialNpcLocalScale.z);
+                return;
+            }
+        }
+
+        npcSpriteRenderer.transform.localScale = initialNpcLocalScale;
     }
 
     private void ResetNPCSprite()

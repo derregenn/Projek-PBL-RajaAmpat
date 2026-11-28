@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
@@ -50,6 +51,7 @@ public class TrashPickup : MonoBehaviour, IInteractable
     [Header("Popup UI")]
     [Tooltip("Referensi GameObject popup 'Trash Collected' pada Canvas.")]
     [SerializeField] private GameObject trashCollectedPopupUI;
+    [SerializeField, Min(0f)] private float popupFadeOutDuration = 1.5f;
 
     [Header("Prompt")]
     [SerializeField] private string customPrompt = "";
@@ -156,7 +158,10 @@ public class TrashPickup : MonoBehaviour, IInteractable
         {
             TrashCollectedHUD.Show();
             if (trashCollectedPopupUI != null)
+            {
                 trashCollectedPopupUI.SetActive(true);
+                StartCoroutine(FadeOutPopup());
+            }
         }
 
         // 2. Update Quest Objective
@@ -195,5 +200,26 @@ public class TrashPickup : MonoBehaviour, IInteractable
 
         // 9. Hapus sampah dari scene
         Destroy(gameObject);
+    }
+
+    private IEnumerator FadeOutPopup()
+    {
+        CanvasGroup canvasGroup = trashCollectedPopupUI.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = trashCollectedPopupUI.AddComponent<CanvasGroup>();
+
+        canvasGroup.alpha = 1f;
+        float elapsed = 0f;
+
+        while (elapsed < popupFadeOutDuration)
+        {
+            elapsed += Time.deltaTime;
+            canvasGroup.alpha = 1f - Mathf.Clamp01(elapsed / popupFadeOutDuration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0f;
+        trashCollectedPopupUI.SetActive(false);
+        canvasGroup.alpha = 1f;
     }
 }

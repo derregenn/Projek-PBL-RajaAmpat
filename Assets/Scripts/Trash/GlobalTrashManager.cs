@@ -124,6 +124,8 @@ public class GlobalTrashManager : MonoBehaviour
         PlayerPrefs.DeleteKey(KeyTotalInGame);
         PlayerPrefs.DeleteKey(KeyTotalCollected);
         PlayerPrefs.DeleteKey(KeyFreeRoamMode);
+        PlayerPrefs.DeleteKey("TotalTrashCollected");
+        TrashInteractable.totalCollected = 0;
         PlayerPrefs.Save();
 
         Debug.LogWarning("[GlobalTrashManager] Seluruh data sampah direset untuk New Game.");
@@ -200,9 +202,9 @@ public class GlobalTrashManager : MonoBehaviour
 
         OnTrashCollected?.Invoke(collected, total);
 
-        // Update field lama (TrashInteractable.totalCollected) agar kompatibel
-        TrashInteractable.totalCollected = collected;
-        PlayerPrefs.SetInt("TotalTrashCollected", collected);
+        int journalTrashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected) + 1;
+        TrashInteractable.totalCollected = journalTrashCount;
+        PlayerPrefs.SetInt("TotalTrashCollected", journalTrashCount);
         PlayerPrefs.Save();
 
         // Cek 100%

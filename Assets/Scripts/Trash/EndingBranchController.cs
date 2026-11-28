@@ -4,9 +4,9 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Mengelola percabangan ending di scene Waisai Ending dan Cutscene Airstrip Ending:
-/// Menentukan Tour Guide yang aktif berdasarkan progress sampah global:
-///   - Sampah < 100% : Aktifkan TourGuide_NormalEnding (Nonaktifkan Alt)
-///   - Sampah 100%   : Aktifkan TourGuide_AltEnding (Nonaktifkan Normal)
+/// Menentukan Tour Guide berdasarkan kriteria Secret Ending di jurnal:
+///   - Kriteria belum terpenuhi : Aktifkan TourGuide_NormalEnding
+///   - Pulau utama selesai dan 2 Sasi atau 20 sampah tercatat : Aktifkan TourGuide_AltEnding
 ///
 /// Catatan:
 /// - Sistem dialog dan sertifikat penghargaan diatur langsung di masing-masing NPC Tour Guide.
@@ -142,27 +142,37 @@ public class EndingBranchController : MonoBehaviour
             return true;
         }
 
-        if (GlobalTrashManager.Instance != null)
-        {
-            bool isAllCollected = GlobalTrashManager.Instance.IsAllTrashCollected();
-            sessionAltEndingOverride = isAllCollected;
-            Debug.Log($"[EndingBranchController] Cek Ending. 100% Sampah: {isAllCollected} " +
-                      $"({GlobalTrashManager.Instance.TotalCollected}/{GlobalTrashManager.Instance.TotalInGame})");
-            return isAllCollected;
-        }
-
         if (sessionAltEndingOverride.HasValue)
         {
             Debug.Log($"[EndingBranchController] Menggunakan status ending dari scene sebelumnya: AltEnding = {sessionAltEndingOverride.Value}");
             return sessionAltEndingOverride.Value;
         }
 
-        Debug.LogWarning("[EndingBranchController] GlobalTrashManager.Instance tidak ditemukan (mungkin play langsung dari scene ini). Default ke Normal Ending.");
-        return false;
+        bool allMainIslandsUnlocked =
+            QuestJournalManager.IsIslandCompletedPersistent(IslandName.Piaynemo) &&
+            QuestJournalManager.IsIslandCompletedPersistent(IslandName.Arborek) &&
+            QuestJournalManager.IsIslandCompletedPersistent(IslandName.Misool) &&
+            QuestJournalManager.IsIslandCompletedPersistent(IslandName.Friwen) &&
+            QuestJournalManager.IsIslandCompletedPersistent(IslandName.Sawinggrai) &&
+            QuestJournalManager.IsIslandCompletedPersistent(IslandName.Gag);
+
+        bool allIslandsDone =
+            PlayerPrefs.GetInt("GameCompleted", 0) == 1 ||
+            (GamePhaseManager.Instance != null && GamePhaseManager.Instance.GetCurrentPercentage() >= 99f) ||
+            allMainIslandsUnlocked;
+
+        int sasiCount = PlayerPrefs.GetInt("Sasi_Count", 0);
+        int trashCount = PlayerPrefs.GetInt("TotalTrashCollected", TrashInteractable.totalCollected);
+        bool isSecretEndingUnlocked = allIslandsDone && (sasiCount >= 2 || trashCount >= 20);
+        sessionAltEndingOverride = isSecretEndingUnlocked;
+
+        Debug.Log($"[EndingBranchController] Cek Ending. Pulau selesai: {allIslandsDone}, " +
+                  $"Sasi: {sasiCount}, Sampah jurnal: {trashCount}/20, AltEnding: {isSecretEndingUnlocked}");
+        return isSecretEndingUnlocked;
     }
 
     /// <summary>
-    /// Memeriksa persentase sampah global dan mengaktifkan/menonaktifkan Tour Guide yang sesuai.
+    /// Memeriksa kriteria Secret Ending jurnal dan mengaktifkan Tour Guide yang sesuai.
     /// </summary>
     public void CheckAndBranchEnding()
     {
